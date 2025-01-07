@@ -1,5 +1,7 @@
 package team5427.frc.robot.subsystems.Swerve.gyro;
 
+import java.util.Queue;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -11,11 +13,14 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import team5427.frc.robot.Constants;
+import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
 
 public class GyroIOPigeon implements GyroIO {
     private Pigeon2 gyro;
     private final StatusSignal<Angle> yaw;
     private final StatusSignal<AngularVelocity> yawVelocity;
+    private final Queue<Double> yawPositionQueue;
+    private final Queue<Double> yawTimestampQueue;
 
     public GyroIOPigeon() {
         gyro = new Pigeon2(Constants.SwerveConstants.kPigeonCANId.getDeviceNumber(),
@@ -30,7 +35,9 @@ public class GyroIOPigeon implements GyroIO {
         yaw.setUpdateFrequency(Constants.kLoopSpeed);
         yawVelocity = gyro.getAngularVelocityZWorld();
         yawVelocity.setUpdateFrequency(Constants.kLoopSpeed);
-        // gyro.optimizeBusUtilization();
+        gyro.optimizeBusUtilization();
+        yawTimestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
+        yawPositionQueue = PhoenixOdometryThread.getInstance().registerSignal(gyro.getYaw());
     }
 
     @Override
@@ -40,6 +47,13 @@ public class GyroIOPigeon implements GyroIO {
         inputs.yawPosition = Rotation2d.fromDegrees(
                 BaseStatusSignal.getLatencyCompensatedValueAsDouble(yaw, yawVelocity));
         inputs.yawVelocityRadPerSec = Units.degreesToRadians(yawVelocity.getValueAsDouble());
+
+        yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+        inputs.odometryYawPositions = yawPositionQueue.stream()
+                .map((Double value) -> Rotation2d.fromDegrees(value))
+                .toArray(Rotation2d[]::new);
+        yawTimestampQueue.clear();
+        yawPositionQueue.clear();
     }
 
     @Override

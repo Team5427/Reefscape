@@ -4,6 +4,8 @@
 
 package team5427.frc.robot;
 
+import com.ctre.phoenix6.CANBus;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -26,8 +28,25 @@ import team5427.lib.motors.real.MotorConfiguration.MotorMode;
  */
 public final class Constants {
   public static final double kLoopSpeed = 0.020;
+  public static final String kCanivoreCanBusName = "dummy";
+      public static final double kOdometryFrequency = new CANBus(Constants.kCanivoreCanBusName).isNetworkFD() ? 250.0
+            : 100.0;
+  // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
+  public static Mode currentMode = Mode.SIM;
+
+  public static enum Mode {
+    /** Running on a real robot. */
+    REAL,
+
+    /** Running a physics simulator. */
+    SIM,
+
+    /** Replaying from a log file. */
+    REPLAY
+  }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    
   }
   public static class SwerveConstants {
     public static final double kWheelDiameterMeters = Units.inchesToMeters(3.88);
@@ -123,4 +142,5 @@ public final class Constants {
     public static final CANDeviceId kPigeonCANId = new CANDeviceId(16, "*");
 
   }
+  
 }

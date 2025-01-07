@@ -1,5 +1,6 @@
 package team5427.lib.motors.real;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
@@ -7,6 +8,7 @@ import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
 import team5427.lib.motors.real.MotorConfiguration.MotorMode;
@@ -125,10 +127,14 @@ public class SteelTalonFX implements IMotorController {
         talonFX.setPosition(position.getRotations());
     }
 
+    /**
+     * In radians
+     */
     @Override
     public double getEncoderPosition() {
         return talonFX.getPosition().getValueAsDouble() * positionConversionFactor;
     }
+
 
     @Override
     public double getEncoderVelocity() {
