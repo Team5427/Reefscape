@@ -84,7 +84,7 @@ public class ModuleIOTalon implements ModuleIO {
                 driveMotor.getEncoderVelocity(),
                 inputs.absolutePosition);
         inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getEncoderPosition());
-        inputs.steerMotorVelocityRotationsPerSecond = steerMotor.getEncoderVelocity();
+        inputs.steerMotorVelocityRotationsPerSecond = steerMotor.getEncoderVelocity() / 60.0;
         inputs.targetModuleState = targetModuleState;
 
         inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getEncoderPosition());
@@ -134,7 +134,7 @@ public class ModuleIOTalon implements ModuleIO {
      **/
     @Override
     public void setDriveSpeedSetpoint(Double speed) {
-        driveMotor.setSetpoint(Rotation2d.fromRotations(speed));
+        driveMotor.setSetpoint(speed);
         driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValueAsDouble();
     }
 
@@ -150,6 +150,7 @@ public class ModuleIOTalon implements ModuleIO {
 
     @Override
     public void setModuleState(SwerveModuleState state) {
+        state.optimize(getCancoderRotation());
         targetModuleState = state;
         setDriveSpeedSetpoint(Double.valueOf(targetModuleState.speedMetersPerSecond));
         setSteerPositionSetpoint(targetModuleState.angle);
