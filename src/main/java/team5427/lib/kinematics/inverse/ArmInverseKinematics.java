@@ -6,7 +6,8 @@ import edu.wpi.first.math.geometry.Translation3d;
 /**
  * Inverse kinematics for robotic arms.
  * This is for arms with fixed arm segments and 2 joints.
- * This DOES NOT recalculate if joint angles are calculated to violate constraints.
+ * This DOES NOT recalculate if joint angles are calculated to violate
+ * constraints.
  * Target Location is given relative to the first joint
  */
 public class ArmInverseKinematics {
@@ -48,13 +49,14 @@ public class ArmInverseKinematics {
         finalAngles = new Rotation2d[minAngles.length];
     }
 
-
-    public Rotation2d[] getAngles(){
+    public Rotation2d[] getAngles() {
         double dist = targetLocation.getDistance(new Translation3d(0, 0, 0));
         // second angle
-        double gamma = Math.acos((Math.pow(segmentLengths[0], 2) + Math.pow(segmentLengths[1], 2) - Math.pow(dist, 2))/(2.0*segmentLengths[0] * segmentLengths[1]));
+        double gamma = Math.acos((Math.pow(segmentLengths[0], 2) + Math.pow(segmentLengths[1], 2) - Math.pow(dist, 2))
+                / (2.0 * segmentLengths[0] * segmentLengths[1]));
         // first angle
-        double theta = Math.acos((Math.pow(segmentLengths[0],2)+Math.pow(dist,2) - Math.pow(segmentLengths[1], 2))/(2.0*segmentLengths[0]*dist));
+        double theta = Math.acos((Math.pow(segmentLengths[0], 2) + Math.pow(dist, 2) - Math.pow(segmentLengths[1], 2))
+                / (2.0 * segmentLengths[0] * dist));
 
         finalAngles[0] = Rotation2d.fromDegrees(theta);
         finalAngles[1] = Rotation2d.fromDegrees(gamma);

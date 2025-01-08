@@ -42,13 +42,11 @@ public class ModuleIOTalon implements ModuleIO {
         driveMotor = new SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kDriveMotorIds[moduleIdx]);
         steerMotor = new SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kSteerMotorIds[moduleIdx]);
         cancoder = new CANcoder(SwerveConstants.kSwerveUtilInstance.kCancoderIds[moduleIdx].getDeviceNumber(),
-        SwerveConstants.kSwerveUtilInstance.kCancoderIds[moduleIdx].getBus());
+                SwerveConstants.kSwerveUtilInstance.kCancoderIds[moduleIdx].getBus());
         SwerveConstants.kDriveMotorConfiguration.isInverted = SwerveConstants.kSwerveUtilInstance.kDriveInversion[moduleIdx];
         SwerveConstants.kSteerMotorConfiguration.isInverted = SwerveConstants.kSwerveUtilInstance.kSteerInversion[moduleIdx];
         driveMotor.apply(SwerveConstants.kDriveMotorConfiguration);
         steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
-        // driveMotor.getTalonFX().setInverted(SwerveConstants.kSwerveUtilInstance.kDriveInversion[moduleIdx]);
-        // steerMotor.getTalonFX().setInverted(SwerveConstants.kSwerveUtilInstance.kSteerInversion[moduleIdx]);
 
         driveMotor.getTalonFX().clearStickyFaults();
         steerMotor.getTalonFX().clearStickyFaults();
@@ -61,17 +59,13 @@ public class ModuleIOTalon implements ModuleIO {
 
         cancoder.clearStickyFaults();
 
-        
-
         steerMotor.setEncoderPosition(cancoder.getAbsolutePosition().getValueAsDouble() * 2.0 * Math.PI);
         driveMotor.setEncoderPosition(0.0);
 
         timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
-        drivePositionQueue =
-        PhoenixOdometryThread.getInstance().registerSignal(driveMotor.getTalonFX().getPosition());
+        drivePositionQueue = PhoenixOdometryThread.getInstance().registerSignal(driveMotor.getTalonFX().getPosition());
 
-        steerPositionQueue =
-        PhoenixOdometryThread.getInstance().registerSignal(steerMotor.getTalonFX().getPosition());
+        steerPositionQueue = PhoenixOdometryThread.getInstance().registerSignal(steerMotor.getTalonFX().getPosition());
 
         ParentDevice.optimizeBusUtilizationForAll(driveMotor.getTalonFX(), steerMotor.getTalonFX());
 
@@ -107,35 +101,31 @@ public class ModuleIOTalon implements ModuleIO {
         inputs.driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent().getValueAsDouble();
         inputs.steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent().getValueAsDouble();
 
-        inputs.odometryTimestamps =
-        timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-    inputs.odometryDrivePositionsMeters =
-        drivePositionQueue.stream()
-        // converts the raw rotations -> radians -> meters
-            .mapToDouble((Double value) -> value * SwerveConstants.kDriveMotorConfiguration.unitConversionRatio)
-            .toArray();
-    inputs.odometryTurnPositions =
-        steerPositionQueue.stream()
-            .map((Double value) -> Rotation2d.fromRotations(value))
-            .toArray(Rotation2d[]::new);
-    timestampQueue.clear();
-    drivePositionQueue.clear();
-    steerPositionQueue.clear();
+        inputs.odometryTimestamps = timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+        inputs.odometryDrivePositionsMeters = drivePositionQueue.stream()
+                // converts the raw rotations -> radians -> meters
+                .mapToDouble((Double value) -> value * Math.PI * SwerveConstants.kWheelDiameterMeters)
+                .toArray();
+        inputs.odometryTurnPositions = steerPositionQueue.stream()
+                .map((Double value) -> Rotation2d.fromRotations(value))
+                .toArray(Rotation2d[]::new);
+        timestampQueue.clear();
+        drivePositionQueue.clear();
+        steerPositionQueue.clear();
 
-
-        
     }
 
     private Rotation2d getCancoderRotation() {
-       
+
         return Rotation2d.fromRotations(cancoder.getAbsolutePosition().getValueAsDouble());
     }
 
     @Override
-    public void resetMotorSetpoint(){
+    public void resetMotorSetpoint() {
         steerMotor.setEncoderPosition(getCancoderRotation());
         driveMotor.setEncoderPosition(0.0);
     }
+
     /**
      * Needs to be a <strong>Double</strong>, NOT a double
      * 

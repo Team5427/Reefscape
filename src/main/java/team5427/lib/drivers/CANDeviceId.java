@@ -1,7 +1,5 @@
 package team5427.lib.drivers;
 
-import org.littletonrobotics.junction.AutoLog;
-
 // Credit 254
 public class CANDeviceId {
 
