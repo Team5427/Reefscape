@@ -12,6 +12,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
 import team5427.lib.motors.real.MotorConfiguration.IdleState;
@@ -50,8 +51,8 @@ public class ProfiledSparkMax implements IMotorController {
         // sparkMax.setInverted(configuration.isInverted);
         // sparkMax.setIdleMode(configuration.idleState == IdleState.kBrake ?
         // IdleMode.kBrake : IdleMode.kCoast);
-        config.encoder.positionConversionFactor(configuration.unitConversionRatio)
-                .velocityConversionFactor(configuration.unitConversionRatio / 60.0);
+        // config.encoder.positionConversionFactor(configuration.unitConversionRatio)
+        //         .velocityConversionFactor(configuration.unitConversionRatio / 60.0);
         config.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         // relativeEncoder.setPositionConversionFactor(configuration.unitConversionRatio);
@@ -61,15 +62,16 @@ public class ProfiledSparkMax implements IMotorController {
         config.closedLoop.pid(configuration.kP, configuration.kI, configuration.kD);
         config.closedLoop.maxMotion.maxAcceleration(configuration.maxAcceleration)
                 .maxVelocity(configuration.maxVelocity).positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
-        config.closedLoop.positionWrappingEnabled(true).positionWrappingMinInput(-Math.PI)
-                .positionWrappingMaxInput(Math.PI);
+                // configured for rotations rather than radians
+        config.closedLoop.positionWrappingEnabled(true).positionWrappingMinInput(-0.5)
+                .positionWrappingMaxInput(0.5);
         // controller.setP(configuration.kP);
         // controller.setI(configuration.kI);
         // controller.setD(configuration.kD);
         // controller.setConstraints(new TrapezoidProfile.Constraints(
         // configuration.maxVelocity, configuration.maxAcceleration));
 
-        // controller.enableContinuousInput(-Math.PI, Math.PI);
+        controller.enableContinuousInput(-0.5, 0.5);
 
         if (configuration.mode == MotorMode.kFlywheel) {
             throw new Error("Profiled Spark Max of id " + id.getDeviceNumber() + " is set as an illegal flywheel.");
@@ -78,15 +80,24 @@ public class ProfiledSparkMax implements IMotorController {
         // sparkMax.burnFlash();
     }
 
+    /**
+     * Recommended to use only if the motor is linear
+     * @param setpoint meters the motor should move
+     */
     @Override
     public void setSetpoint(double setpoint) {
+        if(configuration.mode != MotorMode.kLinear){
+            throw new Error("Profiled Spark Max of id " + id.getDeviceNumber() + " is illegally sent a meters setpoint as a servo.");
+        }
         this.setpoint = setpoint;
+        // uses meters
         sparkMax.setVoltage(
-                controller.calculate(getEncoderPosition(), this.setpoint) + configuration.kFF * this.setpoint);
+                controller.calculate(getEncoderPosition() * Math.PI * configuration.finalDiameterMeters, this.setpoint) + configuration.kFF * this.setpoint);
     }
 
     public void setSetpoint(Rotation2d setpoint) {
-        this.setpoint = setpoint.getRadians();
+        // now using rotations
+        this.setpoint = setpoint.getRotations();
         sparkMax.setVoltage(
                 controller.calculate(getEncoderPosition(), this.setpoint) + configuration.kFF * this.setpoint);
     }
@@ -96,9 +107,15 @@ public class ProfiledSparkMax implements IMotorController {
         return setpoint;
     }
 
+    /**
+     * @param position setting the position of the encoder in meters
+     */
     @Override
     public void setEncoderPosition(double position) {
-        relativeEncoder.setPosition(position);
+        if(configuration.mode != MotorMode.kLinear){
+            throw new Error("Profiled Spark Max of id " + id.getDeviceNumber() + " is illegally sent a meters position as a servo.");
+        }
+        relativeEncoder.setPosition(position / (Math.PI*configuration.finalDiameterMeters));
     }
 
     @Override
@@ -111,6 +128,9 @@ public class ProfiledSparkMax implements IMotorController {
         return relativeEncoder.getPosition();
     }
 
+    /**
+     * @return RPM of the motor
+     */
     @Override
     public double getEncoderVelocity() {
         return relativeEncoder.getVelocity();

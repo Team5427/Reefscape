@@ -1,5 +1,7 @@
 package team5427.lib.motors.real;
 
+import com.google.errorprone.annotations.DoNotCall;
+
 import team5427.lib.drivers.ComplexGearRatio;
 
 public class MotorConfiguration {
@@ -27,8 +29,10 @@ public class MotorConfiguration {
 
     /**
      * Converts between Radians, Degrees, Rotations time units etc.
+     * @deprecated will no longer be used as rotations are the default
      */
     public double unitConversionRatio;
+    
     public double maxVelocity, maxAcceleration;
 
     public IdleState idleState;
@@ -78,13 +82,34 @@ public class MotorConfiguration {
         mode = parent.mode;
     }
     
-    /**
-     * @return Radians Per Second
-     */
-    public double getStandardMaxVelocity(double maxMotorRPM) {
-        return (maxMotorRPM * getStandardUnitConversionRatio()) / 60.0;
-    }
+    // /**
+    //  * @return Radians Per Second
+    //  * @deprecated no longer 
+    //  */
+    // @Deprecated(since="1/7/2025", forRemoval = true)
+    // public double getStandardMaxVelocity(double maxMotorRPM) {
+    //     return (maxMotorRPM * getStandardUnitConversionRatio()) / 60.0;
+    // }
 
+    /**
+     * 
+     * @param maxMotorRPM - maximum motor speed in rotations per minute
+     * @return if servo, then the maximum rotations per second of the motor.
+     * If a flywheel or linear, then the meters per second of the motor.
+     */
+    public double getStandardMaxVelocity(double maxMotorRPM){
+        if(mode != MotorMode.kServo){
+            return maxMotorRPM * gearRatio.getMathematicalGearRatio() * finalDiameterMeters * Math.PI / 60.0;
+        }
+        return (maxMotorRPM * gearRatio.getMathematicalGearRatio()) / 60.0;
+    }
+/**
+ * @deprecated Unit conversion ratio will be removed, and instead implemented on a need-based basis, rather than a general system
+ * 
+ * converts different rotational and linear units, principally converts rotations -> radians and meters -> radians
+ * 
+ */
+    @Deprecated(since="1/7/2025", forRemoval = true)
     public double getStandardUnitConversionRatio() {
         if (mode != MotorMode.kServo) {
             return gearRatio.getMathematicalGearRatio() * finalDiameterMeters * Math.PI;

@@ -50,8 +50,8 @@ public class SimpleSparkMax implements IMotorController {
         // sparkMax.setIdleMode(configuration.idleState == IdleState.kBrake ?
         // IdleMode.kBrake : IdleMode.kCoast);
 
-        config.encoder.positionConversionFactor(configuration.unitConversionRatio)
-                .velocityConversionFactor(configuration.unitConversionRatio / 60.0);
+        // config.encoder.positionConversionFactor(configuration.unitConversionRatio)
+        //         .velocityConversionFactor(configuration.unitConversionRatio / 60.0);
 
         // relativeEncoder.setPositionConversionFactor(configuration.unitConversionRatio);
         // relativeEncoder.setVelocityConversionFactor(configuration.unitConversionRatio
@@ -72,8 +72,9 @@ public class SimpleSparkMax implements IMotorController {
             case kServo:
             case kLinear:
                 controlType = SparkBase.ControlType.kPosition;
-                config.closedLoop.positionWrappingEnabled(true).positionWrappingMinInput(-Math.PI)
-                        .positionWrappingMaxInput(Math.PI);
+                // configured for rotations rather than radians
+                config.closedLoop.positionWrappingEnabled(true).positionWrappingMinInput(-0.5)
+                        .positionWrappingMaxInput(0.5);
                 // controller.setPositionPIDWrappingEnabled(true);
                 // controller.setPositionPIDWrappingMinInput(-Math.PI);
                 // controller.setPositionPIDWrappingMaxInput(Math.PI);
@@ -88,14 +89,23 @@ public class SimpleSparkMax implements IMotorController {
         // sparkMax.burnFlash();
     }
 
+    /**
+     * @param setpoint needs to be in meters if a flywheel or linear, or rotations if a servo
+     * @apiNote
+     * If the device is a servo, it is recommended to use Rotation2d, rather than a double
+     */
     @Override
     public void setSetpoint(double setpoint) {
         this.setpoint = setpoint;
         controller.setReference(this.setpoint, controlType);
     }
 
+    /*
+     * Function now uses rotations inside rather than radians
+     */
+    @Override
     public void setSetpoint(Rotation2d setpoint) {
-        this.setpoint = setpoint.getRadians();
+        this.setpoint = setpoint.getRotations();
         if (configuration.mode == MotorMode.kFlywheel) {
             DriverStation.reportWarning(
                     "Simple Spark Max of id " + id.getDeviceNumber()
@@ -123,10 +133,9 @@ public class SimpleSparkMax implements IMotorController {
     @Override
     public void setEncoderPosition(Rotation2d position) {
         /**
-         * Position set in radians as PositionConversionFactor is already applied
-         * Which converts rotations to radians by default
+         * Will now use rotations
          */
-        relativeEncoder.setPosition(position.getRadians());
+        relativeEncoder.setPosition(position.getRotations());
     }
 
     @Override
@@ -134,6 +143,9 @@ public class SimpleSparkMax implements IMotorController {
         return relativeEncoder.getPosition();
     }
 
+    /**
+     * @return RPM of the motor
+     */
     @Override
     public double getEncoderVelocity() {
         return relativeEncoder.getVelocity();
