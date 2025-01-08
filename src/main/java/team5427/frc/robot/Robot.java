@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.BuildConstants;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -37,6 +38,7 @@ public class Robot extends LoggedRobot {
   @SuppressWarnings("resource")
   public Robot() {
     Logger.recordMetadata("Reefscape", "Steel Talons 5427 Robot Code for the Game Reefscape, 2025");
+    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
 
     if (isReal()) {
       Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
@@ -48,7 +50,7 @@ public class Robot extends LoggedRobot {
       Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
       Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
     }
-    AutoLogOutputManager.addPackage("frc.lib");
+    AutoLogOutputManager.addPackage("team5427.lib");
     Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
                     // be added.
 
