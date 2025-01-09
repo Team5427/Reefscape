@@ -31,6 +31,7 @@ public class MotorConfiguration {
      * Converts between Radians, Degrees, Rotations time units etc.
      * @deprecated will no longer be used as rotations are the default
      */
+    @Deprecated
     public double unitConversionRatio;
     
     public double maxVelocity, maxAcceleration;

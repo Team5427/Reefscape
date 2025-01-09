@@ -11,6 +11,7 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIO;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIOInputsAutoLogged;
+import team5427.frc.robot.subsystems.Swerve.io.ModuleIOSim;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIOTalon;
 
 public class SwerveModule {
@@ -28,7 +29,7 @@ public class SwerveModule {
         // TODO
         switch (Constants.currentMode) {
             case SIM:
-                // io = new ModuleIOSim(index);
+                io = new ModuleIOSim(index);
                 break;
             case REAL:
                 io = new ModuleIOTalon(index);

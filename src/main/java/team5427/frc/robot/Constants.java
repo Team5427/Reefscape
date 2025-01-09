@@ -5,6 +5,7 @@
 package team5427.frc.robot;
 
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -139,6 +140,17 @@ public final class Constants {
 
     public static final CANDeviceId kPigeonCANId = new CANDeviceId(16, "*");
 
+    public static class SimulationConstants {
+      public static final double steerkP = 9.0;
+      public static final double steerkI = 0.0;
+      public static final double steerkD = 3.0;
+
+      public static final double drivekP = 12.0;
+      public static final double drivekI = 0.0;
+      public static final double drivekD = 0.0;
+      public static final double drivekS = 0.0;
+      public static final double drivekV = 25.2;
+    }
   }
   
 }

@@ -27,11 +27,10 @@ import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
+import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
 
 public class SwerveSubsystem extends SubsystemBase {
-
-
 
     private static SwerveSubsystem m_instance;
 
@@ -39,9 +38,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private SwerveModule[] modules;
     private GyroIO gyroIO;
     private GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
-    @AutoLogOutput
     private ChassisSpeeds currentSpeeds;
-    @AutoLogOutput
     private SwerveModuleState[] actualModuleStates;
 
     private SwerveModulePosition[] lastModulePositions = // For delta tracking
@@ -82,6 +79,7 @@ public class SwerveSubsystem extends SubsystemBase {
             case REPLAY:
                 break;
             case SIM:
+                // gyroIO = new GyroIOSim();
                 break;
             default:
                 break;
@@ -95,7 +93,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void setChassisSpeeds(ChassisSpeeds newSpeeds) {
-        currentSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(newSpeeds, gyroInputs.yawPosition);
+        if (Constants.currentMode != Mode.SIM) {
+            currentSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(newSpeeds, getGyroRotation());
+        } else {
+            currentSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(newSpeeds, getRotation());
+        }
+
     }
 
     public SwerveModuleState[] getModuleStates() {
@@ -119,9 +122,10 @@ public class SwerveSubsystem extends SubsystemBase {
             gyroDisconnectedAlert.set(true);
         }
         for (int i = 0; i < modules.length; i++) {
-            modules[i].setModuleState(moduleStates[i]);
-            // if (modules[i].getModuleState() != null) {
             actualModuleStates[i] = modules[i].getModuleState();
+            modules[i].setModuleState(moduleStates[i]);
+            modules[i].periodic();
+            // if (modules[i].getModuleState() != null) {
 
         }
         odometryLock.unlock();
@@ -154,10 +158,16 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // Apply update
             poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+
         }
 
         // Update gyro alert
         gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
+        Logger.recordOutput("SwerveOutput/ChassisSpeeds", currentSpeeds);
+        Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
+        Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
+        Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
+        Logger.recordOutput("Odometry/Robot", getPose());
     }
 
     public void resetGyro(Rotation2d angle) {
@@ -204,7 +214,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 + Math.pow(SwerveConstants.m_kinematics.toChassisSpeeds(actualModuleStates).vyMetersPerSecond, 2));
     }
 
-    @AutoLogOutput(key = "Swerve/ModulePositions")
+    // @AutoLogOutput(key = "SwerveOutput/ModulePositions")
     public SwerveModulePosition[] getModulePositions() {
         return new SwerveModulePosition[] {
                 getModulePosition(0), getModulePosition(1),
@@ -213,7 +223,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     /** Returns the current odometry pose. */
-    @AutoLogOutput(key = "Odometry/Robot")
+    // @AutoLogOutput(key = "Odometry/Robot")
     public Pose2d getPose() {
         return poseEstimator.getEstimatedPosition();
     }

@@ -52,7 +52,7 @@ public interface ModuleIO {
     /*
      * Needs a voltage
      */
-    public default void setSteerPositionSetpoint(double position) {
+    public default void setSteerPositionSetpoint(double volts) {
     }
 
     public default void setModuleState(SwerveModuleState state) {
