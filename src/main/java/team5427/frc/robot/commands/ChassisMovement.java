@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -25,7 +26,7 @@ public class ChassisMovement extends Command {
         swerveSubsystem = SwerveSubsystem.getInstance();
         joy = driverJoystick;
         // if (RobotBase.isSimulation()) {
-        //     simulatedRotationalJoy = Optional.of(new CommandXboxController(1));
+        // simulatedRotationalJoy = Optional.of(new CommandXboxController(1));
         // }
         addRequirements(swerveSubsystem);
     }
@@ -45,20 +46,25 @@ public class ChassisMovement extends Command {
             swerveSubsystem.setChassisSpeeds(inputSpeeds);
             Logger.recordOutput("InputSpeeds", inputSpeeds);
         } else {
-
-            double vx = -joy.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-            double vy = -joy.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-            double omegaRadians = -joy.getLeftX() * Math.PI * SwerveConstants.kDriveMotorConfiguration.maxVelocity / 2;
-
+            double vx = 0.0, vy =0.0, omegaRadians = 0.0;
+            
+            if (Math.abs(joy.getRightY()) >= OperatorConstants.driverControllerJoystickDeadzone) {
+                vx = -joy.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+            }
+            if (Math.abs(joy.getRightX()) >= OperatorConstants.driverControllerJoystickDeadzone) {
+                vy = -joy.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+            }
+            if (Math.abs(joy.getLeftX()) >= OperatorConstants.driverControllerJoystickDeadzone) {
+                omegaRadians = -joy.getLeftX() * Math.abs(joy.getLeftX()/2) * Math.PI * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+            }
             ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
-
 
             swerveSubsystem.setChassisSpeeds(inputSpeeds);
         }
     }
 
     @Override
-    public boolean isFinished(){
+    public boolean isFinished() {
         return false;
     }
 

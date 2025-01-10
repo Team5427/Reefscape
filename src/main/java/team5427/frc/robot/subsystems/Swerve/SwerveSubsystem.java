@@ -219,7 +219,7 @@ public class SwerveSubsystem extends SubsystemBase {
         return new SwerveModulePosition[] {
                 getModulePosition(0), getModulePosition(1),
                 getModulePosition(2),
-                getModulePosition(3) };
+                getModulePosition(3), };
     }
 
     /** Returns the current odometry pose. */

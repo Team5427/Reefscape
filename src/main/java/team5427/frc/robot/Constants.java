@@ -47,6 +47,7 @@ public final class Constants {
   }
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final double driverControllerJoystickDeadzone = 0.00;
     
   }
   public static class SwerveConstants {
@@ -141,15 +142,15 @@ public final class Constants {
     public static final CANDeviceId kPigeonCANId = new CANDeviceId(16, "*");
 
     public static class SimulationConstants {
-      public static final double steerkP = 9.0;
+      public static final double steerkP = 30.0;
       public static final double steerkI = 0.0;
-      public static final double steerkD = 3.0;
+      public static final double steerkD = 2.0;
 
-      public static final double drivekP = 12.0;
+      public static final double drivekP = 20.0;
       public static final double drivekI = 0.0;
       public static final double drivekD = 0.0;
       public static final double drivekS = 0.0;
-      public static final double drivekV = 25.2;
+      public static final double drivekV = 45.0;
     }
   }
   

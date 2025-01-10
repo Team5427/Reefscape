@@ -37,11 +37,11 @@ public class ModuleIOSim implements ModuleIO {
     public ModuleIOSim(int index) {
         this.index  = index;
         driveMotor = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(driveMotorGearbox, 0.005,
+                LinearSystemId.createDCMotorSystem(driveMotorGearbox, 0.007,
                         SwerveConstants.kDriveMotorConfiguration.gearRatio.getMathematicalGearRatio()),
                 driveMotorGearbox);
         steerMotor = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(steerMotorGearbox, 0.0004,
+                LinearSystemId.createDCMotorSystem(steerMotorGearbox, 0.0005,
                         SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio()),
                 steerMotorGearbox);
         steerController = new PIDController(SimulationConstants.steerkP, SimulationConstants.steerkI,
