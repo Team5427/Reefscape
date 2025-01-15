@@ -1,7 +1,5 @@
 package team5427.lib.motors.real;
 
-import com.google.errorprone.annotations.DoNotCall;
-
 import team5427.lib.drivers.ComplexGearRatio;
 
 public class MotorConfiguration {
@@ -21,6 +19,9 @@ public class MotorConfiguration {
 
     public double kP, kI, kD, kFF;
     public double kS, kV, kA;
+
+    /**Alternative velocity, acceleration, and jerk values for additional specific motor control */
+    public double altA, altV, altJ;
 
     public int currentLimit;
 
@@ -46,6 +47,8 @@ public class MotorConfiguration {
         kP = kI = kD = kFF = 0.0;
         kS = kV = kA = 0.0;
 
+        altA = altV = altJ = 0.0;
+
         currentLimit = 30;
 
         gearRatio = new ComplexGearRatio();
@@ -70,6 +73,10 @@ public class MotorConfiguration {
         kV = parent.kV;
         kA = parent.kA;
 
+        altA = parent.altA;
+        altV = parent.altV;
+        altJ = parent.altJ;
+
         currentLimit = parent.currentLimit;
 
         gearRatio = parent.gearRatio;
@@ -82,15 +89,6 @@ public class MotorConfiguration {
         idleState = parent.idleState;
         mode = parent.mode;
     }
-    
-    // /**
-    //  * @return Radians Per Second
-    //  * @deprecated no longer 
-    //  */
-    // @Deprecated(since="1/7/2025", forRemoval = true)
-    // public double getStandardMaxVelocity(double maxMotorRPM) {
-    //     return (maxMotorRPM * getStandardUnitConversionRatio()) / 60.0;
-    // }
 
     /**
      * 

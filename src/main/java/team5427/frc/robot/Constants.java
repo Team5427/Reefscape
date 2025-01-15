@@ -4,6 +4,8 @@
 
 package team5427.frc.robot;
 
+import java.lang.module.Configuration;
+
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
@@ -111,7 +113,7 @@ public final class Constants {
       kDriveMotorConfiguration.idleState = IdleState.kBrake;
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
 
-      kDriveMotorConfiguration.currentLimit = 75;
+      kDriveMotorConfiguration.currentLimit = 80;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity = kDriveMotorConfiguration
@@ -119,10 +121,11 @@ public final class Constants {
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
       kDriveMotorConfiguration.kP = 0.75;
-      kDriveMotorConfiguration.kV = 2.15;
-      kDriveMotorConfiguration.kA = 0.21;
-
-    }
+      kDriveMotorConfiguration.kV = 2.08;
+      kDriveMotorConfiguration.kA = 0.20;
+      kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
+      kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
+      }
 
     public static final MotorConfiguration kSteerMotorConfiguration = new MotorConfiguration();
     static {
@@ -137,6 +140,8 @@ public final class Constants {
       // Tunable values
       kSteerMotorConfiguration.kP = 0.7; // 7.0
       kSteerMotorConfiguration.kD = 0.15;
+      kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
+      kSteerMotorConfiguration.altA = kSteerMotorConfiguration.maxAcceleration;
     }
 
     public static final CANDeviceId kPigeonCANId = new CANDeviceId(16, "*");
