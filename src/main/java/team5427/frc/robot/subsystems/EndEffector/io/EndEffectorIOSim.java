@@ -2,12 +2,13 @@ package team5427.frc.robot.subsystems.EndEffector.io;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.LinearVelocity;
 
 public class EndEffectorIOSim implements EndEffectorIO{
     
 
     @Override
-    public void setCoralRollerSetpoint(AngularVelocity velocity) {
+    public void setCoralRollerSetpoint(LinearVelocity velocity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setCoralRollerSetpoint'");
     }
@@ -19,7 +20,7 @@ public class EndEffectorIOSim implements EndEffectorIO{
     }
 
     @Override
-    public void setAlgaeRollerSetpoint(AngularVelocity velocity) {
+    public void setAlgaeRollerSetpoint(LinearVelocity velocity) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setAlgaeRollerSetpoint'");
     }

@@ -26,18 +26,22 @@ import team5427.lib.motors.real.MotorConfiguration.IdleState;
 import team5427.lib.motors.real.MotorConfiguration.MotorMode;
 
 /**
- * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
- * constants. This class should not be used for any other purpose. All constants should be declared
+ * The Constants class provides a convenient place for teams to hold robot-wide
+ * numerical or boolean
+ * constants. This class should not be used for any other purpose. All constants
+ * should be declared
  * globally (i.e. public static). Do not put anything functional in this class.
  *
- * <p>It is advised to statically import this class (or one of its inner classes) wherever the
+ * <p>
+ * It is advised to statically import this class (or one of its inner classes)
+ * wherever the
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
   public static final double kLoopSpeed = 0.020;
   public static final String kCanivoreCanBusName = "dummy";
-      public static final double kOdometryFrequency = new CANBus(Constants.kCanivoreCanBusName).isNetworkFD() ? 250.0
-            : 100.0;
+  public static final double kOdometryFrequency = new CANBus(Constants.kCanivoreCanBusName).isNetworkFD() ? 250.0
+      : 100.0;
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
   public static Mode currentMode = Mode.SIM;
 
@@ -51,11 +55,13 @@ public final class Constants {
     /** Replaying from a log file. */
     REPLAY
   }
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double driverControllerJoystickDeadzone = 0.00;
-    
+
   }
+
   public static class SwerveConstants {
     public static final double kWheelDiameterMeters = Units.inchesToMeters(3.88);
     public static final double kTrackWidth = Units.inchesToMeters(19.5);
@@ -129,7 +135,7 @@ public final class Constants {
       kDriveMotorConfiguration.kA = 0.20;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
-      }
+    }
 
     public static final MotorConfiguration kSteerMotorConfiguration = new MotorConfiguration();
     static {
@@ -138,7 +144,8 @@ public final class Constants {
       kSteerMotorConfiguration.mode = MotorMode.kServo;
       kSteerMotorConfiguration.currentLimit = 30;
 
-      kSteerMotorConfiguration.maxVelocity = kSteerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kSteerMotorConfiguration.maxVelocity = kSteerMotorConfiguration
+          .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
 
       // Tunable values
@@ -162,19 +169,25 @@ public final class Constants {
       public static final double drivekV = 45.0;
     }
   }
-  public static class EndEffectorConstants{
+
+  public static class EndEffectorConstants {
     public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
     public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);
     public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
     public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
-    
-    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(0.1, 0, 0, (new Constraints(0.0, 0.0)));
-    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(0.1, 0, 0, new Constraints(0.0, 0.0));
-    
-    public static MotorConfiguration kPivotMotorConfiguration  = new MotorConfiguration();
-    public static MotorConfiguration kWristMotorConfiguration  = new MotorConfiguration();
-    public static MotorConfiguration kCoralRollerMotorConfiguration  = new MotorConfiguration();
-    public static MotorConfiguration kAlgaeRollerMotorConfiguration  = new MotorConfiguration();
+
+    public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
+    public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
+
+    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(0.1, 0, 0,
+        (new Constraints(0.0, 0.0)));
+    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(0.1, 0, 0,
+        new Constraints(0.0, 0.0));
+
+    public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
+    public static MotorConfiguration kWristMotorConfiguration = new MotorConfiguration();
+    public static MotorConfiguration kCoralRollerMotorConfiguration = new MotorConfiguration();
+    public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
 
     public static final Rotation2d kWristMinimumAngle = new Rotation2d(0);
     public static final Rotation2d kWristMaximumAngle = new Rotation2d(0);
@@ -185,14 +198,15 @@ public final class Constants {
     public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
-    static{
+    static {
       kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
       kPivotMotorConfiguration.currentLimit = 40;
       kPivotMotorConfiguration.idleState = IdleState.kBrake;
       kPivotMotorConfiguration.mode = MotorMode.kServo;
       kPivotMotorConfiguration.isInverted = false;
 
-      kPivotMotorConfiguration.maxVelocity = kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kPivotMotorConfiguration.maxVelocity = kPivotMotorConfiguration
+          .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
 
       kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration;
@@ -200,7 +214,71 @@ public final class Constants {
       kPivotMotorConfiguration.kG = 0.27;
       kPivotMotorConfiguration.kA = 0.02;
       kPivotMotorConfiguration.kV = 4.34;
+
+      kPivotMotorConfiguration.kP = 0.1;
     }
+
+    static {
+      kWristMotorConfiguration.gearRatio = kPivotGearRatio;
+      kWristMotorConfiguration.currentLimit = 40;
+      kWristMotorConfiguration.idleState = IdleState.kBrake;
+      kWristMotorConfiguration.mode = MotorMode.kServo;
+      kWristMotorConfiguration.isInverted = false;
+
+      kWristMotorConfiguration.maxVelocity = kWristMotorConfiguration
+          .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kWristMotorConfiguration.maxAcceleration = kWristMotorConfiguration.maxVelocity * 2.0;
+
+      kWristMotorConfiguration.altA = kWristMotorConfiguration.maxAcceleration;
+      kWristMotorConfiguration.altA = kWristMotorConfiguration.maxVelocity;
+      kWristMotorConfiguration.kA = 0.02;
+      kWristMotorConfiguration.kV = 4.34;
+
+      kWristMotorConfiguration.kP = 0.1;
+    }
+
+    static {
+      kCoralRollerMotorConfiguration.currentLimit = 30;
+      kCoralRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
+      kCoralRollerMotorConfiguration.isInverted = false;
+      kCoralRollerMotorConfiguration.mode = MotorMode.kFlywheel;
+      kCoralRollerMotorConfiguration.idleState = IdleState.kCoast;
+      kCoralRollerMotorConfiguration.finalDiameterMeters = kCoralWheelDiameter;
+
+      kCoralRollerMotorConfiguration.maxVelocity = kCoralRollerMotorConfiguration
+          .getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+      kCoralRollerMotorConfiguration.maxAcceleration = kCoralRollerMotorConfiguration.maxVelocity * 2.0;
+
+      kCoralRollerMotorConfiguration.altA = kCoralRollerMotorConfiguration.maxAcceleration;
+      kCoralRollerMotorConfiguration.altV = kCoralRollerMotorConfiguration.maxVelocity;
+
+      kCoralRollerMotorConfiguration.kP = 0.1;
+      kCoralRollerMotorConfiguration.kA = 0.1;
+      kCoralRollerMotorConfiguration.kV = 0.1;
+      kCoralRollerMotorConfiguration.kD = 0.1;
+    }
+
+    static {
+      kAlgaeRollerMotorConfiguration.currentLimit = 30;
+      kAlgaeRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
+      kAlgaeRollerMotorConfiguration.isInverted = false;
+      kAlgaeRollerMotorConfiguration.mode = MotorMode.kFlywheel;
+      kAlgaeRollerMotorConfiguration.idleState = IdleState.kCoast;
+      kAlgaeRollerMotorConfiguration.finalDiameterMeters = kAlgaeWheelDiameter;
+      
+      kAlgaeRollerMotorConfiguration.maxVelocity = kAlgaeRollerMotorConfiguration
+          .getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+      kAlgaeRollerMotorConfiguration.maxAcceleration = kAlgaeRollerMotorConfiguration.maxVelocity * 2.0;
+
+      kAlgaeRollerMotorConfiguration.altA = kAlgaeRollerMotorConfiguration.maxAcceleration;
+      kAlgaeRollerMotorConfiguration.altV = kAlgaeRollerMotorConfiguration.maxVelocity;
+
+      kAlgaeRollerMotorConfiguration.kP = 0.1;
+      kAlgaeRollerMotorConfiguration.kA = 0.1;
+      kAlgaeRollerMotorConfiguration.kV = 0.1;
+      kAlgaeRollerMotorConfiguration.kD = 0.1;
+    }
+
 
   }
 }

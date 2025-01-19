@@ -54,11 +54,11 @@ public interface EndEffectorIO {
 
     public void updateInputs(EndEffectorIOInputs inputs);
 
-    public void setCoralRollerSetpoint(AngularVelocity velocity);
+    public void setCoralRollerSetpoint(LinearVelocity velocity);
 
     public void setCoralWristSetpoint(Rotation2d setpoint);
 
-    public void setAlgaeRollerSetpoint(AngularVelocity velocity);
+    public void setAlgaeRollerSetpoint(LinearVelocity velocity);
 
     public void setPivotSetpoint(Rotation2d setpoint);
 }

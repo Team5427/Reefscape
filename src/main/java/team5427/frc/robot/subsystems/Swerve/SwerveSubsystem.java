@@ -158,7 +158,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
             // Apply update
             poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
-
+            super.periodic();
         }
 
         // Update gyro alert
