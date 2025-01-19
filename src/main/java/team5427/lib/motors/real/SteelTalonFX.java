@@ -8,6 +8,7 @@ import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
@@ -53,6 +54,9 @@ public class SteelTalonFX implements IMotorController {
         talonConfig.Slot0.kS = configuration.kS;
         talonConfig.Slot0.kV = configuration.kV;
         talonConfig.Slot0.kA = configuration.kA;
+        talonConfig.Slot0.kG = configuration.kG;
+        talonConfig.Slot0.GravityType = configuration.isArm ? GravityTypeValue.Arm_Cosine : GravityTypeValue.Elevator_Static;
+
 
         switch (configuration.mode) {
             case kFlywheel:

@@ -10,11 +10,15 @@ import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.swerve.SwerveModuleConstants;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import team5427.lib.drivers.CANDeviceId;
+import team5427.lib.drivers.ComplexGearRatio;
 import team5427.lib.kinematics.SwerveUtil;
 import team5427.lib.motors.MotorUtil;
 import team5427.lib.motors.real.MotorConfiguration;
@@ -158,5 +162,45 @@ public final class Constants {
       public static final double drivekV = 45.0;
     }
   }
-  
+  public static class EndEffectorConstants{
+    public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
+    public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);
+    public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
+    public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
+    
+    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(0.1, 0, 0, (new Constraints(0.0, 0.0)));
+    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(0.1, 0, 0, new Constraints(0.0, 0.0));
+    
+    public static MotorConfiguration kPivotMotorConfiguration  = new MotorConfiguration();
+    public static MotorConfiguration kWristMotorConfiguration  = new MotorConfiguration();
+    public static MotorConfiguration kCoralRollerMotorConfiguration  = new MotorConfiguration();
+    public static MotorConfiguration kAlgaeRollerMotorConfiguration  = new MotorConfiguration();
+
+    public static final Rotation2d kWristMinimumAngle = new Rotation2d(0);
+    public static final Rotation2d kWristMaximumAngle = new Rotation2d(0);
+    public static final Rotation2d kPivotMinimumAngle = new Rotation2d(0);
+    public static final Rotation2d kPivotMaximumAngle = new Rotation2d(0);
+
+    public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
+    public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
+    public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
+    public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
+    static{
+      kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
+      kPivotMotorConfiguration.currentLimit = 40;
+      kPivotMotorConfiguration.idleState = IdleState.kBrake;
+      kPivotMotorConfiguration.mode = MotorMode.kServo;
+      kPivotMotorConfiguration.isInverted = false;
+
+      kPivotMotorConfiguration.maxVelocity = kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
+
+      kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration;
+      kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxVelocity;
+      kPivotMotorConfiguration.kG = 0.27;
+      kPivotMotorConfiguration.kA = 0.02;
+      kPivotMotorConfiguration.kV = 4.34;
+    }
+
+  }
 }

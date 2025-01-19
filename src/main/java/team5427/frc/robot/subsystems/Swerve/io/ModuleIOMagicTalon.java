@@ -1,5 +1,9 @@
 package team5427.frc.robot.subsystems.Swerve.io;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
+
 import java.util.Queue;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -13,6 +17,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
 import team5427.lib.motors.real.MagicSteelTalonFX;
@@ -28,8 +34,8 @@ public class ModuleIOMagicTalon implements ModuleIO {
     private final int moduleIdx;
 
     private SwerveModuleState targetModuleState;
-    private double steerMotorVoltage = 0;
-    private double driveMotorVoltage = 0;
+    private Voltage steerMotorVoltage = Volts.of(0.0);
+    private Voltage driveMotorVoltage = Volts.of(0.0);
 
     private Queue<Double> drivePositionQueue;
     private Queue<Double> steerPositionQueue;
@@ -76,8 +82,8 @@ public class ModuleIOMagicTalon implements ModuleIO {
 
     @Override
     public void updateInputs(ModuleIOInputs inputs) {
-        driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValueAsDouble();
-        steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage().getValueAsDouble();
+        driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValue();
+        steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage().getValue();
 
         inputs.absolutePosition = getCancoderRotation();
 
@@ -85,7 +91,7 @@ public class ModuleIOMagicTalon implements ModuleIO {
                 driveMotor.getEncoderVelocity(),
                 inputs.absolutePosition);
         inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getEncoderPosition());
-        inputs.steerMotorVelocityRotationsPerSecond = steerMotor.getEncoderVelocity() / 60.0;
+        inputs.steerMotorVelocityRotations = RotationsPerSecond.of(steerMotor.getEncoderVelocity()/60.0);
         inputs.targetModuleState = targetModuleState;
 
         inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getEncoderPosition());
@@ -99,8 +105,8 @@ public class ModuleIOMagicTalon implements ModuleIO {
         inputs.driveMotorConnected = driveMotor.getTalonFX().isConnected();
         inputs.steerMotorConnected = steerMotor.getTalonFX().isConnected();
 
-        inputs.driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent().getValueAsDouble();
-        inputs.steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent().getValueAsDouble();
+        inputs.driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent().getValue();
+        inputs.steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent().getValue();
 
         inputs.odometryTimestamps = timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
         inputs.odometryDrivePositionsMeters = drivePositionQueue.stream()
@@ -134,9 +140,9 @@ public class ModuleIOMagicTalon implements ModuleIO {
      *              speed)
      **/
     @Override
-    public void setDriveSpeedSetpoint(Double speed) {
-        driveMotor.setSetpoint(speed);
-        driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValueAsDouble();
+    public void setDriveSpeedSetpoint(LinearVelocity speed) {
+        driveMotor.setSetpoint(speed.baseUnitMagnitude());
+        driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValue();
     }
 
     /**
@@ -146,14 +152,14 @@ public class ModuleIOMagicTalon implements ModuleIO {
     @Override
     public void setSteerPositionSetpoint(Rotation2d setpoint) {
         steerMotor.setSetpoint(setpoint);
-        steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage().getValueAsDouble();
+        steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage().getValue();
     }
 
     @Override
     public void setModuleState(SwerveModuleState state) {
         state.optimize(getCancoderRotation());
         targetModuleState = state;
-        setDriveSpeedSetpoint(Double.valueOf(targetModuleState.speedMetersPerSecond));
+        setDriveSpeedSetpoint(MetersPerSecond.of(targetModuleState.speedMetersPerSecond));
         setSteerPositionSetpoint(targetModuleState.angle);
     }
 }

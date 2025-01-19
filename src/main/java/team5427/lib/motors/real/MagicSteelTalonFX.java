@@ -4,9 +4,11 @@ import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.DynamicMotionMagicVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.GravityTypeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -45,6 +47,8 @@ public class MagicSteelTalonFX implements IMotorController {
         talonConfig.Slot0.kS = configuration.kS;
         talonConfig.Slot0.kV = configuration.kV;
         talonConfig.Slot0.kA = configuration.kA;
+        talonConfig.Slot0.kG = configuration.kG;
+        talonConfig.Slot0.GravityType = configuration.isArm ? GravityTypeValue.Arm_Cosine : GravityTypeValue.Elevator_Static;
 
         switch (configuration.mode) {
             case kFlywheel:

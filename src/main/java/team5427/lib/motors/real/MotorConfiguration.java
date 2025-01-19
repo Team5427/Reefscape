@@ -17,9 +17,10 @@ public class MotorConfiguration {
 
     public boolean isInverted;
 
-    public double kP, kI, kD, kFF;
+    public double kP, kI, kD, kFF, kG;
     public double kS, kV, kA;
 
+    public boolean isArm = false;
     /**Alternative velocity, acceleration, and jerk values for additional specific motor control */
     public double altA, altV, altJ;
 
@@ -44,7 +45,7 @@ public class MotorConfiguration {
     public MotorConfiguration() {
         isInverted = false;
 
-        kP = kI = kD = kFF = 0.0;
+        kP = kI = kD = kFF = kG = 0.0;
         kS = kV = kA = 0.0;
 
         altA = altV = altJ = 0.0;
