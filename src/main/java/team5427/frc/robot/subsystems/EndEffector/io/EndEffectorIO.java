@@ -46,6 +46,8 @@ public interface EndEffectorIO {
 
         public AngularAcceleration wristMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
         public AngularAcceleration pivotMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
+        public AngularAcceleration coralRollerMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
+        public AngularAcceleration algaeRollerMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
 
         public Rotation2d pivotAngle = new Rotation2d(0.0);
         public Rotation2d wristAngle = new Rotation2d(0.0);

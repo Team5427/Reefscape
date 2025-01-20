@@ -55,8 +55,10 @@ public class SteelTalonFX implements IMotorController {
         talonConfig.Slot0.kV = configuration.kV;
         talonConfig.Slot0.kA = configuration.kA;
         talonConfig.Slot0.kG = configuration.kG;
-        talonConfig.Slot0.GravityType = configuration.isArm ? GravityTypeValue.Arm_Cosine : GravityTypeValue.Elevator_Static;
+        talonConfig.Slot0.GravityType = configuration.isArm ? GravityTypeValue.Arm_Cosine
+                : GravityTypeValue.Elevator_Static;
 
+        withFOC = configuration.withFOC;
 
         switch (configuration.mode) {
             case kFlywheel:
@@ -110,14 +112,17 @@ public class SteelTalonFX implements IMotorController {
     public void setSetpoint(Rotation2d setpoint) {
         switch (configuration.mode) {
             case kFlywheel:
+                this.setpoint = setpoint.getRotations();
                 talonFX.setControl(
                         new VelocityVoltage(setpoint.getRotations()).withEnableFOC(withFOC));
                 break;
             case kServo:
             case kLinear:
+                this.setpoint = setpoint.getRotations();
                 talonFX.setControl(new PositionDutyCycle(setpoint.getRotations()).withEnableFOC(withFOC));
                 break;
             default:
+                this.setpoint = setpoint.getRotations();
                 talonFX.setControl(
                         new VelocityVoltage(setpoint.getRotations()).withEnableFOC(withFOC));
                 break;
@@ -144,21 +149,22 @@ public class SteelTalonFX implements IMotorController {
      */
     @Override
     public double getEncoderPosition() {
-        if(configuration.mode != MotorMode.kServo){
+        if (configuration.mode != MotorMode.kServo) {
             // converts to meters
-            return talonFX.getPosition().getValue().in(Rotation) *Math.PI * configuration.finalDiameterMeters;
+            return talonFX.getPosition().getValue().in(Rotation) * Math.PI * configuration.finalDiameterMeters;
         }
         return talonFX.getPosition().getValueAsDouble();
     }
 
     /**
-     * @return rotations per minute if a servo, meters per second if a linear or flywheel
+     * @return rotations per minute if a servo, meters per second if a linear or
+     *         flywheel
      */
     @Override
     public double getEncoderVelocity() {
-        if(configuration.mode != MotorMode.kServo){
+        if (configuration.mode != MotorMode.kServo) {
             // converts to meters
-            return talonFX.getPosition().getValue().in(Rotation) *Math.PI * configuration.finalDiameterMeters;
+            return talonFX.getPosition().getValue().in(Rotation) * Math.PI * configuration.finalDiameterMeters;
         }
         // converts to RPM
         return talonFX.getVelocity().getValueAsDouble() * 60.0;
@@ -181,6 +187,7 @@ public class SteelTalonFX implements IMotorController {
 
     @Override
     public double getError() {
+
         if (configuration.mode == MotorMode.kFlywheel) {
             return setpoint - getEncoderVelocity();
         }
@@ -197,9 +204,9 @@ public class SteelTalonFX implements IMotorController {
 
     /**
      * @param setpoint
-     * Flywheel - m/s
-     * Linear - meters
-     * Servo - Rotations
+     *                 Flywheel - m/s
+     *                 Linear - meters
+     *                 Servo - Rotations
      */
     @Override
     public void setSetpoint(double setpoint) {
@@ -207,19 +214,23 @@ public class SteelTalonFX implements IMotorController {
         switch (configuration.mode) {
             // maybe its * instead of /
             case kFlywheel:
+                this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
                 talonFX.setControl(
-                        new VelocityVoltage(setpoint / (Math.PI * configuration.finalDiameterMeters))
+                        new VelocityVoltage(this.setpoint)
                                 .withEnableFOC(withFOC));
                 break;
             case kServo:
+                this.setpoint = setpoint;
                 talonFX.setControl(new PositionDutyCycle(setpoint).withEnableFOC(withFOC));
                 DriverStation.reportWarning("Warning: TalonFX motor with the id " + talonFX.getDeviceID()
                         + " is a Servo set with a double setpoint./n Use Rotation2d instead.", false);
             case kLinear:
-                talonFX.setControl(new PositionDutyCycle(setpoint / (Math.PI * configuration.finalDiameterMeters))
+                this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
+                talonFX.setControl(new PositionDutyCycle(this.setpoint)
                         .withEnableFOC(withFOC));
                 break;
             default:
+                this.setpoint = setpoint;
                 talonFX.setControl(new VelocityVoltage(setpoint).withEnableFOC(withFOC));
                 break;
         }

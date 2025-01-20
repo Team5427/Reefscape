@@ -55,12 +55,14 @@ public class EndEffectorIOTalon implements EndEffectorIO {
         inputs.algaeRollerMotorCurrent = algaeRollerMotor.getTalonFX().getSupplyCurrent().getValue();
         inputs.algaeRollerMotorLinearVelocity = MetersPerSecond.of(algaeRollerMotor.getEncoderVelocity());
         inputs.algaeRollerMotorVoltage = algaeRollerMotor.getTalonFX().getMotorVoltage().getValue();
+        inputs.algaeRollerMotorAngularAcceleration = algaeRollerMotor.getTalonFX().getAcceleration().getValue();
 
         inputs.coralRollerMotorAngularVelocity = coralRollerMotor.getTalonFX().getVelocity().getValue();
         inputs.coralRollerMotorConnected = coralRollerMotor.getTalonFX().isConnected();
         inputs.coralRollerMotorCurrent = coralRollerMotor.getTalonFX().getSupplyCurrent().getValue();
         inputs.coralRollerMotorLinearVelocity = MetersPerSecond.of(coralRollerMotor.getEncoderVelocity());
         inputs.coralRollerMotorVoltage = coralRollerMotor.getTalonFX().getMotorVoltage().getValue();
+        inputs.coralRollerMotorAngularAcceleration = coralRollerMotor.getTalonFX().getAcceleration().getValue();
 
         inputs.pivotAngle = Rotation2d.fromRotations(pivotMotor.getEncoderPosition());
         inputs.pivotMotorAngularAcceleration = pivotMotor.getTalonFX().getAcceleration().getValue();
@@ -68,7 +70,7 @@ public class EndEffectorIOTalon implements EndEffectorIO {
         inputs.pivotMotorConnected = pivotMotor.getTalonFX().isConnected();
         inputs.pivotMotorCurrent = pivotMotor.getTalonFX().getStatorCurrent().getValue();
         inputs.pivotMotorVoltage = pivotMotor.getTalonFX().getMotorVoltage().getValue();
-        
+
         inputs.wristAngle = Rotation2d.fromRotations(wristMotor.getEncoderPosition());
         inputs.wristMotorAngularAcceleration = wristMotor.getTalonFX().getAcceleration().getValue();
         inputs.wristMotorAngularVelocity = RotationsPerSecond.of(wristMotor.getEncoderVelocity() / 60.0);

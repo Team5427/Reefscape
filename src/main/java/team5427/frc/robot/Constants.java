@@ -179,10 +179,10 @@ public final class Constants {
     public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
     public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
 
-    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(0.1, 0, 0,
-        (new Constraints(0.0, 0.0)));
-    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(0.1, 0, 0,
-        new Constraints(0.0, 0.0));
+    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(.4, 0, 3,
+        (new Constraints(10, 20)));
+    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(0.4, 0,  3,
+        new Constraints(10,20));
 
     public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kWristMotorConfiguration = new MotorConfiguration();
@@ -190,9 +190,9 @@ public final class Constants {
     public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
 
     public static final Rotation2d kWristMinimumAngle = new Rotation2d(0);
-    public static final Rotation2d kWristMaximumAngle = new Rotation2d(0);
+    public static final Rotation2d kWristMaximumAngle = new Rotation2d(180);
     public static final Rotation2d kPivotMinimumAngle = new Rotation2d(0);
-    public static final Rotation2d kPivotMaximumAngle = new Rotation2d(0);
+    public static final Rotation2d kPivotMaximumAngle = new Rotation2d(180);
 
     public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
@@ -205,6 +205,8 @@ public final class Constants {
       kPivotMotorConfiguration.mode = MotorMode.kServo;
       kPivotMotorConfiguration.isInverted = false;
 
+      kPivotMotorConfiguration.withFOC = true;
+
       kPivotMotorConfiguration.maxVelocity = kPivotMotorConfiguration
           .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
@@ -216,6 +218,8 @@ public final class Constants {
       kPivotMotorConfiguration.kV = 4.34;
 
       kPivotMotorConfiguration.kP = 0.1;
+
+      kPivotMotorConfiguration.tolerance = 0.01;
     }
 
     static {
@@ -224,6 +228,8 @@ public final class Constants {
       kWristMotorConfiguration.idleState = IdleState.kBrake;
       kWristMotorConfiguration.mode = MotorMode.kServo;
       kWristMotorConfiguration.isInverted = false;
+
+      kPivotMotorConfiguration.withFOC = true;
 
       kWristMotorConfiguration.maxVelocity = kWristMotorConfiguration
           .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
@@ -235,6 +241,8 @@ public final class Constants {
       kWristMotorConfiguration.kV = 4.34;
 
       kWristMotorConfiguration.kP = 0.1;
+
+      kWristMotorConfiguration.tolerance = 0.01;
     }
 
     static {
@@ -244,6 +252,8 @@ public final class Constants {
       kCoralRollerMotorConfiguration.mode = MotorMode.kFlywheel;
       kCoralRollerMotorConfiguration.idleState = IdleState.kCoast;
       kCoralRollerMotorConfiguration.finalDiameterMeters = kCoralWheelDiameter;
+
+      kPivotMotorConfiguration.withFOC = false;
 
       kCoralRollerMotorConfiguration.maxVelocity = kCoralRollerMotorConfiguration
           .getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
@@ -256,6 +266,8 @@ public final class Constants {
       kCoralRollerMotorConfiguration.kA = 0.1;
       kCoralRollerMotorConfiguration.kV = 0.1;
       kCoralRollerMotorConfiguration.kD = 0.1;
+
+      kCoralRollerMotorConfiguration.tolerance = 0.05;
     }
 
     static {
@@ -265,6 +277,8 @@ public final class Constants {
       kAlgaeRollerMotorConfiguration.mode = MotorMode.kFlywheel;
       kAlgaeRollerMotorConfiguration.idleState = IdleState.kCoast;
       kAlgaeRollerMotorConfiguration.finalDiameterMeters = kAlgaeWheelDiameter;
+
+      kPivotMotorConfiguration.withFOC = false;
       
       kAlgaeRollerMotorConfiguration.maxVelocity = kAlgaeRollerMotorConfiguration
           .getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
@@ -277,8 +291,14 @@ public final class Constants {
       kAlgaeRollerMotorConfiguration.kA = 0.1;
       kAlgaeRollerMotorConfiguration.kV = 0.1;
       kAlgaeRollerMotorConfiguration.kD = 0.1;
+
+      kCoralRollerMotorConfiguration.tolerance = 0.05;
     }
 
+    static{
+      kSIMPivotController.setTolerance(kPivotMotorConfiguration.tolerance);
+      kSIMWristController.setTolerance(kWristMotorConfiguration.tolerance);
+    }
 
   }
 }

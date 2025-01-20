@@ -18,6 +18,7 @@ import team5427.lib.motors.IMotorController;
 import team5427.lib.motors.real.MotorConfiguration.IdleState;
 import team5427.lib.motors.real.MotorConfiguration.MotorMode;
 
+/** PIDController Not working, needs debugging */
 public class ProfiledSparkMax implements IMotorController {
 
     private CANDeviceId id;
@@ -52,7 +53,7 @@ public class ProfiledSparkMax implements IMotorController {
         // sparkMax.setIdleMode(configuration.idleState == IdleState.kBrake ?
         // IdleMode.kBrake : IdleMode.kCoast);
         // config.encoder.positionConversionFactor(configuration.unitConversionRatio)
-        //         .velocityConversionFactor(configuration.unitConversionRatio / 60.0);
+        // .velocityConversionFactor(configuration.unitConversionRatio / 60.0);
         config.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         // relativeEncoder.setPositionConversionFactor(configuration.unitConversionRatio);
@@ -62,7 +63,7 @@ public class ProfiledSparkMax implements IMotorController {
         config.closedLoop.pid(configuration.kP, configuration.kI, configuration.kD);
         config.closedLoop.maxMotion.maxAcceleration(configuration.maxAcceleration)
                 .maxVelocity(configuration.maxVelocity).positionMode(MAXMotionPositionMode.kMAXMotionTrapezoidal);
-                // configured for rotations rather than radians
+        // configured for rotations rather than radians
         config.closedLoop.positionWrappingEnabled(true).positionWrappingMinInput(-0.5)
                 .positionWrappingMaxInput(0.5);
         // controller.setP(configuration.kP);
@@ -82,17 +83,20 @@ public class ProfiledSparkMax implements IMotorController {
 
     /**
      * Recommended to use only if the motor is linear
+     * 
      * @param setpoint meters the motor should move
      */
     @Override
     public void setSetpoint(double setpoint) {
-        if(configuration.mode != MotorMode.kLinear){
-            throw new Error("Profiled Spark Max of id " + id.getDeviceNumber() + " is illegally sent a meters setpoint as a servo.");
+        if (configuration.mode != MotorMode.kLinear) {
+            throw new Error("Profiled Spark Max of id " + id.getDeviceNumber()
+                    + " is illegally sent a meters setpoint as a servo.");
         }
         this.setpoint = setpoint;
         // uses meters
         sparkMax.setVoltage(
-                controller.calculate(getEncoderPosition() * Math.PI * configuration.finalDiameterMeters, this.setpoint) + configuration.kFF * this.setpoint);
+                controller.calculate(getEncoderPosition() * Math.PI * configuration.finalDiameterMeters, this.setpoint)
+                        + configuration.kFF * this.setpoint);
     }
 
     public void setSetpoint(Rotation2d setpoint) {
@@ -112,10 +116,11 @@ public class ProfiledSparkMax implements IMotorController {
      */
     @Override
     public void setEncoderPosition(double position) {
-        if(configuration.mode != MotorMode.kLinear){
-            throw new Error("Profiled Spark Max of id " + id.getDeviceNumber() + " is illegally sent a meters position as a servo.");
+        if (configuration.mode != MotorMode.kLinear) {
+            throw new Error("Profiled Spark Max of id " + id.getDeviceNumber()
+                    + " is illegally sent a meters position as a servo.");
         }
-        relativeEncoder.setPosition(position / (Math.PI*configuration.finalDiameterMeters));
+        relativeEncoder.setPosition(position / (Math.PI * configuration.finalDiameterMeters));
     }
 
     @Override
@@ -151,6 +156,7 @@ public class ProfiledSparkMax implements IMotorController {
         sparkMax.setVoltage(voltage);
     }
 
+/** Not working */
     @Override
     public double getError() {
         if (configuration.mode == MotorMode.kFlywheel) {

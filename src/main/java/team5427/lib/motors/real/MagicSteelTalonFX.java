@@ -48,7 +48,10 @@ public class MagicSteelTalonFX implements IMotorController {
         talonConfig.Slot0.kV = configuration.kV;
         talonConfig.Slot0.kA = configuration.kA;
         talonConfig.Slot0.kG = configuration.kG;
-        talonConfig.Slot0.GravityType = configuration.isArm ? GravityTypeValue.Arm_Cosine : GravityTypeValue.Elevator_Static;
+        talonConfig.Slot0.GravityType = configuration.isArm ? GravityTypeValue.Arm_Cosine
+                : GravityTypeValue.Elevator_Static;
+
+        withFOC = configuration.withFOC;
 
         switch (configuration.mode) {
             case kFlywheel:
@@ -135,7 +138,8 @@ public class MagicSteelTalonFX implements IMotorController {
     public double getEncoderVelocity() {
         if (configuration.mode != MotorMode.kServo) {
             // converts to meters
-            return talonFX.getVelocity().getValue().in(RotationsPerSecond) * Math.PI * configuration.finalDiameterMeters;
+            return talonFX.getVelocity().getValue().in(RotationsPerSecond) * Math.PI
+                    * configuration.finalDiameterMeters;
         }
         // converts to RPM
         return talonFX.getVelocity().getValueAsDouble() * 60.0;
@@ -158,10 +162,7 @@ public class MagicSteelTalonFX implements IMotorController {
 
     @Override
     public double getError() {
-        if (configuration.mode == MotorMode.kFlywheel) {
-            return setpoint - getEncoderVelocity();
-        }
-        return setpoint - getEncoderPosition();
+        return talonFX.getClosedLoopError().getValueAsDouble();
     }
 
     public void setFOC(boolean foc) {
@@ -203,6 +204,5 @@ public class MagicSteelTalonFX implements IMotorController {
                 break;
         }
     }
-
 
 }
