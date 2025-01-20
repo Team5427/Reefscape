@@ -21,13 +21,14 @@ public class PilotingControls {
         joy = new CommandXboxController(OperatorConstants.kDriverControllerPort);
         SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
-        joy.a().onTrue(new CoralIntakeTest()).onFalse(new InstantCommand(() -> {
+        joy.a().onTrue(new CoralIntakeTest()).whileFalse(new InstantCommand(() -> {
+            EndEffectorSubsystem.state = EndEffectorStates.IDLE;
             EndEffectorSubsystem.getInstance().setAlgaeRollerSetpoint(MetersPerSecond.of(0.0));
             EndEffectorSubsystem.getInstance().setCoralRollerSetpoint(MetersPerSecond.of(0.0));
-            EndEffectorSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(10.0));
-            EndEffectorSubsystem.getInstance().setWristSetpoint(Rotation2d.fromDegrees(10.0));
-            EndEffectorSubsystem.state = EndEffectorStates.IDLE;
-        }));
+            EndEffectorSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.0));
+            EndEffectorSubsystem.getInstance().setWristSetpoint(Rotation2d.fromDegrees(0.0));
+            
+        }, EndEffectorSubsystem.getInstance()));
 
         joy.y().onTrue(new InstantCommand(() -> {
             SwerveSubsystem.getInstance().resetGyro(new Rotation2d());

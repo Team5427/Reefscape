@@ -16,6 +16,7 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.Constants.SwerveConstants.SimulationConstants;
 
@@ -58,8 +59,8 @@ public class ModuleIOSim implements ModuleIO {
         steerAppliedVolts = steerController.calculate(steerMotor.getAngularPositionRotations());
         driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.0, 12.0));
         steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.0, 12.0));
-        driveMotor.update(0.02);
-        steerMotor.update(0.02);
+        driveMotor.update(Constants.kLoopSpeed);
+        steerMotor.update(Constants.kLoopSpeed);
 
         inputs.currentModuleState = new SwerveModuleState(
                 driveMotor.getAngularVelocityRPM() * Math.PI * SwerveConstants.kWheelDiameterMeters / 60.0,

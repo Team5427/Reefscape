@@ -6,6 +6,7 @@ import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -25,8 +26,8 @@ public class EndEffectorIOSim implements EndEffectorIO {
         private double pivotMotorVoltage = 0.0;
         private double wristMotorVoltage = 0.0;
 
-        private static final double pivotMotorInertia = 0.1;
-        private static final double wristMotorInertia = 0.1;
+        private static final double pivotMotorInertia = 0.01;
+        private static final double wristMotorInertia = 0.01;
         private static final double coralRollerMotorInertia = 0.004;
         private static final double algaeRollerMotorInertia = 0.004;
 
@@ -41,6 +42,7 @@ public class EndEffectorIOSim implements EndEffectorIO {
                                                                 .getMathematicalGearRatio()),
                                 EndEffectorConstants.kPivotMotorConfiguration.withFOC ? DCMotor.getKrakenX60Foc(1)
                                                 : DCMotor.getKrakenX60(1));
+
                 wristMotor = new DCMotorSim(
                                 LinearSystemId.createDCMotorSystem(
                                                 EndEffectorConstants.kWristMotorConfiguration.withFOC
@@ -74,34 +76,37 @@ public class EndEffectorIOSim implements EndEffectorIO {
         }
 
         @Override
-        public void setCoralRollerSetpoint(LinearVelocity velocity) {
-                coralRollerMotor.setState(coralRollerMotor.getAngularPositionRad(), velocity.baseUnitMagnitude()
+        public synchronized void setCoralRollerSetpoint(LinearVelocity velocity) {
+
+                coralRollerMotor.setAngularVelocity( velocity.baseUnitMagnitude()
                                 / (0.5 * EndEffectorConstants.kCoralRollerMotorConfiguration.finalDiameterMeters));
         }
 
         @Override
         public void setCoralWristSetpoint(Rotation2d setpoint) {
-                wristMotorVoltage = EndEffectorConstants.kSIMWristController
-                                .calculate(wristMotor.getAngularPositionRotations(), setpoint.getRotations());
+                EndEffectorConstants.kSIMWristController.setGoal(setpoint.getRotations());
         }
 
         @Override
-        public void setAlgaeRollerSetpoint(LinearVelocity velocity) {
+        public synchronized void setAlgaeRollerSetpoint(LinearVelocity velocity) {
                 algaeRollerMotor.setState(algaeRollerMotor.getAngularPositionRad(), velocity.baseUnitMagnitude()
                                 / (0.5 * EndEffectorConstants.kAlgaeRollerMotorConfiguration.finalDiameterMeters));
         }
 
         @Override
         public void setPivotSetpoint(Rotation2d setpoint) {
-                pivotMotorVoltage = EndEffectorConstants.kSIMPivotController
-                                .calculate(pivotMotor.getAngularPositionRotations(), setpoint.getRotations());
+                EndEffectorConstants.kSIMPivotController.setGoal(setpoint.getRotations());
         }
 
         @Override
         public void updateInputs(EndEffectorIOInputs inputs) {
+                pivotMotorVoltage = EndEffectorConstants.kSIMPivotController
+                                .calculate(pivotMotor.getAngularPositionRotations());
+                wristMotorVoltage = EndEffectorConstants.kSIMWristController
+                                .calculate(wristMotor.getAngularPositionRotations());
 
-                pivotMotor.setInputVoltage(pivotMotorVoltage);
-                wristMotor.setInputVoltage(wristMotorVoltage);
+                pivotMotor.setInputVoltage(MathUtil.clamp(pivotMotorVoltage, -12.0, 12.0));
+                wristMotor.setInputVoltage(MathUtil.clamp(wristMotorVoltage, -12.0, 12.0));
                 // coralRollerMotor.setInputVoltage(coralRollerMotorVoltage);
                 // algaeRollerMotor.setInputVoltage(algaeRollerMotorVoltage);
 
@@ -128,7 +133,7 @@ public class EndEffectorIOSim implements EndEffectorIO {
                 inputs.coralRollerMotorVoltage = Volts.of(coralRollerMotor.getInputVoltage());
                 inputs.coralRollerMotorAngularAcceleration = coralRollerMotor.getAngularAcceleration();
 
-                inputs.pivotAngle = Rotation2d.fromRotations(pivotMotor.getAngularPosition().in(Rotation));
+                inputs.pivotAngle = Rotation2d.fromRotations(pivotMotor.getAngularPositionRotations());
                 inputs.pivotMotorAngularAcceleration = pivotMotor.getAngularAcceleration();
                 inputs.pivotMotorAngularVelocity = pivotMotor.getAngularVelocity();
                 inputs.pivotMotorConnected = true;

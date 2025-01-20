@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 public class CoralIntakeTest extends Command {
 
     private EndEffectorSubsystem endEffectorSubsystem;
@@ -30,17 +32,20 @@ public class CoralIntakeTest extends Command {
         endEffectorSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(90));
     }
 
-    @Override
-    public boolean isFinished() {
-        return endEffectorSubsystem.isCoralRollerAtSetpoint() && endEffectorSubsystem.isPivotAtSetpoint()
-                && endEffectorSubsystem.isWristAtSetpoint();
-    }
+    // @Override
+    // public boolean isFinished() {
+    //     return endEffectorSubsystem.isCoralRollerAtSetpoint() && endEffectorSubsystem.isPivotAtSetpoint()
+    //             && endEffectorSubsystem.isWristAtSetpoint() && endEffectorSubsystem.isCoralIntaked;
+    //     // return false;
+    // }
 
     @Override
     public void end(boolean interruped) {
-        // endEffectorSubsystem.setCoralRollerSetpoint(MetersPerSecond.of(0.0));
-        // endEffectorSubsystem.setWristSetpoint(Rotation2d.fromDegrees(0));
-        // endEffectorSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(0));
+        if (interruped) {
+            endEffectorSubsystem.setCoralRollerSetpoint(MetersPerSecond.of(0.0));
+            endEffectorSubsystem.setWristSetpoint(Rotation2d.fromDegrees(0));
+            endEffectorSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(0));
+        }
     }
 
 }

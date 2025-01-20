@@ -2,6 +2,7 @@ package team5427.frc.robot.subsystems.EndEffector;
 
 import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -38,8 +39,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     private Rotation2d wristSetpoint;
     private Rotation2d pivotSetpoint;
-    private LinearVelocity coralRollerSetpoint;
-    private LinearVelocity algaeRollerSetpoint;
+    private LinearVelocity coralRollerSetpoint = MetersPerSecond.of(0.0);
+    private LinearVelocity algaeRollerSetpoint = MetersPerSecond.of(0.0);
 
     private EndEffectorSubsystem() {
         switch (Constants.currentMode) {
@@ -56,6 +57,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
                 break;
 
         }
+        wristSetpoint = Rotation2d.fromDegrees(0.0);
+        pivotSetpoint  = Rotation2d.fromDegrees(0.0);
     }
 
     @Override
@@ -71,62 +74,73 @@ public class EndEffectorSubsystem extends SubsystemBase {
         } else {
             isAlgaeIntaked = false;
         }
+        io.setCoralRollerSetpoint(coralRollerSetpoint);
+        io.setAlgaeRollerSetpoint(algaeRollerSetpoint);
+        if (pivotSetpoint.getDegrees() <= EndEffectorConstants.kPivotMaximumAngle.getDegrees()
+                && pivotSetpoint.getDegrees() >= EndEffectorConstants.kPivotMinimumAngle.getDegrees()) {
+            io.setPivotSetpoint(pivotSetpoint);
+            Errors.pivotConstraint.set(false);
+        } else {
+            Errors.pivotConstraint.setText(Errors.pivotConstraint.getText() + "(" + pivotSetpoint.getDegrees() + ")");
+            Errors.pivotConstraint.set(true);
+
+        }
+        if (wristSetpoint.getDegrees() <= EndEffectorConstants.kWristMaximumAngle.getDegrees()
+                && wristSetpoint.getDegrees() >= EndEffectorConstants.kWristMinimumAngle.getDegrees()) {
+
+            io.setCoralWristSetpoint(wristSetpoint);
+            Errors.wristConstraint.set(false);
+        } else {
+            Errors.wristConstraint.setText(Errors.wristConstraint.getText() + "(" + wristSetpoint.getDegrees() + ")");
+            Errors.wristConstraint.set(true);
+
+        }
         Logger.processInputs("End Effector", inputsAutoLogged);
         Logger.recordOutput("isCoralIntaked", isCoralIntaked);
         Logger.recordOutput("isAlgaeIntaked", isAlgaeIntaked);
         Logger.recordOutput("End Effector State", state);
+        Logger.recordOutput("Wrist Setpoint", wristSetpoint);
+        Logger.recordOutput("Pivot Setpoint", pivotSetpoint);
+        Logger.recordOutput("Coral Roller Setpoint", coralRollerSetpoint);
+        Logger.recordOutput("Algae Roller Setpoint", algaeRollerSetpoint);
         super.periodic();
     }
 
     public void setWristSetpoint(Rotation2d setpoint) {
-        if (setpoint.getDegrees() < EndEffectorConstants.kWristMaximumAngle.getDegrees()
-                && setpoint.getDegrees() > EndEffectorConstants.kWristMinimumAngle.getDegrees()) {
-                    wristSetpoint = setpoint;
-            io.setCoralWristSetpoint(setpoint);
-            Errors.wristConstraint.set(false);
-        } else {
-            Errors.wristConstraint.setText(Errors.wristConstraint.getText() + "(" + setpoint.getDegrees() + ")");
-            Errors.wristConstraint.set(true);
-
-        }
+        wristSetpoint = setpoint;
     }
 
     public void setPivotSetpoint(Rotation2d setpoint) {
-        if (setpoint.getDegrees() < EndEffectorConstants.kPivotMaximumAngle.getDegrees()
-                && setpoint.getDegrees() > EndEffectorConstants.kPivotMinimumAngle.getDegrees()) {
-                    pivotSetpoint  = setpoint;
-            io.setPivotSetpoint(setpoint);
-            Errors.pivotConstraint.set(false);
-        } else {
-            Errors.pivotConstraint.setText(Errors.pivotConstraint.getText() + "(" + setpoint.getDegrees() + ")");
-            Errors.pivotConstraint.set(true);
-
-        }
+        pivotSetpoint = setpoint;
     }
 
-    public boolean isWristAtSetpoint(){
-        if(inputsAutoLogged.wristAngle.minus(wristSetpoint).getDegrees() < EndEffectorConstants.kWristMotorConfiguration.tolerance){
+    public boolean isWristAtSetpoint() {
+        if (inputsAutoLogged.wristAngle.minus(wristSetpoint)
+                .getDegrees() < EndEffectorConstants.kWristMotorConfiguration.tolerance) {
             return true;
         }
         return false;
     }
 
-    public boolean isPivotAtSetpoint(){
-        if(inputsAutoLogged.pivotAngle.minus(pivotSetpoint).getDegrees() < EndEffectorConstants.kPivotMotorConfiguration.tolerance){
+    public boolean isPivotAtSetpoint() {
+        if (inputsAutoLogged.pivotAngle.minus(pivotSetpoint)
+                .getDegrees() < EndEffectorConstants.kPivotMotorConfiguration.tolerance) {
             return true;
         }
         return false;
     }
 
-    public boolean isCoralRollerAtSetpoint(){
-        if(inputsAutoLogged.coralRollerMotorLinearVelocity.minus(coralRollerSetpoint).baseUnitMagnitude() < EndEffectorConstants.kCoralRollerMotorConfiguration.tolerance){
+    public boolean isCoralRollerAtSetpoint() {
+        if (inputsAutoLogged.coralRollerMotorLinearVelocity.minus(coralRollerSetpoint)
+                .baseUnitMagnitude() < EndEffectorConstants.kCoralRollerMotorConfiguration.tolerance) {
             return true;
         }
         return false;
     }
 
-    public boolean isAlgaeRollerAtSetpoint(){
-        if(inputsAutoLogged.algaeRollerMotorLinearVelocity.minus(algaeRollerSetpoint).baseUnitMagnitude() < EndEffectorConstants.kAlgaeRollerMotorConfiguration.tolerance){
+    public boolean isAlgaeRollerAtSetpoint() {
+        if (inputsAutoLogged.algaeRollerMotorLinearVelocity.minus(algaeRollerSetpoint)
+                .baseUnitMagnitude() < EndEffectorConstants.kAlgaeRollerMotorConfiguration.tolerance) {
             return true;
         }
         return false;
@@ -134,12 +148,12 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     public void setCoralRollerSetpoint(LinearVelocity velocity) {
         coralRollerSetpoint = velocity;
-        io.setCoralRollerSetpoint(velocity);
+
     }
 
     public void setAlgaeRollerSetpoint(LinearVelocity velocity) {
         algaeRollerSetpoint = velocity;
-        io.setAlgaeRollerSetpoint(velocity);
+
     }
 
     private boolean isAlgaeIntaked(Current current) {

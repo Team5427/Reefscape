@@ -179,9 +179,9 @@ public final class Constants {
     public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
     public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
 
-    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(.4, 0, 3,
+    public static ProfiledPIDController kSIMPivotController = new ProfiledPIDController(1.1, 0, 1,
         (new Constraints(10, 20)));
-    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(0.4, 0,  3,
+    public static ProfiledPIDController kSIMWristController = new ProfiledPIDController(1.1, 0,  1,
         new Constraints(10,20));
 
     public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
@@ -219,7 +219,7 @@ public final class Constants {
 
       kPivotMotorConfiguration.kP = 0.1;
 
-      kPivotMotorConfiguration.tolerance = 0.01;
+      kPivotMotorConfiguration.tolerance = 0.1;
     }
 
     static {
@@ -242,7 +242,7 @@ public final class Constants {
 
       kWristMotorConfiguration.kP = 0.1;
 
-      kWristMotorConfiguration.tolerance = 0.01;
+      kWristMotorConfiguration.tolerance = 0.1;
     }
 
     static {
