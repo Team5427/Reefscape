@@ -1,14 +1,12 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import team5427.frc.robot.Constants;
-import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIO;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIOSim;
@@ -116,5 +114,10 @@ public class SwerveModule {
      */
     public double drivePosition() {
         return inputs.driveMotorPosition.getRotations();
+    }
+
+    public void stop(){
+        io.setDriveSpeedSetpoint(MetersPerSecond.of(0.0));
+        io.setSteerPositionSetpoint(Rotation2d.fromRotations(0));
     }
 }

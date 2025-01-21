@@ -1,11 +1,9 @@
 package team5427.frc.robot.subsystems.EndEffector;
 
-import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,7 +11,6 @@ import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import team5427.frc.robot.Constants;
@@ -64,37 +61,36 @@ public class EndEffectorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         io.updateInputs(inputsAutoLogged);
+
         if (state == EndEffectorStates.CORAL_INTAKE || state == EndEffectorStates.CORAL_OUTAKE) {
             isCoralIntaked = isCoralIntaked(inputsAutoLogged.coralRollerMotorCurrent);
-        } else {
-            isCoralIntaked = false;
         }
         if (state == EndEffectorStates.ALGAE_INTAKE || state == EndEffectorStates.ALGAE_OUTAKE) {
             isAlgaeIntaked = isAlgaeIntaked(inputsAutoLogged.algaeRollerMotorCurrent);
-        } else {
-            isAlgaeIntaked = false;
         }
+
         io.setCoralRollerSetpoint(coralRollerSetpoint);
         io.setAlgaeRollerSetpoint(algaeRollerSetpoint);
+
         if (pivotSetpoint.getDegrees() <= EndEffectorConstants.kPivotMaximumAngle.getDegrees()
                 && pivotSetpoint.getDegrees() >= EndEffectorConstants.kPivotMinimumAngle.getDegrees()) {
             io.setPivotSetpoint(pivotSetpoint);
             Errors.pivotConstraint.set(false);
         } else {
-            Errors.pivotConstraint.setText(Errors.pivotConstraint.getText() + "(" + pivotSetpoint.getDegrees() + ")");
             Errors.pivotConstraint.set(true);
 
         }
+
         if (wristSetpoint.getDegrees() <= EndEffectorConstants.kWristMaximumAngle.getDegrees()
                 && wristSetpoint.getDegrees() >= EndEffectorConstants.kWristMinimumAngle.getDegrees()) {
 
             io.setCoralWristSetpoint(wristSetpoint);
             Errors.wristConstraint.set(false);
         } else {
-            Errors.wristConstraint.setText(Errors.wristConstraint.getText() + "(" + wristSetpoint.getDegrees() + ")");
             Errors.wristConstraint.set(true);
 
         }
+
         Logger.processInputs("End Effector", inputsAutoLogged);
         Logger.recordOutput("isCoralIntaked", isCoralIntaked);
         Logger.recordOutput("isAlgaeIntaked", isAlgaeIntaked);
@@ -103,6 +99,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
         Logger.recordOutput("Pivot Setpoint", pivotSetpoint);
         Logger.recordOutput("Coral Roller Setpoint", coralRollerSetpoint);
         Logger.recordOutput("Algae Roller Setpoint", algaeRollerSetpoint);
+        
         super.periodic();
     }
 
@@ -174,8 +171,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
     private static class Errors {
         public static Alert wristConstraint = new Alert("Constraint Violations",
-                "WARNING: End Effector Wrist given a setpoint outside its bounds. ", AlertType.kError);
+                "End Effector Wrist given a setpoint outside its bounds. ", AlertType.kError);
         public static Alert pivotConstraint = new Alert("Constraint Violations",
-                "WARNING: End Effector Pivot given a setpoint outside its bounds. ", AlertType.kError);
+                "End Effector Pivot given a setpoint outside its bounds. ", AlertType.kError);
     }
 }

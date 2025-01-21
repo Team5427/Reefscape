@@ -3,10 +3,8 @@ package team5427.frc.robot.subsystems.Swerve;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-import com.ctre.phoenix6.CANBus;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,15 +17,16 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
+import team5427.frc.robot.SuperStructureEnum.DrivingStates;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
-import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -40,6 +39,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
     private ChassisSpeeds currentSpeeds;
     private SwerveModuleState[] actualModuleStates;
+
+    public static DrivingStates state;
 
     private SwerveModulePosition[] lastModulePositions = // For delta tracking
             new SwerveModulePosition[] {
@@ -111,6 +112,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+
         SwerveModuleState[] moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(currentSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
         actualModuleStates = new SwerveModuleState[modules.length];
@@ -248,5 +250,12 @@ public class SwerveSubsystem extends SubsystemBase {
             Matrix<N3, N1> visionMeasurementStdDevs) {
         poseEstimator.addVisionMeasurement(
                 visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+    }
+
+    public void stop() {
+
+        for (SwerveModule module : modules) {
+            module.stop();
+        }
     }
 }

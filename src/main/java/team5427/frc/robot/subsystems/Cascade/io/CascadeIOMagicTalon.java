@@ -2,7 +2,6 @@ package team5427.frc.robot.subsystems.Cascade.io;
 
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.MotorConfiguration;
-import team5427.lib.motors.real.SteelTalonFX;
 
 public class CascadeIOMagicTalon implements CascadeIO{
     private MagicSteelTalonFX cascadeMotorMaster;

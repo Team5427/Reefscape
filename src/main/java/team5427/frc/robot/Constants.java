@@ -4,11 +4,7 @@
 
 package team5427.frc.robot;
 
-import java.lang.module.Configuration;
-
 import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.swerve.SwerveModuleConstants;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -176,6 +172,9 @@ public final class Constants {
     public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
     public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
 
+    public static final CANDeviceId kWristCancoderCanID = new CANDeviceId(0);
+    public static final CANDeviceId kPivotCancoderCanID = new CANDeviceId(0);
+
     public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
     public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
 
@@ -198,6 +197,10 @@ public final class Constants {
     public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
+
+    public static final double kWristCancoderOffset = 0.0;
+    public static final double kPivotCancoderOffset = 0.0;
+
     static {
       kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
       kPivotMotorConfiguration.currentLimit = 40;
@@ -301,4 +304,5 @@ public final class Constants {
     }
 
   }
+  
 }

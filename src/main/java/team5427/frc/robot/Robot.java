@@ -11,15 +11,14 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+import org.littletonrobotics.urcl.URCL;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
-import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.BuildConstants;
-import team5427.lib.drivers.SteelTalonsLogger;
+import team5427.frc.robot.SuperStructureEnum.DrivingStates;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
  * The methods in this class are called automatically corresponding to each
@@ -40,14 +39,14 @@ public class Robot extends LoggedRobot {
    */
   @SuppressWarnings("resource")
   public Robot() {
-   
+
     Logger.recordMetadata("Reefscape", "Steel Talons 5427 Robot Code for the Game Reefscape, 2025");
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-    if(RobotBase.isReal()){
+    if (RobotBase.isReal()) {
       Constants.currentMode = Constants.Mode.REAL;
-    } else if(RobotBase.isSimulation()){
+    } else if (RobotBase.isSimulation()) {
       Constants.currentMode = Constants.Mode.SIM;
-    } else{
+    } else {
       Constants.currentMode = Constants.Mode.REPLAY;
     }
     switch (Constants.currentMode) {
@@ -71,13 +70,8 @@ public class Robot extends LoggedRobot {
         break;
     }
     AutoLogOutputManager.addPackage("team5427.lib");
-    Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may
-                    // be added.
-
-    // Instantiate our RobotContainer. This will perform all opur button bindings,
-    // and put our
-    // autonomous chooser on the dashboard.
-    SteelTalonsLogger.post("Check", true);
+    Logger.registerURCL(URCL.startExternal());
+    Logger.start();
     m_robotContainer = new RobotContainer();
   }
 
@@ -110,6 +104,8 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void disabledPeriodic() {
+    SwerveSubsystem.state = DrivingStates.INACTIVE;
+    SwerveSubsystem.getInstance().stop();
   }
 
   /**

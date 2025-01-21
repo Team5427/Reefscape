@@ -4,7 +4,6 @@ import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.DynamicMotionMagicVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -26,6 +25,8 @@ public class MagicSteelTalonFX implements IMotorController {
 
     private boolean withFOC;
 
+    public TalonFXConfiguration talonConfig;
+
     public MagicSteelTalonFX(CANDeviceId id) {
         this.id = id;
 
@@ -37,7 +38,7 @@ public class MagicSteelTalonFX implements IMotorController {
     @Override
     public void apply(MotorConfiguration configuration) {
 
-        TalonFXConfiguration talonConfig = new TalonFXConfiguration();
+        talonConfig = new TalonFXConfiguration();
 
         talonConfig.Feedback.SensorToMechanismRatio = configuration.gearRatio.getSensorToMechanismRatio();
 

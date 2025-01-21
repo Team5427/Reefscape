@@ -1,7 +1,6 @@
 package team5427.lib.detection;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-import edu.wpi.first.math.interpolation.InterpolatingTreeMap;
 
 public class DetectionConstants {
     public static final double kThreshold = 0.5;

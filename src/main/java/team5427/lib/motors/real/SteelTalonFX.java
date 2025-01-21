@@ -2,16 +2,13 @@ package team5427.lib.motors.real;
 
 import static edu.wpi.first.units.Units.Rotation;
 
-import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
@@ -31,6 +28,8 @@ public class SteelTalonFX implements IMotorController {
 
     private boolean withFOC;
 
+    public TalonFXConfiguration talonConfig;
+
     public SteelTalonFX(CANDeviceId id) {
         this.id = id;
 
@@ -41,7 +40,7 @@ public class SteelTalonFX implements IMotorController {
 
     @Override
     public void apply(MotorConfiguration configuration) {
-        TalonFXConfiguration talonConfig = new TalonFXConfiguration();
+        talonConfig = new TalonFXConfiguration();
 
         // positionConversionFactor = configuration.unitConversionRatio;
         // velocityConversionFactor = configuration.unitConversionRatio / 60.0;

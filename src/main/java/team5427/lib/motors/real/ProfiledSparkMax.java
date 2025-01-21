@@ -12,7 +12,6 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
 import team5427.lib.motors.real.MotorConfiguration.IdleState;

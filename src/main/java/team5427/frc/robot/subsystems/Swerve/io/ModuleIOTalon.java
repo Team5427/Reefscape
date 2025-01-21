@@ -1,22 +1,20 @@
 package team5427.frc.robot.subsystems.Swerve.io;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
 import java.util.Queue;
 
-import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
+import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import team5427.frc.robot.Constants.SwerveConstants;
@@ -65,7 +63,14 @@ public class ModuleIOTalon implements ModuleIO {
 
         cancoder.clearStickyFaults();
 
-        steerMotor.setEncoderPosition(cancoder.getAbsolutePosition().getValueAsDouble() * 2.0 * Math.PI);
+        steerMotor.talonConfig.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
+        steerMotor.talonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+        steerMotor.talonConfig.Feedback.SensorToMechanismRatio = 1.0;
+        steerMotor.talonConfig.Feedback.RotorToSensorRatio = SwerveConstants.kSteerMotorConfiguration.gearRatio
+                .getMathematicalGearRatio();
+        steerMotor.getTalonFX().getConfigurator().apply(steerMotor.talonConfig);
+
+        steerMotor.setEncoderPosition(cancoder.getAbsolutePosition().getValue().in(Rotations));
         driveMotor.setEncoderPosition(0.0);
 
         timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
@@ -73,7 +78,7 @@ public class ModuleIOTalon implements ModuleIO {
 
         steerPositionQueue = PhoenixOdometryThread.getInstance().registerSignal(steerMotor.getTalonFX().getPosition());
 
-        ParentDevice.optimizeBusUtilizationForAll(driveMotor.getTalonFX(), steerMotor.getTalonFX());
+        ParentDevice.optimizeBusUtilizationForAll(driveMotor.getTalonFX(), steerMotor.getTalonFX(), cancoder);
 
         System.out.println("New Module with idx: " + moduleIdx);
 
@@ -90,7 +95,7 @@ public class ModuleIOTalon implements ModuleIO {
                 driveMotor.getEncoderVelocity(),
                 inputs.absolutePosition);
         inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getEncoderPosition());
-        inputs.steerMotorVelocityRotations = RotationsPerSecond.of(steerMotor.getEncoderVelocity()/60.0);
+        inputs.steerMotorVelocityRotations = RotationsPerSecond.of(steerMotor.getEncoderVelocity() / 60.0);
         inputs.targetModuleState = targetModuleState;
 
         inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getEncoderPosition());

@@ -12,8 +12,6 @@ import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 import java.util.Optional;
 
-import org.littletonrobotics.junction.AutoLog;
-import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class ChassisMovement extends Command {
@@ -46,8 +44,8 @@ public class ChassisMovement extends Command {
             swerveSubsystem.setChassisSpeeds(inputSpeeds);
             Logger.recordOutput("InputSpeeds", inputSpeeds);
         } else {
-            double vx = 0.0, vy =0.0, omegaRadians = 0.0;
-            
+            double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
+
             if (Math.abs(joy.getRightY()) >= OperatorConstants.driverControllerJoystickDeadzone) {
                 vx = -joy.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
             }
@@ -55,7 +53,8 @@ public class ChassisMovement extends Command {
                 vy = -joy.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
             }
             if (Math.abs(joy.getLeftX()) >= OperatorConstants.driverControllerJoystickDeadzone) {
-                omegaRadians = -joy.getLeftX() * Math.abs(joy.getLeftX()/2) * Math.PI * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+                omegaRadians = -joy.getLeftX() * Math.abs(joy.getLeftX() / 2) * Math.PI
+                        * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
             }
             ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
 
