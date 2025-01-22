@@ -21,107 +21,133 @@ import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.Constants.SwerveConstants.SimulationConstants;
 
 public class ModuleIOSim implements ModuleIO {
-    private final DCMotorSim driveMotor;
-    private final DCMotorSim steerMotor;
+  private final DCMotorSim driveMotor;
+  private final DCMotorSim steerMotor;
 
-    private static final DCMotor driveMotorGearbox = DCMotor.getKrakenX60Foc(1);
-    private static final DCMotor steerMotorGearbox = DCMotor.getKrakenX60Foc(1);
+  private static final DCMotor driveMotorGearbox = DCMotor.getKrakenX60Foc(1);
+  private static final DCMotor steerMotorGearbox = DCMotor.getKrakenX60Foc(1);
 
-    private final PIDController driveController;
-    private final PIDController steerController;
+  private final PIDController driveController;
+  private final PIDController steerController;
 
-    private SwerveModuleState targetModuleState;
+  private SwerveModuleState targetModuleState;
 
-    private double driveFFVolts = 0.0;
-    private double driveAppliedVolts = 0.0;
-    private double steerAppliedVolts = 0.0;
-    public final int index;
+  private double driveFFVolts = 0.0;
+  private double driveAppliedVolts = 0.0;
+  private double steerAppliedVolts = 0.0;
+  public final int index;
 
-    public ModuleIOSim(int index) {
-        this.index  = index;
-        driveMotor = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(driveMotorGearbox, 0.007,
-                        SwerveConstants.kDriveMotorConfiguration.gearRatio.getMathematicalGearRatio()),
-                driveMotorGearbox);
-        steerMotor = new DCMotorSim(
-                LinearSystemId.createDCMotorSystem(steerMotorGearbox, 0.0005,
-                        SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio()),
-                steerMotorGearbox);
-        steerController = new PIDController(SimulationConstants.steerkP, SimulationConstants.steerkI,
-                SimulationConstants.steerkD);
-        driveController = new PIDController(SimulationConstants.drivekP, SimulationConstants.drivekI,
-                SimulationConstants.drivekD);
-        steerController.enableContinuousInput(-0.5, 0.5);
-    }
-    @Override
-    public void updateInputs(ModuleIOInputs inputs) {
-        driveAppliedVolts = driveFFVolts + driveController.calculate(driveMotor.getAngularVelocityRadPerSec()*SwerveConstants.kWheelDiameterMeters);
-        steerAppliedVolts = steerController.calculate(steerMotor.getAngularPositionRotations());
-        driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.0, 12.0));
-        steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.0, 12.0));
-        driveMotor.update(Constants.kLoopSpeed);
-        steerMotor.update(Constants.kLoopSpeed);
+  public ModuleIOSim(int index) {
+    this.index = index;
+    driveMotor =
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
+                driveMotorGearbox,
+                0.007,
+                SwerveConstants.kDriveMotorConfiguration.gearRatio.getMathematicalGearRatio()),
+            driveMotorGearbox);
+    steerMotor =
+        new DCMotorSim(
+            LinearSystemId.createDCMotorSystem(
+                steerMotorGearbox,
+                0.0005,
+                SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio()),
+            steerMotorGearbox);
+    steerController =
+        new PIDController(
+            SimulationConstants.steerkP, SimulationConstants.steerkI, SimulationConstants.steerkD);
+    driveController =
+        new PIDController(
+            SimulationConstants.drivekP, SimulationConstants.drivekI, SimulationConstants.drivekD);
+    steerController.enableContinuousInput(-0.5, 0.5);
+  }
 
-        inputs.currentModuleState = new SwerveModuleState(
-                driveMotor.getAngularVelocityRPM() * Math.PI * SwerveConstants.kWheelDiameterMeters / 60.0,
-                Rotation2d.fromRotations(steerMotor.getAngularPositionRotations()));
-        inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getAngularPositionRotations());
-        inputs.steerMotorVelocityRotations = RotationsPerSecond.of( steerMotor.getAngularVelocityRPM() / 60.0);
-        inputs.targetModuleState = targetModuleState;
+  @Override
+  public void updateInputs(ModuleIOInputs inputs) {
+    driveAppliedVolts =
+        driveFFVolts
+            + driveController.calculate(
+                driveMotor.getAngularVelocityRadPerSec() * SwerveConstants.kWheelDiameterMeters);
+    steerAppliedVolts = steerController.calculate(steerMotor.getAngularPositionRotations());
+    driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.0, 12.0));
+    steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.0, 12.0));
+    driveMotor.update(Constants.kLoopSpeed);
+    steerMotor.update(Constants.kLoopSpeed);
 
-        inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getAngularPositionRotations());
+    inputs.currentModuleState =
+        new SwerveModuleState(
+            driveMotor.getAngularVelocityRPM()
+                * Math.PI
+                * SwerveConstants.kWheelDiameterMeters
+                / 60.0,
+            Rotation2d.fromRotations(steerMotor.getAngularPositionRotations()));
+    inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getAngularPositionRotations());
+    inputs.steerMotorVelocityRotations =
+        RotationsPerSecond.of(steerMotor.getAngularVelocityRPM() / 60.0);
+    inputs.targetModuleState = targetModuleState;
 
-        inputs.currentModulePosition = new SwerveModulePosition(
-                driveMotor.getAngularPositionRotations() * Math.PI * SwerveConstants.kWheelDiameterMeters,
-                Rotation2d.fromRotations(steerMotor.getAngularPositionRotations()));
-        inputs.driveMotorVoltage = Volts.of(driveMotor.getInputVoltage());
-        inputs.steerMotorVoltage = Volts.of(steerMotor.getInputVoltage());
+    inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getAngularPositionRotations());
 
-        inputs.driveMotorConnected = true;
-        inputs.steerMotorConnected = true;
+    inputs.currentModulePosition =
+        new SwerveModulePosition(
+            driveMotor.getAngularPositionRotations()
+                * Math.PI
+                * SwerveConstants.kWheelDiameterMeters,
+            Rotation2d.fromRotations(steerMotor.getAngularPositionRotations()));
+    inputs.driveMotorVoltage = Volts.of(driveMotor.getInputVoltage());
+    inputs.steerMotorVoltage = Volts.of(steerMotor.getInputVoltage());
 
-        inputs.driveMotorCurrent = Amps.of(driveMotor.getCurrentDrawAmps());
-        inputs.steerMotorCurrent = Amps.of(steerMotor.getCurrentDrawAmps());
+    inputs.driveMotorConnected = true;
+    inputs.steerMotorConnected = true;
 
-        inputs.odometryTimestamps = new double[] { Timer.getTimestamp() };
-        inputs.odometryDrivePositionsMeters = new double[] {
-                inputs.driveMotorPosition.getRotations() * SwerveConstants.kWheelDiameterMeters * Math.PI };
-        inputs.odometryTurnPositions = new Rotation2d[] { inputs.steerPosition };
-    }
+    inputs.driveMotorCurrent = Amps.of(driveMotor.getCurrentDrawAmps());
+    inputs.steerMotorCurrent = Amps.of(steerMotor.getCurrentDrawAmps());
 
-    /** @param speed meters per second */
-    @Override
-    public void setDriveSpeedSetpoint(LinearVelocity speed) {
-        driveFFVolts = SimulationConstants.drivekS + SimulationConstants.drivekV * speed.baseUnitMagnitude();
-        driveController.setSetpoint(speed.baseUnitMagnitude());
-    }
+    inputs.odometryTimestamps = new double[] {Timer.getTimestamp()};
+    inputs.odometryDrivePositionsMeters =
+        new double[] {
+          inputs.driveMotorPosition.getRotations() * SwerveConstants.kWheelDiameterMeters * Math.PI
+        };
+    inputs.odometryTurnPositions = new Rotation2d[] {inputs.steerPosition};
+  }
 
-    /*
-     * Needs a voltage
-     */
-    @Override
-    public void setDriveSpeedSetpoint(Voltage volts) {
-        driveAppliedVolts = volts.baseUnitMagnitude();
-    }
-    @Override
-    public void setSteerPositionSetpoint(Rotation2d position) {
-        steerController.setSetpoint(position.getRotations());
-    }
+  /**
+   * @param speed meters per second
+   */
+  @Override
+  public void setDriveSpeedSetpoint(LinearVelocity speed) {
+    driveFFVolts =
+        SimulationConstants.drivekS + SimulationConstants.drivekV * speed.baseUnitMagnitude();
+    driveController.setSetpoint(speed.baseUnitMagnitude());
+  }
 
-    /*
-     * Needs a voltage
-     */
-    @Override
-    public void setSteerPositionSetpoint(Voltage volts) {
-        steerAppliedVolts = volts.baseUnitMagnitude();
-    }
-    @Override
-    public void setModuleState(SwerveModuleState state) {
-        targetModuleState = state;
-        setDriveSpeedSetpoint(MetersPerSecond.of(state.speedMetersPerSecond));
-        setSteerPositionSetpoint(state.angle);
-    }
+  /*
+   * Needs a voltage
+   */
+  @Override
+  public void setDriveSpeedSetpoint(Voltage volts) {
+    driveAppliedVolts = volts.baseUnitMagnitude();
+  }
 
-    public void resetMotorSetpoint() {
-    }
+  @Override
+  public void setSteerPositionSetpoint(Rotation2d position) {
+    steerController.setSetpoint(position.getRotations());
+  }
+
+  /*
+   * Needs a voltage
+   */
+  @Override
+  public void setSteerPositionSetpoint(Voltage volts) {
+    steerAppliedVolts = volts.baseUnitMagnitude();
+  }
+
+  @Override
+  public void setModuleState(SwerveModuleState state) {
+    targetModuleState = state;
+    setDriveSpeedSetpoint(MetersPerSecond.of(state.speedMetersPerSecond));
+    setSteerPositionSetpoint(state.angle);
+  }
+
+  public void resetMotorSetpoint() {}
 }

@@ -16,34 +16,46 @@ import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class PilotingControls {
 
-    private CommandXboxController joy;
+  private CommandXboxController joy;
 
-    public PilotingControls() {
-        joy = new CommandXboxController(OperatorConstants.kDriverControllerPort);
-        // SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
+  public PilotingControls() {
+    joy = new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    // SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
-        joy.a().onTrue(new CoralIntakeTest()).whileFalse(new InstantCommand(() -> {
-            EndEffectorSubsystem.state = EndEffectorStates.IDLE;
-            EndEffectorSubsystem.getInstance().setAlgaeRollerSetpoint(MetersPerSecond.of(0.0));
-            EndEffectorSubsystem.getInstance().setCoralRollerSetpoint(MetersPerSecond.of(0.0));
-            EndEffectorSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(-10.0));
-            EndEffectorSubsystem.getInstance().setWristSetpoint(Rotation2d.fromDegrees(0.0));
+    joy.a()
+        .onTrue(new CoralIntakeTest())
+        .whileFalse(
+            new InstantCommand(
+                () -> {
+                  EndEffectorSubsystem.state = EndEffectorStates.IDLE;
+                  EndEffectorSubsystem.getInstance()
+                      .setAlgaeRollerSetpoint(MetersPerSecond.of(0.0));
+                  EndEffectorSubsystem.getInstance()
+                      .setCoralRollerSetpoint(MetersPerSecond.of(0.0));
+                  EndEffectorSubsystem.getInstance()
+                      .setPivotSetpoint(Rotation2d.fromDegrees(-10.0));
+                  EndEffectorSubsystem.getInstance().setWristSetpoint(Rotation2d.fromDegrees(0.0));
+                },
+                EndEffectorSubsystem.getInstance()));
 
-        }, EndEffectorSubsystem.getInstance()));
+    joy.leftTrigger()
+        .whileTrue(
+            new InstantCommand(
+                () -> {
+                  SwerveSubsystem.getInstance().getCurrentCommand().end(true);
+                  SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+                },
+                SwerveSubsystem.getInstance()))
+        .whileFalse(new ChassisMovement(joy));
 
-        joy.leftTrigger().whileTrue(new InstantCommand(() -> {
-            SwerveSubsystem.getInstance().getCurrentCommand().end(true);
-            SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-        }, SwerveSubsystem.getInstance())).whileFalse(new ChassisMovement(joy));
+    if (DriverStation.isDisabled()) {}
 
-        if(DriverStation.isDisabled()){
-
-        }
-
-        joy.y().onTrue(new InstantCommand(() -> {
-            SwerveSubsystem.getInstance().resetGyro(new Rotation2d());
-            ;
-        }));
-    }
-
+    joy.y()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  SwerveSubsystem.getInstance().resetGyro(new Rotation2d());
+                  ;
+                }));
+  }
 }
