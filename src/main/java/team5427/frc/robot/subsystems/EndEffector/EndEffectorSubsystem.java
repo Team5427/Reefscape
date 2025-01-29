@@ -27,8 +27,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
   public boolean isAlgaeIntaked = false;
 
-  private static final AngularAcceleration kFlywheelAccelerationMaxBuffer =
-      RotationsPerSecondPerSecond.of(0.5);
+  private static final AngularAcceleration kFlywheelAccelerationMaxBuffer = RotationsPerSecondPerSecond.of(0.5);
 
   public static EndEffectorStates state;
 
@@ -71,16 +70,16 @@ public class EndEffectorSubsystem extends SubsystemBase {
     io.setCoralRollerSetpoint(coralRollerSetpoint);
     io.setAlgaeRollerSetpoint(algaeRollerSetpoint);
 
-    if (pivotSetpoint.getDegrees() <= EndEffectorConstants.kPivotMaximumAngle.getDegrees()
-        && pivotSetpoint.getDegrees() >= EndEffectorConstants.kPivotMinimumAngle.getDegrees()) {
+    if (Math.abs(pivotSetpoint.getDegrees()) <= Math.abs(EndEffectorConstants.kPivotMaximumAngle.getDegrees())
+        && Math.abs(pivotSetpoint.getDegrees()) >= Math.abs(EndEffectorConstants.kPivotMinimumAngle.getDegrees())) {
       io.setPivotSetpoint(pivotSetpoint);
       Errors.pivotConstraint.set(false);
     } else {
       Errors.pivotConstraint.set(true);
     }
 
-    if (wristSetpoint.getDegrees() <= EndEffectorConstants.kWristMaximumAngle.getDegrees()
-        && wristSetpoint.getDegrees() >= EndEffectorConstants.kWristMinimumAngle.getDegrees()) {
+    if (Math.abs(wristSetpoint.getDegrees()) <= Math.abs(EndEffectorConstants.kWristMaximumAngle.getDegrees())
+        && Math.abs(wristSetpoint.getDegrees()) >= Math.abs(EndEffectorConstants.kWristMinimumAngle.getDegrees())) {
 
       io.setCoralWristSetpoint(wristSetpoint);
       Errors.wristConstraint.set(false);
@@ -109,38 +108,32 @@ public class EndEffectorSubsystem extends SubsystemBase {
   }
 
   public boolean isWristAtSetpoint() {
-    if (inputsAutoLogged.wristAngle.minus(wristSetpoint).getDegrees()
-        < EndEffectorConstants.kWristMotorConfiguration.tolerance) {
+    if (Math.abs(inputsAutoLogged.wristAngle.minus(wristSetpoint).getDegrees()) < 0.05) {
       return true;
     }
     return false;
   }
 
   public boolean isPivotAtSetpoint() {
-    if (inputsAutoLogged.pivotAngle.minus(pivotSetpoint).getDegrees()
-        < EndEffectorConstants.kPivotMotorConfiguration.tolerance) {
+    if (Math.abs(inputsAutoLogged.pivotAngle.minus(pivotSetpoint).getDegrees()) < 0.05) {
       return true;
     }
     return false;
   }
 
   public boolean isCoralRollerAtSetpoint() {
-    if (inputsAutoLogged
-            .coralRollerMotorLinearVelocity
-            .minus(coralRollerSetpoint)
-            .baseUnitMagnitude()
-        < EndEffectorConstants.kCoralRollerMotorConfiguration.tolerance) {
+    if (Math.abs(inputsAutoLogged.coralRollerMotorLinearVelocity
+        .minus(coralRollerSetpoint)
+        .in(MetersPerSecond)) < 0.5) {
       return true;
     }
     return false;
   }
 
   public boolean isAlgaeRollerAtSetpoint() {
-    if (inputsAutoLogged
-            .algaeRollerMotorLinearVelocity
-            .minus(algaeRollerSetpoint)
-            .baseUnitMagnitude()
-        < EndEffectorConstants.kAlgaeRollerMotorConfiguration.tolerance) {
+    if (Math.abs(inputsAutoLogged.algaeRollerMotorLinearVelocity
+        .minus(algaeRollerSetpoint)
+        .in(MetersPerSecond)) < 0.5) {
       return true;
     }
     return false;
@@ -157,8 +150,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
   private boolean isAlgaeIntaked(Current current) {
     return current.in(Amps) > 20.0
         && inputsAutoLogged.algaeRollerMotorAngularAcceleration.compareTo(
-                kFlywheelAccelerationMaxBuffer)
-            < 0.5;
+            kFlywheelAccelerationMaxBuffer) < 0.5;
   }
 
   private boolean isCoralIntaked(Current current) {
@@ -173,15 +165,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
   }
 
   private static class Errors {
-    public static Alert wristConstraint =
-        new Alert(
-            "Constraint Violations",
-            "End Effector Wrist given a setpoint outside its bounds. ",
-            AlertType.kError);
-    public static Alert pivotConstraint =
-        new Alert(
-            "Constraint Violations",
-            "End Effector Pivot given a setpoint outside its bounds. ",
-            AlertType.kError);
+    public static Alert wristConstraint = new Alert(
+        "Constraint Violations",
+        "End Effector Wrist given a setpoint outside its bounds. ",
+        AlertType.kError);
+    public static Alert pivotConstraint = new Alert(
+        "Constraint Violations",
+        "End Effector Pivot given a setpoint outside its bounds. ",
+        AlertType.kError);
   }
 }

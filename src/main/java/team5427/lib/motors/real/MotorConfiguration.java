@@ -32,9 +32,6 @@ public class MotorConfiguration {
   public ComplexGearRatio gearRatio;
   public double finalDiameterMeters;
 
-  /** This will be in the native units of the motor (Needs to be consistent and maintained) */
-  public double tolerance;
-
   /**
    * Converts between Radians, Degrees, Rotations time units etc.
    *

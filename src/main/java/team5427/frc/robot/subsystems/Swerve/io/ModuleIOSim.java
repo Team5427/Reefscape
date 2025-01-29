@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import org.team4206.battleaid.common.TunedJoystick;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -27,8 +29,8 @@ public class ModuleIOSim implements ModuleIO {
   private static final DCMotor driveMotorGearbox = DCMotor.getKrakenX60Foc(1);
   private static final DCMotor steerMotorGearbox = DCMotor.getKrakenX60Foc(1);
 
-  private final PIDController driveController;
-  private final PIDController steerController;
+  // private final PIDController driveController;
+  // private final PIDController steerController;
 
   private SwerveModuleState targetModuleState;
 
@@ -43,34 +45,34 @@ public class ModuleIOSim implements ModuleIO {
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
                 driveMotorGearbox,
-                0.007,
+                0.01,
                 SwerveConstants.kDriveMotorConfiguration.gearRatio.getMathematicalGearRatio()),
             driveMotorGearbox);
     steerMotor =
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
                 steerMotorGearbox,
-                0.0005,
+                0.005,
                 SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio()),
             steerMotorGearbox);
-    steerController =
-        new PIDController(
-            SimulationConstants.steerkP, SimulationConstants.steerkI, SimulationConstants.steerkD);
-    driveController =
-        new PIDController(
-            SimulationConstants.drivekP, SimulationConstants.drivekI, SimulationConstants.drivekD);
-    steerController.enableContinuousInput(-0.5, 0.5);
+    // steerController =
+    //     new PIDController(
+    //         SimulationConstants.steerkP, SimulationConstants.steerkI, SimulationConstants.steerkD);
+    // driveController =
+    //     new PIDController(
+    //         SimulationConstants.drivekP, SimulationConstants.drivekI, SimulationConstants.drivekD);
+    // SwerveConstants.kSIMSteerController.enableContinuousInput(-0.5, 0.5);
   }
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
     driveAppliedVolts =
         driveFFVolts
-            + driveController.calculate(
+            + SwerveConstants.kSIMDriveController.calculate(
                 driveMotor.getAngularVelocityRadPerSec() * SwerveConstants.kWheelDiameterMeters);
-    steerAppliedVolts = steerController.calculate(steerMotor.getAngularPositionRotations());
-    driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.0, 12.0));
-    steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.0, 12.0));
+    steerAppliedVolts = SwerveConstants.kSIMSteerController.calculate(steerMotor.getAngularPositionRotations());
+    driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.6, 12.6));
+    steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.6, 12.6));
     driveMotor.update(Constants.kLoopSpeed);
     steerMotor.update(Constants.kLoopSpeed);
 
@@ -117,8 +119,8 @@ public class ModuleIOSim implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
     driveFFVolts =
-        SimulationConstants.drivekS + SimulationConstants.drivekV * speed.baseUnitMagnitude();
-    driveController.setSetpoint(speed.baseUnitMagnitude());
+        SwerveConstants.kSIMDriveFeedforward.calculate(speed.baseUnitMagnitude());
+        SwerveConstants.kSIMDriveController.setSetpoint(speed.baseUnitMagnitude());
   }
 
   /*
@@ -131,7 +133,7 @@ public class ModuleIOSim implements ModuleIO {
 
   @Override
   public void setSteerPositionSetpoint(Rotation2d position) {
-    steerController.setSetpoint(position.getRotations());
+    SwerveConstants.kSIMSteerController.setSetpoint(position.getRotations());
   }
 
   /*

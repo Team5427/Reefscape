@@ -46,7 +46,7 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double driverControllerJoystickDeadzone = 0.00;
+    public static final double driverControllerJoystickDeadzone = 0.01;
   }
 
   public static class SwerveConstants {
@@ -54,13 +54,13 @@ public final class Constants {
     public static final double kTrackWidth = Units.inchesToMeters(19.5);
     public static final double kWheelBase = Units.inchesToMeters(19.5);
 
-    public static final PIDController kSIMSteerController = new PIDController(1, 0, 0.0);
+    public static final PIDController kSIMSteerController = new PIDController(5, 0, 0.2);
     public static final SimpleMotorFeedforward kSIMSteerFeedforward =
-        new SimpleMotorFeedforward(0, 0, 0);
+        new SimpleMotorFeedforward(0, 0.01, 0);
 
-    public static final PIDController kSIMDriveController = new PIDController(2, 0, 0);
+    public static final PIDController kSIMDriveController = new PIDController(4, 0, 0.6);
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
-        new SimpleMotorFeedforward(0., 4, 0.2);
+        new SimpleMotorFeedforward(0., 2.08, 0.17);
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -72,7 +72,7 @@ public final class Constants {
     public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
 
     static {
-      kSIMSteerController.enableContinuousInput(-Math.PI, Math.PI);
+      kSIMSteerController.enableContinuousInput(-0.5, 0.5);
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(5, "*");
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(3, "*");
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(9, "*");
@@ -217,8 +217,6 @@ public final class Constants {
       kPivotMotorConfiguration.kV = 4.34;
 
       kPivotMotorConfiguration.kP = 0.1;
-
-      kPivotMotorConfiguration.tolerance = 0.1;
     }
 
     static {
@@ -240,8 +238,6 @@ public final class Constants {
       kWristMotorConfiguration.kV = 4.34;
 
       kWristMotorConfiguration.kP = 0.1;
-
-      kWristMotorConfiguration.tolerance = 0.1;
     }
 
     static {
@@ -266,8 +262,6 @@ public final class Constants {
       kCoralRollerMotorConfiguration.kA = 0.1;
       kCoralRollerMotorConfiguration.kV = 0.1;
       kCoralRollerMotorConfiguration.kD = 0.1;
-
-      kCoralRollerMotorConfiguration.tolerance = 0.05;
     }
 
     static {
@@ -292,13 +286,11 @@ public final class Constants {
       kAlgaeRollerMotorConfiguration.kA = 0.1;
       kAlgaeRollerMotorConfiguration.kV = 0.1;
       kAlgaeRollerMotorConfiguration.kD = 0.1;
-
-      kCoralRollerMotorConfiguration.tolerance = 0.05;
     }
 
     static {
-      kSIMPivotController.setTolerance(kPivotMotorConfiguration.tolerance);
-      kSIMWristController.setTolerance(kWristMotorConfiguration.tolerance);
+      kSIMPivotController.setTolerance(0.05);
+      kSIMWristController.setTolerance(0.05);
     }
   }
 
