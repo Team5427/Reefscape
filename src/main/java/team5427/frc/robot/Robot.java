@@ -15,6 +15,15 @@ import org.littletonrobotics.urcl.URCL;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
+import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+// import frc.robot.BuildConstants;
+import team5427.lib.drivers.SteelTalonsLogger;
+
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -35,6 +44,8 @@ public class Robot extends LoggedRobot {
     Logger.recordMetadata("Reefscape", "Steel Talons 5427 Robot Code for the Game Reefscape, 2025");
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
     if (RobotBase.isReal()) {
+    // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    if(RobotBase.isReal()){
       Constants.currentMode = Constants.Mode.REAL;
     } else if (RobotBase.isSimulation()) {
       Constants.currentMode = Constants.Mode.SIM;
