@@ -5,26 +5,27 @@ import team5427.lib.motors.real.MotorConfiguration;
 
 public interface IMotorController {
 
-    public void apply(MotorConfiguration configuration);
+  public void apply(MotorConfiguration configuration);
 
-    public void setSetpoint(double setpoint);
-    public void setSetpoint(Rotation2d setpoint);
+  public void setSetpoint(double setpoint);
 
-    public double getSetpoint();
+  public void setSetpoint(Rotation2d setpoint);
 
-    public void setEncoderPosition(double position);
+  public double getSetpoint();
 
-    public void setEncoderPosition(Rotation2d position);
+  public void setEncoderPosition(double position);
 
-    public double getEncoderPosition();
+  public void setEncoderPosition(Rotation2d position);
 
-    public double getEncoderVelocity();
+  public double getEncoderPosition();
 
-    public double getError();
+  public double getEncoderVelocity();
 
-    public void setRawPercentage(double percentage);
+  public double getError();
 
-    public void setRelativePercentage(double percentage);
+  public void setRawPercentage(double percentage);
 
-    public void setRawVoltage(double voltage);
+  public void setRelativePercentage(double percentage);
+
+  public void setRawVoltage(double voltage);
 }

@@ -16,7 +16,6 @@ import edu.wpi.first.units.measure.Distance;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.MotorConfiguration;
-import team5427.lib.motors.real.SteelTalonFX;
 
 public class CascadeIOMagicTalon implements CascadeIO{
 
@@ -55,34 +54,8 @@ public class CascadeIOMagicTalon implements CascadeIO{
 
     @Override
     public void updateInputs(CascadeIOInputs inputs) {
-        inputs.velocity = MetersPerSecond.of(cascadeMotorMaster.getEncoderVelocity());
-        inputs.velocityRotations = cascadeMotorMaster.getTalonFX().getVelocity().getValue();
-        inputs.cascadeHeightMeters = Meters.of(cascadeMotorMaster.getEncoderPosition());
-        inputs.acceleration = MetersPerSecondPerSecond.of(cascadeMotorMaster.getTalonFX().getAcceleration().getValue().in(RotationsPerSecondPerSecond) * Math.PI * cascadeConfig.finalDiameterMeters);
-
-        inputs.cascadeMasterMotorCurrent = cascadeMotorMaster.getTalonFX().getSupplyCurrent().getValue();
-        inputs.cascadeMasterMotorVoltage = cascadeMotorMaster.getTalonFX().getSupplyVoltage().getValue();
-
-        inputs.cascadeSlaveMotorCurrent = cascadeMotorSlave.getTalonFX().getSupplyCurrent().getValue();
-        inputs.cascadeSlaveMotorVoltage = cascadeMotorSlave.getTalonFX().getSupplyVoltage().getValue();
-
-        inputs.pivotRotation = new Rotation2d(pivotCANcoder.getAbsolutePosition().getValue());
-        inputs.pivotRotationVelocity = RotationsPerSecond.of(0.0);
-    }
-
-    @Override
-    public void setCascadeSetpoint(Distance setpoint) {
-        cascadeMotorMaster.setSetpoint(setpoint.in(Meters));
-    }
-
-    @Override
-    public void setCascadeEncoderPosition(Distance setpoint) {
-        cascadeMotorMaster.setEncoderPosition(setpoint.magnitude());
-    }
-
-    @Override
-    public void setPivotSetpoint(Rotation2d setpoint) {
-        pivotMotorMaster.setSetpoint(setpoint);
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateInputs'");
     }
 
     @Override
