@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.BuildConstants;
+// import frc.robot.BuildConstants;
 import team5427.lib.drivers.SteelTalonsLogger;
 
 /**
@@ -42,7 +42,7 @@ public class Robot extends LoggedRobot {
   public Robot() {
    
     Logger.recordMetadata("Reefscape", "Steel Talons 5427 Robot Code for the Game Reefscape, 2025");
-    Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
     if(RobotBase.isReal()){
       Constants.currentMode = Constants.Mode.REAL;
     } else if(RobotBase.isSimulation()){
