@@ -1,6 +1,5 @@
 package team5427.frc.robot.subsystems.Vision.io;
 
-import org.checkerframework.checker.units.qual.C;
 import org.photonvision.PhotonCamera;
 
 import edu.wpi.first.math.Matrix;
