@@ -36,7 +36,4 @@ public class VisionIOPhoton implements VisionIO {
         throw new UnsupportedOperationException("Unimplemented method 'applyCameraTransformation'");
     }
 
-    @Override
-    public void setStdDev
-
 }

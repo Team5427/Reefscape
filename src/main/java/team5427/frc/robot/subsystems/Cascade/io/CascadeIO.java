@@ -1,5 +1,6 @@
 package team5427.frc.robot.subsystems.Cascade.io;
 
+import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
@@ -21,7 +22,6 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
-import org.littletonrobotics.junction.AutoLog;
 
 public interface CascadeIO {
     @AutoLog
@@ -31,8 +31,8 @@ public interface CascadeIO {
         public Distance cascadeHeightMeters = Meters.of(0.0);
         public LinearAcceleration acceleration = MetersPerSecondPerSecond.of(0.0);
 
-    public Current cascadeMasterMotorCurrent = Amps.of(0.0);
-    public Voltage cascadeMasterMotorVoltage = Volts.of(0.0);
+        public Current cascadeMasterMotorCurrent = Amps.of(0.0);
+        public Voltage cascadeMasterMotorVoltage = Volts.of(0.0);
 
         public Current cascadeSlaveMotorCurrent = Amps.of(0.0);
         public Voltage cascadeSlaveMotorVoltage = Volts.of(0.0);
@@ -48,7 +48,7 @@ public interface CascadeIO {
         public Voltage pivotSlaveMotorVoltage = Volts.of(0.0);
     }
 
-  public void updateInputs(CascadeIOInputs inputs);
+    public void updateInputs(CascadeIOInputs inputs);
 
     public void setCascadeSetpoint(Distance setpoint);
 
@@ -57,4 +57,5 @@ public interface CascadeIO {
     public void setPivotSetpoint(Rotation2d setpoint);
 
     public void setCANCoderPosition(Rotation2d angle);
+
 }

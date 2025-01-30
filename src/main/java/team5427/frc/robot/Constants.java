@@ -1,6 +1,11 @@
 package team5427.frc.robot;
 
+import static edu.wpi.first.units.Units.Centimeters;
+
 import com.ctre.phoenix6.CANBus;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -358,5 +363,7 @@ public final class Constants {
 
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
+    public class kPivotEncoderConfig {
+    }
   }
 }
