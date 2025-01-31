@@ -76,4 +76,10 @@ public class ThriftyNova implements IMotorController {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'setRawVoltage'");
   }
+
+  @Override
+  public MotorConfiguration getMotorConfiguration() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getMotorConfiguration'");
+  }
 }

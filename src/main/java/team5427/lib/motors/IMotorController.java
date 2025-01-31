@@ -7,6 +7,8 @@ public interface IMotorController {
 
   public void apply(MotorConfiguration configuration);
 
+  public MotorConfiguration getMotorConfiguration();
+
   public void setSetpoint(double setpoint);
 
   public void setSetpoint(Rotation2d setpoint);

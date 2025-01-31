@@ -217,4 +217,9 @@ public class MagicSteelTalonFX implements IMotorController {
         break;
     }
   }
+
+  @Override
+  public MotorConfiguration getMotorConfiguration() {
+    return this.configuration;
+  }
 }
