@@ -1,6 +1,7 @@
 package team5427.frc.robot;
 
 import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Meters;
 
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -191,10 +192,12 @@ public final class Constants {
     public static MotorConfiguration kCoralRollerMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
 
-    public static final Rotation2d kWristMinimumAngle = new Rotation2d(0);
-    public static final Rotation2d kWristMaximumAngle = new Rotation2d(180);
-    public static final Rotation2d kPivotMinimumAngle = new Rotation2d(0);
-    public static final Rotation2d kPivotMaximumAngle = new Rotation2d(180);
+    public static final Rotation2d kWristMinimumAngle = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kWristMaximumAngle = Rotation2d.fromDegrees(180);
+    public static final Rotation2d kPivotMinimumAngle = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kPivotMaximumAngle = Rotation2d.fromDegrees(180);
+
+    public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
 
     public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
@@ -315,6 +318,14 @@ public final class Constants {
 
     public static final double kCascadeDriverGravityFF = 0.0;
 
+    public static final Rotation2d kCascadePivotBuffer = Rotation2d.fromDegrees(30);
+
+    public static final Rotation2d kCascadePivotMaximumAngle = Rotation2d.fromDegrees(180);
+    public static final Rotation2d kCascadePivotMinimumAngle = Rotation2d.fromDegrees(0);
+
+    public static final Distance kCascadeMinimumHeight = Meters.of(0.0);
+    public static final Distance kCascadeMaximumHeight = Meters.of(2.0);
+
     public static final MotorConfiguration kCascadeDriverConfiguration = new MotorConfiguration();
     static {
       kCascadeDriverConfiguration.gearRatio = new ComplexGearRatio();
@@ -324,7 +335,7 @@ public final class Constants {
       kCascadeDriverConfiguration.isInverted = false;
 
       kCascadeDriverConfiguration.maxVelocity = kCascadeDriverConfiguration
-          .getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+          .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
 
       kCascadeDriverConfiguration.kP = 0.1;
@@ -344,7 +355,7 @@ public final class Constants {
       kPivotConfiguration.mode = MotorMode.kServo;
       kPivotConfiguration.isInverted = false;
 
-      kPivotConfiguration.maxVelocity = kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+      kPivotConfiguration.maxVelocity = kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
 
       kPivotConfiguration.kP = 0.1;
@@ -365,8 +376,6 @@ public final class Constants {
 
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
-
-    public class kPivotEncoderConfig {
-    }
+    
   }
 }

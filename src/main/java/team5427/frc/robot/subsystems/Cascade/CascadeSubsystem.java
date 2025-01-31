@@ -8,6 +8,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.CascadeConstants;
+import team5427.frc.robot.SuperStructureEnum.CascadeStates;
 import team5427.frc.robot.subsystems.Cascade.io.CascadeIO;
 import team5427.frc.robot.subsystems.Cascade.io.CascadeIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Cascade.io.CascadeIOMagicTalon;
@@ -22,6 +23,8 @@ public class CascadeSubsystem extends SubsystemBase {
     private Rotation2d pivotSetpoint;
 
     private static CascadeSubsystem m_instance;
+
+    public static CascadeStates state;
 
     public static CascadeSubsystem getInstance() {
         if (m_instance == null) {

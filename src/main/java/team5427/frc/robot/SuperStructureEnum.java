@@ -13,6 +13,17 @@ public enum SuperStructureEnum {
     IDLE;
   }
 
+  public enum CascadeStates {
+    STATION_INTAKE,
+    REEF_INTAKE,
+    GROUND_INTAKE,
+    CLIMBING,
+    SCORING,
+    SHOOTING,
+    PROCESSING;
+  }
+
+
   public enum ClimbingStates {
     INACTIVE,
     SHALLOW,
