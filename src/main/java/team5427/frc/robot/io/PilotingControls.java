@@ -1,16 +1,24 @@
 package team5427.frc.robot.io;
 
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+
+import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.SuperStructureEnum.EndEffectorStates;
+import team5427.frc.robot.commands.CascadeTest;
 import team5427.frc.robot.commands.ChassisMovement;
 import team5427.frc.robot.commands.CoralIntakeTest;
+import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.EndEffector.EndEffectorSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -38,6 +46,14 @@ public class PilotingControls {
                 },
                 EndEffectorSubsystem.getInstance()));
 
+    joy.b().whileTrue(new CascadeTest()).whileFalse(new InstantCommand(() -> {
+      // CascadeSubsystem.getInstance().setCascadeEncoderPosition(Distance.ofBaseUnits(0.0,
+      // Meters));
+      CascadeSubsystem.getInstance().setCascadeSetpoint(Distance.ofBaseUnits(0.1, Meters));
+      CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
+
+    }));
+
     joy.leftTrigger()
         .whileTrue(
             new InstantCommand(
@@ -48,9 +64,10 @@ public class PilotingControls {
                 SwerveSubsystem.getInstance()))
         .whileFalse(new ChassisMovement(joy));
 
-    if (DriverStation.isDisabled()) {}
+    if (DriverStation.isDisabled()) {
+    }
 
-    joy.y()
+    joy.y().and(() -> RobotBase.isReal())
         .onTrue(
             new InstantCommand(
                 () -> {

@@ -21,14 +21,14 @@ public class ChassisMovement extends Command {
   private CommandXboxController joy;
   private Optional<CommandXboxController> simulatedRotationalJoy;
 
-  TunedJoystick tunedJoystick;
+  private TunedJoystick tunedJoystick;
 
   public ChassisMovement(CommandXboxController driverJoystick) {
     swerveSubsystem = SwerveSubsystem.getInstance();
     joy = driverJoystick;
     tunedJoystick = new TunedJoystick(joy.getHID());
     tunedJoystick.useResponseCurve(ResponseCurve.LINEAR);
-    tunedJoystick.setDeadzone(OperatorConstants.driverControllerJoystickDeadzone);
+    tunedJoystick.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     addRequirements(swerveSubsystem);
   }
 

@@ -43,10 +43,8 @@ public interface EndEffectorIO {
 
     public AngularAcceleration wristMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
     public AngularAcceleration pivotMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
-    public AngularAcceleration coralRollerMotorAngularAcceleration =
-        RotationsPerSecondPerSecond.of(0.0);
-    public AngularAcceleration algaeRollerMotorAngularAcceleration =
-        RotationsPerSecondPerSecond.of(0.0);
+    public AngularAcceleration coralRollerMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
+    public AngularAcceleration algaeRollerMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
 
     public Rotation2d pivotAngle = new Rotation2d(0.0);
     public Rotation2d wristAngle = new Rotation2d(0.0);
@@ -61,4 +59,12 @@ public interface EndEffectorIO {
   public void setAlgaeRollerSetpoint(LinearVelocity velocity);
 
   public void setPivotSetpoint(Rotation2d setpoint);
+
+  // public void stopCoralWristMotor(boolean stopped);
+
+  // public void stopPivotMotor(boolean stopped);
+
+  // public void stopAlgaeRollerMotor(boolean stopped);
+
+  // public void stopCoralRollerMotor(boolean stopped);
 }

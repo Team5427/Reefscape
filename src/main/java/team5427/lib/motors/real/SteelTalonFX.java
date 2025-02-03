@@ -237,5 +237,8 @@ public class SteelTalonFX implements IMotorController {
   // public void setSetpoint(double setpoint) {
   // setSetpoint(new Rotation2d(setpoint));
   // }
-
+  @Override
+  public MotorConfiguration getMotorConfiguration() {
+    return this.configuration;
+  }
 }

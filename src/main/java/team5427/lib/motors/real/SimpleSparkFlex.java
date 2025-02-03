@@ -213,7 +213,8 @@ public class SimpleSparkFlex implements IMotorController {
     return relativeEncoder;
   }
 
-  public MotorConfiguration getConfiguration() {
-    return configuration;
+  @Override
+  public MotorConfiguration getMotorConfiguration() {
+    return this.configuration;
   }
 }

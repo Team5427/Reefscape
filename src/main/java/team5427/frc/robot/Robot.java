@@ -46,39 +46,38 @@ public class Robot extends LoggedRobot {
 
     Logger.recordMetadata("Reefscape", "Steel Talons 5427 Robot Code for the Game Reefscape, 2025");
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+    // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
     if (RobotBase.isReal()) {
-      // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
-      if (RobotBase.isReal()) {
-        Constants.currentMode = Constants.Mode.REAL;
-      } else if (RobotBase.isSimulation()) {
-        Constants.currentMode = Constants.Mode.SIM;
-      } else {
-        Constants.currentMode = Constants.Mode.REPLAY;
-      }
-      switch (Constants.currentMode) {
-        case REAL:
-          // Running on a real robot, log to a USB stick ("/U/logs")
-          Logger.addDataReceiver(new WPILOGWriter());
-          Logger.addDataReceiver(new NT4Publisher());
-          break;
-
-        case SIM:
-          // Running a physics simulator, log to NT
-          Logger.addDataReceiver(new NT4Publisher());
-          break;
-
-        case REPLAY:
-          // Replaying a log, set up replay source
-          setUseTiming(false); // Run as fast as possible
-          String logPath = LogFileUtil.findReplayLog();
-          Logger.setReplaySource(new WPILOGReader(logPath));
-          Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
-          break;
-      }
-      AutoLogOutputManager.addPackage("team5427.lib");
-      Logger.registerURCL(URCL.startExternal());
-      Logger.start();
+      Constants.currentMode = Constants.Mode.REAL;
+    } else if (RobotBase.isSimulation()) {
+      Constants.currentMode = Constants.Mode.SIM;
+    } else {
+      Constants.currentMode = Constants.Mode.REPLAY;
     }
+    switch (Constants.currentMode) {
+      case REAL:
+        // Running on a real robot, log to a USB stick ("/U/logs")
+        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new NT4Publisher());
+        Logger.registerURCL(URCL.startExternal());
+        break;
+
+      case SIM:
+        // Running a physics simulator, log to NT
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+
+      case REPLAY:
+        // Replaying a log, set up replay source
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog();
+        Logger.setReplaySource(new WPILOGReader(logPath));
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        break;
+    }
+    AutoLogOutputManager.addPackage("team5427.lib");
+
+    Logger.start();
     m_robotContainer = new RobotContainer();
   }
 

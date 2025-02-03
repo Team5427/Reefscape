@@ -32,6 +32,9 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     private CANcoder pivotCANcoder;
 
+    public boolean cascadeMotorsStopped;
+    public boolean pivotMotorsStopped;
+
     public CascadeIOMagicTalon() {
         cascadeMotorMaster = new MagicSteelTalonFX(CascadeConstants.kCascadeMasterId);
         cascadeMotorSlave = new MagicSteelTalonFX(CascadeConstants.kCascadeSlaveId);
@@ -71,17 +74,21 @@ public class CascadeIOMagicTalon implements CascadeIO {
         inputs.cascadeSlaveMotorVoltage = cascadeMotorSlave.getTalonFX().getSupplyVoltage().getValue();
 
         inputs.pivotRotation = new Rotation2d(pivotCANcoder.getAbsolutePosition().getValue());
-        inputs.pivotRotationVelocity = RotationsPerSecond.of(0.0);
+        inputs.pivotRotationVelocity = pivotCANcoder.getVelocity().getValue();
     }
 
     @Override
     public void setCascadeSetpoint(Distance setpoint) {
         // cascade motor must calculate the kG outside of the motor controller as it is
         // on a pivoting arm
-        cascadeMotorMaster.getMotorConfiguration().kFF = CascadeConstants.kCascadeDriverConfiguration.isArm
-                ? CascadeConstants.kCascadeDriverGravityFF
-                        * pivotCANcoder.getAbsolutePosition().getValue().in(Rotations)
-                : CascadeConstants.kCascadeDriverGravityFF;
+        if (cascadeMotorsStopped) {
+            cascadeMotorMaster.getTalonFX().set(0);
+            return;
+        }
+        // cascadeMotorMaster.getMotorConfiguration().kFF = CascadeConstants.kCascadeDriverConfiguration.isArm
+        //         ? CascadeConstants.kCascadeDriverGravityFF
+        //                 * pivotCANcoder.getAbsolutePosition().getValue().in(Rotations)
+        //         : CascadeConstants.kCascadeDriverGravityFF;
         cascadeMotorMaster.setSetpoint(setpoint.in(Meters));
     }
 
@@ -92,12 +99,26 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     @Override
     public void setPivotSetpoint(Rotation2d setpoint) {
+        if (pivotMotorsStopped) {
+            pivotMotorMaster.getTalonFX().set(0);
+            return;
+        }
         pivotMotorMaster.setSetpoint(setpoint);
     }
 
     @Override
     public void setCANCoderPosition(Rotation2d angle) {
         pivotCANcoder.setPosition(angle.getMeasure());
+    }
+
+    @Override
+    public void stopCascadeMotors(boolean stopped) {
+        this.cascadeMotorsStopped = stopped;
+    }
+
+    @Override
+    public void stopPivotMotors(boolean stopped) {
+        this.pivotMotorsStopped = stopped;
     }
 
 }

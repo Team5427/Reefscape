@@ -58,4 +58,8 @@ public interface CascadeIO {
 
     public void setCANCoderPosition(Rotation2d angle);
 
+    public void stopCascadeMotors(boolean stopped);
+
+    public void stopPivotMotors(boolean stopped);
+
 }

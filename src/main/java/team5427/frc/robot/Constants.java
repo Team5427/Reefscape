@@ -7,9 +7,12 @@ import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -57,7 +60,7 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double driverControllerJoystickDeadzone = 0.01;
+    public static final double kDriverControllerJoystickDeadzone = 0.01;
   }
 
   public static class SwerveConstants {
@@ -316,15 +319,17 @@ public final class Constants {
     public static final CANDeviceId kCascadeMasterId = new CANDeviceId(0);
     public static final CANDeviceId kCascadeSlaveId = new CANDeviceId(0);
 
-    public static final double kCascadeDriverGravityFF = 0.0;
+    // public static final double kCascadeDriverGravityFF = 0.0;
 
     public static final Rotation2d kCascadePivotBuffer = Rotation2d.fromDegrees(30);
+    public static final Debouncer kCascadePivotDebouncer = new Debouncer(0.25, DebounceType.kBoth);
 
     public static final Rotation2d kCascadePivotMaximumAngle = Rotation2d.fromDegrees(180);
     public static final Rotation2d kCascadePivotMinimumAngle = Rotation2d.fromDegrees(0);
 
     public static final Distance kCascadeMinimumHeight = Meters.of(0.0);
     public static final Distance kCascadeMaximumHeight = Meters.of(2.0);
+
 
     public static final MotorConfiguration kCascadeDriverConfiguration = new MotorConfiguration();
     static {
@@ -338,9 +343,11 @@ public final class Constants {
           .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
 
-      kCascadeDriverConfiguration.kP = 0.1;
+      kCascadeDriverConfiguration.kP = 4.0;
+      kCascadeDriverConfiguration.kG = 0.02;
       kCascadeDriverConfiguration.kD = 0.0;
-      kCascadeDriverConfiguration.kV = 0.0;
+      kCascadeDriverConfiguration.kV = 0.8;
+      kCascadeDriverConfiguration.kA = 0.5;
       kCascadeDriverConfiguration.kS = 0.0;
     }
 
@@ -358,11 +365,12 @@ public final class Constants {
       kPivotConfiguration.maxVelocity = kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
 
-      kPivotConfiguration.kP = 0.1;
+      kPivotConfiguration.kP = 1.0;
       kPivotConfiguration.kD = 0.0;
-      kPivotConfiguration.kV = 0.0;
+      kPivotConfiguration.kV = 22.76;
+      kPivotConfiguration.kA = 0.19;
       kPivotConfiguration.kS = 0.0;
-      kPivotConfiguration.kG = 0.0;
+      kPivotConfiguration.kG = 0.32;
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(0);

@@ -4,6 +4,10 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.Current;
@@ -11,9 +15,13 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.EndEffectorConstants;
+import team5427.frc.robot.SuperStructureEnum.CascadeStates.CasacdeLockedStates;
+import team5427.frc.robot.SuperStructureEnum.EndEffectorStates.EndEffectorLockedStates;
 import team5427.frc.robot.SuperStructureEnum.EndEffectorStates;
 import team5427.frc.robot.subsystems.EndEffector.io.EndEffectorIO;
 import team5427.frc.robot.subsystems.EndEffector.io.EndEffectorIOInputsAutoLogged;
@@ -29,9 +37,13 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
   private static final AngularAcceleration kFlywheelAccelerationMaxBuffer = RotationsPerSecondPerSecond.of(0.5);
 
+  @AutoLogOutput(key = "EndEffector/State")
   public static EndEffectorStates state;
 
   private static EndEffectorSubsystem m_instance;
+
+  @AutoLogOutput(key = "EndEffector/LockedStates")
+  public static List<EndEffectorLockedStates> lockedStates;
 
   private Rotation2d wristSetpoint;
   private Rotation2d pivotSetpoint;
@@ -90,7 +102,7 @@ public class EndEffectorSubsystem extends SubsystemBase {
     Logger.processInputs("End Effector", inputsAutoLogged);
     Logger.recordOutput("isCoralIntaked", isCoralIntaked);
     Logger.recordOutput("isAlgaeIntaked", isAlgaeIntaked);
-    Logger.recordOutput("End Effector State", state);
+    // Logger.recordOutput("End Effector State", state);
     Logger.recordOutput("Wrist Setpoint", wristSetpoint);
     Logger.recordOutput("Pivot Setpoint", pivotSetpoint);
     Logger.recordOutput("Coral Roller Setpoint", coralRollerSetpoint);
@@ -157,6 +169,32 @@ public class EndEffectorSubsystem extends SubsystemBase {
     return current.in(Amps) > 20.0;
   }
 
+  public static void lock(ArrayList<EndEffectorLockedStates> lock) {
+    lockedStates = lock;
+  }
+
+  public static void lock(EndEffectorLockedStates[] lock) {
+    lockedStates = Arrays.asList(lock);
+  }
+
+  public static void lock(EndEffectorLockedStates lock) {
+    if (!lockedStates.contains(lock)) {
+      lockedStates.add(lock);
+    }
+  }
+
+  public static void unLock(ArrayList<EndEffectorLockedStates> lock) {
+    lockedStates.removeAll(lock);
+  }
+
+  public static void unLock(EndEffectorLockedStates[] lock) {
+    lockedStates.removeAll(Arrays.asList(lock));
+  }
+
+  public static void unLock(EndEffectorLockedStates lock) {
+    lockedStates.remove(lock);
+  }
+
   public static EndEffectorSubsystem getInstance() {
     if (m_instance == null) {
       m_instance = new EndEffectorSubsystem();
@@ -173,5 +211,11 @@ public class EndEffectorSubsystem extends SubsystemBase {
         "Constraint Violations",
         "End Effector Pivot given a setpoint outside its bounds. ",
         AlertType.kError);
+  }
+
+  private static class Info {
+    public static Alert pivotLocked = new Alert("Locked Systems", "End Effector Pivot Locked", AlertType.kInfo);
+    public static Alert algaeRollerLocked = new Alert("Locked Systems", "End Effector Algae Roller Locked",
+        AlertType.kInfo);
   }
 }

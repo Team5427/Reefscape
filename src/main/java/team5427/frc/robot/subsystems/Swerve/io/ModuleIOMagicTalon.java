@@ -153,7 +153,7 @@ public class ModuleIOMagicTalon implements ModuleIO {
    */
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
-    driveMotor.setSetpoint(speed.baseUnitMagnitude());
+    driveMotor.setSetpoint(speed.in(MetersPerSecond));
     driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValue();
   }
 

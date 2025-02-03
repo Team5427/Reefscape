@@ -119,8 +119,8 @@ public class ModuleIOSim implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
     driveFFVolts =
-        SwerveConstants.kSIMDriveFeedforward.calculate(speed.baseUnitMagnitude());
-        SwerveConstants.kSIMDriveController.setSetpoint(speed.baseUnitMagnitude());
+        SwerveConstants.kSIMDriveFeedforward.calculate(speed.in(MetersPerSecond));
+        SwerveConstants.kSIMDriveController.setSetpoint(speed.in(MetersPerSecond));
   }
 
   /*
@@ -128,7 +128,7 @@ public class ModuleIOSim implements ModuleIO {
    */
   @Override
   public void setDriveSpeedSetpoint(Voltage volts) {
-    driveAppliedVolts = volts.baseUnitMagnitude();
+    driveAppliedVolts = volts.in(Volts);
   }
 
   @Override
@@ -141,7 +141,7 @@ public class ModuleIOSim implements ModuleIO {
    */
   @Override
   public void setSteerPositionSetpoint(Voltage volts) {
-    steerAppliedVolts = volts.baseUnitMagnitude();
+    steerAppliedVolts = volts.in(Volts);
   }
 
   @Override

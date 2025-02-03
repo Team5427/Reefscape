@@ -4,6 +4,11 @@
       "visible": true
     }
   },
+  "Keyboard 1 Settings": {
+    "window": {
+      "visible": true
+    }
+  },
   "System Joysticks": {
     "window": {
       "enabled": false
@@ -27,7 +32,7 @@
           "keyRate": 0.009999999776482582
         }
       ],
-      "axisCount": 3,
+      "axisCount": 4,
       "buttonCount": 4,
       "buttonKeys": [
         90,
@@ -60,7 +65,7 @@
           "incKey": 75
         }
       ],
-      "axisCount": 2,
+      "axisCount": 4,
       "buttonCount": 4,
       "buttonKeys": [
         77,

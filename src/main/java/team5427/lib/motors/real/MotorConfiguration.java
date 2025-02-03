@@ -1,28 +1,32 @@
 package team5427.lib.motors.real;
 
+import edu.wpi.first.units.DistanceUnit;
+import edu.wpi.first.units.VoltageUnit;
+import edu.wpi.first.units.measure.Per;
 import team5427.lib.drivers.ComplexGearRatio;
 
 public class MotorConfiguration {
 
   public static enum MotorMode {
-    kFlywheel,
-    kServo,
-    kLinear
+    kFlywheel, kServo, kLinear
   }
 
   public static enum IdleState {
-    kBrake,
-    kCoast,
+    kBrake, kCoast,
   }
 
   public boolean isInverted;
 
+  /** Per meters if it is a linear mechanism, or rotations otherwise */
   public double kP, kI, kD, kFF, kG;
   public double kS, kV, kA;
 
   public boolean isArm = false;
 
-  /** Alternative velocity, acceleration, and jerk values for additional specific motor control */
+  /**
+   * Alternative velocity, acceleration, and jerk values for additional specific
+   * motor control
+   */
   public double altA, altV, altJ;
 
   public int currentLimit;
@@ -37,7 +41,8 @@ public class MotorConfiguration {
    *
    * @deprecated will no longer be used as rotations are the default
    */
-  @Deprecated public double unitConversionRatio;
+  @Deprecated
+  public double unitConversionRatio;
 
   public double maxVelocity, maxAcceleration;
 
@@ -95,9 +100,11 @@ public class MotorConfiguration {
   }
 
   /**
-   * @param maxMotorRPM - maximum motor speed in rotations per minute
-   * @return if servo, then the maximum rotations per second of the motor. If a flywheel or linear,
-   *     then the meters per second of the motor.
+   * @param maxMotorRPM
+   *          - maximum motor speed in rotations per minute
+   * @return if servo, then the maximum rotations per second of the motor. If a
+   *         flywheel or linear,
+   *         then the meters per second of the motor.
    */
   public double getStandardMaxVelocity(double maxMotorRPM) {
     if (mode != MotorMode.kServo) {
@@ -111,10 +118,13 @@ public class MotorConfiguration {
   }
 
   /**
-   * @deprecated Unit conversion ratio will be removed, and instead implemented on a need-based
-   *     basis, rather than a general system
-   *     <p>converts different rotational and linear units, principally converts rotations ->
-   *     radians and meters -> radians
+   * @deprecated Unit conversion ratio will be removed, and instead implemented on
+   *             a need-based
+   *             basis, rather than a general system
+   *             <p>
+   *             converts different rotational and linear units, principally
+   *             converts rotations ->
+   *             radians and meters -> radians
    */
   @Deprecated(since = "1/7/2025", forRemoval = true)
   public double getStandardUnitConversionRatio() {
