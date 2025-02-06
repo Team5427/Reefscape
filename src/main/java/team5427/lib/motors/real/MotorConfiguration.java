@@ -17,7 +17,7 @@ public class MotorConfiguration {
 
   public boolean isInverted;
 
-  /** Per meters if it is a linear mechanism, or rotations otherwise */
+  /** Volts Per meters if it is a linear mechanism, or rotations otherwise */
   public double kP, kI, kD, kFF, kG;
   public double kS, kV, kA;
 

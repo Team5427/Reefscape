@@ -14,6 +14,8 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
@@ -310,9 +312,9 @@ public final class Constants {
     public static final String intakeCamName = "intakeCam";
     public static final String backCamName = "backCam";
 
-    // public static final Transform3d swerveCamTransform = new
-    // Transform3d(kLoopSpeed,
+    public static final Transform3d swerveCamTransform = new Transform3d(0,0,0, Rotation3d.kZero);
     // kOdometryFrequency, kLoopSpeed, null)
+
   }
 
   public static class CascadeConstants {
@@ -343,11 +345,11 @@ public final class Constants {
           .getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
 
-      kCascadeDriverConfiguration.kP = 4.0;
-      kCascadeDriverConfiguration.kG = 0.02;
+      kCascadeDriverConfiguration.kP = 10.0;
+      kCascadeDriverConfiguration.kG = 0.36;
       kCascadeDriverConfiguration.kD = 0.0;
-      kCascadeDriverConfiguration.kV = 0.8;
-      kCascadeDriverConfiguration.kA = 0.5;
+      kCascadeDriverConfiguration.kV = 3.50;
+      kCascadeDriverConfiguration.kA = 0.05;
       kCascadeDriverConfiguration.kS = 0.0;
     }
 
@@ -365,7 +367,7 @@ public final class Constants {
       kPivotConfiguration.maxVelocity = kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
 
-      kPivotConfiguration.kP = 1.0;
+      kPivotConfiguration.kP = 0.1;
       kPivotConfiguration.kD = 0.0;
       kPivotConfiguration.kV = 22.76;
       kPivotConfiguration.kA = 0.19;

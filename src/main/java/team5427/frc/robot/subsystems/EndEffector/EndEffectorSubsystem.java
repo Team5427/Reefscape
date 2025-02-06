@@ -120,35 +120,23 @@ public class EndEffectorSubsystem extends SubsystemBase {
   }
 
   public boolean isWristAtSetpoint() {
-    if (Math.abs(inputsAutoLogged.wristAngle.minus(wristSetpoint).getDegrees()) < 0.05) {
-      return true;
-    }
-    return false;
+    return Math.abs(inputsAutoLogged.wristAngle.minus(wristSetpoint).getDegrees()) < 0.05;
   }
 
   public boolean isPivotAtSetpoint() {
-    if (Math.abs(inputsAutoLogged.pivotAngle.minus(pivotSetpoint).getDegrees()) < 0.05) {
-      return true;
-    }
-    return false;
+    return Math.abs(inputsAutoLogged.pivotAngle.minus(pivotSetpoint).getDegrees()) < 0.05;
   }
 
   public boolean isCoralRollerAtSetpoint() {
-    if (Math.abs(inputsAutoLogged.coralRollerMotorLinearVelocity
+    return Math.abs(inputsAutoLogged.coralRollerMotorLinearVelocity
         .minus(coralRollerSetpoint)
-        .in(MetersPerSecond)) < 0.5) {
-      return true;
-    }
-    return false;
+        .in(MetersPerSecond)) < 0.5;
   }
 
   public boolean isAlgaeRollerAtSetpoint() {
-    if (Math.abs(inputsAutoLogged.algaeRollerMotorLinearVelocity
+    return Math.abs(inputsAutoLogged.algaeRollerMotorLinearVelocity
         .minus(algaeRollerSetpoint)
-        .in(MetersPerSecond)) < 0.5) {
-      return true;
-    }
-    return false;
+        .in(MetersPerSecond)) < 0.5;
   }
 
   public void setCoralRollerSetpoint(LinearVelocity velocity) {

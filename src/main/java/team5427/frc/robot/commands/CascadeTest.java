@@ -26,7 +26,7 @@ public class CascadeTest extends Command {
   @Override
   public void execute() {
     CascadeSubsystem.state = CascadeStates.GROUND_INTAKE;
-    cascadeSubsystem.setCascadeSetpoint(Distance.ofBaseUnits(1.8, Meter));
+    cascadeSubsystem.setCascadeSetpoint(Distance.ofRelativeUnits(.4, Meter));
     cascadeSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(13));
   }
 

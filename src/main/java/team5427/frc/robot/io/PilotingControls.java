@@ -49,20 +49,20 @@ public class PilotingControls {
     joy.b().whileTrue(new CascadeTest()).whileFalse(new InstantCommand(() -> {
       // CascadeSubsystem.getInstance().setCascadeEncoderPosition(Distance.ofBaseUnits(0.0,
       // Meters));
-      CascadeSubsystem.getInstance().setCascadeSetpoint(Distance.ofBaseUnits(0.1, Meters));
+      CascadeSubsystem.getInstance().setCascadeSetpoint(Distance.ofRelativeUnits(.5, Meters));
       CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
 
     }));
 
-    joy.leftTrigger()
-        .whileTrue(
+    joy.leftTrigger().negate()
+        .whileFalse(
             new InstantCommand(
                 () -> {
                   SwerveSubsystem.getInstance().getCurrentCommand().end(true);
                   SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
                 },
                 SwerveSubsystem.getInstance()))
-        .whileFalse(new ChassisMovement(joy));
+        .whileTrue(new ChassisMovement(joy));
 
     if (DriverStation.isDisabled()) {
     }

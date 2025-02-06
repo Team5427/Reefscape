@@ -40,8 +40,8 @@ public class CascadeIOSim implements CascadeIO {
         private DCMotorSim pivotMotors;
         private Rotation2d pivotSetpoint;
 
-        private static final double cascadeMotorInertia = 0.01;
-        private static final double pivotMotorInertia = 0.003;
+        private static final double cascadeMotorInertia = 0.003;
+        private static final double pivotMotorInertia = 0.03;
 
         private ProfiledPIDController cascadeController;
         private ElevatorFeedforward cascadeFeedforward;
@@ -95,7 +95,7 @@ public class CascadeIOSim implements CascadeIO {
                                                 CascadeConstants.kCascadeDriverConfiguration.maxAcceleration));
                 cascadeFeedforward = new ElevatorFeedforward(CascadeConstants.kCascadeDriverConfiguration.kS,
                                 CascadeConstants.kCascadeDriverConfiguration.kG,
-                                CascadeConstants.kCascadeDriverConfiguration.kV);
+                                CascadeConstants.kCascadeDriverConfiguration.kV / (2*Math.PI), CascadeConstants.kCascadeDriverConfiguration.kA / (2*Math.PI));
 
                 pivotController = new ProfiledPIDController(CascadeConstants.kPivotConfiguration.kP,
                                 CascadeConstants.kPivotConfiguration.kI, CascadeConstants.kPivotConfiguration.kD,
@@ -103,8 +103,8 @@ public class CascadeIOSim implements CascadeIO {
                                                 CascadeConstants.kPivotConfiguration.maxAcceleration));
 
                 pivotFeedforward = new ArmFeedforward(CascadeConstants.kPivotConfiguration.kS,
-                                CascadeConstants.kPivotConfiguration.kG, CascadeConstants.kPivotConfiguration.kV,
-                                CascadeConstants.kPivotConfiguration.kA);
+                                CascadeConstants.kPivotConfiguration.kG, CascadeConstants.kPivotConfiguration.kV / (2*Math.PI),
+                                CascadeConstants.kPivotConfiguration.kA / (2*Math.PI));
         }
 
         @Override

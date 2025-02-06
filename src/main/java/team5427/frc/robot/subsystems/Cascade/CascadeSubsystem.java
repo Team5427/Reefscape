@@ -35,10 +35,10 @@ public class CascadeSubsystem extends SubsystemBase {
 
     private static CascadeSubsystem m_instance;
 
-    @AutoLogOutput(key = "Cascade/State")
+    @AutoLogOutput(key = "CascadeOutputs/State")
     public static CascadeStates state;
 
-    @AutoLogOutput(key = "Cascade/LockedStates")
+    @AutoLogOutput(key = "CascadeOutputs/LockedStates")
     public static List<CasacdeLockedStates> lockedStates;
 
     public static CascadeSubsystem getInstance() {
@@ -99,9 +99,7 @@ public class CascadeSubsystem extends SubsystemBase {
             Errors.pivotConstraint.set(true);
         } else {
             Errors.pivotConstraint.set(false);
-            if (CascadeConstants.kCascadePivotDebouncer.calculate(
-                    (Math.abs(pivotSetpoint.minus(CascadeConstants.kCascadePivotBuffer).getDegrees()) > 0.5)))
-                io.setPivotSetpoint(pivotSetpoint);
+            io.setPivotSetpoint(pivotSetpoint);
         }
         Logger.processInputs("Cascade", inputsAutoLogged);
 
