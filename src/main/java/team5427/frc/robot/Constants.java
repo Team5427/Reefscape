@@ -313,6 +313,7 @@ public final class Constants {
     public static final String backCamName = "backCam";
 
     public static final Transform3d swerveCamTransform = new Transform3d(0,0,0, Rotation3d.kZero);
+    public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
     // kOdometryFrequency, kLoopSpeed, null)
 
   }

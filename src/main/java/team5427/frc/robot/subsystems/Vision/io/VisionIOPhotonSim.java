@@ -1,5 +1,8 @@
 package team5427.frc.robot.subsystems.Vision.io;
 
+import static edu.wpi.first.units.Units.Meter;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -9,6 +12,10 @@ import java.util.Set;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
+import org.photonvision.simulation.VisionSystemSim;
+import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -21,19 +28,32 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import team5427.frc.robot.Constants.VisionConstants;
 
-public class VisionIOPhoton implements VisionIO {
+public class VisionIOPhotonSim implements VisionIO {
 
     private PhotonCamera cam;
 
+    private PhotonCameraSim sim;
+
+    private VisionSystemSim visionSystemSim;
+
     public Matrix<N3, N1> stddev;
 
-    PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(
-            AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape), PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-            VisionConstants.swerveCamTransform);
+    // PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(
+    //         AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape), PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+    //         VisionConstants.swerveCamTransform);
 
-    public VisionIOPhoton(String cameraName) {
+
+    public VisionIOPhotonSim(String cameraName) {
         cam = new PhotonCamera(cameraName);
-        photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+        try {
+            sim = new PhotonCameraSim(cam, new SimCameraProperties("photon_calibration_5d60e347-e2ab-4265-a457-f89d3c0d9b3c_1280x720.json", 1280, 720), AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape));
+            sim.setMaxSightRange(VisionConstants.kCameraMaxRange.in(Meter));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        visionSystemSim.addAprilTags(AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape));
+        visionSystemSim.addCamera(sim, VisionConstants.swerveCamTransform);
+        // photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
     }
 
     @Override
@@ -41,15 +61,20 @@ public class VisionIOPhoton implements VisionIO {
         List<PhotonPipelineResult> results = cam.getAllUnreadResults();
         inputs.connected = cam.isConnected();
         ArrayList<PoseObservation> obs = new ArrayList<>();
-
+        
         for (int i = results.size() - 1; i > 0; i--) {
+            
             if (results.get(i).multitagResult.isPresent()) {
+
                 Pose3d pose = new Pose3d(results.get(i).getMultiTagResult().get().estimatedPose.best.getTranslation(),
                         results.get(i).getMultiTagResult().get().estimatedPose.best.getRotation());
+                List<VisionTargetSim> visionTargetSims = new ArrayList<>();
                 double totalTagDistance = 0.0;
                 for (PhotonTrackedTarget target : results.get(i).targets) {
                     totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
                 }
+                visionSystemSim.update(pose);
+                // sim.process(results.get(i).metadata.getLatencyMillis(), pose, new VisionTar);
 
                 Set<Short> tagIdSet = new HashSet<>();
                 for (PhotonTrackedTarget target : results.get(i).targets) {
@@ -89,7 +114,8 @@ public class VisionIOPhoton implements VisionIO {
 
     @Override
     public void applyCameraTransformation(Transform3d transformation) {
-        photonPoseEstimator.setRobotToCameraTransform(transformation);
+        // visionSystemSim = new VisionSystemSim(sim, transformation);
+        // photonPoseEstimator.setRobotToCameraTransform(transformation);
     }
 
     @Override
