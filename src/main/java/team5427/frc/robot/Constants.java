@@ -43,7 +43,7 @@ import team5427.lib.motors.real.MotorConfiguration.MotorMode;
  */
 public final class Constants {
   public static final double kLoopSpeed = 0.020;
-  public static final String kCanivoreCanBusName = "dummy";
+  public static final String kCanivoreCanBusName = "brook";
   public static final double kOdometryFrequency = new CANBus(Constants.kCanivoreCanBusName).isNetworkFD() ? 250.0
       : 100.0;
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
@@ -67,8 +67,8 @@ public final class Constants {
 
   public static class SwerveConstants {
     public static final double kWheelDiameterMeters = Units.inchesToMeters(3.88);
-    public static final double kTrackWidth = Units.inchesToMeters(19.5);
-    public static final double kWheelBase = Units.inchesToMeters(19.5);
+    public static final double kTrackWidth = Units.inchesToMeters(22.75);
+    public static final double kWheelBase = Units.inchesToMeters(22.75);
 
     public static final PIDController kSIMSteerController = new PIDController(5, 0, 0.2);
     public static final SimpleMotorFeedforward kSIMSteerFeedforward = new SimpleMotorFeedforward(0, 0.01, 0);
@@ -86,15 +86,15 @@ public final class Constants {
 
     static {
       kSIMSteerController.enableContinuousInput(-0.5, 0.5);
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(5, "*");
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(3, "*");
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(9, "*");
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(7, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(3, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(5, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(7, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(9, "*");
 
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(6);
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(4);
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(10);
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(8);
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(4);
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(6);
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(8);
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(10);
 
       kSwerveUtilInstance.kCancoderIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(12, "*");
       kSwerveUtilInstance.kCancoderIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(13, "*");
@@ -110,11 +110,12 @@ public final class Constants {
       kSwerveUtilInstance.kSteerInversion[SwerveUtil.kFrontRightModuleIdx] = true;
       kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearLeftModuleIdx] = true;
       kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearRightModuleIdx] = true;
-
+       
+      // TODO
       kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.48;
-
+      // TODO
       kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = 0.255;
-
+      // TODO
       kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.38;
 
       kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = 0.278;
@@ -127,7 +128,7 @@ public final class Constants {
       kDriveMotorConfiguration.idleState = IdleState.kBrake;
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
 
-      kDriveMotorConfiguration.currentLimit = 80;
+      kDriveMotorConfiguration.currentLimit = 70;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity = kDriveMotorConfiguration
@@ -160,7 +161,7 @@ public final class Constants {
       kSteerMotorConfiguration.altA = kSteerMotorConfiguration.maxAcceleration;
     }
 
-    public static final CANDeviceId kPigeonCANId = new CANDeviceId(16, "*");
+    public static final CANDeviceId kPigeonCANId = new CANDeviceId(11, "*");
 
     public static class SimulationConstants {
       public static final double steerkP = 30.0;
@@ -354,8 +355,8 @@ public final class Constants {
       kCascadeDriverConfiguration.kS = 0.0;
     }
 
-    public static final CANDeviceId kPivotMasterId = new CANDeviceId(0);
-    public static final CANDeviceId kPivotSlaveId = new CANDeviceId(0);
+    public static final CANDeviceId kPivotMasterId = new CANDeviceId(16);
+    public static final CANDeviceId kPivotSlaveId = new CANDeviceId(17);
 
     public static final MotorConfiguration kPivotConfiguration = new MotorConfiguration();
     static {
