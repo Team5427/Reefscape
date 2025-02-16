@@ -42,12 +42,17 @@ public class SwerveModule {
     // io.resetMotorSetpoint();
   }
 
+  public ModuleIO getModuleIO() {
+    return io;
+  }
+
   public void setModuleState(SwerveModuleState state) {
     SwerveModuleState newState = state;
     switch (Constants.currentMode) {
       case REPLAY:
       case REAL:
         if (io != null) {
+          newState.optimize(inputs.absolutePosition);
           io.setModuleState(newState);
         }
         break;

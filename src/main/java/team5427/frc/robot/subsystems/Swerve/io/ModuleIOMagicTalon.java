@@ -140,11 +140,11 @@ public class ModuleIOMagicTalon implements ModuleIO {
     return Rotation2d.fromRotations(cancoder.getAbsolutePosition().getValueAsDouble());
   }
 
-  @Override
-  public void resetMotorSetpoint() {
-    steerMotor.setEncoderPosition(getCancoderRotation());
-    driveMotor.setEncoderPosition(0.0);
-  }
+  //   @Override
+  //   public void resetMotorSetpoint() {
+  //     steerMotor.setEncoderPosition(getCancoderRotation());
+  //     driveMotor.setEncoderPosition(0.0);
+  //   }
 
   /**
    * Needs to be a <strong>Double</strong>, NOT a double

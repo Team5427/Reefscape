@@ -2,7 +2,6 @@ package team5427.frc.robot.subsystems.Swerve;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -38,7 +37,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private ChassisSpeeds currentSpeeds;
   private SwerveModuleState[] actualModuleStates;
-
+  private boolean bypass = false;
 
   public static DrivingStates state;
 
@@ -88,7 +87,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     isFieldOp = true;
     currentSpeeds = new ChassisSpeeds(0, 0, 0);
-
+    // modules[0].setModuleState(new SwerveModuleState(0,Rotation2d.kZero));
     PhoenixOdometryThread.getInstance().start();
     System.out.println("Created New Swerve");
   }
@@ -111,6 +110,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
+
+    if (bypass) return;
 
     SwerveModuleState[] moduleStates =
         SwerveConstants.m_kinematics.toSwerveModuleStates(currentSpeeds);
@@ -163,7 +164,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       // Apply update
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
-      super.periodic();
+      // super.periodic();
     }
 
     // Update gyro alert
@@ -264,5 +265,9 @@ public class SwerveSubsystem extends SubsystemBase {
     for (SwerveModule module : modules) {
       module.stop();
     }
+  }
+
+  public void bypass(boolean bypass) {
+    this.bypass = bypass;
   }
 }

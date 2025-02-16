@@ -17,8 +17,8 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotController;
 
 /**
- * Interface with the QuestNav on VR headset for pose estimation.
- * See https://www.chiefdelphi.com/t/questnav-the-best-robot-pose-tracking-system-in-frc/
+ * Interface with the QuestNav on VR headset for pose estimation. See
+ * https://www.chiefdelphi.com/t/questnav-the-best-robot-pose-tracking-system-in-frc/
  */
 public class QuestNav {
   // Configure Network Tables topics (questnav/...) to communicate with the Quest HMD
@@ -29,13 +29,14 @@ public class QuestNav {
 
   // Subscribe to the Network Tables questnav data topics
   private DoubleSubscriber questTimestamp = nt4Table.getDoubleTopic("timestamp").subscribe(0.0f);
-  private FloatArraySubscriber questPosition = nt4Table.getFloatArrayTopic("position")
-      .subscribe(new float[] { 0.0f, 0.0f, 0.0f });
-  private FloatArraySubscriber questQuaternion = nt4Table.getFloatArrayTopic("quaternion")
-      .subscribe(new float[] { 0.0f, 0.0f, 0.0f, 0.0f });
-  private FloatArraySubscriber questEulerAngles = nt4Table.getFloatArrayTopic("eulerAngles")
-      .subscribe(new float[] { 0.0f, 0.0f, 0.0f });
-  private DoubleSubscriber questBatteryPercent = nt4Table.getDoubleTopic("batteryPercent").subscribe(0.0f);
+  private FloatArraySubscriber questPosition =
+      nt4Table.getFloatArrayTopic("position").subscribe(new float[] {0.0f, 0.0f, 0.0f});
+  private FloatArraySubscriber questQuaternion =
+      nt4Table.getFloatArrayTopic("quaternion").subscribe(new float[] {0.0f, 0.0f, 0.0f, 0.0f});
+  private FloatArraySubscriber questEulerAngles =
+      nt4Table.getFloatArrayTopic("eulerAngles").subscribe(new float[] {0.0f, 0.0f, 0.0f});
+  private DoubleSubscriber questBatteryPercent =
+      nt4Table.getDoubleTopic("batteryPercent").subscribe(0.0f);
 
   // Pose of the Quest when the pose was reset
   private Pose2d resetPoseOculus = new Pose2d();
@@ -57,7 +58,7 @@ public class QuestNav {
 
   /**
    * Gets the pose of the robot on the field
-   * 
+   *
    * @return pose of the robot
    */
   public Pose2d getRobotPose() {
@@ -66,7 +67,7 @@ public class QuestNav {
 
   /**
    * Gets the pose of the Quest on the field
-   * 
+   *
    * @return pose of the Quest
    */
   public Pose2d getQuestPose() {
@@ -78,7 +79,7 @@ public class QuestNav {
 
   /*
    * Gets the battery percent of the Quest.
-   * 
+   *
    * @return battery percent of the Quest
    */
   public double getBatteryPercent() {
@@ -87,7 +88,7 @@ public class QuestNav {
 
   /**
    * Returns if the Quest is connected
-   * 
+   *
    * @return true if the Quest is connected
    */
   public boolean isConnected() {
@@ -96,7 +97,7 @@ public class QuestNav {
 
   /**
    * Gets the raw Rotation3d of the Quest
-   * 
+   *
    * @return Rotation3d of the Quest, not adjusted for the reset pose
    */
   public Rotation3d getQuaternion() {
@@ -106,7 +107,7 @@ public class QuestNav {
 
   /**
    * Gets the Quests's timestamp
-   * 
+   *
    * @return the Quest timestamp
    */
   public double getTimestamp() {
@@ -114,9 +115,9 @@ public class QuestNav {
   }
 
   /**
-   * Set the robot's pose on the field. This is useful to seed the robot to a known position. This is usually called at
-   * the start of the autonomous period.
-   * 
+   * Set the robot's pose on the field. This is useful to seed the robot to a known position. This
+   * is usually called at the start of the autonomous period.
+   *
    * @param newPose new robot pose
    */
   public void resetPose(Pose2d newPose) {
@@ -125,8 +126,8 @@ public class QuestNav {
   }
 
   /**
-   * Clean up questnav subroutine messages after processing on the headset. Call this each iteration to reset the
-   * command after it has been processed.
+   * Clean up questnav subroutine messages after processing on the headset. Call this each iteration
+   * to reset the command after it has been processed.
    */
   public void cleanUpQuestNavMessages() {
     if (questMiso.get() == 99) {
@@ -136,7 +137,7 @@ public class QuestNav {
 
   /**
    * Gets the raw pose of the oculus, relative to the position where it started
-   * 
+   *
    * @return pose of the oculus
    */
   private Pose2d getUncorrectedOculusPose() {
@@ -147,5 +148,4 @@ public class QuestNav {
     var translation = new Translation2d(questnavPosition[2], -questnavPosition[0]);
     return new Pose2d(translation, rotation);
   }
-
 }

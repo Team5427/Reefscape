@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import org.team4206.battleaid.common.TunedJoystick;
 import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
-
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -47,14 +46,15 @@ public class ChassisMovement extends Command {
       swerveSubsystem.setChassisSpeeds(inputSpeeds);
       Logger.recordOutput("InputSpeeds", inputSpeeds);
     } else {
-     
+
       double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
       vx = -tunedJoystick.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
       vy = -tunedJoystick.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-      omegaRadians = -tunedJoystick.getLeftX()
-          * Math.abs(tunedJoystick.getLeftX())
-          * Math.PI
-          * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+      omegaRadians =
+          -tunedJoystick.getLeftX()
+              * Math.abs(tunedJoystick.getLeftX())
+              * Math.PI
+              * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
 

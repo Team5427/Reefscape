@@ -29,13 +29,14 @@ public class MagicSteelTalonFX implements IMotorController {
   public MagicSteelTalonFX(CANDeviceId id) {
     this.id = id;
 
-    talonFX = new TalonFX(this.id.getDeviceNumber());
+    talonFX = new TalonFX(this.id.getDeviceNumber(), this.id.getBus());
 
     withFOC = false;
   }
 
   @Override
   public void apply(MotorConfiguration configuration) {
+    this.configuration = configuration;
 
     talonConfig = new TalonFXConfiguration();
 

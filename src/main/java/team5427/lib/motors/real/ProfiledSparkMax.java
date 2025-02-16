@@ -189,5 +189,4 @@ public class ProfiledSparkMax implements IMotorController {
   public MotorConfiguration getMotorConfiguration() {
     return this.configuration;
   }
-
 }

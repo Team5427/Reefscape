@@ -4,10 +4,6 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.Current;
@@ -15,14 +11,15 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.EndEffectorConstants;
-import team5427.frc.robot.SuperStructureEnum.CascadeStates.CasacdeLockedStates;
-import team5427.frc.robot.SuperStructureEnum.EndEffectorStates.EndEffectorLockedStates;
 import team5427.frc.robot.SuperStructureEnum.EndEffectorStates;
+import team5427.frc.robot.SuperStructureEnum.EndEffectorStates.EndEffectorLockedStates;
 import team5427.frc.robot.subsystems.EndEffector.io.EndEffectorIO;
 import team5427.frc.robot.subsystems.EndEffector.io.EndEffectorIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.EndEffector.io.EndEffectorIOSim;
@@ -35,7 +32,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
 
   public boolean isAlgaeIntaked = false;
 
-  private static final AngularAcceleration kFlywheelAccelerationMaxBuffer = RotationsPerSecondPerSecond.of(0.5);
+  private static final AngularAcceleration kFlywheelAccelerationMaxBuffer =
+      RotationsPerSecondPerSecond.of(0.5);
 
   @AutoLogOutput(key = "EndEffector/State")
   public static EndEffectorStates state;
@@ -82,16 +80,20 @@ public class EndEffectorSubsystem extends SubsystemBase {
     io.setCoralRollerSetpoint(coralRollerSetpoint);
     io.setAlgaeRollerSetpoint(algaeRollerSetpoint);
 
-    if (Math.abs(pivotSetpoint.getDegrees()) <= Math.abs(EndEffectorConstants.kPivotMaximumAngle.getDegrees())
-        && Math.abs(pivotSetpoint.getDegrees()) >= Math.abs(EndEffectorConstants.kPivotMinimumAngle.getDegrees())) {
+    if (Math.abs(pivotSetpoint.getDegrees())
+            <= Math.abs(EndEffectorConstants.kPivotMaximumAngle.getDegrees())
+        && Math.abs(pivotSetpoint.getDegrees())
+            >= Math.abs(EndEffectorConstants.kPivotMinimumAngle.getDegrees())) {
       io.setPivotSetpoint(pivotSetpoint);
       Errors.pivotConstraint.set(false);
     } else {
       Errors.pivotConstraint.set(true);
     }
 
-    if (Math.abs(wristSetpoint.getDegrees()) <= Math.abs(EndEffectorConstants.kWristMaximumAngle.getDegrees())
-        && Math.abs(wristSetpoint.getDegrees()) >= Math.abs(EndEffectorConstants.kWristMinimumAngle.getDegrees())) {
+    if (Math.abs(wristSetpoint.getDegrees())
+            <= Math.abs(EndEffectorConstants.kWristMaximumAngle.getDegrees())
+        && Math.abs(wristSetpoint.getDegrees())
+            >= Math.abs(EndEffectorConstants.kWristMinimumAngle.getDegrees())) {
 
       io.setCoralWristSetpoint(wristSetpoint);
       Errors.wristConstraint.set(false);
@@ -128,15 +130,21 @@ public class EndEffectorSubsystem extends SubsystemBase {
   }
 
   public boolean isCoralRollerAtSetpoint() {
-    return Math.abs(inputsAutoLogged.coralRollerMotorLinearVelocity
-        .minus(coralRollerSetpoint)
-        .in(MetersPerSecond)) < 0.5;
+    return Math.abs(
+            inputsAutoLogged
+                .coralRollerMotorLinearVelocity
+                .minus(coralRollerSetpoint)
+                .in(MetersPerSecond))
+        < 0.5;
   }
 
   public boolean isAlgaeRollerAtSetpoint() {
-    return Math.abs(inputsAutoLogged.algaeRollerMotorLinearVelocity
-        .minus(algaeRollerSetpoint)
-        .in(MetersPerSecond)) < 0.5;
+    return Math.abs(
+            inputsAutoLogged
+                .algaeRollerMotorLinearVelocity
+                .minus(algaeRollerSetpoint)
+                .in(MetersPerSecond))
+        < 0.5;
   }
 
   public void setCoralRollerSetpoint(LinearVelocity velocity) {
@@ -150,7 +158,8 @@ public class EndEffectorSubsystem extends SubsystemBase {
   private boolean isAlgaeIntaked(Current current) {
     return current.in(Amps) > 20.0
         && inputsAutoLogged.algaeRollerMotorAngularAcceleration.compareTo(
-            kFlywheelAccelerationMaxBuffer) < 0.5;
+                kFlywheelAccelerationMaxBuffer)
+            < 0.5;
   }
 
   private boolean isCoralIntaked(Current current) {
@@ -191,19 +200,22 @@ public class EndEffectorSubsystem extends SubsystemBase {
   }
 
   private static class Errors {
-    public static Alert wristConstraint = new Alert(
-        "Constraint Violations",
-        "End Effector Wrist given a setpoint outside its bounds. ",
-        AlertType.kError);
-    public static Alert pivotConstraint = new Alert(
-        "Constraint Violations",
-        "End Effector Pivot given a setpoint outside its bounds. ",
-        AlertType.kError);
+    public static Alert wristConstraint =
+        new Alert(
+            "Constraint Violations",
+            "End Effector Wrist given a setpoint outside its bounds. ",
+            AlertType.kError);
+    public static Alert pivotConstraint =
+        new Alert(
+            "Constraint Violations",
+            "End Effector Pivot given a setpoint outside its bounds. ",
+            AlertType.kError);
   }
 
   private static class Info {
-    public static Alert pivotLocked = new Alert("Locked Systems", "End Effector Pivot Locked", AlertType.kInfo);
-    public static Alert algaeRollerLocked = new Alert("Locked Systems", "End Effector Algae Roller Locked",
-        AlertType.kInfo);
+    public static Alert pivotLocked =
+        new Alert("Locked Systems", "End Effector Pivot Locked", AlertType.kInfo);
+    public static Alert algaeRollerLocked =
+        new Alert("Locked Systems", "End Effector Algae Roller Locked", AlertType.kInfo);
   }
 }

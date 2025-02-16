@@ -1,19 +1,16 @@
 package team5427.frc.robot.commands;
 
 import static edu.wpi.first.units.Units.Meter;
-import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import team5427.frc.robot.SuperStructureEnum.CascadeStates;
-import team5427.frc.robot.SuperStructureEnum.EndEffectorStates;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
-import team5427.frc.robot.subsystems.EndEffector.EndEffectorSubsystem;
 
 public class CascadeTest extends Command {
 
-  private  CascadeSubsystem cascadeSubsystem;
+  private CascadeSubsystem cascadeSubsystem;
 
   public CascadeTest() {
     cascadeSubsystem = CascadeSubsystem.getInstance();
@@ -39,6 +36,5 @@ public class CascadeTest extends Command {
   // }
 
   @Override
-  public void end(boolean interruped) {
-  }
+  public void end(boolean interruped) {}
 }

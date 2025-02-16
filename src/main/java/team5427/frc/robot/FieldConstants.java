@@ -1,6 +1,5 @@
 package team5427.frc.robot;
 
-
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 import java.util.ArrayList;
@@ -10,8 +9,7 @@ import java.util.Map;
 
 // credit 6328
 /**
- * Contains various field dimensions and useful reference points. All units are in meters and
-poses
+ * Contains various field dimensions and useful reference points. All units are in meters and poses
  * have a blue alliance origin.
  */
 public class FieldConstants {
@@ -169,5 +167,4 @@ public class FieldConstants {
 
   public static final double aprilTagWidth = Units.inchesToMeters(6.50);
   public static final int aprilTagCount = 22;
-
 }

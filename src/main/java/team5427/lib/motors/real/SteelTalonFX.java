@@ -1,13 +1,18 @@
 package team5427.lib.motors.real;
 
 import static edu.wpi.first.units.Units.Rotation;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
@@ -29,16 +34,23 @@ public class SteelTalonFX implements IMotorController {
 
   public TalonFXConfiguration talonConfig;
 
+  private StatusSignal<Angle> position;
+  private StatusSignal<AngularVelocity> velocity;
+
   public SteelTalonFX(CANDeviceId id) {
     this.id = id;
 
-    talonFX = new TalonFX(this.id.getDeviceNumber());
+    talonFX = new TalonFX(this.id.getDeviceNumber(), this.id.getBus());
 
     withFOC = false;
+
+    position = talonFX.getPosition();
+    velocity = talonFX.getVelocity();
   }
 
   @Override
   public void apply(MotorConfiguration configuration) {
+    this.configuration = configuration;
     talonConfig = new TalonFXConfiguration();
 
     // positionConversionFactor = configuration.unitConversionRatio;
@@ -74,7 +86,7 @@ public class SteelTalonFX implements IMotorController {
     talonConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     talonConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     talonConfig.CurrentLimits.StatorCurrentLimit = configuration.currentLimit;
-    talonConfig.CurrentLimits.SupplyCurrentLimit = configuration.currentLimit;
+    talonConfig.CurrentLimits.SupplyCurrentLimit = configuration.currentLimit * 0.5;
 
     talonFX.getConfigurator().apply(talonConfig);
   }
@@ -143,13 +155,28 @@ public class SteelTalonFX implements IMotorController {
    */
   @Override
   public double getEncoderPosition() {
+
     if (configuration.mode != MotorMode.kServo) {
       // converts to meters
-      return talonFX.getPosition().getValue().in(Rotation)
-          * Math.PI
-          * configuration.finalDiameterMeters;
+      return position.getValue().in(Rotation) * Math.PI * configuration.finalDiameterMeters;
     }
-    return talonFX.getPosition().getValueAsDouble();
+    return position.getValueAsDouble();
+  }
+
+  /**
+   * @return rotations if a servo, or meters if a flywheel or linear
+   */
+  public double getEncoderPosition(StatusSignal<Angle> position) {
+
+    if (configuration.mode != MotorMode.kServo) {
+      // converts to meters
+      return position.getValue().in(Rotation) * Math.PI * configuration.finalDiameterMeters;
+    }
+    return position.getValueAsDouble();
+  }
+
+  public void updateStatusSignals() {
+    BaseStatusSignal.refreshAll(position, velocity);
   }
 
   /**
@@ -159,12 +186,28 @@ public class SteelTalonFX implements IMotorController {
   public double getEncoderVelocity() {
     if (configuration.mode != MotorMode.kServo) {
       // converts to meters
-      return talonFX.getPosition().getValue().in(Rotation)
+      // BaseStatusSignal.refreshAll(talonFX.getPosition());
+      return velocity.getValue().in(RotationsPerSecond)
           * Math.PI
           * configuration.finalDiameterMeters;
     }
     // converts to RPM
-    return talonFX.getVelocity().getValueAsDouble() * 60.0;
+    return velocity.getValue().in(RotationsPerSecond) * 60.0;
+  }
+
+  /**
+   * @return rotations per minute if a servo, meters per second if a linear or flywheel
+   */
+  public double getEncoderVelocity(StatusSignal<AngularVelocity> velocity) {
+    if (configuration.mode != MotorMode.kServo) {
+      // converts to meters
+      // BaseStatusSignal.refreshAll(talonFX.getPosition());
+      return velocity.getValue().in(RotationsPerSecond)
+          * Math.PI
+          * configuration.finalDiameterMeters;
+    }
+    // converts to RPM
+    return velocity.getValue().in(RotationsPerSecond) * 60.0;
   }
 
   @Override
@@ -229,6 +272,7 @@ public class SteelTalonFX implements IMotorController {
         break;
     }
   }
+
   // /**
   // *
   // @param setpoint - Radians setpoint

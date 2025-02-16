@@ -3,8 +3,9 @@ package team5427.frc.robot.subsystems.Swerve.io;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
@@ -13,6 +14,9 @@ import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
@@ -30,8 +34,15 @@ public class ModuleIOTalon implements ModuleIO {
   private final int moduleIdx;
 
   private SwerveModuleState targetModuleState;
-  private Voltage steerMotorVoltage = Volts.of(0.0);
-  private Voltage driveMotorVoltage = Volts.of(0.0);
+  private StatusSignal<Voltage> steerMotorVoltage;
+  private StatusSignal<Voltage> driveMotorVoltage;
+  private StatusSignal<Angle> absolutePosition;
+  private StatusSignal<Current> steerMotorCurrent;
+  private StatusSignal<Current> driveMotorCurrent;
+  private StatusSignal<Angle> driveMotorPosition;
+  private StatusSignal<Angle> steerMotorPosition;
+  private StatusSignal<AngularVelocity> driveMotorVelocity;
+  private StatusSignal<AngularVelocity> steerMotorVelocity;
 
   private Queue<Double> drivePositionQueue;
   private Queue<Double> steerPositionQueue;
@@ -55,8 +66,8 @@ public class ModuleIOTalon implements ModuleIO {
     driveMotor.apply(SwerveConstants.kDriveMotorConfiguration);
     steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
 
-    driveMotor.getTalonFX().clearStickyFaults();
-    steerMotor.getTalonFX().clearStickyFaults();
+    // driveMotor.getTalonFX().clearStickyFaults();
+    // steerMotor.getTalonFX().clearStickyFaults();
 
     CANcoderConfiguration configuration = new CANcoderConfiguration();
     configuration.MagnetSensor.withAbsoluteSensorDiscontinuityPoint(0.5);
@@ -66,6 +77,7 @@ public class ModuleIOTalon implements ModuleIO {
     cancoder.getConfigurator().apply(configuration);
 
     cancoder.clearStickyFaults();
+    absolutePosition = cancoder.getAbsolutePosition();
 
     steerMotor.talonConfig.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
     steerMotor.talonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
@@ -74,8 +86,15 @@ public class ModuleIOTalon implements ModuleIO {
         SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio();
     steerMotor.getTalonFX().getConfigurator().apply(steerMotor.talonConfig);
 
-    steerMotor.setEncoderPosition(cancoder.getAbsolutePosition().getValue().in(Rotations));
+    steerMotor.setEncoderPosition(
+        cancoder.getAbsolutePosition().refresh().getValue().in(Rotations));
     driveMotor.setEncoderPosition(0.0);
+
+    driveMotorPosition = driveMotor.getTalonFX().getPosition();
+    steerMotorPosition = steerMotor.getTalonFX().getPosition();
+
+    driveMotorVelocity = driveMotor.getTalonFX().getVelocity();
+    steerMotorVelocity = steerMotor.getTalonFX().getVelocity();
 
     timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
     drivePositionQueue =
@@ -84,38 +103,59 @@ public class ModuleIOTalon implements ModuleIO {
     steerPositionQueue =
         PhoenixOdometryThread.getInstance().registerSignal(steerMotor.getTalonFX().getPosition());
 
+    System.out.println("New Module with idx: " + moduleIdx);
+
+    driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage();
+    steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage();
+
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        team5427.frc.robot.Constants.kOdometryFrequency,
+        driveMotorPosition,
+        steerMotorPosition,
+        absolutePosition,
+        driveMotorVelocity,
+        steerMotorVelocity);
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        50.0, driveMotorVoltage, steerMotorVoltage, driveMotorCurrent, steerMotorCurrent);
+
     ParentDevice.optimizeBusUtilizationForAll(
         driveMotor.getTalonFX(), steerMotor.getTalonFX(), cancoder);
-
-    System.out.println("New Module with idx: " + moduleIdx);
   }
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
-    driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValue();
-    steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage().getValue();
 
-    inputs.absolutePosition = getCancoderRotation();
+    BaseStatusSignal.refreshAll(
+        absolutePosition, driveMotorPosition, steerMotorPosition, driveMotorVelocity);
+    BaseStatusSignal.refreshAll(
+        steerMotorVoltage, driveMotorVoltage, driveMotorCurrent, steerMotorCurrent);
 
+    inputs.absolutePosition = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
+    // steerMotor.updateStatusSignals();
+    // driveMotor.updateStatusSignals();
     inputs.currentModuleState =
-        new SwerveModuleState(driveMotor.getEncoderVelocity(), inputs.absolutePosition);
-    inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getEncoderPosition());
+        new SwerveModuleState(
+            driveMotor.getEncoderVelocity(driveMotorVelocity), inputs.absolutePosition);
+    inputs.driveMotorPosition =
+        Rotation2d.fromRotations(driveMotor.getEncoderPosition(driveMotorPosition));
     inputs.steerMotorVelocityRotations =
-        RotationsPerSecond.of(steerMotor.getEncoderVelocity() / 60.0);
+        RotationsPerSecond.of(steerMotor.getEncoderVelocity(steerMotorVelocity) / 60.0);
     inputs.targetModuleState = targetModuleState;
 
-    inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getEncoderPosition());
+    inputs.steerPosition =
+        Rotation2d.fromRotations(steerMotor.getEncoderPosition(steerMotorPosition));
 
     inputs.currentModulePosition =
-        new SwerveModulePosition(driveMotor.getEncoderPosition(), inputs.absolutePosition);
-    inputs.driveMotorVoltage = driveMotorVoltage;
-    inputs.steerMotorVoltage = steerMotorVoltage;
+        new SwerveModulePosition(
+            driveMotor.getEncoderPosition(driveMotorPosition), inputs.absolutePosition);
+    inputs.driveMotorVoltage = driveMotorVoltage.getValue();
+    inputs.steerMotorVoltage = steerMotorVoltage.getValue();
 
     inputs.driveMotorConnected = driveMotor.getTalonFX().isConnected();
     inputs.steerMotorConnected = steerMotor.getTalonFX().isConnected();
 
-    inputs.driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent().getValue();
-    inputs.steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent().getValue();
+    inputs.driveMotorCurrent = driveMotorCurrent.getValue();
+    inputs.steerMotorCurrent = driveMotorCurrent.getValue();
 
     inputs.odometryTimestamps =
         timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
@@ -133,14 +173,9 @@ public class ModuleIOTalon implements ModuleIO {
     steerPositionQueue.clear();
   }
 
-  private Rotation2d getCancoderRotation() {
-
-    return Rotation2d.fromRotations(cancoder.getAbsolutePosition().getValueAsDouble());
-  }
-
   @Override
-  public void resetMotorSetpoint() {
-    steerMotor.setEncoderPosition(getCancoderRotation());
+  public void resetMotorSetpoint(Rotation2d steerPosition) {
+    steerMotor.setEncoderPosition(steerPosition);
     driveMotor.setEncoderPosition(0.0);
   }
 
@@ -152,7 +187,6 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
     driveMotor.setSetpoint(speed.in(MetersPerSecond));
-    driveMotorVoltage = driveMotor.getTalonFX().getMotorVoltage().getValue();
   }
 
   /**
@@ -161,12 +195,11 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void setSteerPositionSetpoint(Rotation2d setpoint) {
     steerMotor.setSetpoint(setpoint);
-    steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage().getValue();
   }
 
   @Override
   public void setModuleState(SwerveModuleState state) {
-    state.optimize(getCancoderRotation());
+    // state.optimize(Rotation2d.fromRotations(absolutePosition.refresh().getValue().in(Rotations)));
     targetModuleState = state;
     setDriveSpeedSetpoint(MetersPerSecond.of(targetModuleState.speedMetersPerSecond));
     setSteerPositionSetpoint(targetModuleState.angle);
