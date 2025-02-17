@@ -133,21 +133,22 @@ public class ModuleIOTalon implements ModuleIO {
     inputs.absolutePosition = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
     // steerMotor.updateStatusSignals();
     // driveMotor.updateStatusSignals();
-    inputs.currentModuleState =
-        new SwerveModuleState(
-            driveMotor.getEncoderVelocity(driveMotorVelocity), inputs.absolutePosition);
+   
     inputs.driveMotorPosition =
         Rotation2d.fromRotations(driveMotor.getEncoderPosition(driveMotorPosition));
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getEncoderVelocity(steerMotorVelocity) / 60.0);
-    inputs.targetModuleState = targetModuleState;
 
     inputs.steerPosition =
         Rotation2d.fromRotations(steerMotor.getEncoderPosition(steerMotorPosition));
 
+    inputs.currentModuleState =
+        new SwerveModuleState(
+            driveMotor.getEncoderVelocity(driveMotorVelocity), inputs.absolutePosition);
     inputs.currentModulePosition =
         new SwerveModulePosition(
             driveMotor.getEncoderPosition(driveMotorPosition), inputs.absolutePosition);
+
     inputs.driveMotorVoltage = driveMotorVoltage.getValue();
     inputs.steerMotorVoltage = steerMotorVoltage.getValue();
 

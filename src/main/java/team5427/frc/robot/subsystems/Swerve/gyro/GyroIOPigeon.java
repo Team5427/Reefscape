@@ -28,13 +28,11 @@ public class GyroIOPigeon implements GyroIO {
     gyro.reset();
     Pigeon2Configuration config = new Pigeon2Configuration();
     config.FutureProofConfigs = true;
-    config.Pigeon2Features.DisableTemperatureCompensation = true;
     gyro.getConfigurator().apply(config);
     gyro.getConfigurator().setYaw(0.0);
     yaw = gyro.getYaw();
-    yaw.setUpdateFrequency(Constants.kLoopSpeed);
     yawVelocity = gyro.getAngularVelocityZWorld();
-    yawVelocity.setUpdateFrequency(Constants.kLoopSpeed);
+    BaseStatusSignal.setUpdateFrequencyForAll(Constants.kOdometryFrequency, yawVelocity, yaw);
     gyro.optimizeBusUtilization();
     yawTimestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
     yawPositionQueue = PhoenixOdometryThread.getInstance().registerSignal(gyro.getYaw());

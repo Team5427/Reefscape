@@ -85,7 +85,6 @@ public class ModuleIOSim implements ModuleIO {
     inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getAngularPositionRotations());
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getAngularVelocityRPM() / 60.0);
-    inputs.targetModuleState = targetModuleState;
 
     inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getAngularPositionRotations());
 

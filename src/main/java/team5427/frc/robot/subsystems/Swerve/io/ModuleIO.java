@@ -19,8 +19,6 @@ public interface ModuleIO {
     public Rotation2d absolutePosition = new Rotation2d(0);
     public Rotation2d steerPosition = new Rotation2d(0);
     public SwerveModuleState currentModuleState = new SwerveModuleState(0, absolutePosition);
-    public SwerveModuleState targetModuleState = new SwerveModuleState(0, absolutePosition);
-
     public SwerveModulePosition currentModulePosition =
         new SwerveModulePosition(0, absolutePosition);
     public Rotation2d driveMotorPosition = new Rotation2d(0);

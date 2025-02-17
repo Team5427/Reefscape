@@ -104,7 +104,6 @@ public class ModuleIOMagicTalon implements ModuleIO {
     inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getEncoderPosition());
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getEncoderVelocity() / 60.0);
-    inputs.targetModuleState = targetModuleState;
 
     inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getEncoderPosition());
 
