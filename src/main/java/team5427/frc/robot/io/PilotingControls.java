@@ -1,7 +1,6 @@
 package team5427.frc.robot.io;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -44,15 +43,15 @@ public class PilotingControls {
     // }));
 
     joy.leftTrigger()
-        .negate()
-        .whileFalse(
+        .whileTrue(
             new InstantCommand(
                 () -> {
                   SwerveSubsystem.getInstance().getCurrentCommand().end(true);
-                  SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+                  // SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+                  SwerveSubsystem.getInstance().stop();
                 },
                 SwerveSubsystem.getInstance()))
-        .whileTrue(new ChassisMovement(joy));
+        .whileFalse(new ChassisMovement(joy));
 
     if (DriverStation.isDisabled()) {}
 

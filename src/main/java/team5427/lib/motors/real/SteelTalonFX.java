@@ -3,13 +3,17 @@ package team5427.lib.motors.real;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import com.ctre.phoenix6.BaseStatusSignal;
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
+import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -34,9 +38,6 @@ public class SteelTalonFX implements IMotorController {
 
   public TalonFXConfiguration talonConfig;
 
-  private StatusSignal<Angle> position;
-  private StatusSignal<AngularVelocity> velocity;
-
   public SteelTalonFX(CANDeviceId id) {
     this.id = id;
 
@@ -44,8 +45,8 @@ public class SteelTalonFX implements IMotorController {
 
     withFOC = false;
 
-    position = talonFX.getPosition();
-    velocity = talonFX.getVelocity();
+    // position = talonFX.getPosition();
+    // velocity = talonFX.getVelocity();
   }
 
   @Override
@@ -59,6 +60,17 @@ public class SteelTalonFX implements IMotorController {
     talonConfig.Feedback.SensorToMechanismRatio =
         configuration.gearRatio.getSensorToMechanismRatio();
 
+    switch (configuration.idleState) {
+      case kBrake:
+        talonConfig.MotorOutput.NeutralMode = NeutralModeValue.Brake;
+        break;
+      case kCoast:
+        talonConfig.MotorOutput.NeutralMode = NeutralModeValue.Coast;
+        break;
+      default:
+        break;
+    }
+
     talonConfig.Slot0.kP = configuration.kP;
     talonConfig.Slot0.kI = configuration.kI;
     talonConfig.Slot0.kD = configuration.kD;
@@ -70,6 +82,7 @@ public class SteelTalonFX implements IMotorController {
         configuration.isArm ? GravityTypeValue.Arm_Cosine : GravityTypeValue.Elevator_Static;
 
     withFOC = configuration.withFOC;
+    talonConfig.FutureProofConfigs = true;
 
     switch (configuration.mode) {
       case kFlywheel:
@@ -125,7 +138,8 @@ public class SteelTalonFX implements IMotorController {
         break;
       case kServo:
       case kLinear:
-        this.setpoint = setpoint.getRotations();
+        // this.setpoint = setpoint.getRotations();
+        Logger.recordOutput("Setpoint Of Steer" + talonFX.getDeviceID(), setpoint.getDegrees());
         talonFX.setControl(new PositionDutyCycle(setpoint.getRotations()).withEnableFOC(withFOC));
         break;
       default:
@@ -156,11 +170,13 @@ public class SteelTalonFX implements IMotorController {
   @Override
   public double getEncoderPosition() {
 
-    if (configuration.mode != MotorMode.kServo) {
-      // converts to meters
-      return position.getValue().in(Rotation) * Math.PI * configuration.finalDiameterMeters;
-    }
-    return position.getValueAsDouble();
+    // if (configuration.mode != MotorMode.kServo) {
+    // // converts to meters
+    // return position.getValue().in(Rotation) * Math.PI *
+    // configuration.finalDiameterMeters;
+    // }
+    // return position.getValueAsDouble();
+    return 0;
   }
 
   /**
@@ -175,24 +191,25 @@ public class SteelTalonFX implements IMotorController {
     return position.getValueAsDouble();
   }
 
-  public void updateStatusSignals() {
-    BaseStatusSignal.refreshAll(position, velocity);
-  }
+  // public void updateStatusSignals() {
+  // BaseStatusSignal.refreshAll(position, velocity);
+  // }
 
   /**
    * @return rotations per minute if a servo, meters per second if a linear or flywheel
    */
   @Override
   public double getEncoderVelocity() {
-    if (configuration.mode != MotorMode.kServo) {
-      // converts to meters
-      // BaseStatusSignal.refreshAll(talonFX.getPosition());
-      return velocity.getValue().in(RotationsPerSecond)
-          * Math.PI
-          * configuration.finalDiameterMeters;
-    }
-    // converts to RPM
-    return velocity.getValue().in(RotationsPerSecond) * 60.0;
+    // if (configuration.mode != MotorMode.kServo) {
+    // // converts to meters
+    // // BaseStatusSignal.refreshAll(talonFX.getPosition());
+    // return velocity.getValue().in(RotationsPerSecond)
+    // * Math.PI
+    // * configuration.finalDiameterMeters;
+    // }
+    // // converts to RPM
+    // return velocity.getValue().in(RotationsPerSecond) * 60.0;
+    return 0;
   }
 
   /**
@@ -227,11 +244,12 @@ public class SteelTalonFX implements IMotorController {
 
   @Override
   public double getError() {
+    return talonFX.getClosedLoopError().getValue();
 
-    if (configuration.mode == MotorMode.kFlywheel) {
-      return setpoint - getEncoderVelocity();
-    }
-    return setpoint - getEncoderPosition();
+    // if (configuration.mode == MotorMode.kFlywheel) {
+    // return setpoint - getEncoderVelocity();
+    // }
+    // return setpoint - getEncoderPosition();
   }
 
   public void setFOC(boolean foc) {
@@ -256,7 +274,7 @@ public class SteelTalonFX implements IMotorController {
         break;
       case kServo:
         this.setpoint = setpoint;
-        talonFX.setControl(new PositionDutyCycle(setpoint).withEnableFOC(withFOC));
+        talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
         DriverStation.reportWarning(
             "Warning: TalonFX motor with the id "
                 + talonFX.getDeviceID()

@@ -1,9 +1,13 @@
 package team5427.frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.BuildConstants;
+
+import static edu.wpi.first.units.Units.Degree;
+
 import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -11,7 +15,10 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveModule;
+import team5427.lib.kinematics.SwerveUtil;
 // import frc.robot.BuildConstants;
 import team5427.lib.motors.real.SteelTalonFX;
 
@@ -24,9 +31,10 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-  private SteelTalonFX talon0;
-  private SteelTalonFX talonSteer0;
-  SwerveModule module;
+  // private SteelTalonFX talon0;
+  // private SteelTalonFX talonSteer0;
+  // SwerveModule module;
+  // private SteelTalonFX steerMotor = new SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx]);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -69,8 +77,9 @@ public class Robot extends LoggedRobot {
     AutoLogOutputManager.addPackage("team5427.lib");
 
     Logger.start();
+    // steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
     m_robotContainer = new RobotContainer();
-    module = new SwerveModule(0);
+    // module = new SwerveModule(0);
     // SwerveSubsystem subsystem = SwerveSubsystem.getInstance();
     // MagicSteelTalonFX talon1 = new
     // MagicSteelTalonFX(SwerveConstants.kSwerveUtilInstance.kDriveMotorIds[1]);
@@ -94,6 +103,7 @@ public class Robot extends LoggedRobot {
    */
   @Override
   public void robotPeriodic() {
+    
     // Runs the Scheduler. This is responsible for polling buttons, adding
     // newly-scheduled
     // commands, running already-scheduled commands, removing finished or
@@ -147,13 +157,17 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    // Logger.recordOutput("ANGLES",steerMotor.getTalonFX().getPosition().getValue().in(Degree));
+    // steerMotor.setSetpoint(Rotation2d.fromDegrees(90));
+  }
 
   @Override
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
+
 
   /** This function is called periodically during test mode. */
   @Override
