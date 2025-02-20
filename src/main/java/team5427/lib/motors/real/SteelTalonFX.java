@@ -1,5 +1,6 @@
 package team5427.lib.motors.real;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
@@ -10,6 +11,9 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
@@ -37,6 +41,15 @@ public class SteelTalonFX implements IMotorController {
   private boolean withFOC;
 
   public TalonFXConfiguration talonConfig;
+
+  public TorqueCurrentFOC torqueCurrentFOCRequest = new TorqueCurrentFOC(Amps.of(0.0));
+  public PositionTorqueCurrentFOC positionTorqueCurrentFOCRequest = new PositionTorqueCurrentFOC(Rotation.of(0.0));
+  public PositionVoltage positionVoltageRequest = new PositionVoltage(Rotation.of(0.0));
+  public VelocityVoltage velocityVoltageRequest = new VelocityVoltage(RotationsPerSecond.of(0.0));
+  public PositionDutyCycle positionDutyCycleRequest = new PositionDutyCycle(Rotation.of(0.0));
+  public VelocityDutyCycle velocityDutyCycleRequest = new VelocityDutyCycle(RotationsPerSecond.of(0.0));
+  public VelocityTorqueCurrentFOC velocityTorqueCurrentFOCRequest = new VelocityTorqueCurrentFOC(RotationsPerSecond.of(0.0));
+  
 
   public SteelTalonFX(CANDeviceId id) {
     this.id = id;
@@ -101,6 +114,9 @@ public class SteelTalonFX implements IMotorController {
     talonConfig.CurrentLimits.StatorCurrentLimit = configuration.currentLimit;
     talonConfig.CurrentLimits.SupplyCurrentLimit = configuration.currentLimit * 0.5;
 
+    talonConfig.TorqueCurrent.PeakForwardTorqueCurrent = configuration.currentLimit;
+    talonConfig.TorqueCurrent.PeakReverseTorqueCurrent = -configuration.currentLimit;
+
     talonFX.getConfigurator().apply(talonConfig);
   }
 
@@ -134,17 +150,18 @@ public class SteelTalonFX implements IMotorController {
     switch (configuration.mode) {
       case kFlywheel:
         this.setpoint = setpoint.getRotations();
-        talonFX.setControl(new VelocityVoltage(setpoint.getRotations()).withEnableFOC(withFOC));
+        talonFX.setControl(velocityVoltageRequest.withVelocity(RotationsPerSecond.of(setpoint.getRotations())).withEnableFOC(withFOC));
         break;
       case kServo:
       case kLinear:
-        // this.setpoint = setpoint.getRotations();
-        Logger.recordOutput("Setpoint Of Steer" + talonFX.getDeviceID(), setpoint.getDegrees());
-        talonFX.setControl(new PositionDutyCycle(setpoint.getRotations()).withEnableFOC(withFOC));
+        this.setpoint = setpoint.getRotations();
+        // Logger.recordOutput("Setpoint Of Steer" + talonFX.getDeviceID(), setpoint.getDegrees());
+        talonFX.setControl(positionDutyCycleRequest.withPosition(Rotation.of(setpoint.getRotations())).withEnableFOC(withFOC));
+        // talonFX.setControl(positionTorqueCurrentFOCRequest.withPosition(Rotation.of(setpoint.getRotations())));
         break;
       default:
         this.setpoint = setpoint.getRotations();
-        talonFX.setControl(new VelocityVoltage(setpoint.getRotations()).withEnableFOC(withFOC));
+        talonFX.setControl(velocityVoltageRequest.withVelocity(RotationsPerSecond.of(setpoint.getRotations())).withEnableFOC(withFOC));
         break;
     }
   }
