@@ -151,4 +151,10 @@ public class ModuleIOSim implements ModuleIO {
   }
 
   public void resetMotorSetpoint() {}
+
+  @Override
+  public void stop() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'stop'");
+  }
 }

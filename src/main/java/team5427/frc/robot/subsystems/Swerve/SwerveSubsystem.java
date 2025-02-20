@@ -83,6 +83,7 @@ public class SwerveSubsystem extends SubsystemBase {
         // gyroIO = new GyroIOSim();
         break;
       default:
+        gyroIO = new GyroIOPigeon();
         break;
     }
     isFieldOp = true;
@@ -94,9 +95,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void setChassisSpeeds(ChassisSpeeds newSpeeds) {
     if (Constants.currentMode != Mode.SIM) {
-      currentSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(newSpeeds, getGyroRotation());
+      currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(newSpeeds, getGyroRotation());
     } else {
-      currentSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(newSpeeds, getRotation());
+      currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(newSpeeds, getRotation());
     }
   }
 
@@ -113,21 +114,28 @@ public class SwerveSubsystem extends SubsystemBase {
 
     if (bypass) return;
 
-    SwerveModuleState[] moduleStates =
-        SwerveConstants.m_kinematics.toSwerveModuleStates(currentSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
-    actualModuleStates = new SwerveModuleState[modules.length];
     odometryLock.lock(); // Prevents odometry updates while reading data
-    if (gyroIO != null && gyroInputs.connected) {
+    if (gyroIO != null ) {
       gyroIO.updateInputs(gyroInputs);
       Logger.processInputs("Swerve/Gyro", gyroInputs);
     } else {
       gyroDisconnectedAlert.set(true);
     }
+    // Logger.recordOutput("RobotRelativeChassisSPeeds", currentSpeeds);
+    // currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, getGyroRotation());
+    SwerveModuleState[] moduleStates =
+        SwerveConstants.m_kinematics.toSwerveModuleStates(
+          currentSpeeds
+
+        );
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
+      
+    actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
-      actualModuleStates[i] = modules[i].getModuleState();
       modules[i].setModuleState(moduleStates[i]);
+      actualModuleStates[i] = modules[i].getModuleState();
+      
       modules[i].periodic();
       // if (modules[i].getModuleState() != null) {
 
@@ -193,7 +201,7 @@ public class SwerveSubsystem extends SubsystemBase {
    */
   public Rotation2d getGyroRotation() {
 
-    return gyroInputs.yawPosition;
+    return gyroInputs.yawPosition.unaryMinus();
   }
 
   public boolean getFieldOp() {
@@ -261,6 +269,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void stop() {
+    setChassisSpeeds(new ChassisSpeeds());
 
     for (SwerveModule module : modules) {
       module.stop();

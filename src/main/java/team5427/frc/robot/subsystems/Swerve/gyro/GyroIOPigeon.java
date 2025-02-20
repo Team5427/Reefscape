@@ -40,7 +40,8 @@ public class GyroIOPigeon implements GyroIO {
 
   @Override
   public void updateInputs(GyroIOInputs inputs) {
-    inputs.connected = BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
+    BaseStatusSignal.refreshAll(yaw, yawVelocity).equals(StatusCode.OK);
+    inputs.connected  = gyro.isConnected();
     inputs.odometryYawTimestamp = yaw.getAllTimestamps().getDeviceTimestamp().getTime();
     inputs.yawPosition =
         Rotation2d.fromDegrees(

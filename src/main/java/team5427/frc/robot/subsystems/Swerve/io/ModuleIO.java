@@ -57,4 +57,6 @@ public interface ModuleIO {
   public default void setModuleState(SwerveModuleState state) {}
 
   public default void resetMotorSetpoint(Rotation2d steerPosition) {}
+
+  public void stop();
 }

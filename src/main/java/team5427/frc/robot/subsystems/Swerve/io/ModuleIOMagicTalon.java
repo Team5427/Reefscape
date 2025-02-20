@@ -172,4 +172,10 @@ public class ModuleIOMagicTalon implements ModuleIO {
     setDriveSpeedSetpoint(MetersPerSecond.of(targetModuleState.speedMetersPerSecond));
     setSteerPositionSetpoint(targetModuleState.angle);
   }
+
+@Override
+public void stop() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'stop'");
+}
 }

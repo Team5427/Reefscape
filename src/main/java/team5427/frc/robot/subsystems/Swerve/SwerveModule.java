@@ -119,7 +119,6 @@ public class SwerveModule {
   }
 
   public void stop() {
-    io.setDriveSpeedSetpoint(MetersPerSecond.of(0.0));
-    io.setSteerPositionSetpoint(Rotation2d.fromRotations(0));
+    io.stop();
   }
 }

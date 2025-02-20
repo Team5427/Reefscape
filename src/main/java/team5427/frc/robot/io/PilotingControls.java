@@ -60,7 +60,7 @@ public class PilotingControls {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance().resetGyro(new Rotation2d());
+                  SwerveSubsystem.getInstance().resetGyro(new Rotation2d(0));
                   ;
                 }));
   }
