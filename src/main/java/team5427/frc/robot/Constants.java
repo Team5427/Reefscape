@@ -107,14 +107,15 @@ public final class Constants {
       kSwerveUtilInstance.kSteerInversion[SwerveUtil.kFrontRightModuleIdx] = true;
       kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearLeftModuleIdx] = true;
       kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearRightModuleIdx] = true;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = -0.407;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.20752;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = -0.1358;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.2105;
+       
+      // TODO
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.48;
+      // TODO
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = 0.255;
+      // TODO
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.38;
+      // TODO
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = 0.278;
     }
 
     public static MotorConfiguration kDriveMotorConfiguration = new MotorConfiguration();
