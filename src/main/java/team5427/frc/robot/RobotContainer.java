@@ -1,6 +1,7 @@
 package team5427.frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 
 /**
@@ -19,6 +20,7 @@ public class RobotContainer {
   public RobotContainer() {
     if (DriverStation.isTeleop()) {
       new PilotingControls();
+      new OperatingControls();
       // new OperatorControls();
     }
   }

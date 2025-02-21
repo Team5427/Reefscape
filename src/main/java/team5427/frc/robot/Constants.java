@@ -1,6 +1,7 @@
 package team5427.frc.robot;
 
 import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
 import com.ctre.phoenix6.CANBus;
@@ -333,16 +334,16 @@ public final class Constants {
   }
 
   public static class CascadeConstants {
-    public static final CANDeviceId kCascadeMasterId = new CANDeviceId(0);
-    public static final CANDeviceId kCascadeSlaveId = new CANDeviceId(0);
+    public static final CANDeviceId kCascadeMasterId = new CANDeviceId(20);
+    public static final CANDeviceId kCascadeSlaveId = new CANDeviceId(21);
 
     // public static final double kCascadeDriverGravityFF = 0.0;
 
     public static final Rotation2d kCascadePivotBuffer = Rotation2d.fromDegrees(30);
     public static final Debouncer kCascadePivotDebouncer = new Debouncer(0.25, DebounceType.kBoth);
 
-    public static final Rotation2d kCascadePivotMaximumAngle = Rotation2d.fromDegrees(180);
-    public static final Rotation2d kCascadePivotMinimumAngle = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kCascadePivotMaximumAngle = Rotation2d.fromDegrees(30);
+    public static final Rotation2d kCascadePivotMinimumAngle = Rotation2d.fromDegrees(-30);
 
     public static final Distance kCascadeMinimumHeight = Meters.of(0.0);
     public static final Distance kCascadeMaximumHeight = Meters.of(2.0);
@@ -354,13 +355,13 @@ public final class Constants {
       kCascadeDriverConfiguration.currentLimit = 40;
       kCascadeDriverConfiguration.idleState = IdleState.kBrake;
       kCascadeDriverConfiguration.mode = MotorMode.kLinear;
-      kCascadeDriverConfiguration.isInverted = false;
+      kCascadeDriverConfiguration.isInverted = true;
 
       kCascadeDriverConfiguration.maxVelocity =
           kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.25;
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
 
-      kCascadeDriverConfiguration.kP = 10.0;
+      kCascadeDriverConfiguration.kP = 1.0;
       kCascadeDriverConfiguration.kG = 0.36;
       kCascadeDriverConfiguration.kD = 0.0;
       kCascadeDriverConfiguration.kV = 3.50;
@@ -384,12 +385,12 @@ public final class Constants {
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
 
-      kPivotConfiguration.kP = 0.1;
+      kPivotConfiguration.kP = 60.0;
       kPivotConfiguration.kD = 0.0;
-      kPivotConfiguration.kV = 22.76;
-      kPivotConfiguration.kA = 0.19;
-      kPivotConfiguration.kS = 0.0;
-      kPivotConfiguration.kG = 0.32;
+      // kPivotConfiguration.kV = 22.76;
+      // kPivotConfiguration.kA = 0.19;
+      // kPivotConfiguration.kS = 0.0;
+      // kPivotConfiguration.kG = 0.32;
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
@@ -399,7 +400,7 @@ public final class Constants {
     static {
       kPivotEncoderConfig.MagnetSensor.SensorDirection =
           SensorDirectionValue.CounterClockwise_Positive;
-      kPivotEncoderConfig.MagnetSensor.MagnetOffset = 0.0;
+      kPivotEncoderConfig.MagnetSensor.MagnetOffset = 0.272;
       kPivotEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
     }
 
@@ -407,5 +408,13 @@ public final class Constants {
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
     public static final double kPivotCancoderOffset = 0.272;
+
+    public static final Distance kStowDistance = Feet.of(0.0);
+    public static final Distance kL1Distance = Feet.of(1.0);
+    public static final Distance kL2Distance = Feet.of(2.0);
+    public static final Distance kL3Distance = Feet.of(3.0);
+    public static final Distance kL4Distance = Feet.of(4.0);
+
+    public static final Rotation2d kStowRotation = Rotation2d.kZero;
   }
 }

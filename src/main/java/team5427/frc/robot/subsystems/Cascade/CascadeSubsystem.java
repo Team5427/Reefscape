@@ -57,8 +57,8 @@ public class CascadeSubsystem extends SubsystemBase {
         break;
     }
 
-    cascadeSetpoint = Meters.zero();
-    pivotSetpoint = Rotation2d.kZero;
+    cascadeSetpoint = CascadeConstants.kStowDistance;
+    pivotSetpoint = CascadeConstants.kStowRotation;
     state = CascadeStates.IDLE;
     lockedStates = new ArrayList<>();
   }
@@ -101,6 +101,7 @@ public class CascadeSubsystem extends SubsystemBase {
       io.setPivotSetpoint(pivotSetpoint);
     }
     Logger.processInputs("Cascade", inputsAutoLogged);
+    Logger.recordOutput("Cascade Pivot Setpoint", pivotSetpoint);
 
     super.periodic();
   }

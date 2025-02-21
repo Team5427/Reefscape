@@ -54,7 +54,7 @@ public class ChassisMovement extends Command {
     } else {
 
       double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
-      vx = tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+      vx = -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
       vy = -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
       omegaRadians =
           -tunedJoystickQuadratic.getLeftX()
