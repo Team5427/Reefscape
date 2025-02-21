@@ -5,8 +5,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
-// import org.team4206.battleaid.common.TunedJoystick;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -54,12 +52,12 @@ public class ModuleIOSim implements ModuleIO {
                 SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio()),
             steerMotorGearbox);
     // steerController =
-    //     new PIDController(
-    //         SimulationConstants.steerkP, SimulationConstants.steerkI,
+    // new PIDController(
+    // SimulationConstants.steerkP, SimulationConstants.steerkI,
     // SimulationConstants.steerkD);
     // driveController =
-    //     new PIDController(
-    //         SimulationConstants.drivekP, SimulationConstants.drivekI,
+    // new PIDController(
+    // SimulationConstants.drivekP, SimulationConstants.drivekI,
     // SimulationConstants.drivekD);
     // SwerveConstants.kSIMSteerController.enableContinuousInput(-0.5, 0.5);
   }

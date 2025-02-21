@@ -1,6 +1,5 @@
 package team5427.frc.robot.subsystems.Swerve.io;
 
-import static edu.wpi.first.units.Units.Meter;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -82,8 +81,7 @@ public class ModuleIOTalon implements ModuleIO {
     absolutePosition = cancoder.getAbsolutePosition();
 
     steerMotor.talonConfig.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
-    steerMotor.talonConfig.Feedback.FeedbackSensorSource =
-    FeedbackSensorSourceValue.FusedCANcoder;
+    steerMotor.talonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
     steerMotor.talonConfig.Feedback.SensorToMechanismRatio = 1.0;
     steerMotor.talonConfig.Feedback.RotorToSensorRatio =
         SwerveConstants.kSteerMotorConfiguration.gearRatio.getSensorToMechanismRatio();
@@ -221,7 +219,6 @@ public class ModuleIOTalon implements ModuleIO {
     steerMotor.setSetpoint(setpoint);
   }
 
-
   @Override
   public void setModuleState(SwerveModuleState state) {
     Rotation2d currentAngle = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
@@ -232,13 +229,13 @@ public class ModuleIOTalon implements ModuleIO {
     setSteerPositionSetpoint(targetModuleState.angle);
   }
 
-@Override
-public void stop() {
-    
+  @Override
+  public void stop() {
+
     setSteerPositionSetpoint(Rotation2d.fromRotations(steerMotorPosition.getValue().in(Rotations)));
-    
+
     setDriveSpeedSetpoint(MetersPerSecond.of(0.0));
     // driveMotor.getTalonFX().stopMotor();
     steerMotor.getTalonFX().stopMotor();
-}
+  }
 }
