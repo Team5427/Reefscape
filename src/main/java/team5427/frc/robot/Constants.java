@@ -157,7 +157,6 @@ public final class Constants {
       kSteerMotorConfiguration.currentLimit = 30;
       kSteerMotorConfiguration.withFOC = true;
 
-
       kSteerMotorConfiguration.maxVelocity =
           kSteerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;

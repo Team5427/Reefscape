@@ -173,9 +173,9 @@ public class ModuleIOMagicTalon implements ModuleIO {
     setSteerPositionSetpoint(targetModuleState.angle);
   }
 
-@Override
-public void stop() {
+  @Override
+  public void stop() {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'stop'");
-}
+  }
 }

@@ -115,29 +115,25 @@ public class SwerveSubsystem extends SubsystemBase {
     if (bypass) return;
 
     odometryLock.lock(); // Prevents odometry updates while reading data
-    if (gyroIO != null ) {
+    if (gyroIO != null) {
       gyroIO.updateInputs(gyroInputs);
       Logger.processInputs("Swerve/Gyro", gyroInputs);
     } else {
       gyroDisconnectedAlert.set(true);
     }
-    ChassisSpeeds discretizedSpeeds =  ChassisSpeeds.discretize(currentSpeeds, Constants.kLoopSpeed);
+    ChassisSpeeds discretizedSpeeds = ChassisSpeeds.discretize(currentSpeeds, Constants.kLoopSpeed);
     SwerveModuleState[] moduleStates =
-        SwerveConstants.m_kinematics.toSwerveModuleStates(
-          discretizedSpeeds
+        SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
 
-        );
     SwerveDriveKinematics.desaturateWheelSpeeds(
         moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
-    
-      
+
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
       modules[i].setModuleState(moduleStates[i]);
       actualModuleStates[i] = modules[i].getModuleState();
-      
-      modules[i].periodic();
 
+      modules[i].periodic();
     }
     odometryLock.unlock();
 
@@ -240,7 +236,7 @@ public class SwerveSubsystem extends SubsystemBase {
     };
   }
 
-  public ChassisSpeeds getCurrentChassisSpeeds(){
+  public ChassisSpeeds getCurrentChassisSpeeds() {
     return SwerveConstants.m_kinematics.toChassisSpeeds(getModuleStates());
   }
 

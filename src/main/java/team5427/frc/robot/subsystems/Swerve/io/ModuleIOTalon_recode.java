@@ -50,16 +50,20 @@
 
 //         this.moduleIdx = moduleIdx;
 
-//         driveTalon = new SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kDriveMotorIds[moduleIdx]);
-//         steerTalon = new SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kSteerMotorIds[moduleIdx]);
+//         driveTalon = new
+// SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kDriveMotorIds[moduleIdx]);
+//         steerTalon = new
+// SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kSteerMotorIds[moduleIdx]);
 
 //         cancoder = new CANcoder(
 //             SwerveConstants.kSwerveUtilInstance.kCancoderIds[moduleIdx].getDeviceNumber(),
 //             SwerveConstants.kSwerveUtilInstance.kCancoderIds[moduleIdx].getBus()
 //         );
 
-//         SwerveConstants.kDriveMotorConfiguration.isInverted = SwerveConstants.kSwerveUtilInstance.kDriveInversion[moduleIdx];
-//         SwerveConstants.kSteerMotorConfiguration.isInverted = SwerveConstants.kSwerveUtilInstance.kSteerInversion[moduleIdx];
+//         SwerveConstants.kDriveMotorConfiguration.isInverted =
+// SwerveConstants.kSwerveUtilInstance.kDriveInversion[moduleIdx];
+//         SwerveConstants.kSteerMotorConfiguration.isInverted =
+// SwerveConstants.kSwerveUtilInstance.kSteerInversion[moduleIdx];
 
 //         driveTalon.apply(SwerveConstants.kDriveMotorConfiguration);
 //         steerTalon.apply(SwerveConstants.kSteerMotorConfiguration);
@@ -69,26 +73,33 @@
 
 //         CANcoderConfiguration cancoderConfig = new CANcoderConfiguration();
 //         cancoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-//         cancoderConfig.MagnetSensor.MagnetOffset = SwerveConstants.kSwerveUtilInstance.kModuleOffsets[moduleIdx];
-//         cancoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+//         cancoderConfig.MagnetSensor.MagnetOffset =
+// SwerveConstants.kSwerveUtilInstance.kModuleOffsets[moduleIdx];
+//         cancoderConfig.MagnetSensor.SensorDirection =
+// SensorDirectionValue.CounterClockwise_Positive;
 //         cancoder.getConfigurator().apply(cancoderConfig);
 
 //         cancoder.clearStickyFaults();
 
 //         steerTalon.talonConfig.Feedback.FeedbackRemoteSensorID = cancoder.getDeviceID();
-//         steerTalon.talonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+//         steerTalon.talonConfig.Feedback.FeedbackSensorSource =
+// FeedbackSensorSourceValue.FusedCANcoder;
 //         steerTalon.talonConfig.Feedback.SensorToMechanismRatio = 1.0;
-//         steerTalon.talonConfig.Feedback.RotorToSensorRatio = SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio();
+//         steerTalon.talonConfig.Feedback.RotorToSensorRatio =
+// SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio();
 //         steerTalon.getTalonFX().getConfigurator().apply(steerTalon.talonConfig);
 
 //         steerTalon.setEncoderPosition(steerPosition.getValue().in(Rotations));
 //         driveTalon.setEncoderPosition(0.0);
 
 //         timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
-//         drivePositionQueue = PhoenixOdometryThread.getInstance().registerSignal(driveTalon.getTalonFX().getPosition());
-//         steerPositionQueue = PhoenixOdometryThread.getInstance().registerSignal(driveTalon.getTalonFX().getPosition());
+//         drivePositionQueue =
+// PhoenixOdometryThread.getInstance().registerSignal(driveTalon.getTalonFX().getPosition());
+//         steerPositionQueue =
+// PhoenixOdometryThread.getInstance().registerSignal(driveTalon.getTalonFX().getPosition());
 
-//         ParentDevice.optimizeBusUtilizationForAll(driveTalon.getTalonFX(), steerTalon.getTalonFX(), cancoder);
+//         ParentDevice.optimizeBusUtilizationForAll(driveTalon.getTalonFX(),
+// steerTalon.getTalonFX(), cancoder);
 
 //         System.out.println("Created a new module of idx: " + moduleIdx);
 
@@ -96,17 +107,19 @@
 
 //     @Override
 //     public void updateInputs(ModuleIOInputs inputs) {
-        
-//         inputs.absolutePosition = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
+
+//         inputs.absolutePosition =
+// Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
 //         inputs.steerPosition = Rotation2d.fromRotations(steerPosition.getValue().in(Rotations));
-//         inputs.currentModuleState = new SwerveModuleState(driveVelocity.getValueAsDouble(), inputs.absolutePosition);
+//         inputs.currentModuleState = new SwerveModuleState(driveVelocity.getValueAsDouble(),
+// inputs.absolutePosition);
 //         inputs.targetModuleState = targetModuleState;
 
-//         inputs.currentModulePosition = new SwerveModulePosition(drivePosition.getValueAsDouble(), inputs.absolutePosition);
-//         inputs.driveMotorPosition = Rotation2d.fromRotations(drivePosition.getValue().in(Rotations));
+//         inputs.currentModulePosition = new SwerveModulePosition(drivePosition.getValueAsDouble(),
+// inputs.absolutePosition);
+//         inputs.driveMotorPosition =
+// Rotation2d.fromRotations(drivePosition.getValue().in(Rotations));
 //         inputs.steerMotorVelocityRotations = steerVelocity.getValue();
 //     }
 
-    
-    
 // }

@@ -31,7 +31,7 @@ public class ChassisMovement extends Command {
 
     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
     tunedJoystickQuadratic.useResponseCurve(ResponseCurve.CUBIC);
-    
+
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     addRequirements(swerveSubsystem);
@@ -61,7 +61,6 @@ public class ChassisMovement extends Command {
               * Math.abs(tunedJoystickLinear.getLeftX())
               * Math.PI
               * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
 

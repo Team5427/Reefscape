@@ -1,14 +1,10 @@
 package team5427.frc.robot;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.BuildConstants;
-
-import static edu.wpi.first.units.Units.Degree;
-
 import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -17,11 +13,7 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import team5427.frc.robot.Constants.SwerveConstants;
-import team5427.frc.robot.subsystems.Swerve.SwerveModule;
-import team5427.lib.kinematics.SwerveUtil;
 // import frc.robot.BuildConstants;
-import team5427.lib.motors.real.SteelTalonFX;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -32,10 +24,12 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+
   // private SteelTalonFX talon0;
   // private SteelTalonFX talonSteer0;
   // SwerveModule module;
-  // private SteelTalonFX steerMotor = new SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx]);
+  // private SteelTalonFX steerMotor = new
+  // SteelTalonFX(SwerveConstants.kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx]);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -165,7 +159,6 @@ public class Robot extends LoggedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
   }
-
 
   /** This function is called periodically during test mode. */
   @Override
