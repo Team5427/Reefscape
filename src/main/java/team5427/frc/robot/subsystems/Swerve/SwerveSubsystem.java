@@ -121,15 +121,15 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       gyroDisconnectedAlert.set(true);
     }
-    // Logger.recordOutput("RobotRelativeChassisSPeeds", currentSpeeds);
-    // currentSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(currentSpeeds, getGyroRotation());
+    ChassisSpeeds discretizedSpeeds =  ChassisSpeeds.discretize(currentSpeeds, Constants.kLoopSpeed);
     SwerveModuleState[] moduleStates =
         SwerveConstants.m_kinematics.toSwerveModuleStates(
-          currentSpeeds
+          discretizedSpeeds
 
         );
     SwerveDriveKinematics.desaturateWheelSpeeds(
         moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
+    
       
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
@@ -137,7 +137,6 @@ public class SwerveSubsystem extends SubsystemBase {
       actualModuleStates[i] = modules[i].getModuleState();
       
       modules[i].periodic();
-      // if (modules[i].getModuleState() != null) {
 
     }
     odometryLock.unlock();
@@ -172,12 +171,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
       // Apply update
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
-      // super.periodic();
     }
 
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
-    Logger.recordOutput("SwerveOutput/ChassisSpeeds", currentSpeeds);
+
+    Logger.recordOutput("SwerveOutput/RawChassisSpeeds", currentSpeeds);
+    Logger.recordOutput("SwerveOutput/DiscretizedChassisSpeeds", discretizedSpeeds);
     Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
@@ -238,6 +238,10 @@ public class SwerveSubsystem extends SubsystemBase {
     return new SwerveModulePosition[] {
       getModulePosition(0), getModulePosition(1), getModulePosition(2), getModulePosition(3),
     };
+  }
+
+  public ChassisSpeeds getCurrentChassisSpeeds(){
+    return SwerveConstants.m_kinematics.toChassisSpeeds(getModuleStates());
   }
 
   /** Returns the current odometry pose. */
