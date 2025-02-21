@@ -6,16 +6,15 @@ import team5427.frc.robot.commands.MoveElevatorTo;
 
 public class OperatingControls {
 
-    private CommandXboxController joy;
+  private CommandXboxController joy;
 
-    public OperatingControls() {
-        joy = new CommandXboxController(1);
+  public OperatingControls() {
+    joy = new CommandXboxController(1);
 
-        joy.povDown().onTrue(new MoveElevatorTo(CascadeConstants.kStowDistance));
-        joy.a().onTrue(new MoveElevatorTo(CascadeConstants.kL1Distance));
-        joy.x().onTrue(new MoveElevatorTo(CascadeConstants.kL2Distance));
-        joy.b().onTrue(new MoveElevatorTo(CascadeConstants.kL3Distance));
-        joy.y().onTrue(new MoveElevatorTo(CascadeConstants.kL4Distance));
-    }
-    
+    joy.povDown().onTrue(new MoveElevatorTo(CascadeConstants.kStowDistance));
+    joy.a().onTrue(new MoveElevatorTo(CascadeConstants.kL1Distance));
+    joy.x().onTrue(new MoveElevatorTo(CascadeConstants.kL2Distance));
+    joy.b().onTrue(new MoveElevatorTo(CascadeConstants.kL3Distance));
+    joy.y().onTrue(new MoveElevatorTo(CascadeConstants.kL4Distance));
+  }
 }
