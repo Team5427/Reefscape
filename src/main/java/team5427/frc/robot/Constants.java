@@ -133,7 +133,7 @@ public final class Constants {
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
       kDriveMotorConfiguration.withFOC = true;
 
-      kDriveMotorConfiguration.currentLimit = 70;
+      kDriveMotorConfiguration.currentLimit = 80;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity =

@@ -224,7 +224,9 @@ public class ModuleIOTalon implements ModuleIO {
 
   @Override
   public void setModuleState(SwerveModuleState state) {
-    state.optimize(Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations)));
+    Rotation2d currentAngle = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
+    state.optimize(currentAngle);
+    state.cosineScale(currentAngle);
     targetModuleState = state;
     setDriveSpeedSetpoint(MetersPerSecond.of(targetModuleState.speedMetersPerSecond));
     setSteerPositionSetpoint(targetModuleState.angle);
