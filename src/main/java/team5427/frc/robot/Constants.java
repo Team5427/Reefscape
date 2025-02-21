@@ -356,7 +356,7 @@ public final class Constants {
       kCascadeDriverConfiguration.isInverted = false;
 
       kCascadeDriverConfiguration.maxVelocity =
-          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.25;
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
 
       kCascadeDriverConfiguration.kP = 10.0;
@@ -404,5 +404,7 @@ public final class Constants {
 
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
+
+    public static final double kPivotCancoderOffset = 0.272;
   }
 }

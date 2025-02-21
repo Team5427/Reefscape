@@ -36,6 +36,8 @@ public interface CascadeIO {
     public AngularVelocity pivotRotationVelocity = RotationsPerSecond.of(0.0);
     public AngularAcceleration pivotRotationAcceleration = RotationsPerSecondPerSecond.of(0.0);
 
+    public Rotation2d absolutePivotRotation = new Rotation2d();
+
     public Current pivotMasterMotorCurrent = Amps.of(0.0);
     public Voltage pivotMasterMotorVoltage = Volts.of(0.0);
 
