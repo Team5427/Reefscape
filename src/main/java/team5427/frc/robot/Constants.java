@@ -350,22 +350,30 @@ public final class Constants {
     public static final MotorConfiguration kCascadeDriverConfiguration = new MotorConfiguration();
 
     static {
-      kCascadeDriverConfiguration.gearRatio = new ComplexGearRatio();
-      kCascadeDriverConfiguration.currentLimit = 40;
+      kCascadeDriverConfiguration.gearRatio = new ComplexGearRatio(20.0 / 66.0);
+      kCascadeDriverConfiguration.currentLimit = 60;
       kCascadeDriverConfiguration.idleState = IdleState.kBrake;
       kCascadeDriverConfiguration.mode = MotorMode.kLinear;
       kCascadeDriverConfiguration.isInverted = true;
+      kCascadeDriverConfiguration.withFOC = true;
 
       kCascadeDriverConfiguration.maxVelocity =
           kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.25;
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
 
-      kCascadeDriverConfiguration.kP = 1.0;
-      kCascadeDriverConfiguration.kG = 0.36;
+      kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
+
+      kCascadeDriverConfiguration.kP = .15;
+      // kCascadeDriverConfiguration.kG = 0.36;
       kCascadeDriverConfiguration.kD = 0.0;
-      kCascadeDriverConfiguration.kV = 3.50;
-      kCascadeDriverConfiguration.kA = 0.05;
-      kCascadeDriverConfiguration.kS = 0.0;
+      // kCascadeDriverConfiguration.kV = 3.0;
+      // kCascadeDriverConfiguration.kV = .50;
+      // kCascadeDriverConfiguration.kA = 0.05;
+      // kCascadeDriverConfiguration.kS = 0.1;
+
+      kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
+      kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
+      // kCascadeDriverConfiguration.altJ = kCascadeDriverConfiguration.kA * 2.0;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -374,7 +382,7 @@ public final class Constants {
     public static final MotorConfiguration kPivotConfiguration = new MotorConfiguration();
 
     static {
-      kPivotConfiguration.gearRatio = new ComplexGearRatio();
+      kPivotConfiguration.gearRatio = new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
       kPivotConfiguration.currentLimit = 40;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
@@ -384,7 +392,7 @@ public final class Constants {
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
 
-      kPivotConfiguration.kP = 60.0;
+      kPivotConfiguration.kP = 10.0;
       kPivotConfiguration.kD = 0.0;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
@@ -394,25 +402,16 @@ public final class Constants {
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
 
-    public static final CANcoderConfiguration kPivotEncoderConfig = new CANcoderConfiguration();
-
-    static {
-      kPivotEncoderConfig.MagnetSensor.SensorDirection =
-          SensorDirectionValue.CounterClockwise_Positive;
-      kPivotEncoderConfig.MagnetSensor.MagnetOffset = 0.272;
-      kPivotEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
-    }
-
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
     public static final double kPivotCancoderOffset = 0.272;
 
     public static final Distance kStowDistance = Feet.of(0.0);
-    public static final Distance kL1Distance = Feet.of(1.0);
-    public static final Distance kL2Distance = Feet.of(2.0);
-    public static final Distance kL3Distance = Feet.of(3.0);
-    public static final Distance kL4Distance = Feet.of(4.0);
+    public static final Distance kL1Distance = Feet.of(0.5);
+    public static final Distance kL2Distance = Feet.of(1.0);
+    public static final Distance kL3Distance = Feet.of(1.5);
+    public static final Distance kL4Distance = Feet.of(2.0);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
   }

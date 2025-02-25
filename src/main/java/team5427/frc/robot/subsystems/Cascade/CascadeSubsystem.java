@@ -58,7 +58,8 @@ public class CascadeSubsystem extends SubsystemBase {
     }
 
     cascadeSetpoint = CascadeConstants.kStowDistance;
-    pivotSetpoint = CascadeConstants.kStowRotation;
+    // pivotSetpoint = CascadeConstants.kStowRotation;
+    pivotSetpoint = Rotation2d.fromDegrees(10.0);
     state = CascadeStates.IDLE;
     lockedStates = new ArrayList<>();
   }
@@ -100,8 +101,11 @@ public class CascadeSubsystem extends SubsystemBase {
       Errors.pivotConstraint.set(false);
       io.setPivotSetpoint(pivotSetpoint);
     }
+    io.setPivotSetpoint(pivotSetpoint);
     Logger.processInputs("Cascade", inputsAutoLogged);
     Logger.recordOutput("Cascade Pivot Setpoint", pivotSetpoint);
+
+    Logger.recordOutput("Cascade Driver Setpoint", cascadeSetpoint);
 
     super.periodic();
   }

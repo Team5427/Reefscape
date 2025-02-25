@@ -6,11 +6,18 @@ import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
+import com.ctre.phoenix6.signals.ControlModeValue;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.SensorDirectionValue;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
@@ -25,8 +32,8 @@ import team5427.lib.motors.real.SteelTalonFX;
 
 public class CascadeIOMagicTalon implements CascadeIO {
 
-  private SteelTalonFX cascadeMotorMaster;
-  private SteelTalonFX cascadeMotorSlave;
+  private MagicSteelTalonFX cascadeMotorMaster;
+  private MagicSteelTalonFX cascadeMotorSlave;
   // private MotorConfiguration cascadeConfig;
 
   private MagicSteelTalonFX pivotMotorMaster;
@@ -54,27 +61,38 @@ public class CascadeIOMagicTalon implements CascadeIO {
   public boolean pivotMotorsStopped;
 
   public CascadeIOMagicTalon() {
-    cascadeMotorMaster = new SteelTalonFX(CascadeConstants.kCascadeMasterId);
-    cascadeMotorSlave = new SteelTalonFX(CascadeConstants.kCascadeSlaveId);
+    cascadeMotorMaster = new MagicSteelTalonFX(CascadeConstants.kCascadeMasterId);
+    cascadeMotorSlave = new MagicSteelTalonFX(CascadeConstants.kCascadeSlaveId);
     cascadeMotorMaster.apply(CascadeConstants.kCascadeDriverConfiguration);
     MotorConfiguration cascadeSlaveConfig =
         new MotorConfiguration(CascadeConstants.kCascadeDriverConfiguration);
-    cascadeSlaveConfig.isInverted = !CascadeConstants.kCascadeDriverConfiguration.isInverted;
+    // cascadeSlaveConfig.isInverted = !CascadeConstants.kCascadeDriverConfiguration.isInverted;
     cascadeMotorSlave.apply(cascadeSlaveConfig);
+
+    cascadeMotorSlave.getTalonFX().setControl(new Follower(cascadeMotorMaster.getTalonFX().getDeviceID(), true));
+
     pivotMotorMaster = new MagicSteelTalonFX(CascadeConstants.kPivotMasterId);
     pivotMotorSlave = new MagicSteelTalonFX(CascadeConstants.kPivotSlaveId);
     pivotMotorMaster.apply(CascadeConstants.kPivotConfiguration);
 
     MotorConfiguration pivotSlaveConfig =
         new MotorConfiguration(CascadeConstants.kPivotConfiguration);
-    pivotSlaveConfig.isInverted = !CascadeConstants.kCascadeDriverConfiguration.isInverted;
     pivotMotorSlave.apply(pivotSlaveConfig);
+
+    pivotMotorSlave.getTalonFX().setControl(new Follower(pivotMotorMaster.getTalonFX().getDeviceID(), true));
+
     pivotCANcoder =
         new CANcoder(
             CascadeConstants.kPivotCANcoderId.getDeviceNumber(),
             CascadeConstants.kPivotCANcoderId.getBus());
 
-    pivotCANcoder.getConfigurator().apply(CascadeConstants.kPivotEncoderConfig);
+    CANcoderConfiguration pivotEncoderConfig = new CANcoderConfiguration();
+    pivotEncoderConfig.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
+    pivotEncoderConfig.MagnetSensor.MagnetOffset = CascadeConstants.kPivotCancoderOffset;
+    pivotEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
+
+
+    pivotCANcoder.getConfigurator().apply(pivotEncoderConfig);
 
     cascadeMotorMaster.useTorqueCurrentFOC(true);
     cascadeMotorSlave.useTorqueCurrentFOC(true);
@@ -107,8 +125,12 @@ public class CascadeIOMagicTalon implements CascadeIO {
         CascadeConstants.kPivotConfiguration.gearRatio.getSensorToMechanismRatio();
     pivotMotorMaster.getTalonFX().getConfigurator().apply(pivotMotorMaster.talonConfig);
 
+    cascadeMotorMaster.setEncoderPosition(0.0);
+    cascadeMotorSlave.setEncoderPosition(0.0);
     pivotMotorMaster.setEncoderPosition(
         Rotation2d.fromRotations(absolutePivotPosition.refresh().getValue().in(Rotations)));
+    pivotMotorMaster.setEncoderPosition(
+      Rotation2d.fromRotations(absolutePivotPosition.refresh().getValue().in(Rotations)));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
@@ -158,6 +180,9 @@ public class CascadeIOMagicTalon implements CascadeIO {
   @Override
   public void updateInputs(CascadeIOInputs inputs) {
 
+    // Logger.recordOutput("Pivot Brake Mode", cascadeMotorMaster.getTalonFX());
+    // Logger.recordOutput("Cascade Motor Reader Setpoint", cascadeMotorMaster.getSetpoint());
+
     BaseStatusSignal.refreshAll(
         pivotPosition,
         pivotRotVelocity,
@@ -178,7 +203,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     inputs.velocity = MetersPerSecond.of(cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
     inputs.velocityRotations = cascadeRotVelocity.getValue();
-    inputs.cascadeHeightMeters = Meters.of(cascadeMotorMaster.getEncoderPosition());
+    inputs.cascadeHeightMeters = Meters.of(cascadeMotorMaster.getEncoderPosition(cascadeMotorMaster.getTalonFX().getPosition()));
     inputs.acceleration =
         MetersPerSecondPerSecond.of(
             cascadeRotAccel.getValue().in(RotationsPerSecondPerSecond)

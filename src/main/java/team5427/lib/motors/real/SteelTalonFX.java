@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
@@ -105,10 +107,10 @@ public class SteelTalonFX implements IMotorController {
 
     switch (configuration.mode) {
       case kFlywheel:
+      case kLinear:
         talonConfig.ClosedLoopGeneral.ContinuousWrap = false;
         break;
       case kServo:
-      case kLinear:
         talonConfig.ClosedLoopGeneral.ContinuousWrap = true;
         break;
       default:
@@ -119,6 +121,9 @@ public class SteelTalonFX implements IMotorController {
     talonConfig.CurrentLimits.SupplyCurrentLimitEnable = true;
     talonConfig.CurrentLimits.StatorCurrentLimit = configuration.currentLimit;
     talonConfig.CurrentLimits.SupplyCurrentLimit = configuration.currentLimit * 0.5;
+
+    talonConfig.MotionMagic.MotionMagicCruiseVelocity = configuration.maxVelocity;
+    talonConfig.MotionMagic.MotionMagicAcceleration = configuration.maxAcceleration;
 
     talonConfig.TorqueCurrent.PeakForwardTorqueCurrent = configuration.currentLimit;
     talonConfig.TorqueCurrent.PeakReverseTorqueCurrent = -configuration.currentLimit;
@@ -317,7 +322,8 @@ public class SteelTalonFX implements IMotorController {
         break;
       case kServo:
         this.setpoint = setpoint;
-        talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
+        // talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
+        talonFX.setControl(positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
         DriverStation.reportWarning(
             "Warning: TalonFX motor with the id "
                 + talonFX.getDeviceID()
@@ -325,7 +331,9 @@ public class SteelTalonFX implements IMotorController {
             false);
       case kLinear:
         this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
+        // talonFX.setControl(positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
         talonFX.setControl(new PositionDutyCycle(this.setpoint).withEnableFOC(withFOC));
+        // talonFX.setControl(new PositionVoltage(this.setpoint).withEnableFOC(withFOC));
         break;
       default:
         this.setpoint = setpoint;

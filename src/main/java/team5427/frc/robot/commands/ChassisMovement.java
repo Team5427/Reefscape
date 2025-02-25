@@ -30,7 +30,7 @@ public class ChassisMovement extends Command {
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
 
     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
-    tunedJoystickQuadratic.useResponseCurve(ResponseCurve.CUBIC);
+    tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
 
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);

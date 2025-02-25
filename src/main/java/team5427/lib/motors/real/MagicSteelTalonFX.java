@@ -107,10 +107,10 @@ public class MagicSteelTalonFX implements IMotorController {
 
     switch (configuration.mode) {
       case kFlywheel:
+      case kLinear:
         talonConfig.ClosedLoopGeneral.ContinuousWrap = false;
         break;
       case kServo:
-      case kLinear:
         talonConfig.ClosedLoopGeneral.ContinuousWrap = true;
         break;
       default:
