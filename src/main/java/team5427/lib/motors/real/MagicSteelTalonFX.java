@@ -293,7 +293,7 @@ public class MagicSteelTalonFX implements IMotorController {
 
   @Override
   public double getError() {
-    return talonFX.getClosedLoopError().getValue();
+    return talonFX.getClosedLoopError().refresh().getValue();
 
     // if (configuration.mode == MotorMode.kFlywheel) {
     // return setpoint - getEncoderVelocity();

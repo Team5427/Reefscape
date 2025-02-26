@@ -382,17 +382,19 @@ public final class Constants {
 
       kCascadeDriverConfiguration.maxVelocity =
           kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.25;
-      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity;
+      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 0.1;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .15;
+      kCascadeDriverConfiguration.kP = .175;
+      // kCascadeDriverConfiguration.kI = .2;
       // kCascadeDriverConfiguration.kG = 0.36;
       kCascadeDriverConfiguration.kD = 0.0;
       // kCascadeDriverConfiguration.kV = 3.0;
       // kCascadeDriverConfiguration.kV = .50;
       // kCascadeDriverConfiguration.kA = 0.05;
       // kCascadeDriverConfiguration.kS = 0.1;
+      // kCascadeDriverConfiguration.kFF = 0.0125;
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
@@ -416,7 +418,7 @@ public final class Constants {
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
 
-      kPivotConfiguration.kP = 10.0;
+      kPivotConfiguration.kP = 1.0;
       kPivotConfiguration.kD = 0.0;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
@@ -431,12 +433,13 @@ public final class Constants {
 
     public static final double kPivotCancoderOffset = 0.272;
 
-    public static final Distance kStowDistance = Feet.of(0.0);
+    public static final Distance kStowDistance = Feet.of(0.25);
     public static final Distance kL1Distance = Feet.of(0.5);
     public static final Distance kL2Distance = Feet.of(1.0);
-    public static final Distance kL3Distance = Feet.of(1.5);
-    public static final Distance kL4Distance = Feet.of(2.0);
+    public static final Distance kL3Distance = Feet.of(2.5);
+    public static final Distance kL4Distance = Feet.of(3.5);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
   }
 }
+

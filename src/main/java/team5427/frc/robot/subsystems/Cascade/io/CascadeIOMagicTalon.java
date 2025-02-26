@@ -200,6 +200,9 @@ public class CascadeIOMagicTalon implements CascadeIO {
         cascadeSlaveMotorCurrent,
         cascadeSlaveMotorVoltage);
 
+    // Logger.recordOutput("Cascade PID Output", cascadeMotorMaster.getError());
+    Logger.recordOutput("Pivot Setpoint", pivotMotorMaster.getSetpoint());
+
     inputs.velocity = MetersPerSecond.of(cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
     inputs.velocityRotations = cascadeRotVelocity.getValue();
     inputs.cascadeHeightMeters =
