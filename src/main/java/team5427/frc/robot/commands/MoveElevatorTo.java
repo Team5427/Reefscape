@@ -30,7 +30,7 @@ public class MoveElevatorTo extends Command {
   @Override
   public void end(boolean interrupted) {
     // TODO Auto-generated method stub
-    // super.end(interrupted);
-    cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
+    super.end(interrupted);
+    // cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
   }
 }
