@@ -6,6 +6,8 @@ import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -21,6 +23,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.MotorConfiguration;
@@ -51,6 +54,8 @@ public class CascadeIOMagicTalon implements CascadeIO {
   private StatusSignal<Voltage> pivotMasterMotorVoltage;
   private StatusSignal<Current> pivotSlaveMotorCurrent;
   private StatusSignal<Voltage> pivotSlaveMotorVoltage;
+
+  private StatusSignal<Angle> cascadeMasterMotorPosition;
 
   public boolean cascadeMotorsStopped;
   public boolean pivotMotorsStopped;
@@ -95,8 +100,8 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     cascadeMotorMaster.useTorqueCurrentFOC(true);
     cascadeMotorSlave.useTorqueCurrentFOC(true);
-    pivotMotorMaster.useTorqueCurrentFOC(true);
-    pivotMotorSlave.useTorqueCurrentFOC(true);
+    // pivotMotorMaster.useTorqueCurrentFOC(true);
+    // pivotMotorSlave.useTorqueCurrentFOC(true);
 
     cascadeRotVelocity = cascadeMotorMaster.getTalonFX().getVelocity();
     cascadeRotAccel = cascadeMotorMaster.getTalonFX().getAcceleration();
@@ -131,6 +136,8 @@ public class CascadeIOMagicTalon implements CascadeIO {
     pivotMotorMaster.setEncoderPosition(
         Rotation2d.fromRotations(absolutePivotPosition.refresh().getValue().in(Rotations)));
 
+    cascadeMasterMotorPosition = cascadeMotorMaster.getTalonFX().getPosition();
+
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
         pivotPosition,
@@ -139,7 +146,8 @@ public class CascadeIOMagicTalon implements CascadeIO {
         pivotMasterMotorCurrent,
         pivotMasterMotorVoltage,
         pivotSlaveMotorCurrent,
-        pivotSlaveMotorVoltage);
+        pivotSlaveMotorVoltage,
+        absolutePivotPosition);
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
@@ -148,7 +156,8 @@ public class CascadeIOMagicTalon implements CascadeIO {
         cascadeMasterMotorCurrent,
         cascadeMasterMotorVoltage,
         cascadeSlaveMotorCurrent,
-        cascadeSlaveMotorVoltage);
+        cascadeSlaveMotorVoltage,
+        cascadeMasterMotorPosition);
 
     BaseStatusSignal.waitForAll(
         0.02,
@@ -181,7 +190,14 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     // Logger.recordOutput("Pivot Brake Mode", cascadeMotorMaster.getTalonFX());
     // Logger.recordOutput("Cascade Motor Reader Setpoint", cascadeMotorMaster.getSetpoint());
-
+    BaseStatusSignal.refreshAll(
+        cascadeRotVelocity,
+        cascadeRotAccel,
+        cascadeMasterMotorCurrent,
+        cascadeMasterMotorVoltage,
+        cascadeSlaveMotorCurrent,
+        cascadeSlaveMotorVoltage,
+        cascadeMasterMotorPosition);
     BaseStatusSignal.refreshAll(
         pivotPosition,
         pivotRotVelocity,
@@ -192,27 +208,19 @@ public class CascadeIOMagicTalon implements CascadeIO {
         pivotSlaveMotorVoltage,
         absolutePivotPosition);
 
-    BaseStatusSignal.refreshAll(
-        cascadeRotVelocity,
-        cascadeRotAccel,
-        cascadeMasterMotorCurrent,
-        cascadeMasterMotorVoltage,
-        cascadeSlaveMotorCurrent,
-        cascadeSlaveMotorVoltage);
+
 
     // Logger.recordOutput("Cascade PID Output", cascadeMotorMaster.getError());
-    Logger.recordOutput("Pivot Setpoint", pivotMotorMaster.getSetpoint());
+    // Logger.recordOutput("Pivot Setpoint", pivotMotorMaster.getSetpoint());
 
     inputs.velocity = MetersPerSecond.of(cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
     inputs.velocityRotations = cascadeRotVelocity.getValue();
     inputs.cascadeHeightMeters =
         Meters.of(
-            cascadeMotorMaster.getEncoderPosition(cascadeMotorMaster.getTalonFX().getPosition()));
+            cascadeMotorMaster.getEncoderPosition(cascadeMasterMotorPosition));
     inputs.acceleration =
         MetersPerSecondPerSecond.of(
-            cascadeRotAccel.getValue().in(RotationsPerSecondPerSecond)
-                * Math.PI
-                * CascadeConstants.kCascadeDriverConfiguration.finalDiameterMeters);
+            cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
 
     inputs.cascadeMasterMotorCurrent = cascadeMasterMotorCurrent.getValue();
     inputs.cascadeMasterMotorVoltage = cascadeMasterMotorVoltage.getValue();
@@ -246,7 +254,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
   @Override
   public void setCascadeEncoderPosition(Distance setpoint) {
-    cascadeMotorMaster.setEncoderPosition(setpoint.magnitude());
+    cascadeMotorMaster.setEncoderPosition(setpoint.in(Meters));
   }
 
   @Override
@@ -260,7 +268,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
   @Override
   public void setCANCoderPosition(Rotation2d angle) {
-    pivotCANcoder.setPosition(angle.getMeasure());
+    pivotCANcoder.setPosition(angle.getRotations());
   }
 
   @Override

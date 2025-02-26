@@ -217,7 +217,7 @@ public final class Constants {
     public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
 
     public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
-    public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
+    public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((14.0/70.0), (18.0/72.0), (15.0 / 36.0));
     public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
 
@@ -386,10 +386,10 @@ public final class Constants {
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .175;
+      kCascadeDriverConfiguration.kP = .155;
       // kCascadeDriverConfiguration.kI = .2;
       // kCascadeDriverConfiguration.kG = 0.36;
-      kCascadeDriverConfiguration.kD = 0.0;
+      kCascadeDriverConfiguration.kD = 0.02;
       // kCascadeDriverConfiguration.kV = 3.0;
       // kCascadeDriverConfiguration.kV = .50;
       // kCascadeDriverConfiguration.kA = 0.05;
@@ -398,7 +398,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
-      // kCascadeDriverConfiguration.altJ = kCascadeDriverConfiguration.kA * 2.0;
+      kCascadeDriverConfiguration.altJ = 3000.0000000000001;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -409,21 +409,25 @@ public final class Constants {
     static {
       kPivotConfiguration.gearRatio =
           new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
-      kPivotConfiguration.currentLimit = 40;
+      kPivotConfiguration.currentLimit = 60;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
       kPivotConfiguration.isInverted = false;
 
       kPivotConfiguration.maxVelocity =
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-      kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
+      kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity / 2.0;
 
-      kPivotConfiguration.kP = 1.0;
+      kPivotConfiguration.kP = 10.0;
       kPivotConfiguration.kD = 0.0;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
       // kPivotConfiguration.kS = 0.0;
       // kPivotConfiguration.kG = 0.32;
+
+      kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
+      kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
+
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
