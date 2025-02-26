@@ -1,7 +1,5 @@
 package team5427.frc.robot.subsystems.Vision.io;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -25,14 +23,16 @@ public class VisionIOPhoton implements VisionIO {
 
   public Matrix<N3, N1> stddev;
 
-  PhotonPoseEstimator photonPoseEstimator =
-      new PhotonPoseEstimator(
-          AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark),
-          PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-          VisionConstants.swerveCamTransform);
+  PhotonPoseEstimator photonPoseEstimator;
 
-  public VisionIOPhoton(String cameraName) {
+  public VisionIOPhoton(String cameraName, Transform3d cameraTransform) {
     cam = new PhotonCamera(cameraName);
+
+    photonPoseEstimator =
+        new PhotonPoseEstimator(
+            VisionConstants.kAprilTagLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            cameraTransform);
     photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
   }
 
@@ -69,6 +69,8 @@ public class VisionIOPhoton implements VisionIO {
                 results.get(i).multitagResult.get().estimatedPose.ambiguity,
                 results.get(i).multitagResult.get().fiducialIDsUsed.size(),
                 totalTagDistance / results.get(i).targets.size(),
+                results.get(i).getBestTarget().getYaw(),
+                results.get(i).getBestTarget().getPitch(),
                 PoseObservationType.PHOTONVISION));
         inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
         inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
@@ -86,6 +88,8 @@ public class VisionIOPhoton implements VisionIO {
                   target.getPoseAmbiguity(),
                   1,
                   target.bestCameraToTarget.getTranslation().getNorm(),
+                  results.get(i).getBestTarget().getYaw(),
+                  results.get(i).getBestTarget().getPitch(),
                   PoseObservationType.PHOTONVISION));
           inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
           inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();

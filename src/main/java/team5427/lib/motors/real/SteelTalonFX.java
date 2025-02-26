@@ -4,8 +4,6 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
@@ -323,7 +321,8 @@ public class SteelTalonFX implements IMotorController {
       case kServo:
         this.setpoint = setpoint;
         // talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
-        talonFX.setControl(positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
+        talonFX.setControl(
+            positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
         DriverStation.reportWarning(
             "Warning: TalonFX motor with the id "
                 + talonFX.getDeviceID()

@@ -5,8 +5,8 @@ import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
 import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -322,14 +322,37 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final String swerveCamName = "swerveCam";
-    public static final String intakeCamName = "intakeCam";
-    public static final String backCamName = "backCam";
+    public static final String kSwerveCamName = "swerveCam";
+    // public static final String intakeCamName = "intakeCam";
+    public static final String kBackCamName = "backCam";
 
-    public static final Transform3d swerveCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
+    public static final int kCameraCount = 2;
+
+    public static final double kMaxAmbiguity = 0.20;
+
+    public static final Distance kMaxZHeight = Meters.of(0.5);
+
+    public static final AprilTagFieldLayout kAprilTagLayout =
+        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+
+    public static final Transform3d kSwerveCamTransform =
+        new Transform3d(0, 0, 0, Rotation3d.kZero);
+    public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
     public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
-    // kOdometryFrequency, kLoopSpeed, null)
 
+    // Standard deviation baselines, for 1 meter distance and 1 tag
+    // (Adjusted automatically based on distance and # of tags)
+    /** Larger stddev equals more doubt in Meters */
+    public static double kLinearStdDevBaseline = 0.02;
+
+    /** Larger stddev equals more doubt in Radians */
+    public static double kAngularStdDevBaseline = 0.06;
+
+    public static double[] kCameraStdDevFactors =
+        new double[] {
+          1.0, // Swerve Cam
+          1.0 // Back Cam
+        };
   }
 
   public static class CascadeConstants {
@@ -382,7 +405,8 @@ public final class Constants {
     public static final MotorConfiguration kPivotConfiguration = new MotorConfiguration();
 
     static {
-      kPivotConfiguration.gearRatio = new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
+      kPivotConfiguration.gearRatio =
+          new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
       kPivotConfiguration.currentLimit = 40;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
