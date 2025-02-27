@@ -1,6 +1,5 @@
 package team5427.frc.robot;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 
@@ -18,11 +17,12 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    if (DriverStation.isTeleop()) {
-      new PilotingControls();
-      new OperatingControls();
-      // new OperatorControls();
-    }
+    configureButtonBindings();
+  }
+
+  public void configureButtonBindings() {
+    new PilotingControls();
+    new OperatingControls();
   }
 
   /**

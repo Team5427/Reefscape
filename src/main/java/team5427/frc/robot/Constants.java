@@ -5,8 +5,8 @@ import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
 import com.ctre.phoenix6.CANBus;
-import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -217,7 +217,7 @@ public final class Constants {
     public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
 
     public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
-    public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((1.0));
+    public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((14.0/70.0), (18.0/72.0), (15.0 / 36.0));
     public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
 
@@ -322,14 +322,37 @@ public final class Constants {
   }
 
   public static class VisionConstants {
-    public static final String swerveCamName = "swerveCam";
-    public static final String intakeCamName = "intakeCam";
-    public static final String backCamName = "backCam";
+    public static final String kSwerveCamName = "swerveCam";
+    // public static final String intakeCamName = "intakeCam";
+    public static final String kBackCamName = "backCam";
 
-    public static final Transform3d swerveCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
+    public static final int kCameraCount = 2;
+
+    public static final double kMaxAmbiguity = 0.20;
+
+    public static final Distance kMaxZHeight = Meters.of(0.5);
+
+    public static final AprilTagFieldLayout kAprilTagLayout =
+        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+
+    public static final Transform3d kSwerveCamTransform =
+        new Transform3d(0, 0, 0, Rotation3d.kZero);
+    public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
     public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
-    // kOdometryFrequency, kLoopSpeed, null)
 
+    // Standard deviation baselines, for 1 meter distance and 1 tag
+    // (Adjusted automatically based on distance and # of tags)
+    /** Larger stddev equals more doubt in Meters */
+    public static double kLinearStdDevBaseline = 0.02;
+
+    /** Larger stddev equals more doubt in Radians */
+    public static double kAngularStdDevBaseline = 0.06;
+
+    public static double[] kCameraStdDevFactors =
+        new double[] {
+          1.0, // Swerve Cam
+          1.0 // Back Cam
+        };
   }
 
   public static class CascadeConstants {
@@ -358,15 +381,15 @@ public final class Constants {
       kCascadeDriverConfiguration.withFOC = true;
 
       kCascadeDriverConfiguration.maxVelocity =
-          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.25;
-      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 0.1;
+          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.5;
+      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2.0;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .175;
+      kCascadeDriverConfiguration.kP = .155;
       // kCascadeDriverConfiguration.kI = .2;
       // kCascadeDriverConfiguration.kG = 0.36;
-      kCascadeDriverConfiguration.kD = 0.0;
+      kCascadeDriverConfiguration.kD = 0.02;
       // kCascadeDriverConfiguration.kV = 3.0;
       // kCascadeDriverConfiguration.kV = .50;
       // kCascadeDriverConfiguration.kA = 0.05;
@@ -375,7 +398,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
-      // kCascadeDriverConfiguration.altJ = kCascadeDriverConfiguration.kA * 2.0;
+      kCascadeDriverConfiguration.altJ = 3000.0000000000001;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -384,22 +407,27 @@ public final class Constants {
     public static final MotorConfiguration kPivotConfiguration = new MotorConfiguration();
 
     static {
-      kPivotConfiguration.gearRatio = new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
-      kPivotConfiguration.currentLimit = 40;
+      kPivotConfiguration.gearRatio =
+          new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
+      kPivotConfiguration.currentLimit = 60;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
       kPivotConfiguration.isInverted = false;
 
       kPivotConfiguration.maxVelocity =
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-      kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity;
+      kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity / 2.0;
 
-      kPivotConfiguration.kP = 1.0;
+      kPivotConfiguration.kP = 10.0;
       kPivotConfiguration.kD = 0.0;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
       // kPivotConfiguration.kS = 0.0;
       // kPivotConfiguration.kG = 0.32;
+
+      kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
+      kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
+
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");

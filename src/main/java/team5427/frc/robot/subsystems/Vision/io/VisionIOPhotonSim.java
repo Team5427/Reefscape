@@ -2,8 +2,6 @@ package team5427.frc.robot.subsystems.Vision.io;
 
 import static edu.wpi.first.units.Units.Meter;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -39,7 +37,7 @@ public class VisionIOPhotonSim implements VisionIO {
   // PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
   //         VisionConstants.swerveCamTransform);
 
-  public VisionIOPhotonSim(String cameraName) {
+  public VisionIOPhotonSim(String cameraName, Transform3d cameraTransform) {
     cam = new PhotonCamera(cameraName);
     try {
       sim =
@@ -49,14 +47,13 @@ public class VisionIOPhotonSim implements VisionIO {
                   "photon_calibration_5d60e347-e2ab-4265-a457-f89d3c0d9b3c_1280x720.json",
                   1280,
                   720),
-              AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark));
+              VisionConstants.kAprilTagLayout);
       sim.setMaxSightRange(VisionConstants.kCameraMaxRange.in(Meter));
     } catch (IOException e) {
       e.printStackTrace();
     }
-    visionSystemSim.addAprilTags(
-        AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark));
-    visionSystemSim.addCamera(sim, VisionConstants.swerveCamTransform);
+    visionSystemSim.addAprilTags(VisionConstants.kAprilTagLayout);
+    visionSystemSim.addCamera(sim, cameraTransform);
     // photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
   }
 
@@ -98,6 +95,8 @@ public class VisionIOPhotonSim implements VisionIO {
                 results.get(i).multitagResult.get().estimatedPose.ambiguity,
                 results.get(i).multitagResult.get().fiducialIDsUsed.size(),
                 totalTagDistance / results.get(i).targets.size(),
+                results.get(i).getBestTarget().getYaw(),
+                results.get(i).getBestTarget().getPitch(),
                 PoseObservationType.PHOTONVISION));
         inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
         inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
@@ -115,6 +114,8 @@ public class VisionIOPhotonSim implements VisionIO {
                   target.getPoseAmbiguity(),
                   1,
                   target.bestCameraToTarget.getTranslation().getNorm(),
+                  results.get(i).getBestTarget().getYaw(),
+                  results.get(i).getBestTarget().getPitch(),
                   PoseObservationType.PHOTONVISION));
           inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
           inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();

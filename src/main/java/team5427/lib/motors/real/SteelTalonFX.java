@@ -3,8 +3,7 @@ package team5427.lib.motors.real;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
-
-import org.littletonrobotics.junction.Logger;
+import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -21,6 +20,7 @@ import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
@@ -275,6 +275,21 @@ public class SteelTalonFX implements IMotorController {
     return velocity.getValue().in(RotationsPerSecond) * 60.0;
   }
 
+      /**
+   * @return rotations per minute^2 if a servo, meters per second^2 if a linear or flywheel
+   */
+  public double getEncoderAcceleration(StatusSignal<AngularAcceleration> acceleration) {
+    if (configuration.mode != MotorMode.kServo) {
+      // converts to meters
+      // BaseStatusSignal.refreshAll(talonFX.getPosition());
+      return acceleration.getValue().in(RotationsPerSecondPerSecond)
+          * Math.PI
+          * configuration.finalDiameterMeters;
+    }
+    // converts to RPM
+    return acceleration.getValue().in(RotationsPerSecondPerSecond) * 60.0;
+  }
+
   @Override
   public void setRawPercentage(double percentage) {
     talonFX.set(percentage);
@@ -323,7 +338,8 @@ public class SteelTalonFX implements IMotorController {
       case kServo:
         this.setpoint = setpoint;
         // talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
-        talonFX.setControl(positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
+        talonFX.setControl(
+            positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
         DriverStation.reportWarning(
             "Warning: TalonFX motor with the id "
                 + talonFX.getDeviceID()
