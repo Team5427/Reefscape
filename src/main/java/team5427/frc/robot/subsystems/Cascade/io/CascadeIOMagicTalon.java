@@ -129,7 +129,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
     cascadeMotorSlave.setEncoderPosition(0.0);
     pivotMotorMaster.setEncoderPosition(
         Rotation2d.fromRotations(absolutePivotPosition.refresh().getValue().in(Rotations)));
-    pivotMotorMaster.setEncoderPosition(
+    pivotMotorSlave.setEncoderPosition(
       Rotation2d.fromRotations(absolutePivotPosition.refresh().getValue().in(Rotations)));
 
     BaseStatusSignal.setUpdateFrequencyForAll(
