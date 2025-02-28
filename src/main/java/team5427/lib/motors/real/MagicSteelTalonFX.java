@@ -278,7 +278,7 @@ public class MagicSteelTalonFX implements IMotorController {
     return velocity.getValue().in(RotationsPerSecond) * 60.0;
   }
 
-    /**
+  /**
    * @return rotations per minute^2 if a servo, meters per second^2 if a linear or flywheel
    */
   public double getEncoderAcceleration(StatusSignal<AngularAcceleration> acceleration) {

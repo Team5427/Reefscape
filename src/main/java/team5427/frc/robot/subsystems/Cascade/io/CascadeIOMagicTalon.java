@@ -4,9 +4,6 @@ import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
-import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
-
-import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -23,7 +20,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
-import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.MotorConfiguration;
@@ -208,19 +204,15 @@ public class CascadeIOMagicTalon implements CascadeIO {
         pivotSlaveMotorVoltage,
         absolutePivotPosition);
 
-
-
     // Logger.recordOutput("Cascade PID Output", cascadeMotorMaster.getError());
     // Logger.recordOutput("Pivot Setpoint", pivotMotorMaster.getSetpoint());
 
     inputs.velocity = MetersPerSecond.of(cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
     inputs.velocityRotations = cascadeRotVelocity.getValue();
     inputs.cascadeHeightMeters =
-        Meters.of(
-            cascadeMotorMaster.getEncoderPosition(cascadeMasterMotorPosition));
+        Meters.of(cascadeMotorMaster.getEncoderPosition(cascadeMasterMotorPosition));
     inputs.acceleration =
-        MetersPerSecondPerSecond.of(
-            cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
+        MetersPerSecondPerSecond.of(cascadeMotorMaster.getEncoderVelocity(cascadeRotVelocity));
 
     inputs.cascadeMasterMotorCurrent = cascadeMasterMotorCurrent.getValue();
     inputs.cascadeMasterMotorVoltage = cascadeMasterMotorVoltage.getValue();
