@@ -59,7 +59,7 @@ public class CascadeSubsystem extends SubsystemBase {
 
     cascadeSetpoint = CascadeConstants.kStowDistance;
     // pivotSetpoint = CascadeConstants.kStowRotation;
-    pivotSetpoint = Rotation2d.fromDegrees(10.0);
+    pivotSetpoint = Rotation2d.fromDegrees(0.0);
     state = CascadeStates.IDLE;
     lockedStates = new ArrayList<>();
   }
