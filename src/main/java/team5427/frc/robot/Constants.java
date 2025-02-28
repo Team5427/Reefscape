@@ -7,6 +7,7 @@ import static edu.wpi.first.units.Units.Meters;
 import com.ctre.phoenix6.CANBus;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.hal.CANAPITypes.CANDeviceType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -412,13 +413,13 @@ public final class Constants {
       kPivotConfiguration.currentLimit = 60;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
-      kPivotConfiguration.isInverted = false;
+      kPivotConfiguration.isInverted = true;
 
       kPivotConfiguration.maxVelocity =
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity / 2.0;
 
-      kPivotConfiguration.kP = 10.0;
+      kPivotConfiguration.kP = 12.0;
       kPivotConfiguration.kD = 0.0;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
@@ -435,7 +436,7 @@ public final class Constants {
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
-    public static final double kPivotCancoderOffset = 0.272;
+    public static final double kPivotCancoderOffset = 0.128;
 
     public static final Distance kStowDistance = Feet.of(0.25);
     public static final Distance kL1Distance = Feet.of(0.5);
@@ -444,6 +445,26 @@ public final class Constants {
     public static final Distance kL4Distance = Feet.of(3.5);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
+    public static final Rotation2d kTempActiveRotation = Rotation2d.fromDegrees(30.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(60.0);
+  }
+
+  public static class ClimbConstants {
+    public static final CANDeviceId kHookServoId = new CANDeviceId(0);
+
+    public static final MotorConfiguration kServoConfiguration = new MotorConfiguration();
+    static {
+      kServoConfiguration.gearRatio = new ComplexGearRatio(1.0 / 3.0);
+      kServoConfiguration.idleState = IdleState.kBrake;
+      kServoConfiguration.isInverted = false;
+      kServoConfiguration.mode = MotorMode.kServo;
+      kServoConfiguration.withFOC = true;
+      
+      kServoConfiguration.maxVelocity = kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kServoConfiguration.maxAcceleration = kServoConfiguration.maxVelocity * 3.0;
+
+      kServoConfiguration.kP = 0.5;
+    }
   }
 }
 

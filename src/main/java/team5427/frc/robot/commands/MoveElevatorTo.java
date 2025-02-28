@@ -21,7 +21,7 @@ public class MoveElevatorTo extends Command {
   @Override
   public void initialize() {
     cascadeSubsystem.setCascadeSetpoint(distance);
-    cascadeSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(10));
+    cascadeSubsystem.setPivotSetpoint(CascadeConstants.kTempActiveRotation);
   }
 
   @Override
@@ -33,6 +33,7 @@ public class MoveElevatorTo extends Command {
   public void end(boolean interrupted) {
     // TODO Auto-generated method stub
     super.end(interrupted);
+    // cascadeSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(0));
     // cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
   }
 }

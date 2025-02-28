@@ -18,9 +18,14 @@ public class OperatingControls {
     joy.x().onTrue(new MoveElevatorTo(CascadeConstants.kL2Distance));
     joy.b().onTrue(new MoveElevatorTo(CascadeConstants.kL3Distance));
     joy.y().onTrue(new MoveElevatorTo(CascadeConstants.kL4Distance));
-    joy.povUp().onTrue(new InstantCommand(() -> {
-      CascadeSubsystem.getInstance().getCurrentCommand().end(true);
-      CascadeSubsystem.getInstance().setCascadeEncoderPosition(CascadeConstants.kCascadeMinimumHeight);
+    // joy.povUp().onTrue(new InstantCommand(() -> {
+    //   CascadeSubsystem.getInstance().getCurrentCommand().end(true);
+    //   CascadeSubsystem.getInstance().setCascadeEncoderPosition(CascadeConstants.kCascadeMinimumHeight);
+    // }));
+
+    joy.povDown().onTrue(new InstantCommand(() -> {
+      CascadeSubsystem.getInstance().setPivotSetpoint(CascadeConstants.kStowRotation);
+      CascadeSubsystem.getInstance().setCascadeSetpoint(CascadeConstants.kStowDistance);
     }));
   }
 }
