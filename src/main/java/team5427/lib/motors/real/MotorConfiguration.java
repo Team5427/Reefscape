@@ -25,7 +25,7 @@ public class MotorConfiguration {
   public boolean isArm = false;
 
   /** Alternative velocity, acceleration, and jerk values for additional specific motor control */
-  public double altA, altV,  altJ;
+  public double altA, altV, altJ;
 
   public int currentLimit;
 

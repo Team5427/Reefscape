@@ -45,6 +45,8 @@ public final class Constants {
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
   public static Mode currentMode = Mode.SIM;
 
+  public static final boolean kIsTuningMode = true;
+
   public static enum Mode {
     /** Running on a real robot. */
     REAL,
@@ -218,7 +220,8 @@ public final class Constants {
     public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
 
     public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
-    public static final ComplexGearRatio kPivotGearRatio = new ComplexGearRatio((14.0/70.0), (18.0/72.0), (15.0 / 36.0));
+    public static final ComplexGearRatio kPivotGearRatio =
+        new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
     public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
     public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
 
@@ -428,7 +431,6 @@ public final class Constants {
 
       kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
       kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
-
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
@@ -467,4 +469,3 @@ public final class Constants {
     }
   }
 }
-
