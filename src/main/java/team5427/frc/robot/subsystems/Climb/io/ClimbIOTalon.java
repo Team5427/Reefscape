@@ -1,11 +1,10 @@
 package team5427.frc.robot.subsystems.Climb.io;
 
+import static edu.wpi.first.units.Units.Rotations;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
-
-import static edu.wpi.first.units.Units.Rotations;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
@@ -19,61 +18,48 @@ public class ClimbIOTalon implements ClimbIO {
 
   private SteelTalonFX hookServo;
 
-    private StatusSignal<Angle> hookPosition;
-    private StatusSignal<AngularVelocity> hookVelocity;
-    private StatusSignal<AngularAcceleration> hookAcceleration;
-    private StatusSignal<Current> hookServoCurrent;
-    private StatusSignal<Voltage> hookServoVoltage;
+  private StatusSignal<Angle> hookPosition;
+  private StatusSignal<AngularVelocity> hookVelocity;
+  private StatusSignal<AngularAcceleration> hookAcceleration;
+  private StatusSignal<Current> hookServoCurrent;
+  private StatusSignal<Voltage> hookServoVoltage;
 
-    public ClimbIOTalon() {
-        hookServo = new SteelTalonFX(ClimbConstants.kHookServoId);
-        hookServo.apply(ClimbConstants.kServoConfiguration);
+  public ClimbIOTalon() {
+    hookServo = new SteelTalonFX(ClimbConstants.kHookServoId);
+    hookServo.apply(ClimbConstants.kServoConfiguration);
 
-        hookPosition = hookServo.getTalonFX().getPosition();
-        hookVelocity = hookServo.getTalonFX().getVelocity();
-        hookAcceleration = hookServo.getTalonFX().getAcceleration();
+    hookPosition = hookServo.getTalonFX().getPosition();
+    hookVelocity = hookServo.getTalonFX().getVelocity();
+    hookAcceleration = hookServo.getTalonFX().getAcceleration();
 
-        hookServoCurrent = hookServo.getTalonFX().getStatorCurrent();
-        hookServoVoltage = hookServo.getTalonFX().getMotorVoltage();
+    hookServoCurrent = hookServo.getTalonFX().getStatorCurrent();
+    hookServoVoltage = hookServo.getTalonFX().getMotorVoltage();
 
-        hookServo.setEncoderPosition(Rotation2d.kZero);
+    hookServo.setEncoderPosition(Rotation2d.kZero);
 
-        BaseStatusSignal.setUpdateFrequencyForAll(
-            50.0,
-            hookPosition,
-            hookVelocity,
-            hookAcceleration,
-            hookServoCurrent,
-            hookServoVoltage
-        );
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        50.0, hookPosition, hookVelocity, hookAcceleration, hookServoCurrent, hookServoVoltage);
 
-        ParentDevice.optimizeBusUtilizationForAll(hookServo.getTalonFX());
-    }
+    ParentDevice.optimizeBusUtilizationForAll(hookServo.getTalonFX());
+  }
 
-    @Override
-    public void updateInputs(ClimbIOInputs inputs) {
-        // TODO Auto-generated method stub
+  @Override
+  public void updateInputs(ClimbIOInputs inputs) {
+    // TODO Auto-generated method stub
 
-        BaseStatusSignal.refreshAll(
-            hookPosition,
-            hookVelocity,
-            hookAcceleration,
-            hookServoCurrent,
-            hookServoVoltage
-        );
+    BaseStatusSignal.refreshAll(
+        hookPosition, hookVelocity, hookAcceleration, hookServoCurrent, hookServoVoltage);
 
-        inputs.hookPosition = Rotation2d.fromRotations(hookPosition.getValue().in(Rotations));
-        inputs.hookVelocity = hookVelocity.getValue();
-        inputs.hookAcceleration = hookAcceleration.getValue();
+    inputs.hookPosition = Rotation2d.fromRotations(hookPosition.getValue().in(Rotations));
+    inputs.hookVelocity = hookVelocity.getValue();
+    inputs.hookAcceleration = hookAcceleration.getValue();
 
-        inputs.hookServoCurrent = hookServoCurrent.getValue();
-        inputs.hookServoVoltage = hookServoVoltage.getValue();
-        
-    }
+    inputs.hookServoCurrent = hookServoCurrent.getValue();
+    inputs.hookServoVoltage = hookServoVoltage.getValue();
+  }
 
-    @Override
-    public void setHookSetpoint(Rotation2d setpoint) {
-        hookServo.setSetpoint(setpoint);
-    }
-    
+  @Override
+  public void setHookSetpoint(Rotation2d setpoint) {
+    hookServo.setSetpoint(setpoint);
+  }
 }

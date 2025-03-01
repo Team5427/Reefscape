@@ -20,11 +20,11 @@ public interface ClimbIO {
     public AngularVelocity hookVelocity = RotationsPerSecond.of(0.0);
     public AngularAcceleration hookAcceleration = RotationsPerSecondPerSecond.of(0.0);
 
-        public Current hookServoCurrent = Amps.of(0.0);
-        public Voltage hookServoVoltage = Volts.of(0.0);
-    }
+    public Current hookServoCurrent = Amps.of(0.0);
+    public Voltage hookServoVoltage = Volts.of(0.0);
+  }
 
-    public void updateInputs(ClimbIOInputs inputs);
+  public void updateInputs(ClimbIOInputs inputs);
 
   public void setHookSetpoint(Rotation2d setpoint);
 }

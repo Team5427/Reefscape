@@ -1,15 +1,7 @@
 package team5427.frc.robot.io;
 
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import team5427.frc.robot.Constants.CascadeConstants;
-import team5427.frc.robot.Constants.ClimbConstants;
-import team5427.frc.robot.commands.MoveElevatorTo;
-import team5427.frc.robot.commands.Climb;
 import team5427.frc.robot.commands.AllCommands;
-import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
-import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
 
 public class OperatingControls {
 

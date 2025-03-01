@@ -492,14 +492,17 @@ public final class Constants {
     public static final CANDeviceId kRollerServoId = new CANDeviceId(0);
 
     public static final MotorConfiguration kWristConfiguration = new MotorConfiguration();
+
     static {
-      kWristConfiguration.gearRatio = new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
+      kWristConfiguration.gearRatio =
+          new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
       kWristConfiguration.idleState = IdleState.kBrake;
       kWristConfiguration.isInverted = true;
       kWristConfiguration.mode = MotorMode.kServo;
       kWristConfiguration.withFOC = false;
 
-      kWristConfiguration.maxVelocity = kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kWristConfiguration.maxVelocity =
+          kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
       kWristConfiguration.kP = 0.5;
@@ -509,6 +512,7 @@ public final class Constants {
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(75.0);
 
     public static final MotorConfiguration kRollerConfiguration = new MotorConfiguration();
+
     static {
       kRollerConfiguration.gearRatio = new ComplexGearRatio();
       kRollerConfiguration.idleState = IdleState.kCoast;
@@ -516,11 +520,11 @@ public final class Constants {
       kRollerConfiguration.mode = MotorMode.kFlywheel;
       kRollerConfiguration.withFOC = false;
 
-      kRollerConfiguration.maxVelocity = kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kRollerConfiguration.maxVelocity =
+          kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kRollerConfiguration.maxAcceleration = kRollerConfiguration.maxVelocity;
 
       kRollerConfiguration.kP = 0.5;
     }
-
   }
 }
