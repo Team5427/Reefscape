@@ -17,7 +17,7 @@ import team5427.lib.motors.real.SteelTalonFX;
 
 public class ClimbIOTalon implements ClimbIO {
 
-    private SteelTalonFX hookServo;
+  private SteelTalonFX hookServo;
 
     private StatusSignal<Angle> hookPosition;
     private StatusSignal<AngularVelocity> hookVelocity;

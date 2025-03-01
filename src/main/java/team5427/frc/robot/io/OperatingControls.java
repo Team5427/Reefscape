@@ -24,7 +24,8 @@ public class OperatingControls {
     joy.y().onTrue(AllCommands.moveElevatorL4);
     // joy.povUp().onTrue(new InstantCommand(() -> {
     //   CascadeSubsystem.getInstance().getCurrentCommand().end(true);
-    //   CascadeSubsystem.getInstance().setCascadeEncoderPosition(CascadeConstants.kCascadeMinimumHeight);
+    //
+    // CascadeSubsystem.getInstance().setCascadeEncoderPosition(CascadeConstants.kCascadeMinimumHeight);
     // }));
 
     joy.povDown().onTrue(AllCommands.resetSubsystems);
