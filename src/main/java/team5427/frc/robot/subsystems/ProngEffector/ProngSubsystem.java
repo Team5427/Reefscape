@@ -9,7 +9,7 @@ import team5427.frc.robot.subsystems.ProngEffector.io.ProngIOInputsAutoLogged;
 public class ProngSubsystem extends SubsystemBase {
 
   private ProngIO io;
-  private ProngIOInputsAutoLogged inputsAutoLogged;
+  private ProngIOInputsAutoLogged inputsAutoLogged = new ProngIOInputsAutoLogged();
 
   private Rotation2d wristSetpoint;
   private LinearVelocity rollerVelocity;

@@ -1,5 +1,7 @@
 package team5427.frc.robot.subsystems.Climb;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import team5427.frc.robot.Constants;
@@ -11,7 +13,7 @@ import team5427.frc.robot.subsystems.Climb.io.ClimbIOTalon;
 public class ClimberSubsystem extends SubsystemBase {
 
   private ClimbIO io;
-  private ClimbIOInputsAutoLogged inputsAutoLogged;
+  private ClimbIOInputsAutoLogged inputsAutoLogged = new ClimbIOInputsAutoLogged();
 
   private Rotation2d climbHooksSetpoint;
 
@@ -40,6 +42,8 @@ public class ClimberSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputsAutoLogged);
     io.setHookSetpoint(climbHooksSetpoint);
+
+    Logger.processInputs("Climb", inputsAutoLogged);
 
     super.periodic();
   }

@@ -455,35 +455,37 @@ public final class Constants {
     public static final Distance kL1Distance = Feet.of(0.5);
     public static final Distance kL2Distance = Feet.of(1.0);
     public static final Distance kL3Distance = Feet.of(2.5);
-    public static final Distance kL4Distance = Feet.of(3.5);
+    public static final Distance kL4Distance = Feet.of(3.75);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
-    public static final Rotation2d kTempActiveRotation = Rotation2d.fromDegrees(30.0);
-    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(60.0);
+    public static final Rotation2d kTempActiveRotation = Rotation2d.fromDegrees(15.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
   }
 
   public static class ClimbConstants {
-    public static final CANDeviceId kHookServoId = new CANDeviceId(0);
+    public static final CANDeviceId kHookServoId = new CANDeviceId(25);
 
     public static final MotorConfiguration kServoConfiguration = new MotorConfiguration();
 
     static {
       kServoConfiguration.gearRatio = new ComplexGearRatio(1.0 / 3.0);
       kServoConfiguration.idleState = IdleState.kBrake;
-      kServoConfiguration.isInverted = false;
+      kServoConfiguration.isInverted = true;
       kServoConfiguration.mode = MotorMode.kServo;
-      kServoConfiguration.withFOC = true;
+      kServoConfiguration.withFOC = false;
 
       kServoConfiguration.maxVelocity =
           kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kServoConfiguration.maxAcceleration = kServoConfiguration.maxVelocity * 3.0;
 
-      kServoConfiguration.kP = 0.5;
+      kServoConfiguration.kP = 0.8;
     }
 
+
     public static final Rotation2d kStowPosition = Rotation2d.kZero;
-    public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(30.0);
-    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(90.0);
+    public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(120.0);
   }
 
   public static class ProngEffectorConstants {

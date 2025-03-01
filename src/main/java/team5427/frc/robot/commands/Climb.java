@@ -1,5 +1,7 @@
 package team5427.frc.robot.commands;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.frc.robot.Constants.ClimbConstants;
@@ -22,20 +24,21 @@ public class Climb extends Command {
     cascadeSubsystem = CascadeSubsystem.getInstance();
     climberSubsystem = ClimberSubsystem.getInstance();
     addRequirements(cascadeSubsystem, climberSubsystem);
-    step++;
   }
 
   @Override
   public void initialize() {
+    step += 1;
+    Logger.recordOutput("Climber Step", step);
     switch (step) {
       case kPrep:
         cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
-        cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
+        cascadeSubsystem.setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
         climberSubsystem.setSetpoint(ClimbConstants.kPrepPosition);
         break;
       case kActivate:
         cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
-        cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
+        cascadeSubsystem.setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
         climberSubsystem.setSetpoint(ClimbConstants.kActivePosition);
         break;
       case kClimb:
@@ -46,5 +49,10 @@ public class Climb extends Command {
       default:
         break;
     }
+  }
+
+  @Override
+  public boolean isFinished() {
+      return true;
   }
 }
