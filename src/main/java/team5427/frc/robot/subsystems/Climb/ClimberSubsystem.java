@@ -1,9 +1,8 @@
 package team5427.frc.robot.subsystems.Climb;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.ClimbConstants;
 import team5427.frc.robot.subsystems.Climb.io.ClimbIO;

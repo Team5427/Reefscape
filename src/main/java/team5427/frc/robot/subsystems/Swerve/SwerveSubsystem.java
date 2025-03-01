@@ -2,7 +2,6 @@ package team5427.frc.robot.subsystems.Swerve;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import com.ctre.phoenix6.swerve.SwerveDrivetrainConstants;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
@@ -157,7 +156,8 @@ public class SwerveSubsystem extends SubsystemBase {
             0.02 // The loop time of the robot code, in seconds
             );
     // SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
-    SwerveModuleState[] moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    SwerveModuleState[] moduleStates =
+        SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
       modules[i].setModuleState(moduleStates[i]);

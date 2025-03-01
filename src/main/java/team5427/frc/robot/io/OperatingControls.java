@@ -19,7 +19,6 @@ public class OperatingControls {
     //
     // CascadeSubsystem.getInstance().setCascadeEncoderPosition(CascadeConstants.kCascadeMinimumHeight);
     // }));
-    
 
     joy.povDown().onTrue(AllCommands.resetSubsystems);
 

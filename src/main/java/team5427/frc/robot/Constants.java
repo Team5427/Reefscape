@@ -482,7 +482,6 @@ public final class Constants {
       kServoConfiguration.kP = 0.8;
     }
 
-
     public static final Rotation2d kStowPosition = Rotation2d.kZero;
     public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(120.0);

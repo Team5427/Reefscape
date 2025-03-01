@@ -1,8 +1,7 @@
 package team5427.frc.robot.commands;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj2.command.Command;
+import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.frc.robot.Constants.ClimbConstants;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
@@ -53,6 +52,6 @@ public class Climb extends Command {
 
   @Override
   public boolean isFinished() {
-      return true;
+    return true;
   }
 }
