@@ -96,6 +96,8 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     isFieldOp = true;
     currentRobotRelativeSpeeds = new ChassisSpeeds(0, 0, 0);
+    PhoenixOdometryThread.getInstance().start();
+    actualModuleStates = getModuleStates();
     // modules[0].setModuleState(new SwerveModuleState(0,Rotation2d.kZero));
     if (Constants.config == null) System.out.println("Robot Config is null");
     setpointGenerator =
@@ -108,7 +110,7 @@ public class SwerveSubsystem extends SubsystemBase {
     previousSetpoint =
         new SwerveSetpoint(
             currentRobotRelativeSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
-    PhoenixOdometryThread.getInstance().start();
+
     System.out.println("Created New Swerve");
   }
 
