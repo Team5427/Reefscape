@@ -4,7 +4,11 @@ import static edu.wpi.first.units.Units.Centimeters;
 import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
+import java.util.Optional;
+
 import com.ctre.phoenix6.CANBus;
+import com.pathplanner.lib.config.RobotConfig;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.hal.CANAPITypes.CANDeviceType;
@@ -21,6 +25,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
 import team5427.lib.kinematics.SwerveUtil;
@@ -47,6 +53,10 @@ public final class Constants {
 
   public static final boolean kIsTuningMode = true;
 
+  public static final Optional<Alliance> kAlliance;
+
+  public static RobotConfig config;
+
   public static enum Mode {
     /** Running on a real robot. */
     REAL,
@@ -58,13 +68,17 @@ public final class Constants {
     REPLAY
   }
 
+  static {
+    kAlliance = DriverStation.getAlliance();
+  }
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverControllerJoystickDeadzone = 0.0;
   }
 
   public static class SwerveConstants {
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(3.9);
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(3.98);
     public static final double kTrackWidth = Units.inchesToMeters(22.75);
     public static final double kWheelBase = Units.inchesToMeters(22.75);
 
