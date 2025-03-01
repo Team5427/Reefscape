@@ -25,6 +25,8 @@ public interface ClimbIO {
         public Voltage hookServoVoltage = Volts.of(0.0);
     }
 
+    public void updateInputs(ClimbIOInputs inputs);
+
     public void setHookSetpoint(Rotation2d setpoint);
     
 }

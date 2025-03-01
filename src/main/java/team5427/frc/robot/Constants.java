@@ -377,7 +377,7 @@ public final class Constants {
     public static final MotorConfiguration kCascadeDriverConfiguration = new MotorConfiguration();
 
     static {
-      kCascadeDriverConfiguration.gearRatio = new ComplexGearRatio(20.0 / 66.0);
+      kCascadeDriverConfiguration.gearRatio = new ComplexGearRatio(12.0 / 72.0);
       kCascadeDriverConfiguration.currentLimit = 60;
       kCascadeDriverConfiguration.idleState = IdleState.kBrake;
       kCascadeDriverConfiguration.mode = MotorMode.kLinear;
@@ -467,5 +467,47 @@ public final class Constants {
 
       kServoConfiguration.kP = 0.5;
     }
+
+    public static final Rotation2d kStowPosition = Rotation2d.kZero;
+    public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(30.0);
+    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(90.0);
+  }
+
+  public static class ProngEffectorConstants {
+
+    public static final CANDeviceId kWristServoId = new CANDeviceId(0);
+    public static final CANDeviceId kRollerServoId = new CANDeviceId(0);
+
+    public static final MotorConfiguration kWristConfiguration = new MotorConfiguration();
+    static {
+      kWristConfiguration.gearRatio = new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
+      kWristConfiguration.idleState = IdleState.kBrake;
+      kWristConfiguration.isInverted = true;
+      kWristConfiguration.mode = MotorMode.kServo;
+      kWristConfiguration.withFOC = false;
+
+      kWristConfiguration.maxVelocity = kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
+
+      kWristConfiguration.kP = 0.5;
+    }
+
+    public static final Rotation2d kStowPosition = Rotation2d.kZero;
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(75.0);
+
+    public static final MotorConfiguration kRollerConfiguration = new MotorConfiguration();
+    static {
+      kRollerConfiguration.gearRatio = new ComplexGearRatio();
+      kRollerConfiguration.idleState = IdleState.kCoast;
+      kRollerConfiguration.isInverted = false;
+      kRollerConfiguration.mode = MotorMode.kFlywheel;
+      kRollerConfiguration.withFOC = false;
+
+      kRollerConfiguration.maxVelocity = kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+      kRollerConfiguration.maxAcceleration = kRollerConfiguration.maxVelocity;
+
+      kRollerConfiguration.kP = 0.5;
+    }
+
   }
 }
