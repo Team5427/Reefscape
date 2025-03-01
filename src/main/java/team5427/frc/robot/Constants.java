@@ -4,14 +4,10 @@ import static edu.wpi.first.units.Units.Centimeters;
 import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
 
-import java.util.Optional;
-
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.config.RobotConfig;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.hal.CANAPITypes.CANDeviceType;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -27,6 +23,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import java.util.Optional;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
 import team5427.lib.kinematics.SwerveUtil;
@@ -469,14 +466,16 @@ public final class Constants {
     public static final CANDeviceId kHookServoId = new CANDeviceId(0);
 
     public static final MotorConfiguration kServoConfiguration = new MotorConfiguration();
+
     static {
       kServoConfiguration.gearRatio = new ComplexGearRatio(1.0 / 3.0);
       kServoConfiguration.idleState = IdleState.kBrake;
       kServoConfiguration.isInverted = false;
       kServoConfiguration.mode = MotorMode.kServo;
       kServoConfiguration.withFOC = true;
-      
-      kServoConfiguration.maxVelocity = kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+
+      kServoConfiguration.maxVelocity =
+          kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kServoConfiguration.maxAcceleration = kServoConfiguration.maxVelocity * 3.0;
 
       kServoConfiguration.kP = 0.5;
