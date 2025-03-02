@@ -19,9 +19,11 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.Voltage;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.MotorConfiguration;
+import frc.robot.utils;
 
 public class CascadeIOMagicTalon implements CascadeIO {
 
@@ -33,6 +35,8 @@ public class CascadeIOMagicTalon implements CascadeIO {
   private MagicSteelTalonFX pivotMotorSlave;
   private MotorConfiguration pivotConfig;
   private CANcoder pivotCANcoder;
+
+  private Spark
 
   private StatusSignal<AngularVelocity> cascadeRotVelocity;
   private StatusSignal<AngularAcceleration> cascadeRotAccel;

@@ -72,6 +72,11 @@ public final class Constants {
     kAlliance = DriverStation.getAlliance();
   }
 
+  public static class BlinkinConstants {
+    public static final int kBlinkinChannel = 0;
+    
+  }
+
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDriverControllerJoystickDeadzone = 0.0;
