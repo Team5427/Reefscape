@@ -3,6 +3,7 @@ package team5427.frc.robot;
 import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Centimeters;
 import static edu.wpi.first.units.Units.Feet;
+import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 
 import com.ctre.phoenix6.CANBus;
@@ -151,7 +152,7 @@ public final class Constants {
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
       kDriveMotorConfiguration.withFOC = true;
 
-      kDriveMotorConfiguration.currentLimit = 80;
+      kDriveMotorConfiguration.currentLimit = 45;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity =
@@ -436,7 +437,7 @@ public final class Constants {
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity / 2.0;
 
-      kPivotConfiguration.kP = 12.0;
+      kPivotConfiguration.kP = 15.0;
       kPivotConfiguration.kD = 0.0;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
@@ -455,15 +456,19 @@ public final class Constants {
     public static final double kPivotCancoderOffset = 0.128;
 
     public static final Distance kStowDistance = Feet.of(0.25);
-    public static final Distance kL1Distance = Feet.of(0.5);
+    public static final Distance kL1Distance = Feet.of(0.25);
     public static final Distance kL2Distance = Feet.of(1.0);
-    public static final Distance kL3Distance = Feet.of(2.5);
-    public static final Distance kL4Distance = Feet.of(3.75);
+    public static final Distance kL3Distance = Feet.of(2.25);
+    public static final Distance kL4Distance = Feet.of(3.7);
+    public static final Distance kIntakeDistance = Inches.of(1.0);
+    public static final Distance kFloorIntakeDistance = Feet.of(0.6);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
+    public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(69.0);
     public static final Rotation2d kTempActiveRotation = Rotation2d.fromDegrees(15.0);
-    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(60.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
+    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(-13.0);
   }
 
   public static class ClimbConstants {
@@ -487,13 +492,13 @@ public final class Constants {
 
     public static final Rotation2d kStowPosition = Rotation2d.kZero;
     public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(45.0);
-    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(120.0);
+    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(110.0);
   }
 
   public static class ProngEffectorConstants {
 
-    public static final CANDeviceId kWristServoId = new CANDeviceId(23);
-    public static final CANDeviceId kRollerServoId = new CANDeviceId(24);
+    public static final CANDeviceId kWristServoId = new CANDeviceId(24);
+    public static final CANDeviceId kRollerServoId = new CANDeviceId(23);
 
     public static final MotorConfiguration kWristConfiguration = new MotorConfiguration();
 
@@ -512,26 +517,34 @@ public final class Constants {
           kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
-      kWristConfiguration.kP = 0.5;
+      kWristConfiguration.kP = 12;
+
+      kWristConfiguration.altA = kWristConfiguration.maxAcceleration / 7.0;
+      kWristConfiguration.altV = kWristConfiguration.maxVelocity / 3.0;
     }
 
-    public static final Rotation2d kStowPosition = Rotation2d.kZero;
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(75.0);
+    public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
+    public static final Rotation2d kZeroPosition = Rotation2d.kZero;
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(120.0);
+    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(90.0);
+    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(55.0);
 
     public static final MotorConfiguration kRollerConfiguration = new MotorConfiguration();
 
     static {
-      kRollerConfiguration.gearRatio = new ComplexGearRatio();
+      kRollerConfiguration.gearRatio = new ComplexGearRatio(24.0 / 36.0);
       kRollerConfiguration.idleState = IdleState.kCoast;
       kRollerConfiguration.isInverted = false;
       kRollerConfiguration.mode = MotorMode.kFlywheel;
       kRollerConfiguration.withFOC = false;
+      kRollerConfiguration.finalDiameterMeters = Units.inchesToMeters(4.0);
 
       kRollerConfiguration.maxVelocity =
           kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kRollerConfiguration.maxAcceleration = kRollerConfiguration.maxVelocity;
 
-      kRollerConfiguration.kP = 0.5;
+      kRollerConfiguration.kP = .1;
+      kRollerConfiguration.kV = .5;
     }
 
     public static final Current kIntakeMaxCurrent = Amp.of(20.0);

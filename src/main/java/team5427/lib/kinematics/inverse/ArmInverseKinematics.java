@@ -10,6 +10,8 @@ import team5427.lib.detection.Tuple2Plus;
  * given relative to the first joint
  */
 public class ArmInverseKinematics {
+  public ArmInverseKinematics() {}
+
   /** 2 Fixed length arms with variable angles */
   public class FixedLengthArm {
     private Rotation2d[] finalAngles;

@@ -8,4 +8,8 @@ public class Tuple2Plus<R, T> {
     this.r = r;
     this.t = t;
   }
+
+  public String toString() {
+    return r.toString() + t.toString();
+  }
 }

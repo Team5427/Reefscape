@@ -3,7 +3,6 @@ package team5427.frc.robot.commands;
 import static edu.wpi.first.units.Units.Meter;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import team5427.frc.robot.SuperStructureEnum.CascadeStates;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
@@ -23,7 +22,7 @@ public class CascadeTest extends Command {
   @Override
   public void execute() {
     CascadeSubsystem.state = CascadeStates.GROUND_INTAKE;
-    cascadeSubsystem.setCascadeSetpoint(Distance.ofRelativeUnits(.4, Meter));
+    cascadeSubsystem.setCascadeSetpoint(Meter.of(0.4));
     cascadeSubsystem.setPivotSetpoint(Rotation2d.fromDegrees(13));
   }
 

@@ -4,6 +4,10 @@ plugins {
     id "com.peterabeles.gversion" version "1.10"
     id 'com.diffplug.spotless' version '6.25.0'
 }
+test {
+    useJUnitPlatform()
+    systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
+}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

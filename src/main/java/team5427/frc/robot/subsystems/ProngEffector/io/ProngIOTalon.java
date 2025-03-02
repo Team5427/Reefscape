@@ -58,7 +58,7 @@ public class ProngIOTalon implements ProngIO {
     rollerCurrent = rollerTalon.getTalonFX().getStatorCurrent();
     rollerVoltage = rollerTalon.getTalonFX().getMotorVoltage();
 
-    wristServo.setEncoderPosition(ProngEffectorConstants.kStowPosition);
+    wristServo.setEncoderPosition(ProngEffectorConstants.kZeroPosition);
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,

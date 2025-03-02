@@ -16,6 +16,11 @@ public class AllCommands {
 
   public static final Command climbStep = new Climb();
 
+  public static final Command intake = new CoralIntakeTest();
+  public static final Command eject = new EjectCoral();
+  public static final Command floorIntake = new FloorIntake();
+  public static final Command ejectAlgae = new EjectAlgae();
+
   public static final Command resetSubsystems =
       new InstantCommand(
           () -> {
