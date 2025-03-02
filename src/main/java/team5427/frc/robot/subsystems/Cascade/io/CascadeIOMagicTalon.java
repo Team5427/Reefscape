@@ -78,7 +78,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     pivotMotorSlave
         .getTalonFX()
-        .setControl(new Follower(pivotMotorMaster.getTalonFX().getDeviceID(), true));
+        .setControl(new Follower(pivotMotorMaster.getTalonFX().getDeviceID(), false));
 
     pivotCANcoder =
         new CANcoder(
