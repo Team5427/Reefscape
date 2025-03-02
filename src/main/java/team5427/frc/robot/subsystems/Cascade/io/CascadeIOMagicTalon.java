@@ -94,8 +94,9 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     cascadeMotorMaster.useTorqueCurrentFOC(true);
     cascadeMotorSlave.useTorqueCurrentFOC(true);
-    // pivotMotorMaster.useTorqueCurrentFOC(true);
-    // pivotMotorSlave.useTorqueCurrentFOC(true);
+
+    pivotMotorMaster.useTorqueCurrentFOC(false);
+    pivotMotorSlave.useTorqueCurrentFOC(false);
 
     cascadeRotVelocity = cascadeMotorMaster.getTalonFX().getVelocity();
     cascadeRotAccel = cascadeMotorMaster.getTalonFX().getAcceleration();

@@ -20,6 +20,17 @@ public enum SuperStructureEnum {
     }
   }
 
+  public enum ProngEffectorStates {
+    ALGAE_INTAKE,
+    ALGAE_OUTAKE,
+    CORAL_INTAKE,
+    CORAL_OUTAKE,
+    CORAL_STOWED,
+    ALGAE_STOWED,
+    DISABLED,
+    IDLE;
+  }
+
   public enum CascadeStates {
     STATION_INTAKE,
     REEF_INTAKE,

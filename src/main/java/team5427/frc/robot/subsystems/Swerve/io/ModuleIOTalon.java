@@ -3,6 +3,7 @@ package team5427.frc.robot.subsystems.Swerve.io;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volt;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -209,6 +210,11 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
     driveMotor.setSetpoint(speed.in(MetersPerSecond));
+  }
+
+  @Override
+  public void setDriveSpeedSetpoint(Voltage volts) {
+    driveMotor.setRawVoltage(volts.in(Volt));
   }
 
   /**

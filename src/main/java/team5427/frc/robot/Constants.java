@@ -1,5 +1,6 @@
 package team5427.frc.robot;
 
+import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Centimeters;
 import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Meters;
@@ -13,6 +14,7 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -20,6 +22,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -463,7 +466,7 @@ public final class Constants {
   }
 
   public static class ClimbConstants {
-    public static final CANDeviceId kHookServoId = new CANDeviceId(0);
+    public static final CANDeviceId kHookServoId = new CANDeviceId(25);
 
     public static final MotorConfiguration kServoConfiguration = new MotorConfiguration();
 
@@ -488,10 +491,13 @@ public final class Constants {
 
   public static class ProngEffectorConstants {
 
-    public static final CANDeviceId kWristServoId = new CANDeviceId(0);
-    public static final CANDeviceId kRollerServoId = new CANDeviceId(0);
+    public static final CANDeviceId kWristServoId = new CANDeviceId(23);
+    public static final CANDeviceId kRollerServoId = new CANDeviceId(24);
 
     public static final MotorConfiguration kWristConfiguration = new MotorConfiguration();
+
+    public static final Rotation2d kMaxPivotAngle = Rotation2d.fromDegrees(150);
+    public static final Rotation2d kMinPivotAngle = Rotation2d.kZero;
 
     static {
       kWristConfiguration.gearRatio =
@@ -526,5 +532,9 @@ public final class Constants {
 
       kRollerConfiguration.kP = 0.5;
     }
+
+    public static final Current kIntakeMaxCurrent = Amp.of(20.0);
+
+    public static final MedianFilter kIntakeFilter = new MedianFilter(10);
   }
 }
