@@ -1,4 +1,4 @@
-package team5427.lib.detection;
+package team5427.lib.detection.tuples;
 
 public class Tuple2Plus<R, T> {
   public R r;

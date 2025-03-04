@@ -2,7 +2,7 @@ package team5427.lib.kinematics.inverse;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import team5427.lib.detection.Tuple2Plus;
+import team5427.lib.detection.tuples.Tuple2Plus;
 
 /**
  * Inverse kinematics for robotic arms. This is for arms with fixed arm segments and 2 joints. This
@@ -109,6 +109,7 @@ public class ArmInverseKinematics {
         double[] segmentLengths, Rotation2d fixedAngle, Translation3d targetLocation) {
       this.segmentLengths = segmentLengths;
       this.fixedAngle = fixedAngle;
+      this.targetLocation = targetLocation;
     }
 
     public Tuple2Plus<Rotation2d, Double> getAngleAndArmLength() {
