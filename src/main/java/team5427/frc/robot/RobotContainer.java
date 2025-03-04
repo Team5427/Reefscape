@@ -5,9 +5,11 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -61,6 +63,10 @@ public class RobotContainer {
         },
         SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
         );
+    VisionSubsystem vision = new VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
+    // new InstantCommand(() -> {
+      
+    // });
     configureButtonBindings();
   }
 
