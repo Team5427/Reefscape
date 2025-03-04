@@ -20,7 +20,7 @@ public class MoveElevatorTo extends Command {
   @Override
   public void initialize() {
     cascadeSubsystem.setCascadeSetpoint(distance);
-    cascadeSubsystem.setPivotSetpoint(CascadeConstants.kTempActiveRotation);
+    cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
   }
 
   @Override

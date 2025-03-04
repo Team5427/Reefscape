@@ -14,9 +14,9 @@ public class OperatingControls {
   public OperatingControls() {
     joy = new CommandXboxController(1);
 
-    joy.a().onTrue(AllCommands.moveElevatorL1);
-    joy.x().onTrue(AllCommands.moveElevatorL2);
-    joy.b().onTrue(AllCommands.moveElevatorL3);
+    joy.a().onTrue(AllCommands.scoreL1);
+    joy.x().onTrue(AllCommands.scoreL2);
+    joy.b().onTrue(AllCommands.scoreL3);
     joy.y().onTrue(AllCommands.moveElevatorL4);
 
     joy.leftTrigger()
