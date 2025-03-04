@@ -50,16 +50,7 @@ public class PilotingControls {
                   CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
                 }));
 
-    joy.leftTrigger()
-        .whileTrue(
-            new InstantCommand(
-                () -> {
-                  SwerveSubsystem.getInstance().getCurrentCommand().end(true);
-                  SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-                  // SwerveSubsystem.getInstance().stop();
-                },
-                SwerveSubsystem.getInstance()))
-        .whileFalse(new ChassisMovement(joy));
+    SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
     joy.y()
         .and(() -> RobotBase.isReal())

@@ -53,6 +53,7 @@ public class ChassisMovement extends Command {
       Logger.recordOutput("InputSpeeds", inputSpeeds);
     } else {
 
+
       double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
       vx = -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
       vy = -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
@@ -63,7 +64,10 @@ public class ChassisMovement extends Command {
               * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
+      if(joy.getLeftTriggerAxis() > 0.1){
+          inputSpeeds = new ChassisSpeeds(0,0,0);
 
+      }
       swerveSubsystem.setChassisSpeeds(inputSpeeds);
     }
   }
