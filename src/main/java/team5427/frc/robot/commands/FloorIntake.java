@@ -36,7 +36,7 @@ public class FloorIntake extends Command {
   public void end(boolean interrupted) {
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
     cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
-    prongSubsystem.setRollerSetpoint(MetersPerSecond.of(1.5));
+    prongSubsystem.setRollerSetpoint(MetersPerSecond.of(2.0));
     prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
   }
 }

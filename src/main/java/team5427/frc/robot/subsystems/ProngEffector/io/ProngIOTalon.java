@@ -41,6 +41,9 @@ public class ProngIOTalon implements ProngIO {
     wristServo = new MagicSteelTalonFX(ProngEffectorConstants.kWristServoId);
     wristServo.apply(ProngEffectorConstants.kWristConfiguration);
 
+    wristServo.talonConfig.ClosedLoopGeneral.ContinuousWrap = false;
+    wristServo.getTalonFX().getConfigurator().apply(wristServo.talonConfig);
+
     rollerTalon = new SteelTalonFX(ProngEffectorConstants.kRollerServoId);
     rollerTalon.apply(ProngEffectorConstants.kRollerConfiguration);
 
@@ -58,7 +61,7 @@ public class ProngIOTalon implements ProngIO {
     rollerCurrent = rollerTalon.getTalonFX().getStatorCurrent();
     rollerVoltage = rollerTalon.getTalonFX().getMotorVoltage();
 
-    wristServo.setEncoderPosition(ProngEffectorConstants.kZeroPosition);
+    
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
@@ -73,7 +76,22 @@ public class ProngIOTalon implements ProngIO {
         rollerCurrent,
         rollerVoltage);
 
+        
+    BaseStatusSignal.waitForAll(
+        0.02,
+        wristPosition,
+        wristVelocity,
+        wristAcceleration,
+        wristCurrent,
+        wristVoltage,
+        rollerPosition,
+        rollerVelocity,
+        rollerAcceleration,
+        rollerCurrent,
+        rollerVoltage);
+
     ParentDevice.optimizeBusUtilizationForAll(wristServo.getTalonFX(), rollerTalon.getTalonFX());
+    wristServo.setEncoderPosition(ProngEffectorConstants.kStowPosition);
   }
 
   @Override

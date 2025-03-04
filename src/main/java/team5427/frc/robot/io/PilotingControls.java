@@ -56,7 +56,7 @@ public class PilotingControls {
                 () -> {
                   SwerveSubsystem.getInstance().getCurrentCommand().end(true);
                   SwerveSubsystem.getInstance().setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-                  SwerveSubsystem.getInstance().stop();
+                  // SwerveSubsystem.getInstance().stop();
                 },
                 SwerveSubsystem.getInstance()))
         .whileFalse(new ChassisMovement(joy));

@@ -3,6 +3,7 @@ package team5427.frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import team5427.frc.robot.Constants.CascadeConstants;
+import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.Constants.ClimbConstants;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
@@ -13,6 +14,7 @@ public class AllCommands {
   public static final Command moveElevatorL2 = new MoveElevatorTo(CascadeConstants.kL2Distance);
   public static final Command moveElevatorL3 = new MoveElevatorTo(CascadeConstants.kL3Distance);
   public static final Command moveElevatorL4 = new MoveElevatorTo(CascadeConstants.kL4Distance);
+//   public static final Command moveElevatorL4 = new TempDoScore(CascadeConstants.kL4Distance, ProngEffectorConstants.kScoreReefPosition);
 
   public static final Command climbStep = new Climb();
 
