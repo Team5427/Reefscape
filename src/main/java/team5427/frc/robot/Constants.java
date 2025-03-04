@@ -460,19 +460,23 @@ public final class Constants {
     public static final double kPivotCancoderOffset = 0.128;
 
     public static final Distance kStowDistance = Feet.of(0.25);
-    public static final Distance kL1Distance = Feet.of(0.25);
-    public static final Distance kL2Distance = Feet.of(1.0);
-    public static final Distance kL3Distance = Feet.of(1.4);
-    public static final Distance kL4Distance = Feet.of(3.7);
     public static final Distance kIntakeDistance = Inches.of(1.0);
     public static final Distance kFloorIntakeDistance = Feet.of(0.6);
 
+    public static final Distance kL1Distance = Feet.of(0.25);
+    public static final Distance kL2Distance = Feet.of(0.25);
+    public static final Distance kL3Distance = Feet.of(1.4);
+    public static final Distance kL4Distance = Feet.of(3.65);
+
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
-    public static final Rotation2d kTempActiveRotation = Rotation2d.fromDegrees(10.0);
     public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(60.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(-13.0);
+
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
+    public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
+    public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
   }
 
   public static class ClimbConstants {
@@ -527,13 +531,6 @@ public final class Constants {
       kWristConfiguration.altV = kWristConfiguration.maxVelocity / 3.0;
     }
 
-    public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
-    // public static final Rotation2d kScoreReefPosition = Rotation2d.fromDegrees(0.0);
-    public static final Rotation2d kZeroPosition = Rotation2d.kZero;
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(140.0);
-    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
-    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(55.0);
-
     public static final MotorConfiguration kRollerConfiguration = new MotorConfiguration();
 
     static {
@@ -552,8 +549,41 @@ public final class Constants {
       kRollerConfiguration.kV = .5;
     }
 
+    public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
+    public static final Rotation2d kZeroPosition = Rotation2d.kZero;
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(140.0);
+    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
+    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(55.0);
+
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(15.0);
+    public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);
+    public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.0);
+
     public static final Current kIntakeMaxCurrent = Amp.of(20.0);
 
     public static final MedianFilter kIntakeFilter = new MedianFilter(10);
   }
+
+  public static class ScoringConstants {
+
+    public static final RawScoringConfiguration kScoreL1 = new RawScoringConfiguration(
+      CascadeConstants.kL1Rotation,
+      CascadeConstants.kL1Distance,
+      ProngEffectorConstants.kL1Rotation
+    );
+
+    public static final RawScoringConfiguration kScoreL2 = new RawScoringConfiguration(
+      CascadeConstants.kL2Rotation,
+      CascadeConstants.kL2Distance,
+      ProngEffectorConstants.kL2Rotation
+    );
+
+    public static final RawScoringConfiguration kScoreL3 = new RawScoringConfiguration(
+      CascadeConstants.kL3Rotation,
+      CascadeConstants.kL3Distance,
+      ProngEffectorConstants.kL3Rotation
+    );
+
+  }
+
 }

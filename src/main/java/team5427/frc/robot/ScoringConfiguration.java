@@ -1,19 +1,19 @@
 // package team5427.frc.robot;
 
-// import static edu.wpi.first.units.Units.Meter;
+import static edu.wpi.first.units.Units.Meter;
 
-// import org.opencv.core.Mat.Tuple4;
-
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Pose3d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.geometry.Translation2d;
-// import edu.wpi.first.math.geometry.Translation3d;
-// import edu.wpi.first.units.measure.Distance;
-// import edu.wpi.first.units.measure.LinearVelocity;
-// import team5427.lib.detection.tuples.Tuple5Plus;
-// import team5427.lib.kinematics.inverse.ArmInverseKinematics;
-// import team5427.lib.kinematics.inverse.ArmInverseKinematics.VariableLengthArm;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.Kinematics;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
+import team5427.lib.detection.tuples.Tuple4Plus;
+import team5427.lib.detection.tuples.Tuple5Plus;
+import team5427.lib.kinematics.inverse.ArmInverseKinematics;
+import team5427.lib.kinematics.inverse.ArmInverseKinematics.VariableLengthArm;
 
 // public class ScoringConfiguration {
 //   private Pose3d driveTrainTargetPose;
@@ -53,9 +53,9 @@
 //     ik = generic_IK.new VariableLengthArm(ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
 //   }
 
-  
-
-//   public Tuple5Plus<Rotation2d, Rotation2d, Distance, 
+  public Tuple4Plus<Pose3d, Rotation2d, Distance, Rotation2d> asTuple() {
+    return new Tuple4Plus<Pose3d,Rotation2d,Distance,Rotation2d>(driveTrainTargetPose, cascadeAngle, cascadeLength, endEffectorAngle);
+  }
 
 
 // }
