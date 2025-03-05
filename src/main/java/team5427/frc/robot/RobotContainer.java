@@ -5,11 +5,15 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
+
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
+import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -32,6 +36,8 @@ public class RobotContainer {
       System.out.println("Robot Config Failing");
       e.printStackTrace();
     }
+
+    factoryCreateSubsystems();
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
@@ -63,11 +69,17 @@ public class RobotContainer {
         },
         SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
         );
-    VisionSubsystem vision = new VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
+    // VisionSubsystem vision = new VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
     // new InstantCommand(() -> {
       
     // });
     configureButtonBindings();
+  }
+
+  private void factoryCreateSubsystems() {
+    SwerveSubsystem.getInstance();
+    ProngSubsystem.getInstance();
+    CascadeSubsystem.getInstance();
   }
 
   public void configureButtonBindings() {
