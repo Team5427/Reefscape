@@ -53,6 +53,8 @@ public class ChassisMovement extends Command {
       Logger.recordOutput("InputSpeeds", inputSpeeds);
     } else {
 
+      double dampener = joy.getRightTriggerAxis() * 0.88;
+
       double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
       vx = -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
       vy = -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
@@ -61,6 +63,10 @@ public class ChassisMovement extends Command {
               * Math.abs(tunedJoystickLinear.getLeftX())
               * Math.PI
               * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+
+      vx *= (1 - dampener);
+      vy *= (1 - dampener);
+      omegaRadians *= (1 - dampener);
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
 

@@ -7,9 +7,9 @@ import edu.wpi.first.units.measure.Distance;
 
 public class RawScoringConfiguration {
 
-    private Rotation2d cascadeAngle;
-    private Distance cascadeHeight;
-    private Rotation2d wristAngle;
+    private final Rotation2d cascadeAngle;
+    private final Distance cascadeHeight;
+    private final Rotation2d wristAngle;
 
     public RawScoringConfiguration() {
         this.cascadeAngle = Rotation2d.kZero;

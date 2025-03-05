@@ -21,7 +21,7 @@ public class OperatingControls {
 
     joy.leftTrigger()
         .whileTrue(
-            new ConditionalCommand(AllCommands.intake, AllCommands.floorIntake, () -> coralMode));
+            new ConditionalCommand(AllCommands.intake, AllCommands.lowReefAlgaeIntake, () -> coralMode));
     joy.rightTrigger()
         .whileTrue(
             new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
