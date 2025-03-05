@@ -11,9 +11,34 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Left Side 1.1"
+            "name": "Score L3"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Left Side 1.1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Station"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset All"
           }
         }
       ]

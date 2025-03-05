@@ -1,10 +1,14 @@
 package team5427.frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import team5427.frc.robot.io.OperatingControls;
@@ -14,6 +18,8 @@ import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
+
+import team5427.frc.robot.commands.AllCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -27,6 +33,8 @@ public class RobotContainer {
   // private final CommandXboxController m_driverController =
   // new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+  private SendableChooser<Command> autoChooser;
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     try {
@@ -37,7 +45,8 @@ public class RobotContainer {
       e.printStackTrace();
     }
 
-    factoryCreateSubsystems();
+    initSubsystems();
+    createNamedCommands();
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
@@ -53,8 +62,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -73,13 +82,22 @@ public class RobotContainer {
     // new InstantCommand(() -> {
       
     // });
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData(autoChooser);
+
     configureButtonBindings();
   }
 
-  private void factoryCreateSubsystems() {
+  private void initSubsystems() {
     SwerveSubsystem.getInstance();
     ProngSubsystem.getInstance();
     CascadeSubsystem.getInstance();
+  }
+
+  private void createNamedCommands() {
+    NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);
+    NamedCommands.registerCommand("Intake Station", AllCommands.intake);
+    NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
   }
 
   public void configureButtonBindings() {
@@ -92,8 +110,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */
-  // public Command getAutonomousCommand() {
-  // // An example command will be run in autonomous
-
-  // }
+  public Command getAutonomousCommand() {
+  // An example command will be run in autonomous
+    return autoChooser.getSelected();
+  }
 }
