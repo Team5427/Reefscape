@@ -75,6 +75,7 @@ public class Robot extends LoggedRobot {
     Logger.start();
     // steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
     m_robotContainer = new RobotContainer();
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // module = new SwerveModule(0);
     // SwerveSubsystem subsystem = SwerveSubsystem.getInstance();
     // MagicSteelTalonFX talon1 = new
