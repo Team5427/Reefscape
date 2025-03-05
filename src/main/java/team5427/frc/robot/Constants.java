@@ -188,7 +188,7 @@ public final class Constants {
       // Tunable values
       kSteerMotorConfiguration.kP = 6.7; // 7.0
       kSteerMotorConfiguration.kD = 0.18;
-      kSteerMotorConfiguration.kS = 0.21;
+      // kSteerMotorConfiguration.kS = 0.21;
       kSteerMotorConfiguration.kA = 0.1;
       // kSteerMotorConfiguration.kA = 8.0;
       // kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
