@@ -13,8 +13,8 @@ public interface VisionIO {
     public boolean connected = false;
     public PoseObservation[] poseObservations = new PoseObservation[0];
 
-    public double[] timestamps = new double[] {};
-    public double[][] frames = new double[][] {};
+    // public double[] timestamps = new double[] {};
+    // public double[][] frames = new double[][] {};
 
     public int[] tagIds = new int[0];
   }
