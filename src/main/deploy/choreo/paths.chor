@@ -1,0 +1,121 @@
+{
+ "name":"paths",
+ "version":1,
+ "type":"Swerve",
+ "variables":{
+  "expressions":{},
+  "poses":{
+   "Deep Left Side Right Coral":{
+    "x":{
+     "exp":"5 m",
+     "val":5.0
+    },
+    "y":{
+     "exp":"5.3 m",
+     "val":5.3
+    },
+    "heading":{
+     "exp":"-120 deg",
+     "val":-2.0943951023931953
+    }
+   },
+   "Left Side Start":{
+    "x":{
+     "exp":"7.25 m",
+     "val":7.25
+    },
+    "y":{
+     "exp":"6 m",
+     "val":6.0
+    },
+    "heading":{
+     "exp":"-90 deg",
+     "val":-1.5707963267948966
+    }
+   },
+   "Left Station Intake":{
+    "x":{
+     "exp":"1.36 m",
+     "val":1.36
+    },
+    "y":{
+     "exp":"7 m",
+     "val":7.0
+    },
+    "heading":{
+     "exp":"-54 deg",
+     "val":-0.942477796076938
+    }
+   }
+  }
+ },
+ "config":{
+  "frontLeft":{
+   "x":{
+    "exp":"14 in",
+    "val":0.35559999999999997
+   },
+   "y":{
+    "exp":"14 in",
+    "val":0.35559999999999997
+   }
+  },
+  "backLeft":{
+   "x":{
+    "exp":"-14 in",
+    "val":-0.35559999999999997
+   },
+   "y":{
+    "exp":"14 in",
+    "val":0.35559999999999997
+   }
+  },
+  "mass":{
+   "exp":"100 lbs",
+   "val":45.359237
+  },
+  "inertia":{
+   "exp":"6 kg m ^ 2",
+   "val":6.0
+  },
+  "gearing":{
+   "exp":"6.5",
+   "val":6.5
+  },
+  "radius":{
+   "exp":"3.88 in",
+   "val":0.098552
+  },
+  "vmax":{
+   "exp":"6000 RPM",
+   "val":628.3185307179587
+  },
+  "tmax":{
+   "exp":"1.2 N * m",
+   "val":1.2
+  },
+  "cof":{
+   "exp":"1.542",
+   "val":1.542
+  },
+  "bumper":{
+   "front":{
+    "exp":"16 in",
+    "val":0.4064
+   },
+   "side":{
+    "exp":"16 in",
+    "val":0.4064
+   },
+   "back":{
+    "exp":"16 in",
+    "val":0.4064
+   }
+  },
+  "differentialTrackWidth":{
+   "exp":"22 in",
+   "val":0.5588
+  }
+ },
+ "generationFeatures":[]
+}

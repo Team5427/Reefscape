@@ -5,16 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "A.0"
-                }
-              }
-            ]
+            "pathName": "Left Side 1.0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Side 1.1"
           }
         }
       ]
