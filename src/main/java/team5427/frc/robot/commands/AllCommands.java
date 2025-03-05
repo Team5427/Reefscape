@@ -19,6 +19,7 @@ public class AllCommands {
   public static final Command scoreL1 = new Score(RobotConfigConstants.kScoreL1);
   public static final Command scoreL2 = new Score(RobotConfigConstants.kScoreL2);
   public static final Command scoreL3 = new Score(RobotConfigConstants.kScoreL3);
+  public static final Command scoreL4 = new Score(RobotConfigConstants.kScoreL4);
 
   public static final Command climbStep = new Climb();
 

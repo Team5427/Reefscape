@@ -480,6 +480,7 @@ public final class Constants {
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(10.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
   }
@@ -560,11 +561,12 @@ public final class Constants {
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(55.0);
 
-    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(15.0);
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.0);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(0.0);
 
-    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(45.0);
 
     public static final Current kIntakeMaxCurrent = Amp.of(20.0);
 
@@ -589,6 +591,12 @@ public final class Constants {
       CascadeConstants.kL3Rotation,
       CascadeConstants.kL3Distance,
       ProngEffectorConstants.kL3Rotation
+    );
+
+    public static final RawScoringConfiguration kScoreL4 = new RawScoringConfiguration(
+      CascadeConstants.kL4Rotation,
+      CascadeConstants.kL4Distance,
+      ProngEffectorConstants.kL4Rotation
     );
 
     public static final RawIntakeConfiguration kCoralStationIntake = new RawIntakeConfiguration(
