@@ -2,6 +2,8 @@ package team5427.frc.robot.io;
 
 import static edu.wpi.first.units.Units.Meters;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.units.measure.Distance;
@@ -13,12 +15,14 @@ import team5427.frc.robot.commands.CascadeTest;
 import team5427.frc.robot.commands.ChassisMovement;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 public class PilotingControls {
 
   private CommandXboxController joy;
 
   public PilotingControls() {
+    
     joy = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
     // joy.a()
@@ -60,5 +64,7 @@ public class PilotingControls {
                   SwerveSubsystem.getInstance().resetGyro(new Rotation2d(0));
                   ;
                 }));
+    
+                VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
   }
 }

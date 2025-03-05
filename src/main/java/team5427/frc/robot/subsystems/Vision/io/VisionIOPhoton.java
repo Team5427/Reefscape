@@ -39,23 +39,20 @@ public class VisionIOPhoton implements VisionIO {
 
   @Override
   public void updateInputs(VisionIOInputs inputs) {
-    List<PhotonPipelineResult> results = cam.getAllUnreadResults();
     inputs.connected = cam.isConnected();
+    List<PhotonPipelineResult> results = cam.getAllUnreadResults();
     List<PoseObservation> obs = new ArrayList<PoseObservation>();
 
-    for (int i = results.size() - 1; i > 0; i--) {
+      for (int i = results.size() - 1; i > 0; i--) {
       if (results.get(i).multitagResult.isPresent()) {
         Pose3d pose =
             new Pose3d(
                 results.get(i).getMultiTagResult().get().estimatedPose.best.getTranslation(),
                 results.get(i).getMultiTagResult().get().estimatedPose.best.getRotation());
         double totalTagDistance = 0.0;
-        for (PhotonTrackedTarget target : results.get(i).targets) {
-          totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
-        }
-
         Set<Short> tagIdSet = new HashSet<>();
         for (PhotonTrackedTarget target : results.get(i).targets) {
+          totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
           tagIdSet.add((short) target.fiducialId);
         }
         inputs.tagIds = new int[tagIdSet.size()];

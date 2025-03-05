@@ -348,9 +348,9 @@ public final class Constants {
   public static class VisionConstants {
     public static final String kSwerveCamName = "swerveCam";
     // public static final String intakeCamName = "intakeCam";
-    public static final String kBackCamName = "backCam";
+    // public static final String kBackCamName = "backCam";
 
-    public static final int kCameraCount = 2;
+    public static final int kCameraCount = 1;
 
     public static final double kMaxAmbiguity = 0.20;
 
