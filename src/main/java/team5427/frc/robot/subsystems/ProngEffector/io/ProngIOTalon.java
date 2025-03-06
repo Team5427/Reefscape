@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
@@ -122,6 +124,8 @@ public class ProngIOTalon implements ProngIO {
 
     inputs.rollerCurrent = rollerCurrent.getValue();
     inputs.rollerVoltage = rollerVoltage.getValue();
+
+    Logger.recordOutput("Has Object", hasResistance());
   }
 
   @Override
@@ -137,5 +141,10 @@ public class ProngIOTalon implements ProngIO {
   @Override
   public void stopRollers() {
     rollerTalon.setSetpoint(0.0);
+  }
+
+  @Override
+  public boolean hasResistance() {
+      return rollerCurrent.getValue().magnitude() >= ProngEffectorConstants.kRollerConfiguration.currentLimit;
   }
 }

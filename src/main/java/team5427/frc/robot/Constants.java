@@ -557,7 +557,7 @@ public final class Constants {
 
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
     public static final Rotation2d kZeroPosition = Rotation2d.kZero;
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(140.0);
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(150.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(55.0);
 
