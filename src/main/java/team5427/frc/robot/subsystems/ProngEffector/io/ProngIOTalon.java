@@ -142,6 +142,6 @@ public class ProngIOTalon implements ProngIO {
 
   @Override
   public boolean hasResistance() {
-      return rollerCurrent.getValue().magnitude() >= ProngEffectorConstants.kRollerConfiguration.currentLimit;
+      return rollerCurrent.getValue().magnitude() >= ProngEffectorConstants.kRollerConfiguration.currentLimit - 1;
   }
 }

@@ -63,6 +63,10 @@ public class ProngSubsystem extends SubsystemBase {
     return rollerVelocity;
   }
 
+  public boolean hasObject() {
+    return io.hasResistance();
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputsAutoLogged);
