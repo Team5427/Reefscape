@@ -628,7 +628,7 @@ public final class Constants {
             CascadeConstants.kLowReefAlgaeRotation,
             CascadeConstants.kLowReefAlgaeDistance,
             ProngEffectorConstants.kLowReefAlgaeRotation,
-            MetersPerSecond.of(5.0),
+            MetersPerSecond.of(4.5),
             false);
   }
 }
