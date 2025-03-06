@@ -149,13 +149,13 @@ public class SwerveSubsystem extends SubsystemBase {
     ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
 
-    previousSetpoint =
-        setpointGenerator.generateSetpoint(
-            previousSetpoint, // The previous setpoint
-            discretizedSpeeds, // The desired target speeds
-            0.02 // The loop time of the robot code, in seconds
-            );
-    // SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
+    // previousSetpoint =
+    //     setpointGenerator.generateSetpoint(
+    //         previousSetpoint, // The previous setpoint
+    //         discretizedSpeeds, // The desired target speeds
+    //         0.02 // The loop time of the robot code, in seconds
+    //         );
+    // SwerveModuleState[] moduleStates= previousSetpoint.moduleStates();
     SwerveModuleState[] moduleStates =
         SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
