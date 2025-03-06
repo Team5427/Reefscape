@@ -111,6 +111,7 @@ public class ProngSubsystem extends SubsystemBase {
     // }
 
     Logger.processInputs("ProngEffector/Inputs", inputsAutoLogged);
+    Logger.recordOutput("Has Object", hasObject());
   }
 
   private static class Errors {

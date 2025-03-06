@@ -4,8 +4,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
@@ -16,6 +14,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
+import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.SteelTalonFX;
@@ -142,6 +141,7 @@ public class ProngIOTalon implements ProngIO {
 
   @Override
   public boolean hasResistance() {
-      return rollerCurrent.getValue().magnitude() >= ProngEffectorConstants.kRollerConfiguration.currentLimit - 1;
+    return rollerCurrent.getValue().magnitude()
+        >= ProngEffectorConstants.kRollerConfiguration.currentLimit - 1;
   }
 }

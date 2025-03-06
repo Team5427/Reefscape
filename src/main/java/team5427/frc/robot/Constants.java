@@ -155,7 +155,7 @@ public final class Constants {
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
       kDriveMotorConfiguration.withFOC = true;
 
-      kDriveMotorConfiguration.currentLimit = 45;
+      kDriveMotorConfiguration.currentLimit = 80;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity =
@@ -358,7 +358,8 @@ public final class Constants {
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
     public static final Transform3d kSwerveCamTransform =
-        new Transform3d(0.233965, 0.27517, Units.inchesToMeters(8.215), new Rotation3d(0, 15, 180-152.5));
+        new Transform3d(
+            0.233965, 0.27517, Units.inchesToMeters(8.215), new Rotation3d(0, 15, 180 - 152.5));
     public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
     public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
 
@@ -603,17 +604,17 @@ public final class Constants {
             CascadeConstants.kL4Distance,
             ProngEffectorConstants.kL4Rotation);
 
-    public static final RawScoringConfiguration kScoreBarge = new RawScoringConfiguration(
-      CascadeConstants.kBargeRotation, 
-      CascadeConstants.kBargeDistance, 
-      ProngEffectorConstants.kBargePosition
-    );
+    public static final RawScoringConfiguration kScoreBarge =
+        new RawScoringConfiguration(
+            CascadeConstants.kBargeRotation,
+            CascadeConstants.kBargeDistance,
+            ProngEffectorConstants.kBargePosition);
 
-    public static final RawScoringConfiguration kScoreProcessor = new RawScoringConfiguration(
-      CascadeConstants.kProcessorRotation, 
-      CascadeConstants.kProcessorDistance, 
-      ProngEffectorConstants.kProcessorPosition
-    );
+    public static final RawScoringConfiguration kScoreProcessor =
+        new RawScoringConfiguration(
+            CascadeConstants.kProcessorRotation,
+            CascadeConstants.kProcessorDistance,
+            ProngEffectorConstants.kProcessorPosition);
 
     public static final RawIntakeConfiguration kCoralStationIntake =
         new RawIntakeConfiguration(

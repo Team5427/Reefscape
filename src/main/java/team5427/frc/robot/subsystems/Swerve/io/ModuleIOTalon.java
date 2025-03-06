@@ -125,6 +125,9 @@ public class ModuleIOTalon implements ModuleIO {
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0, driveMotorVoltage, steerMotorVoltage, driveMotorCurrent, steerMotorCurrent);
 
+    ParentDevice.optimizeBusUtilizationForAll(
+        driveMotor.getTalonFX(), steerMotor.getTalonFX(), cancoder);
+
     BaseStatusSignal.waitForAll(
         0.02,
         absolutePosition,
@@ -135,25 +138,31 @@ public class ModuleIOTalon implements ModuleIO {
         driveMotorVoltage,
         driveMotorCurrent,
         steerMotorCurrent);
-
-    ParentDevice.optimizeBusUtilizationForAll(
-        driveMotor.getTalonFX(), steerMotor.getTalonFX(), cancoder);
   }
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
 
-    BaseStatusSignal.refreshAll(
+    // FIX ME
+
+    // BaseStatusSignal.refreshAll(s
+    //     absolutePosition,
+    //     driveMotorPosition,
+    //     steerMotorPosition,
+    //     driveMotorVelocity,
+    //     steerMotorVoltage,
+    //     driveMotorVoltage,
+    //     driveMotorCurrent,
+    //     steerMotorCurrent);
+    BaseStatusSignal.waitForAll(
+        1.0 / Constants.kOdometryFrequency,
         absolutePosition,
         driveMotorPosition,
         steerMotorPosition,
-        driveMotorVelocity,
-        steerMotorVoltage,
-        driveMotorVoltage,
-        driveMotorCurrent,
-        steerMotorCurrent);
-    // BaseStatusSignal.refreshAll(
-    //     );
+        driveMotorVelocity);
+
+    BaseStatusSignal.refreshAll(
+        steerMotorVoltage, driveMotorVoltage, driveMotorCurrent, steerMotorCurrent);
 
     inputs.absolutePosition = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
     // steerMotor.updateStatusSignals();
@@ -245,6 +254,6 @@ public class ModuleIOTalon implements ModuleIO {
 
     setDriveSpeedSetpoint(MetersPerSecond.of(0.0));
     // driveMotor.getTalonFX().stopMotor();
-    steerMotor.getTalonFX().stopMotor();
+    steerMotor.getTalonFX().set(0.0);
   }
 }

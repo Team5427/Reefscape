@@ -19,20 +19,13 @@ public class OperatingControls {
 
     y = joy.y();
 
-    joy.a().onTrue(
-      new ConditionalCommand(
-        AllCommands.scoreL1, 
-        AllCommands.scoreProcessor, 
-        () -> coralMode)
-    );
+    joy.a()
+        .onTrue(
+            new ConditionalCommand(
+                AllCommands.scoreL1, AllCommands.scoreProcessor, () -> coralMode));
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b().onTrue(AllCommands.scoreL3);
-    y.onTrue(
-      new ConditionalCommand(
-        AllCommands.scoreL4, 
-        AllCommands.scoreBarge, 
-        () -> coralMode)
-    );
+    y.onTrue(new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreBarge, () -> coralMode));
 
     joy.leftTrigger()
         .whileTrue(
