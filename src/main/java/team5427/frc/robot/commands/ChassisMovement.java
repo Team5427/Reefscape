@@ -69,9 +69,8 @@ public class ChassisMovement extends Command {
       omegaRadians *= (1 - dampener);
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
-      if(joy.getLeftTriggerAxis() > 0.1){
-          inputSpeeds = new ChassisSpeeds(0,0,0);
-
+      if (joy.getLeftTriggerAxis() > 0.1) {
+        inputSpeeds = new ChassisSpeeds(0, 0, 0);
       }
       swerveSubsystem.setChassisSpeeds(inputSpeeds);
     }

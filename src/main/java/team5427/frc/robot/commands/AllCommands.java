@@ -3,7 +3,6 @@ package team5427.frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import team5427.frc.robot.Constants.CascadeConstants;
-import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.Constants.ClimbConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
@@ -24,7 +23,8 @@ public class AllCommands {
   public static final Command climbStep = new Climb();
 
   public static final Command intake = new Intake(RobotConfigConstants.kCoralStationIntake);
-  public static final Command lowReefAlgaeIntake = new Intake(RobotConfigConstants.kReefLowAlgaeIntake);
+  public static final Command lowReefAlgaeIntake =
+      new Intake(RobotConfigConstants.kReefLowAlgaeIntake);
   public static final Command eject = new EjectCoral();
   public static final Command floorIntake = new FloorIntake();
   public static final Command ejectAlgae = new EjectAlgae();

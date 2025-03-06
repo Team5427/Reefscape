@@ -2,16 +2,11 @@ package team5427.frc.robot;
 
 import static edu.wpi.first.units.Units.Meter;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.kinematics.Kinematics;
 import edu.wpi.first.units.measure.Distance;
-import edu.wpi.first.units.measure.LinearVelocity;
 import team5427.lib.detection.tuples.Tuple4Plus;
-import team5427.lib.detection.tuples.Tuple5Plus;
 import team5427.lib.kinematics.inverse.ArmInverseKinematics;
 import team5427.lib.kinematics.inverse.ArmInverseKinematics.VariableLengthArm;
 
@@ -28,34 +23,51 @@ public class ScoringConfiguration {
 
   private VariableLengthArm ik;
 
-  public ScoringConfiguration(){
+  public ScoringConfiguration() {
     driveTrainTargetPose = new Pose3d();
     cascadeAngle = Rotation2d.kZero;
     cascadeLength = Meter.of(0.0);
     endEffectorAngle = Rotation2d.kZero;
-    ik = generic_IK.new VariableLengthArm(ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
+    ik =
+        generic_IK
+        .new VariableLengthArm(
+            ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
   }
 
-  public ScoringConfiguration(Pose3d driveTrainTargetPose, Rotation2d cascadeAngle, Distance casadeLength, Rotation2d endEffectorAngle){
+  public ScoringConfiguration(
+      Pose3d driveTrainTargetPose,
+      Rotation2d cascadeAngle,
+      Distance casadeLength,
+      Rotation2d endEffectorAngle) {
     this.driveTrainTargetPose = driveTrainTargetPose;
     this.cascadeAngle = cascadeAngle;
     this.cascadeLength = casadeLength;
     this.endEffectorAngle = endEffectorAngle;
-    ik = generic_IK.new VariableLengthArm(ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
+    ik =
+        generic_IK
+        .new VariableLengthArm(
+            ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
   }
 
-  public ScoringConfiguration(Pose3d driveTrainTargetPose, Rotation2d cascadeAngle, Distance casadeLength, Rotation2d endEffectorAngle, boolean isVariable){
+  public ScoringConfiguration(
+      Pose3d driveTrainTargetPose,
+      Rotation2d cascadeAngle,
+      Distance casadeLength,
+      Rotation2d endEffectorAngle,
+      boolean isVariable) {
     this.driveTrainTargetPose = driveTrainTargetPose;
     this.cascadeAngle = cascadeAngle;
     this.cascadeLength = casadeLength;
     this.endEffectorAngle = endEffectorAngle;
     this.isVariable = isVariable;
-    ik = generic_IK.new VariableLengthArm(ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
+    ik =
+        generic_IK
+        .new VariableLengthArm(
+            ScoringConstants.kSegmentLengths, endEffectorAngle, endEffectorLocation);
   }
 
   public Tuple4Plus<Pose3d, Rotation2d, Distance, Rotation2d> asTuple() {
-    return new Tuple4Plus<Pose3d,Rotation2d,Distance,Rotation2d>(driveTrainTargetPose, cascadeAngle, cascadeLength, endEffectorAngle);
+    return new Tuple4Plus<Pose3d, Rotation2d, Distance, Rotation2d>(
+        driveTrainTargetPose, cascadeAngle, cascadeLength, endEffectorAngle);
   }
-
-
 }

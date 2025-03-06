@@ -12,7 +12,6 @@ import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
@@ -22,7 +21,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
@@ -211,138 +209,138 @@ public final class Constants {
   }
 
   public static class EndEffectorConstants {
-  //   public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
-  //   public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);
-  //   public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
-  //   public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
 
-  //   public static final CANDeviceId kWristCancoderCanID = new CANDeviceId(0);
-  //   public static final CANDeviceId kPivotCancoderCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kWristCancoderCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kPivotCancoderCanID = new CANDeviceId(0);
 
-  //   public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
-  //   public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
+    //   public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
+    //   public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
 
-  //   public static ProfiledPIDController kSIMPivotController =
-  //       new ProfiledPIDController(1.1, 0, 1, (new Constraints(10, 20)));
-  //   public static ProfiledPIDController kSIMWristController =
-  //       new ProfiledPIDController(1.1, 0, 1, new Constraints(10, 20));
+    //   public static ProfiledPIDController kSIMPivotController =
+    //       new ProfiledPIDController(1.1, 0, 1, (new Constraints(10, 20)));
+    //   public static ProfiledPIDController kSIMWristController =
+    //       new ProfiledPIDController(1.1, 0, 1, new Constraints(10, 20));
 
-  //   public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
-  //   public static MotorConfiguration kWristMotorConfiguration = new MotorConfiguration();
-  //   public static MotorConfiguration kCoralRollerMotorConfiguration = new MotorConfiguration();
-  //   public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kWristMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kCoralRollerMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
 
-  //   public static final Rotation2d kWristMinimumAngle = Rotation2d.fromDegrees(0);
-  //   public static final Rotation2d kWristMaximumAngle = Rotation2d.fromDegrees(180);
-  //   public static final Rotation2d kPivotMinimumAngle = Rotation2d.fromDegrees(0);
-  //   public static final Rotation2d kPivotMaximumAngle = Rotation2d.fromDegrees(180);
+    //   public static final Rotation2d kWristMinimumAngle = Rotation2d.fromDegrees(0);
+    //   public static final Rotation2d kWristMaximumAngle = Rotation2d.fromDegrees(180);
+    //   public static final Rotation2d kPivotMinimumAngle = Rotation2d.fromDegrees(0);
+    //   public static final Rotation2d kPivotMaximumAngle = Rotation2d.fromDegrees(180);
 
-  //   public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
+    //   public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
 
-  //   public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
-  //   public static final ComplexGearRatio kPivotGearRatio =
-  //       new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
-  //   public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
-  //   public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
+    //   public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
+    //   public static final ComplexGearRatio kPivotGearRatio =
+    //       new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
+    //   public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
+    //   public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
 
-  //   public static final double kWristCancoderOffset = 0.0;
-  //   public static final double kPivotCancoderOffset = 0.0;
+    //   public static final double kWristCancoderOffset = 0.0;
+    //   public static final double kPivotCancoderOffset = 0.0;
 
-  //   static {
-  //     kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
-  //     kPivotMotorConfiguration.currentLimit = 40;
-  //     kPivotMotorConfiguration.idleState = IdleState.kBrake;
-  //     kPivotMotorConfiguration.mode = MotorMode.kServo;
-  //     kPivotMotorConfiguration.isInverted = false;
+    //   static {
+    //     kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
+    //     kPivotMotorConfiguration.currentLimit = 40;
+    //     kPivotMotorConfiguration.idleState = IdleState.kBrake;
+    //     kPivotMotorConfiguration.mode = MotorMode.kServo;
+    //     kPivotMotorConfiguration.isInverted = false;
 
-  //     kPivotMotorConfiguration.withFOC = true;
+    //     kPivotMotorConfiguration.withFOC = true;
 
-  //     kPivotMotorConfiguration.maxVelocity =
-  //         kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-  //     kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
+    //     kPivotMotorConfiguration.maxVelocity =
+    //         kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+    //     kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
 
-  //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration;
-  //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxVelocity;
-  //     kPivotMotorConfiguration.kG = 0.27;
-  //     kPivotMotorConfiguration.kA = 0.02;
-  //     kPivotMotorConfiguration.kV = 4.34;
+    //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration;
+    //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxVelocity;
+    //     kPivotMotorConfiguration.kG = 0.27;
+    //     kPivotMotorConfiguration.kA = 0.02;
+    //     kPivotMotorConfiguration.kV = 4.34;
 
-  //     kPivotMotorConfiguration.kP = 0.1;
-  //   }
+    //     kPivotMotorConfiguration.kP = 0.1;
+    //   }
 
-  //   static {
-  //     kWristMotorConfiguration.gearRatio = kPivotGearRatio;
-  //     kWristMotorConfiguration.currentLimit = 40;
-  //     kWristMotorConfiguration.idleState = IdleState.kBrake;
-  //     kWristMotorConfiguration.mode = MotorMode.kServo;
-  //     kWristMotorConfiguration.isInverted = false;
+    //   static {
+    //     kWristMotorConfiguration.gearRatio = kPivotGearRatio;
+    //     kWristMotorConfiguration.currentLimit = 40;
+    //     kWristMotorConfiguration.idleState = IdleState.kBrake;
+    //     kWristMotorConfiguration.mode = MotorMode.kServo;
+    //     kWristMotorConfiguration.isInverted = false;
 
-  //     kPivotMotorConfiguration.withFOC = true;
+    //     kPivotMotorConfiguration.withFOC = true;
 
-  //     kWristMotorConfiguration.maxVelocity =
-  //         kWristMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-  //     kWristMotorConfiguration.maxAcceleration = kWristMotorConfiguration.maxVelocity * 2.0;
+    //     kWristMotorConfiguration.maxVelocity =
+    //         kWristMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+    //     kWristMotorConfiguration.maxAcceleration = kWristMotorConfiguration.maxVelocity * 2.0;
 
-  //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxAcceleration;
-  //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxVelocity;
-  //     kWristMotorConfiguration.kA = 0.02;
-  //     kWristMotorConfiguration.kV = 4.34;
+    //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxAcceleration;
+    //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxVelocity;
+    //     kWristMotorConfiguration.kA = 0.02;
+    //     kWristMotorConfiguration.kV = 4.34;
 
-  //     kWristMotorConfiguration.kP = 0.1;
-  //   }
+    //     kWristMotorConfiguration.kP = 0.1;
+    //   }
 
-  //   static {
-  //     kCoralRollerMotorConfiguration.currentLimit = 30;
-  //     kCoralRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
-  //     kCoralRollerMotorConfiguration.isInverted = false;
-  //     kCoralRollerMotorConfiguration.mode = MotorMode.kFlywheel;
-  //     kCoralRollerMotorConfiguration.idleState = IdleState.kCoast;
-  //     kCoralRollerMotorConfiguration.finalDiameterMeters = kCoralWheelDiameter;
+    //   static {
+    //     kCoralRollerMotorConfiguration.currentLimit = 30;
+    //     kCoralRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
+    //     kCoralRollerMotorConfiguration.isInverted = false;
+    //     kCoralRollerMotorConfiguration.mode = MotorMode.kFlywheel;
+    //     kCoralRollerMotorConfiguration.idleState = IdleState.kCoast;
+    //     kCoralRollerMotorConfiguration.finalDiameterMeters = kCoralWheelDiameter;
 
-  //     kPivotMotorConfiguration.withFOC = false;
+    //     kPivotMotorConfiguration.withFOC = false;
 
-  //     kCoralRollerMotorConfiguration.maxVelocity =
-  //         kCoralRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
-  //     kCoralRollerMotorConfiguration.maxAcceleration =
-  //         kCoralRollerMotorConfiguration.maxVelocity * 2.0;
+    //     kCoralRollerMotorConfiguration.maxVelocity =
+    //         kCoralRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+    //     kCoralRollerMotorConfiguration.maxAcceleration =
+    //         kCoralRollerMotorConfiguration.maxVelocity * 2.0;
 
-  //     kCoralRollerMotorConfiguration.altA = kCoralRollerMotorConfiguration.maxAcceleration;
-  //     kCoralRollerMotorConfiguration.altV = kCoralRollerMotorConfiguration.maxVelocity;
+    //     kCoralRollerMotorConfiguration.altA = kCoralRollerMotorConfiguration.maxAcceleration;
+    //     kCoralRollerMotorConfiguration.altV = kCoralRollerMotorConfiguration.maxVelocity;
 
-  //     kCoralRollerMotorConfiguration.kP = 0.1;
-  //     kCoralRollerMotorConfiguration.kA = 0.1;
-  //     kCoralRollerMotorConfiguration.kV = 0.1;
-  //     kCoralRollerMotorConfiguration.kD = 0.1;
-  //   }
+    //     kCoralRollerMotorConfiguration.kP = 0.1;
+    //     kCoralRollerMotorConfiguration.kA = 0.1;
+    //     kCoralRollerMotorConfiguration.kV = 0.1;
+    //     kCoralRollerMotorConfiguration.kD = 0.1;
+    //   }
 
-  //   static {
-  //     kAlgaeRollerMotorConfiguration.currentLimit = 30;
-  //     kAlgaeRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
-  //     kAlgaeRollerMotorConfiguration.isInverted = false;
-  //     kAlgaeRollerMotorConfiguration.mode = MotorMode.kFlywheel;
-  //     kAlgaeRollerMotorConfiguration.idleState = IdleState.kCoast;
-  //     kAlgaeRollerMotorConfiguration.finalDiameterMeters = kAlgaeWheelDiameter;
+    //   static {
+    //     kAlgaeRollerMotorConfiguration.currentLimit = 30;
+    //     kAlgaeRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
+    //     kAlgaeRollerMotorConfiguration.isInverted = false;
+    //     kAlgaeRollerMotorConfiguration.mode = MotorMode.kFlywheel;
+    //     kAlgaeRollerMotorConfiguration.idleState = IdleState.kCoast;
+    //     kAlgaeRollerMotorConfiguration.finalDiameterMeters = kAlgaeWheelDiameter;
 
-  //     kPivotMotorConfiguration.withFOC = false;
+    //     kPivotMotorConfiguration.withFOC = false;
 
-  //     kAlgaeRollerMotorConfiguration.maxVelocity =
-  //         kAlgaeRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
-  //     kAlgaeRollerMotorConfiguration.maxAcceleration =
-  //         kAlgaeRollerMotorConfiguration.maxVelocity * 2.0;
+    //     kAlgaeRollerMotorConfiguration.maxVelocity =
+    //         kAlgaeRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+    //     kAlgaeRollerMotorConfiguration.maxAcceleration =
+    //         kAlgaeRollerMotorConfiguration.maxVelocity * 2.0;
 
-  //     kAlgaeRollerMotorConfiguration.altA = kAlgaeRollerMotorConfiguration.maxAcceleration;
-  //     kAlgaeRollerMotorConfiguration.altV = kAlgaeRollerMotorConfiguration.maxVelocity;
+    //     kAlgaeRollerMotorConfiguration.altA = kAlgaeRollerMotorConfiguration.maxAcceleration;
+    //     kAlgaeRollerMotorConfiguration.altV = kAlgaeRollerMotorConfiguration.maxVelocity;
 
-  //     kAlgaeRollerMotorConfiguration.kP = 0.1;
-  //     kAlgaeRollerMotorConfiguration.kA = 0.1;
-  //     kAlgaeRollerMotorConfiguration.kV = 0.1;
-  //     kAlgaeRollerMotorConfiguration.kD = 0.1;
-  //   }
+    //     kAlgaeRollerMotorConfiguration.kP = 0.1;
+    //     kAlgaeRollerMotorConfiguration.kA = 0.1;
+    //     kAlgaeRollerMotorConfiguration.kV = 0.1;
+    //     kAlgaeRollerMotorConfiguration.kD = 0.1;
+    //   }
 
-  //   static {
-  //     kSIMPivotController.setTolerance(0.05);
-  //     kSIMWristController.setTolerance(0.05);
-  //   }
+    //   static {
+    //     kSIMPivotController.setTolerance(0.05);
+    //     kSIMWristController.setTolerance(0.05);
+    //   }
   }
 
   public static class VisionConstants {
@@ -575,46 +573,44 @@ public final class Constants {
 
   public static class RobotConfigConstants {
 
-    public static final RawScoringConfiguration kScoreL1 = new RawScoringConfiguration(
-      CascadeConstants.kL1Rotation,
-      CascadeConstants.kL1Distance,
-      ProngEffectorConstants.kL1Rotation
-    );
+    public static final RawScoringConfiguration kScoreL1 =
+        new RawScoringConfiguration(
+            CascadeConstants.kL1Rotation,
+            CascadeConstants.kL1Distance,
+            ProngEffectorConstants.kL1Rotation);
 
-    public static final RawScoringConfiguration kScoreL2 = new RawScoringConfiguration(
-      CascadeConstants.kL2Rotation,
-      CascadeConstants.kL2Distance,
-      ProngEffectorConstants.kL2Rotation
-    );
+    public static final RawScoringConfiguration kScoreL2 =
+        new RawScoringConfiguration(
+            CascadeConstants.kL2Rotation,
+            CascadeConstants.kL2Distance,
+            ProngEffectorConstants.kL2Rotation);
 
-    public static final RawScoringConfiguration kScoreL3 = new RawScoringConfiguration(
-      CascadeConstants.kL3Rotation,
-      CascadeConstants.kL3Distance,
-      ProngEffectorConstants.kL3Rotation
-    );
+    public static final RawScoringConfiguration kScoreL3 =
+        new RawScoringConfiguration(
+            CascadeConstants.kL3Rotation,
+            CascadeConstants.kL3Distance,
+            ProngEffectorConstants.kL3Rotation);
 
-    public static final RawScoringConfiguration kScoreL4 = new RawScoringConfiguration(
-      CascadeConstants.kL4Rotation,
-      CascadeConstants.kL4Distance,
-      ProngEffectorConstants.kL4Rotation
-    );
+    public static final RawScoringConfiguration kScoreL4 =
+        new RawScoringConfiguration(
+            CascadeConstants.kL4Rotation,
+            CascadeConstants.kL4Distance,
+            ProngEffectorConstants.kL4Rotation);
 
-    public static final RawIntakeConfiguration kCoralStationIntake = new RawIntakeConfiguration(
-      CascadeConstants.kIntakeRotation, 
-      CascadeConstants.kIntakeDistance, 
-      ProngEffectorConstants.kIntakePosition, 
-      MetersPerSecond.of(1.0), 
-      true
-    );
+    public static final RawIntakeConfiguration kCoralStationIntake =
+        new RawIntakeConfiguration(
+            CascadeConstants.kIntakeRotation,
+            CascadeConstants.kIntakeDistance,
+            ProngEffectorConstants.kIntakePosition,
+            MetersPerSecond.of(1.0),
+            true);
 
-    public static final RawIntakeConfiguration kReefLowAlgaeIntake = new RawIntakeConfiguration(
-      CascadeConstants.kLowReefAlgaeRotation,
-      CascadeConstants.kLowReefAlgaeDistance,
-      ProngEffectorConstants.kLowReefAlgaeRotation,
-      MetersPerSecond.of(3.0),
-      false
-    );
-
+    public static final RawIntakeConfiguration kReefLowAlgaeIntake =
+        new RawIntakeConfiguration(
+            CascadeConstants.kLowReefAlgaeRotation,
+            CascadeConstants.kLowReefAlgaeDistance,
+            ProngEffectorConstants.kLowReefAlgaeRotation,
+            MetersPerSecond.of(3.0),
+            false);
   }
-
 }

@@ -98,8 +98,8 @@ public class VisionIOPhotonSim implements VisionIO {
                 results.get(i).getBestTarget().getYaw(),
                 results.get(i).getBestTarget().getPitch(),
                 PoseObservationType.PHOTONVISION));
-        inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-        inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
+        // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
+        // inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
       } else {
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
@@ -117,8 +117,8 @@ public class VisionIOPhotonSim implements VisionIO {
                   results.get(i).getBestTarget().getYaw(),
                   results.get(i).getBestTarget().getPitch(),
                   PoseObservationType.PHOTONVISION));
-          inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-          inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
+          // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
+          // inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
         }
       }
       List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);

@@ -198,7 +198,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // Apply update
       poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
-// 
+    //
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
@@ -208,7 +208,6 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
     Logger.recordOutput("Odometry/Robot", getPose());
-   
   }
 
   public void resetGyro(Rotation2d angle) {

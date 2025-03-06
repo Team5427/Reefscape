@@ -5,9 +5,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,7 +42,7 @@ public class VisionIOPhoton implements VisionIO {
     List<PhotonPipelineResult> results = cam.getAllUnreadResults();
     List<PoseObservation> obs = new LinkedList<PoseObservation>();
 
-      for (int i = results.size() - 1; i > 0; i--) {
+    for (int i = results.size() - 1; i > 0; i--) {
       if (results.get(i).multitagResult.isPresent()) {
         Pose3d pose =
             new Pose3d(
@@ -94,16 +92,15 @@ public class VisionIOPhoton implements VisionIO {
           // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
         }
       }
-      List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);
-      temp = new LinkedList<PoseObservation>(temp);
-      temp.addAll(obs);
+      // List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);
+      // temp = new LinkedList<PoseObservation>(temp);
+      // temp.addAll(obs);
 
-      inputs.poseObservations = new PoseObservation[temp.size()];
+      inputs.poseObservations = new PoseObservation[obs.size()];
 
-      for(int b = 0; b <= temp.size()-1; b++){
-        inputs.poseObservations[b] = temp.get(b);
+      for (int b = 0; b <= obs.size() - 1; b++) {
+        inputs.poseObservations[b] = obs.get(b);
       }
-      
     }
   }
 

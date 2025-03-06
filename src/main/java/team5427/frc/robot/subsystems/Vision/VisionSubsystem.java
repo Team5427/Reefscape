@@ -10,21 +10,18 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
-
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
+import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
-import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 
 public class VisionSubsystem extends SubsystemBase {
   private VisionIO[] io = new VisionIO[VisionConstants.kCameraCount];
@@ -37,9 +34,9 @@ public class VisionSubsystem extends SubsystemBase {
 
   private static VisionSubsystem m_instance;
 
-  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer){
-    if(m_instance == null){
-      if(consumer.isEmpty()){
+  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer) {
+    if (m_instance == null) {
+      if (consumer.isEmpty()) {
         DriverStation.reportWarning("Vision Subsystem Not provided Vision Consumer", true);
         return null;
       }
@@ -53,7 +50,8 @@ public class VisionSubsystem extends SubsystemBase {
       case REAL:
         io[0] =
             new VisionIOPhoton(VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
-        // io[1] = new VisionIOPhoton(VisionConstants.kBackCamName, VisionConstants.kBackCamTransform);
+        // io[1] = new VisionIOPhoton(VisionConstants.kBackCamName,
+        // VisionConstants.kBackCamTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {
           inputsAutoLogged[i] = new VisionIOInputsAutoLogged();
@@ -64,7 +62,8 @@ public class VisionSubsystem extends SubsystemBase {
         io[0] =
             new VisionIOPhotonSim(
                 VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
-        // io[1] = new VisionIOPhoton(VisionConstants.kBackCamName, VisionConstants.kBackCamTransform);
+        // io[1] = new VisionIOPhoton(VisionConstants.kBackCamName,
+        // VisionConstants.kBackCamTransform);
         for (int i = 0; i < inputsAutoLogged.length; i++) {
           inputsAutoLogged[i] = new VisionIOInputsAutoLogged();
         }
@@ -94,22 +93,21 @@ public class VisionSubsystem extends SubsystemBase {
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputsAutoLogged[i]);
-      // Logger.processInputs("Vision/Camera" + Integer.toString(i), inputsAutoLogged[i]);
+      Logger.processInputs("Vision/Camera" + Integer.toString(i), inputsAutoLogged[i]);
     }
     // Initialize logging values
-    List<Pose3d> allTagPoses = new LinkedList<>();
-    List<Pose3d> allRobotPoses = new LinkedList<>();
-    List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
-    List<Pose3d> allRobotPosesRejected = new LinkedList<>();
+    // List<Pose3d> allTagPoses = new LinkedList<>();
+    // List<Pose3d> allRobotPoses = new LinkedList<>();
+    // List<Pose3d> allRobotPosesAccepted = new LinkedList<>();
+    // List<Pose3d> allRobotPosesRejected = new LinkedList<>();
     int n = 0;
-  
 
     for (int cameraIndex = 0; cameraIndex < io.length; cameraIndex++) {
       // Initialize logging values
-      List<Pose3d> tagPoses = new LinkedList<>();
-      List<Pose3d> robotPoses = new LinkedList<>();
-      List<Pose3d> robotPosesAccepted = new LinkedList<>();
-      List<Pose3d> robotPosesRejected = new LinkedList<>();
+      // List<Pose3d> tagPoses = new LinkedList<>();
+      // List<Pose3d> robotPoses = new LinkedList<>();
+      // List<Pose3d> robotPosesAccepted = new LinkedList<>();
+      // List<Pose3d> robotPosesRejected = new LinkedList<>();
 
       // Add tag poses
       // for (int tagId : inputsAutoLogged[cameraIndex].tagIds) {
@@ -180,26 +178,26 @@ public class VisionSubsystem extends SubsystemBase {
       // Logger.recordOutput(
       //     "Vision/Camera" + Integer.toString(cameraIndex) + "/RobotPosesRejected",
       //     robotPosesRejected.toArray(new Pose3d[robotPosesRejected.size()]));
-      allTagPoses.addAll(tagPoses);
-      allRobotPoses.addAll(robotPoses);
-      allRobotPosesAccepted.addAll(robotPosesAccepted);
-      allRobotPosesRejected.addAll(robotPosesRejected);
+      // allTagPoses.addAll(tagPoses);
+      // allRobotPoses.addAll(robotPoses);
+      // allRobotPosesAccepted.addAll(robotPosesAccepted);
+      // allRobotPosesRejected.addAll(robotPosesRejected);
     }
 
     Logger.recordOutput("Num of Pose Observations", n);
     n = 0;
     // Log summary data
-    if(!DriverStation.isFMSAttached()){
-    Logger.recordOutput(
-        "Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
-    Logger.recordOutput(
-        "Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
-    Logger.recordOutput(
-        "Vision/Summary/RobotPosesAccepted",
-        allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
-    Logger.recordOutput(
-        "Vision/Summary/RobotPosesRejected",
-        allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
+    if (!DriverStation.isFMSAttached()) {
+      // Logger.recordOutput(
+      //     "Vision/Summary/TagPoses", allTagPoses.toArray(new Pose3d[allTagPoses.size()]));
+      // Logger.recordOutput(
+      //     "Vision/Summary/RobotPoses", allRobotPoses.toArray(new Pose3d[allRobotPoses.size()]));
+      // Logger.recordOutput(
+      //     "Vision/Summary/RobotPosesAccepted",
+      //     allRobotPosesAccepted.toArray(new Pose3d[allRobotPosesAccepted.size()]));
+      // Logger.recordOutput(
+      //     "Vision/Summary/RobotPosesRejected",
+      //     allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
     }
   }
 

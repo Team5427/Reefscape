@@ -9,17 +9,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
-
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
-
-import team5427.frc.robot.commands.AllCommands;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -78,9 +73,10 @@ public class RobotContainer {
         },
         SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
         );
-    // VisionSubsystem vision = new VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
+    // VisionSubsystem vision = new
+    // VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
     // new InstantCommand(() -> {
-      
+
     // });
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
@@ -111,7 +107,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-  // An example command will be run in autonomous
+    // An example command will be run in autonomous
     return autoChooser.getSelected();
   }
 }

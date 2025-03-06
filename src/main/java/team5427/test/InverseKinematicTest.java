@@ -9,12 +9,12 @@ import team5427.lib.kinematics.inverse.ArmInverseKinematics.VariableLengthArm;
 
 public class InverseKinematicTest {
 
-    public InverseKinematicTest(){
-        // createRobotContainer();
-        // inverseKinematicsTest();
-    }
-    
-    public void createRobotContainer() {
+  public InverseKinematicTest() {
+    // createRobotContainer();
+    // inverseKinematicsTest();
+  }
+
+  public void createRobotContainer() {
     // Instantiate RobotContainer
     try {
       new RobotContainer();
@@ -23,9 +23,13 @@ public class InverseKinematicTest {
     }
   }
 
-  public void inverseKinematicsTest(){
+  public void inverseKinematicsTest() {
     ArmInverseKinematics pIk = new ArmInverseKinematics();
-    VariableLengthArm ik = pIk.new VariableLengthArm(new double[]{0.2}, Rotation2d.fromDegrees(90), new Translation3d(10, 0, 10));
-    SmartDashboard.putString("Variable Inverse Kinematic Result", ik.getAngleAndArmLength().toString());
+    VariableLengthArm ik =
+        pIk
+        .new VariableLengthArm(
+            new double[] {0.2}, Rotation2d.fromDegrees(90), new Translation3d(10, 0, 10));
+    SmartDashboard.putString(
+        "Variable Inverse Kinematic Result", ik.getAngleAndArmLength().toString());
   }
 }

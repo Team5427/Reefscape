@@ -55,14 +55,16 @@
 //     pivotCancoder.clearStickyFaults();
 
 //     wristMotor.talonConfig.Feedback.FeedbackRemoteSensorID = wristCancoder.getDeviceID();
-//     wristMotor.talonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+//     wristMotor.talonConfig.Feedback.FeedbackSensorSource =
+// FeedbackSensorSourceValue.FusedCANcoder;
 //     wristMotor.talonConfig.Feedback.SensorToMechanismRatio = 1.0;
 //     wristMotor.talonConfig.Feedback.RotorToSensorRatio =
 //         EndEffectorConstants.kWristMotorConfiguration.gearRatio.getMathematicalGearRatio();
 //     wristMotor.getTalonFX().getConfigurator().apply(wristMotor.talonConfig);
 
 //     pivotMotor.talonConfig.Feedback.FeedbackRemoteSensorID = pivotCancoder.getDeviceID();
-//     pivotMotor.talonConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.FusedCANcoder;
+//     pivotMotor.talonConfig.Feedback.FeedbackSensorSource =
+// FeedbackSensorSourceValue.FusedCANcoder;
 //     pivotMotor.talonConfig.Feedback.SensorToMechanismRatio = 1.0;
 //     pivotMotor.talonConfig.Feedback.RotorToSensorRatio =
 //         EndEffectorConstants.kPivotMotorConfiguration.gearRatio.getMathematicalGearRatio();
@@ -98,7 +100,8 @@
 
 //     inputs.algaeRollerMotorLinearVelocity =
 //         MetersPerSecond.of(algaeRollerMotor.getEncoderVelocity());
-//     inputs.algaeRollerMotorAngularVelocity = algaeRollerMotor.getTalonFX().getVelocity().getValue();
+//     inputs.algaeRollerMotorAngularVelocity =
+// algaeRollerMotor.getTalonFX().getVelocity().getValue();
 //     inputs.algaeRollerMotorAngularAcceleration =
 //         algaeRollerMotor.getTalonFX().getAcceleration().getValue();
 
@@ -109,7 +112,8 @@
 
 //     inputs.coralRollerMotorLinearVelocity =
 //         MetersPerSecond.of(coralRollerMotor.getEncoderVelocity());
-//     inputs.coralRollerMotorAngularVelocity = coralRollerMotor.getTalonFX().getVelocity().getValue();
+//     inputs.coralRollerMotorAngularVelocity =
+// coralRollerMotor.getTalonFX().getVelocity().getValue();
 //     inputs.coralRollerMotorAngularAcceleration =
 //         coralRollerMotor.getTalonFX().getAcceleration().getValue();
 

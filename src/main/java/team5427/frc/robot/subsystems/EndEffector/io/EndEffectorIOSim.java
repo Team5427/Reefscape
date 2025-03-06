@@ -37,7 +37,8 @@
 //                     ? DCMotor.getKrakenX60Foc(1)
 //                     : DCMotor.getKrakenX60(1),
 //                 pivotMotorInertia,
-//                 EndEffectorConstants.kPivotMotorConfiguration.gearRatio.getMathematicalGearRatio()),
+//
+// EndEffectorConstants.kPivotMotorConfiguration.gearRatio.getMathematicalGearRatio()),
 //             EndEffectorConstants.kPivotMotorConfiguration.withFOC
 //                 ? DCMotor.getKrakenX60Foc(1)
 //                 : DCMotor.getKrakenX60(1));
@@ -49,7 +50,8 @@
 //                     ? DCMotor.getKrakenX60Foc(1)
 //                     : DCMotor.getKrakenX60(1),
 //                 wristMotorInertia,
-//                 EndEffectorConstants.kWristMotorConfiguration.gearRatio.getMathematicalGearRatio()),
+//
+// EndEffectorConstants.kWristMotorConfiguration.gearRatio.getMathematicalGearRatio()),
 //             EndEffectorConstants.kWristMotorConfiguration.withFOC
 //                 ? DCMotor.getKrakenX60Foc(1)
 //                 : DCMotor.getKrakenX60(1));
