@@ -40,8 +40,8 @@ public class RobotContainer {
       e.printStackTrace();
     }
 
-    initSubsystems();
-    createNamedCommands();
+    // initSubsystems();
+    // createNamedCommands();
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
@@ -88,6 +88,7 @@ public class RobotContainer {
     SwerveSubsystem.getInstance();
     ProngSubsystem.getInstance();
     CascadeSubsystem.getInstance();
+    
   }
 
   private void createNamedCommands() {
@@ -97,7 +98,7 @@ public class RobotContainer {
   }
 
   public void configureButtonBindings() {
-    new PilotingControls();
+    // new PilotingControls();
     new OperatingControls();
   }
 

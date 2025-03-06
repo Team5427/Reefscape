@@ -127,7 +127,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
+  public synchronized void periodic() {
 
     if (bypass) return;
 
@@ -148,16 +148,15 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
-
-    previousSetpoint =
-        setpointGenerator.generateSetpoint(
-            previousSetpoint, // The previous setpoint
-            discretizedSpeeds, // The desired target speeds
-            0.02 // The loop time of the robot code, in seconds
-            );
-    SwerveModuleState[] moduleStates= previousSetpoint.moduleStates();
-    // SwerveModuleState[] moduleStates =
-    //     SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    // previousSetpoint =
+    //     setpointGenerator.generateSetpoint(
+    //         previousSetpoint, // The previous setpoint
+    //         fieldRelativeSpeeds, // The desired target speeds
+    //         0.02 // The loop time of the robot code, in seconds
+    //         );
+    // SwerveModuleState[] moduleStates= previousSetpoint.moduleStates();
+    SwerveModuleState[] moduleStates =
+        SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
       modules[i].setModuleState(moduleStates[i]);
@@ -203,7 +202,7 @@ public class SwerveSubsystem extends SubsystemBase {
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
     Logger.recordOutput("SwerveOutput/RobotRelativeChassisSpeeds", currentRobotRelativeSpeeds);
-    Logger.recordOutput("SwerveOutput/DiscretizedChassisSpeeds", discretizedSpeeds);
+    // Logger.recordOutput("SwerveOutput/DiscretizedChassisSpeeds", discretizedSpeeds);
     Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);

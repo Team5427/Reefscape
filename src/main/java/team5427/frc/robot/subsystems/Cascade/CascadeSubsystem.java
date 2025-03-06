@@ -106,8 +106,6 @@ public class CascadeSubsystem extends SubsystemBase {
     Logger.recordOutput("Cascade Pivot Setpoint", pivotSetpoint);
 
     Logger.recordOutput("Cascade Driver Setpoint", cascadeSetpoint);
-
-    super.periodic();
   }
 
   public void setCascadeSetpoint(Distance setpoint) {

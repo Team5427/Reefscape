@@ -40,17 +40,17 @@ public class PilotingControls {
     //             },
     //             EndEffectorSubsystem.getInstance()));
 
-    joy.b()
-        .whileTrue(new CascadeTest())
-        .whileFalse(
-            new InstantCommand(
-                () -> {
-                  // CascadeSubsystem.getInstance().setCascadeEncoderPosition(Distance.ofBaseUnits(0.0,
-                  // Meters));
-                  CascadeSubsystem.getInstance()
-                      .setCascadeSetpoint(Distance.ofRelativeUnits(.5, Meters));
-                  CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
-                }));
+    // joy.b()
+    //     .whileTrue(new CascadeTest())
+    //     .whileFalse(
+    //         new InstantCommand(
+    //             () -> {
+    //               // CascadeSubsystem.getInstance().setCascadeEncoderPosition(Distance.ofBaseUnits(0.0,
+    //               // Meters));
+    //               CascadeSubsystem.getInstance()
+    //                   .setCascadeSetpoint(Distance.ofRelativeUnits(.5, Meters));
+    //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
+    //             }));
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
