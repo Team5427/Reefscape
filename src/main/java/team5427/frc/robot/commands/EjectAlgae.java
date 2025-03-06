@@ -25,7 +25,7 @@ public class EjectAlgae extends Command {
   public void execute() {
     prongSubsystem.setWristSetpoint(ProngEffectorConstants.kBargePosition);
     if (timer.get() > 1.0) {
-      prongSubsystem.setRollerSetpoint(MetersPerSecond.of(-3.0));
+      prongSubsystem.setRollerSetpoint(MetersPerSecond.of(-8.0));
     }
   }
 

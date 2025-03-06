@@ -14,7 +14,12 @@ public class OperatingControls {
   public OperatingControls() {
     joy = new CommandXboxController(1);
 
-    joy.a().onTrue(AllCommands.scoreL1);
+    joy.a().onTrue(
+      new ConditionalCommand(
+        AllCommands.scoreL1, 
+        AllCommands.scoreProcessor, 
+        () -> coralMode)
+    );
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b().onTrue(AllCommands.scoreL3);
     joy.y().onTrue(

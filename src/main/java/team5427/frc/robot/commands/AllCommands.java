@@ -21,6 +21,7 @@ public class AllCommands {
   public static final Command scoreL4 = new Score(RobotConfigConstants.kScoreL4);
 
   public static final Command scoreBarge = new Score(RobotConfigConstants.kScoreBarge);
+  public static final Command scoreProcessor = new Score(RobotConfigConstants.kScoreProcessor);
 
   public static final Command climbStep = new Climb();
 
