@@ -36,9 +36,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "Reset All"
+            "waitTime": 0
           }
         }
       ]
