@@ -34,7 +34,7 @@ public class Intake extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return prongSubsystem.hasObject();
   }
 
   @Override
