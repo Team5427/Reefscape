@@ -43,4 +43,6 @@ public interface ProngIO {
   public void setRollerSpeeds(LinearVelocity velocity);
 
   public void stopRollers();
+
+  public boolean hasResistance();
 }
