@@ -17,7 +17,12 @@ public class OperatingControls {
     joy.a().onTrue(AllCommands.scoreL1);
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b().onTrue(AllCommands.scoreL3);
-    joy.y().onTrue(AllCommands.scoreL4);
+    joy.y().onTrue(
+      new ConditionalCommand(
+        AllCommands.scoreL4, 
+        AllCommands.scoreBarge, 
+        () -> coralMode)
+    );
 
     joy.leftTrigger()
         .whileTrue(

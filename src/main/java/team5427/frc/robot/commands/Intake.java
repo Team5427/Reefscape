@@ -34,15 +34,17 @@ public class Intake extends Command {
 
   @Override
   public boolean isFinished() {
-    return prongSubsystem.hasObject();
+    return prongSubsystem.hasObject() && config.isCoral();
   }
 
   @Override
   public void end(boolean interrupted) {
-    prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
+    prongSubsystem.setWristSetpoint(config.isCoral() ? ProngEffectorConstants.kStowPosition: ProngEffectorConstants.kAlgaeStowPosition);
+
+    double staticSpeeds = config.getRollerSpeeds().magnitude() / (config.isCoral() ? 4: 2);
     prongSubsystem.setRollerSetpoint(
         MetersPerSecond.of(
-            Math.copySign(config.getRollerSpeeds().magnitude() / 3, config.isCoral() ? -1 : 1)));
+            Math.copySign(staticSpeeds, config.isCoral() ? -1 : 1)));
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
   }
 }

@@ -403,7 +403,7 @@ public final class Constants {
       kCascadeDriverConfiguration.withFOC = true;
 
       kCascadeDriverConfiguration.maxVelocity =
-          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM) * 0.5;
+          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2.0;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
@@ -420,7 +420,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
-      kCascadeDriverConfiguration.altJ = 3000.0000000000001;
+      kCascadeDriverConfiguration.altJ = 30.0000000000001;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -466,8 +466,9 @@ public final class Constants {
     public static final Distance kL2Distance = Feet.of(0.25);
     public static final Distance kL3Distance = Feet.of(1.4);
     public static final Distance kL4Distance = Feet.of(3.65);
+    public static final Distance kBargeDistance = Feet.of(3.65);
 
-    public static final Distance kLowReefAlgaeDistance = Feet.of(1.6);
+    public static final Distance kLowReefAlgaeDistance = Feet.of(1.5);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
@@ -479,6 +480,7 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(10.0);
+    public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(5.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
   }
@@ -554,15 +556,16 @@ public final class Constants {
     }
 
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
+    public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.kZero;
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(150.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
-    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(55.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(0.0);
+    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(90.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(45.0);
 
@@ -597,6 +600,12 @@ public final class Constants {
             CascadeConstants.kL4Distance,
             ProngEffectorConstants.kL4Rotation);
 
+    public static final RawScoringConfiguration kScoreBarge = new RawScoringConfiguration(
+      CascadeConstants.kBargeRotation, 
+      CascadeConstants.kBargeDistance, 
+      ProngEffectorConstants.kBargePosition
+    );
+
     public static final RawIntakeConfiguration kCoralStationIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kIntakeRotation,
@@ -610,7 +619,7 @@ public final class Constants {
             CascadeConstants.kLowReefAlgaeRotation,
             CascadeConstants.kLowReefAlgaeDistance,
             ProngEffectorConstants.kLowReefAlgaeRotation,
-            MetersPerSecond.of(3.0),
+            MetersPerSecond.of(6.0),
             false);
   }
 }
