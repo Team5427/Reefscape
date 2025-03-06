@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.photonvision.PhotonCamera;
@@ -41,7 +42,7 @@ public class VisionIOPhoton implements VisionIO {
   public void updateInputs(VisionIOInputs inputs) {
     inputs.connected = cam.isConnected();
     List<PhotonPipelineResult> results = cam.getAllUnreadResults();
-    List<PoseObservation> obs = new ArrayList<PoseObservation>();
+    List<PoseObservation> obs = new LinkedList<PoseObservation>();
 
       for (int i = results.size() - 1; i > 0; i--) {
       if (results.get(i).multitagResult.isPresent()) {
@@ -70,8 +71,8 @@ public class VisionIOPhoton implements VisionIO {
                 results.get(i).getBestTarget().getYaw(),
                 results.get(i).getBestTarget().getPitch(),
                 PoseObservationType.PHOTONVISION));
-        inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-        inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
+        // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
+        // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
       } else {
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
@@ -89,12 +90,12 @@ public class VisionIOPhoton implements VisionIO {
                   results.get(i).getBestTarget().getYaw(),
                   results.get(i).getBestTarget().getPitch(),
                   PoseObservationType.PHOTONVISION));
-          inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-          inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
+          // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
+          // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
         }
       }
       List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);
-      temp = new ArrayList<PoseObservation>(temp);
+      temp = new LinkedList<PoseObservation>(temp);
       temp.addAll(obs);
 
       inputs.poseObservations = new PoseObservation[temp.size()];
