@@ -358,7 +358,7 @@ public final class Constants {
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
     public static final Transform3d kSwerveCamTransform =
-        new Transform3d(0, 0, 0, Rotation3d.kZero);
+        new Transform3d(0.233965, 0.27517, 0, new Rotation3d(0, 15, 152.5));
     public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
     public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
 
