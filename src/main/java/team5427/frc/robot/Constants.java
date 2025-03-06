@@ -467,6 +467,7 @@ public final class Constants {
     public static final Distance kL3Distance = Feet.of(1.4);
     public static final Distance kL4Distance = Feet.of(3.65);
     public static final Distance kBargeDistance = Feet.of(3.65);
+    public static final Distance kProcessorDistance = Feet.of(0.1);
 
     public static final Distance kLowReefAlgaeDistance = Feet.of(1.5);
 
@@ -480,7 +481,8 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(10.0);
-    public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(5.0);
+    public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
+    public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
   }
@@ -565,7 +567,8 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(0.0);
-    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(90.0);
+    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
+    public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(45.0);
 
@@ -606,6 +609,12 @@ public final class Constants {
       ProngEffectorConstants.kBargePosition
     );
 
+    public static final RawScoringConfiguration kScoreProcessor = new RawScoringConfiguration(
+      CascadeConstants.kProcessorRotation, 
+      CascadeConstants.kProcessorDistance, 
+      ProngEffectorConstants.kProcessorPosition
+    );
+
     public static final RawIntakeConfiguration kCoralStationIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kIntakeRotation,
@@ -619,7 +628,7 @@ public final class Constants {
             CascadeConstants.kLowReefAlgaeRotation,
             CascadeConstants.kLowReefAlgaeDistance,
             ProngEffectorConstants.kLowReefAlgaeRotation,
-            MetersPerSecond.of(6.0),
+            MetersPerSecond.of(5.0),
             false);
   }
 }
