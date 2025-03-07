@@ -1,12 +1,14 @@
-package team5427.frc.robot.subsystems.Vision.io;
+package team5427.frc.robot.subsystems.Vision;
 
 import static edu.wpi.first.math.util.Units.inchesToMeters;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Quaternion;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.FloatArraySubscriber;
@@ -15,12 +17,14 @@ import edu.wpi.first.networktables.IntegerSubscriber;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotController;
+import org.littletonrobotics.junction.Logger;
+import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 
 /**
  * Interface with the QuestNav on VR headset for pose estimation. See
  * https://www.chiefdelphi.com/t/questnav-the-best-robot-pose-tracking-system-in-frc/
  */
-public class QuestNav {
+public class QuestNav implements VisionIO {
   // Configure Network Tables topics (questnav/...) to communicate with the Quest HMD
   NetworkTableInstance nt4Instance = NetworkTableInstance.getDefault();
   NetworkTable nt4Table = nt4Instance.getTable("questnav");
@@ -48,12 +52,14 @@ public class QuestNav {
   private Transform2d robotToQuest = new Transform2d(inchesToMeters(0.0), 0.0, new Rotation2d());
 
   /* Constructor */
-  public QuestNav(Transform2d robotToQuest) {
-    this.robotToQuest = robotToQuest;
+  public QuestNav(Transform3d transform) {
     // Zero the absolute 3D position of the robot (similar to long-pressing the quest logo)
     if (questMiso.get() != 99) {
       questMosi.set(1);
     }
+
+    this.robotToQuest =
+        new Transform2d(transform.getX(), transform.getY(), transform.getRotation().toRotation2d());
   }
 
   /**
@@ -71,8 +77,8 @@ public class QuestNav {
    * @return pose of the Quest
    */
   public Pose2d getQuestPose() {
-    var rawPose = getUncorrectedOculusPose();
-    var poseRelativeToReset = rawPose.minus(resetPoseOculus);
+    Pose2d rawPose = getUncorrectedOculusPose();
+    Transform2d poseRelativeToReset = rawPose.minus(resetPoseOculus);
 
     return resetPoseRobot.transformBy(poseRelativeToReset);
   }
@@ -147,5 +153,35 @@ public class QuestNav {
     var questnavPosition = questPosition.get();
     var translation = new Translation2d(questnavPosition[2], -questnavPosition[0]);
     return new Pose2d(translation, rotation);
+  }
+
+  @Override
+  public void updateInputs(VisionIOInputs inputs) {
+    inputs.connected = isConnected();
+    inputs.poseObservations = new PoseObservation[1];
+    inputs.poseObservations[1] =
+        new PoseObservation(
+            getTimestamp(),
+            new Pose3d(
+                getRobotPose().getX(),
+                getRobotPose().getY(),
+                0.0,
+                new Rotation3d(getRobotPose().getRotation())),
+            0.0,
+            0,
+            1.0,
+            0.0,
+            0.0,
+            PoseObservationType.QUEST_NAV);
+    Logger.recordOutput("Quest Battery", getBatteryPercent());
+  }
+
+  @Override
+  public void applyCameraTransformation(Transform3d transformation) {
+    this.robotToQuest =
+        new Transform2d(
+            transformation.getX(),
+            transformation.getY(),
+            transformation.getRotation().toRotation2d());
   }
 }

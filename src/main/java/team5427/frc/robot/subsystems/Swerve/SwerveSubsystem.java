@@ -43,6 +43,8 @@ public class SwerveSubsystem extends SubsystemBase {
   private ChassisSpeeds currentRobotRelativeSpeeds;
   private SwerveModuleState[] actualModuleStates;
   private boolean bypass = false;
+  private SwerveModulePosition[] modulePositions;
+  private SwerveModuleState[] moduleStates;
 
   public static DrivingStates state;
 
@@ -127,7 +129,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   @Override
-  public synchronized void periodic() {
+  public void periodic() {
 
     if (bypass) return;
 

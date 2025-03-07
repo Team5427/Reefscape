@@ -361,6 +361,9 @@ public final class Constants {
         new Transform3d(
             0.233965, 0.27517, Units.inchesToMeters(8.215), new Rotation3d(0, 15, 180 - 152.5));
     public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
+    public static final Transform3d kQuestCameraTransform =
+        new Transform3d(0, 0, 0, Rotation3d.kZero);
+
     public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
 
     // Standard deviation baselines, for 1 meter distance and 1 tag
@@ -376,6 +379,8 @@ public final class Constants {
           1.0, // Swerve Cam
           1.0 // Back Cam
         };
+
+    public static double kQuestStdDevBaseline = 0.001;
   }
 
   public static class CascadeConstants {

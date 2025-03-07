@@ -14,7 +14,6 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
-import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
 import team5427.lib.motors.real.SteelTalonFX;
@@ -61,8 +60,6 @@ public class ProngIOTalon implements ProngIO {
 
     rollerCurrent = rollerTalon.getTalonFX().getStatorCurrent();
     rollerVoltage = rollerTalon.getTalonFX().getMotorVoltage();
-
-    
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
@@ -122,8 +119,6 @@ public class ProngIOTalon implements ProngIO {
 
     inputs.rollerCurrent = rollerCurrent.getValue();
     inputs.rollerVoltage = rollerVoltage.getValue();
-
-    
   }
 
   @Override
