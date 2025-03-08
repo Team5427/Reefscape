@@ -3,7 +3,6 @@ package team5427.frc.robot.io;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import team5427.frc.robot.commands.AllCommands;
 
 public class OperatingControls {
@@ -21,15 +20,16 @@ public class OperatingControls {
                 AllCommands.scoreL1, AllCommands.scoreProcessor, () -> coralMode));
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b().onTrue(AllCommands.scoreL3);
-    joy.y().onTrue(new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreBarge, () -> coralMode));
+    joy.y()
+        .onTrue(
+            new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreBarge, () -> coralMode));
 
     joy.leftTrigger()
         .whileTrue(
             new ConditionalCommand(
                 AllCommands.intake, AllCommands.lowReefAlgaeIntake, () -> coralMode));
-    joy.rightTrigger()
-        .whileTrue(AllCommands.eject);
-            // new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
+    joy.rightTrigger().whileTrue(AllCommands.eject);
+    // new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
     // joy.povUp().onTrue(new InstantCommand(() -> {
     //   CascadeSubsystem.getInstance().getCurrentCommand().end(true);
     //

@@ -1,13 +1,9 @@
 package team5427.frc.robot;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.BuildConstants;
-
-import java.util.Optional;
-
 import org.littletonrobotics.junction.AutoLogOutputManager;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -15,9 +11,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 import team5427.test.InverseKinematicTest;
 
 // import frc.robot.BuildConstants;
@@ -82,7 +75,6 @@ public class Robot extends LoggedRobot {
     // steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
     m_robotContainer = new RobotContainer();
 
-    
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
     // module = new SwerveModule(0);
     // SwerveSubsystem subsystem = SwerveSubsystem.getInstance();
@@ -116,8 +108,7 @@ public class Robot extends LoggedRobot {
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
-    
-    
+
     CommandScheduler.getInstance().run();
 
     // Return to normal thread priority
