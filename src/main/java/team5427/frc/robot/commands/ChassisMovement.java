@@ -53,26 +53,31 @@ public class ChassisMovement extends Command {
       Logger.recordOutput("InputSpeeds", inputSpeeds);
     } else {
 
-      double dampener = joy.getRightTriggerAxis() * 0.88;
+      if (DriverStation.isTeleop()) {
 
-      double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
-      vx = -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-      vy = -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-      omegaRadians =
-          -tunedJoystickQuadratic.getLeftX()
-              * Math.abs(tunedJoystickLinear.getLeftX())
-              * Math.PI
-              * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+        double dampener = joy.getRightTriggerAxis() * 0.88;
 
-      vx *= (1 - dampener);
-      vy *= (1 - dampener);
-      omegaRadians *= (1 - dampener);
+        double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
+        vx =
+            -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+        vy =
+            -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+        omegaRadians =
+            -tunedJoystickQuadratic.getLeftX()
+                * Math.abs(tunedJoystickLinear.getLeftX())
+                * Math.PI
+                * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
 
-      ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
-      if (joy.getLeftTriggerAxis() >= 0.1) {
-        inputSpeeds = new ChassisSpeeds(0, 0, 0);
+        vx *= (1 - dampener);
+        vy *= (1 - dampener);
+        omegaRadians *= (1 - dampener);
+
+        ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
+        if (joy.getLeftTriggerAxis() >= 0.1) {
+          inputSpeeds = new ChassisSpeeds(0, 0, 0);
+        }
+        swerveSubsystem.setChassisSpeeds(inputSpeeds);
       }
-      swerveSubsystem.setChassisSpeeds(inputSpeeds);
     }
   }
 

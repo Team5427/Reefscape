@@ -1,5 +1,6 @@
 package team5427.frc.robot;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -75,7 +76,8 @@ public class Robot extends LoggedRobot {
     // steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
     m_robotContainer = new RobotContainer();
 
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    FollowPathCommand.warmupCommand().schedule();
+
     // module = new SwerveModule(0);
     // SwerveSubsystem subsystem = SwerveSubsystem.getInstance();
     // MagicSteelTalonFX talon1 = new
@@ -128,6 +130,7 @@ public class Robot extends LoggedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)
     if (m_autonomousCommand != null) {

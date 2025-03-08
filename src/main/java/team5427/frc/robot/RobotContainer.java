@@ -5,16 +5,21 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.util.PathPlannerLogging;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import java.util.Optional;
+import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,6 +40,7 @@ public class RobotContainer {
     try {
       Constants.config = RobotConfig.fromGUISettings();
       System.out.println("Robot Config Loaded");
+      System.out.println(Constants.config.numModules);
     } catch (Exception e) {
       // Handle exception as needed
       System.out.println("Robot Config Failing");
@@ -58,8 +64,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(1.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(1.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(1.1, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(2.0, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -79,6 +85,15 @@ public class RobotContainer {
     // new InstantCommand(() -> {
 
     // });
+    PathPlannerLogging.setLogActivePathCallback(
+        (activePath) -> {
+          Logger.recordOutput(
+              "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+        });
+    PathPlannerLogging.setLogTargetPoseCallback(
+        (targetPose) -> {
+          Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
+        });
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData(autoChooser);
 
@@ -89,6 +104,7 @@ public class RobotContainer {
     SwerveSubsystem.getInstance();
     ProngSubsystem.getInstance();
     CascadeSubsystem.getInstance();
+    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
   }
 
   private void createNamedCommands() {

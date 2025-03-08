@@ -369,10 +369,10 @@ public final class Constants {
     // Standard deviation baselines, for 1 meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
     /** Larger stddev equals more doubt in Meters */
-    public static double kLinearStdDevBaseline = 0.02;
+    public static double kLinearStdDevBaseline = 0.04;
 
     /** Larger stddev equals more doubt in Radians */
-    public static double kAngularStdDevBaseline = 0.06;
+    public static double kAngularStdDevBaseline = 0.09;
 
     public static double[] kCameraStdDevFactors =
         new double[] {
