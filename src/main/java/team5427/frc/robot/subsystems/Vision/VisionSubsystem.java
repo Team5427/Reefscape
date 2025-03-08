@@ -54,7 +54,7 @@ public class VisionSubsystem extends VirtualSubsystem {
             new VisionIOPhoton(VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
         // io[1] = new VisionIOPhoton(VisionConstants.kBackCamName,
         // VisionConstants.kBackCamTransform);
-        io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
+        // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {
           inputsAutoLogged[i] = new VisionIOInputsAutoLogged();

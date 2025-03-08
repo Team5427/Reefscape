@@ -99,6 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
     isFieldOp = true;
     currentRobotRelativeSpeeds = new ChassisSpeeds(0, 0, 0);
     PhoenixOdometryThread.getInstance().start();
+    
     actualModuleStates = getModuleStates();
     // modules[0].setModuleState(new SwerveModuleState(0,Rotation2d.kZero));
     if (Constants.config == null) System.out.println("Robot Config is null");
@@ -106,12 +107,12 @@ public class SwerveSubsystem extends SubsystemBase {
         new SwerveSetpointGenerator(
             Constants.config,
             RotationsPerSecond.of(
-                SwerveConstants.kDriveMotorConfiguration.getStandardMaxVelocity(
-                        MotorUtil.kKrakenFOC_MaxRPM)
+                SwerveConstants.kSteerMotorConfiguration.maxVelocity
                     / 60.0));
     previousSetpoint =
         new SwerveSetpoint(
             currentRobotRelativeSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
+    
 
     System.out.println("Created New Swerve");
   }
@@ -148,23 +149,23 @@ public class SwerveSubsystem extends SubsystemBase {
       fieldRelativeSpeeds =
           ChassisSpeeds.fromRobotRelativeSpeeds(currentRobotRelativeSpeeds, getRotation());
     }
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
-    // previousSetpoint =
-    //     setpointGenerator.generateSetpoint(
-    //         previousSetpoint, // The previous setpoint
-    //         fieldRelativeSpeeds, // The desired target speeds
-    //         0.02 // The loop time of the robot code, in seconds
-    //         );
-    // SwerveModuleState[] moduleStates= previousSetpoint.moduleStates();
-    SwerveModuleState[] moduleStates =
-        SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    // ChassisSpeeds discretizedSpeeds =
+    //     ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
+    previousSetpoint =
+        setpointGenerator.generateSetpoint(
+            previousSetpoint, // The previous setpoint
+            fieldRelativeSpeeds, // The desired target speeds
+            Constants.kLoopSpeed // The loop time of the robot code, in seconds
+            );
+    this.moduleStates= previousSetpoint.moduleStates();
+    // SwerveModuleState[] moduleStates =
+    //     SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
       modules[i].setModuleState(moduleStates[i]);
-      actualModuleStates[i] = modules[i].getModuleState();
-
       modules[i].periodic();
+      actualModuleStates[i] = modules[i].getModuleState();
+      
     }
     odometryLock.unlock();
 
@@ -174,8 +175,8 @@ public class SwerveSubsystem extends SubsystemBase {
     int sampleCount = sampleTimestamps.length;
     for (int i = 0; i < sampleCount; i++) {
       // Read wheel positions and deltas from each module
-      SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-      SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
+      SwerveModulePosition[] modulePositions = new SwerveModulePosition[modules.length];
+      SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[modules.length];
       for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
         modulePositions[moduleIndex] = modules[moduleIndex].getOdometryPositions()[i];
         moduleDeltas[moduleIndex] =
@@ -262,9 +263,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // @AutoLogOutput(key = "SwerveOutput/ModulePositions")
   public SwerveModulePosition[] getModulePositions() {
-    return new SwerveModulePosition[] {
-      getModulePosition(0), getModulePosition(1), getModulePosition(2), getModulePosition(3),
-    };
+    
+      this.modulePositions[0] = getModulePosition(0); 
+      this.modulePositions[1] = getModulePosition(1);
+      this.modulePositions[2] =  getModulePosition(2);
+      this.modulePositions[3] =  getModulePosition(3);
+      return this.modulePositions;
   }
 
   public ChassisSpeeds getCurrentChassisSpeeds() {
@@ -300,7 +304,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    setChassisSpeeds(new ChassisSpeeds());
+    setChassisSpeeds(new ChassisSpeeds(0,0,0));
 
     for (SwerveModule module : modules) {
       module.stop();
