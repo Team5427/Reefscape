@@ -146,15 +146,15 @@ public class CascadeIOMagicTalon implements CascadeIO {
         pivotSlaveMotorVoltage,
         absolutePivotPosition);
 
-    BaseStatusSignal.setUpdateFrequencyForAll(
-        50.0,
-        cascadeRotVelocity,
-        cascadeRotAccel,
-        cascadeMasterMotorCurrent,
-        cascadeMasterMotorVoltage,
-        cascadeSlaveMotorCurrent,
-        cascadeSlaveMotorVoltage,
-        cascadeMasterMotorPosition);
+    // BaseStatusSignal.setUpdateFrequencyForAll(
+    //     50.0,
+    //     cascadeRotVelocity,
+    //     cascadeRotAccel,
+    //     cascadeMasterMotorCurrent,
+    //     cascadeMasterMotorVoltage,
+    //     cascadeSlaveMotorCurrent,
+    //     cascadeSlaveMotorVoltage,
+    //     cascadeMasterMotorPosition);
 
     BaseStatusSignal.waitForAll(
         0.02,
@@ -168,7 +168,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
         absolutePivotPosition);
 
     BaseStatusSignal.waitForAll(
-        0.02,
+        0.5,
         cascadeRotVelocity,
         cascadeRotAccel,
         cascadeMasterMotorCurrent,
