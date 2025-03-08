@@ -486,7 +486,7 @@ public final class Constants {
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(3.5);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(5.0);
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
