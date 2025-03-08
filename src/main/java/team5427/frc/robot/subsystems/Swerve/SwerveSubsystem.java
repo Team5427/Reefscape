@@ -30,7 +30,6 @@ import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
 import team5427.lib.kinematics.SwerveUtil;
-import team5427.lib.motors.MotorUtil;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -99,20 +98,17 @@ public class SwerveSubsystem extends SubsystemBase {
     isFieldOp = true;
     currentRobotRelativeSpeeds = new ChassisSpeeds(0, 0, 0);
     PhoenixOdometryThread.getInstance().start();
-    
+
     actualModuleStates = getModuleStates();
     // modules[0].setModuleState(new SwerveModuleState(0,Rotation2d.kZero));
     if (Constants.config == null) System.out.println("Robot Config is null");
     setpointGenerator =
         new SwerveSetpointGenerator(
             Constants.config,
-            RotationsPerSecond.of(
-                SwerveConstants.kSteerMotorConfiguration.maxVelocity
-                    / 60.0));
+            RotationsPerSecond.of(SwerveConstants.kSteerMotorConfiguration.maxVelocity / 60.0));
     previousSetpoint =
         new SwerveSetpoint(
             currentRobotRelativeSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
-    
 
     System.out.println("Created New Swerve");
   }
@@ -150,7 +146,7 @@ public class SwerveSubsystem extends SubsystemBase {
       fieldRelativeSpeeds =
           ChassisSpeeds.fromRobotRelativeSpeeds(currentRobotRelativeSpeeds, getRotation());
     }
-    ChassisSpeeds discretizedSpeeds = 
+    ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
@@ -168,7 +164,6 @@ public class SwerveSubsystem extends SubsystemBase {
       modules[i].setModuleState(moduleStates[i]);
       modules[i].periodic();
       actualModuleStates[i] = modules[i].getModuleState();
-      
     }
     odometryLock.unlock();
 
@@ -266,12 +261,12 @@ public class SwerveSubsystem extends SubsystemBase {
 
   // @AutoLogOutput(key = "SwerveOutput/ModulePositions")
   public SwerveModulePosition[] getModulePositions() {
-    
-      this.modulePositions[0] = getModulePosition(0); 
-      this.modulePositions[1] = getModulePosition(1);
-      this.modulePositions[2] =  getModulePosition(2);
-      this.modulePositions[3] =  getModulePosition(3);
-      return this.modulePositions;
+
+    this.modulePositions[0] = getModulePosition(0);
+    this.modulePositions[1] = getModulePosition(1);
+    this.modulePositions[2] = getModulePosition(2);
+    this.modulePositions[3] = getModulePosition(3);
+    return this.modulePositions;
   }
 
   public ChassisSpeeds getCurrentChassisSpeeds() {
@@ -307,7 +302,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void stop() {
-    setChassisSpeeds(new ChassisSpeeds(0,0,0));
+    setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
 
     for (SwerveModule module : modules) {
       module.stop();

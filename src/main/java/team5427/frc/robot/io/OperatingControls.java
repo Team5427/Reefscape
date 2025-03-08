@@ -3,7 +3,6 @@ package team5427.frc.robot.io;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import team5427.frc.robot.commands.AllCommands;
 
 public class OperatingControls {

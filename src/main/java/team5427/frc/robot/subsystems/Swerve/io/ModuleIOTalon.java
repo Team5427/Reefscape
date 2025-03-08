@@ -22,7 +22,6 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
-import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
 import team5427.lib.motors.real.SteelTalonFX;
@@ -123,21 +122,23 @@ public class ModuleIOTalon implements ModuleIO {
         );
         // steerMotorVelocity);
     BaseStatusSignal.setUpdateFrequencyForAll(
-        50.0, driveMotorVoltage, steerMotorVoltage, driveMotorCurrent, steerMotorCurrent, absolutePosition,driveMotorVelocity);
+        50.0,
+        driveMotorVoltage,
+        steerMotorVoltage,
+        driveMotorCurrent,
+        steerMotorCurrent,
+        absolutePosition,
+        driveMotorVelocity);
 
     ParentDevice.optimizeBusUtilizationForAll(
         driveMotor.getTalonFX(), steerMotor.getTalonFX(), cancoder);
 
     BaseStatusSignal.waitForAll(
-        0.02,
-        absolutePosition,
-        driveMotorPosition,
-        steerMotorPosition,
-        driveMotorVelocity);
-        // steerMotorVoltage,
-        // driveMotorVoltage,
-        // driveMotorCurrent,
-        // steerMotorCurrent);
+        0.02, absolutePosition, driveMotorPosition, steerMotorPosition, driveMotorVelocity);
+    // steerMotorVoltage,
+    // driveMotorVoltage,
+    // driveMotorCurrent,
+    // steerMotorCurrent);
   }
 
   @Override
@@ -154,14 +155,15 @@ public class ModuleIOTalon implements ModuleIO {
     //     driveMotorVoltage,
     //     driveMotorCurrent,
     //     steerMotorCurrent);
-    BaseStatusSignal.refreshAll(
-        
-        driveMotorPosition,
-        steerMotorPosition
-        );
+    BaseStatusSignal.refreshAll(driveMotorPosition, steerMotorPosition);
 
     BaseStatusSignal.refreshAll(
-        steerMotorVoltage, driveMotorVoltage, driveMotorCurrent, steerMotorCurrent, driveMotorVelocity, absolutePosition);
+        steerMotorVoltage,
+        driveMotorVoltage,
+        driveMotorCurrent,
+        steerMotorCurrent,
+        driveMotorVelocity,
+        absolutePosition);
 
     inputs.absolutePosition = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
     // steerMotor.updateStatusSignals();

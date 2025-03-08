@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Tuple4Plus<R, T, A, B> implements TuplePlus{
+public class Tuple4Plus<R, T, A, B> implements TuplePlus {
   public R r;
   public T t;
   public A a;
@@ -18,7 +18,7 @@ public class Tuple4Plus<R, T, A, B> implements TuplePlus{
     this.a = a;
     this.b = b;
 
-    array = new Object[]{r,t,a, b};
+    array = new Object[] {r, t, a, b};
     list = new LinkedList<Object>(Arrays.asList(array));
   }
 
