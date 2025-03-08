@@ -17,7 +17,6 @@ public class EjectCoral extends Command {
   @Override
   public void execute() {
     prongSubsystem.setRollerSetpoint(MetersPerSecond.of(2.0));
-    // prongSubsystem.setWristSetpoint(ProngEffectorConstants.kScoreReefPosition);
   }
 
   @Override
@@ -28,6 +27,5 @@ public class EjectCoral extends Command {
   @Override
   public void end(boolean interrupted) {
     prongSubsystem.setRollerSetpoint(MetersPerSecond.of(0.5));
-    // prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
   }
 }

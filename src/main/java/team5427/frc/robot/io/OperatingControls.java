@@ -28,8 +28,8 @@ public class OperatingControls {
             new ConditionalCommand(
                 AllCommands.intake, AllCommands.lowReefAlgaeIntake, () -> coralMode));
     joy.rightTrigger()
-        .whileTrue(
-            new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
+        .whileTrue(AllCommands.eject);
+            // new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
     // joy.povUp().onTrue(new InstantCommand(() -> {
     //   CascadeSubsystem.getInstance().getCurrentCommand().end(true);
     //

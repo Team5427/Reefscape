@@ -55,7 +55,7 @@ public class PhoenixOdometryThread extends Thread {
 
   /** Registers a Phoenix signal to be read from the thread. */
   public Queue<Double> registerSignal(StatusSignal<Angle> signal) {
-    Queue<Double> queue = new ArrayBlockingQueue<>(10);
+    Queue<Double> queue = new ArrayBlockingQueue<>(20);
     signalsLock.lock();
     SwerveSubsystem.odometryLock.lock();
     try {
@@ -73,7 +73,7 @@ public class PhoenixOdometryThread extends Thread {
 
   /** Registers a generic signal to be read from the thread. */
   public Queue<Double> registerSignal(DoubleSupplier signal) {
-    Queue<Double> queue = new ArrayBlockingQueue<>(10);
+    Queue<Double> queue = new ArrayBlockingQueue<>(20);
     signalsLock.lock();
     SwerveSubsystem.odometryLock.lock();
     try {
@@ -88,7 +88,7 @@ public class PhoenixOdometryThread extends Thread {
 
   /** Returns a new queue that returns timestamp values for each sample. */
   public Queue<Double> makeTimestampQueue() {
-    Queue<Double> queue = new ArrayBlockingQueue<>(10);
+    Queue<Double> queue = new ArrayBlockingQueue<>(20);
     SwerveSubsystem.odometryLock.lock();
     try {
       timestampQueues.add(queue);

@@ -43,7 +43,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private ChassisSpeeds currentRobotRelativeSpeeds;
   private SwerveModuleState[] actualModuleStates;
   private boolean bypass = false;
-  private SwerveModulePosition[] modulePositions;
+  private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModuleState[] moduleStates;
 
   public static DrivingStates state;

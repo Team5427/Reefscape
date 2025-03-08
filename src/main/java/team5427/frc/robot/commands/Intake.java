@@ -44,7 +44,7 @@ public class Intake extends Command {
             ? ProngEffectorConstants.kStowPosition
             : ProngEffectorConstants.kAlgaeStowPosition);
 
-    double staticSpeeds = config.getRollerSpeeds().magnitude() / (config.isCoral() ? 4 : 1.5);
+    double staticSpeeds = config.getRollerSpeeds().magnitude() / (config.isCoral() ? 3 : 1.5);
     prongSubsystem.setRollerSetpoint(
         MetersPerSecond.of(Math.copySign(staticSpeeds, config.isCoral() ? -1 : 1)));
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);

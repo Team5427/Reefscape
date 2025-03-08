@@ -34,6 +34,6 @@ public class Score extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
+    // prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
   }
 }

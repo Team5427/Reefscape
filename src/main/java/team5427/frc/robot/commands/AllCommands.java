@@ -28,9 +28,9 @@ public class AllCommands {
   public static final Command intake = new Intake(RobotConfigConstants.kCoralStationIntake);
   public static final Command lowReefAlgaeIntake =
       new Intake(RobotConfigConstants.kReefLowAlgaeIntake);
-  public static final Command eject = new EjectCoral();
+  public static final Command eject = new EjectGamePiece(true);
   public static final Command floorIntake = new FloorIntake();
-  public static final Command ejectAlgae = new EjectAlgae();
+  public static final Command ejectAlgae = new EjectGamePiece(false);
 
   public static final Command resetSubsystems = new ResetSubsystems();
 }
