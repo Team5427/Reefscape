@@ -48,6 +48,4 @@ public interface VisionIO {
   public void applyCameraTransformation(Transform3d transformation);
 
   public default void setStdDev(Matrix<N3, N1> stddev) {}
-
-
 }

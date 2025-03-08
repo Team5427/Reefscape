@@ -4,11 +4,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import java.util.Optional;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.commands.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 public class PilotingControls {
 

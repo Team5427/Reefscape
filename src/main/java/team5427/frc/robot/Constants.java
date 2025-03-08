@@ -611,12 +611,11 @@ public final class Constants {
             CascadeConstants.kL4Distance,
             ProngEffectorConstants.kL4Rotation);
 
-    public static final RawScoringConfiguration kScoreL4Inverse = 
+    public static final RawScoringConfiguration kScoreL4Inverse =
         new RawScoringConfiguration(
             CascadeConstants.kL4RotationInverse,
             CascadeConstants.kL4Distance,
-            ProngEffectorConstants.kL4RotationInverse
-        );
+            ProngEffectorConstants.kL4RotationInverse);
 
     public static final RawScoringConfiguration kScoreBarge =
         new RawScoringConfiguration(

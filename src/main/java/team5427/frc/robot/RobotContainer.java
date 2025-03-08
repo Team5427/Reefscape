@@ -34,6 +34,7 @@ public class RobotContainer {
   public RobotContainer() {
     try {
       Constants.config = RobotConfig.fromGUISettings();
+      System.out.println("Robot Config Loaded");
     } catch (Exception e) {
       // Handle exception as needed
       System.out.println("Robot Config Failing");
@@ -72,7 +73,7 @@ public class RobotContainer {
           return false;
         },
         SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
-      );
+        );
     // VisionSubsystem vision = new
     // VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
     // new InstantCommand(() -> {
