@@ -72,7 +72,7 @@ public class RobotContainer {
           return false;
         },
         SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
-        );
+      );
     // VisionSubsystem vision = new
     // VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
     // new InstantCommand(() -> {

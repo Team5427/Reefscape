@@ -116,9 +116,13 @@ public class ModuleIOTalon implements ModuleIO {
     driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent();
     steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(Constants.kOdometryFrequency, driveMotorPosition, steerMotorPosition);
-
-    // steerMotorVelocity);
+    BaseStatusSignal.setUpdateFrequencyForAll(
+        Constants.kOdometryFrequency,
+        driveMotorPosition,
+        steerMotorPosition
+        
+        );
+        // steerMotorVelocity);
     BaseStatusSignal.setUpdateFrequencyForAll(
         50.0,
         driveMotorVoltage,

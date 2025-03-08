@@ -10,6 +10,7 @@ public class OperatingControls {
   private CommandXboxController joy;
 
   private boolean coralMode = true;
+  private boolean forward = true;
 
   public OperatingControls() {
     joy = new CommandXboxController(1);
@@ -20,16 +21,26 @@ public class OperatingControls {
                 AllCommands.scoreL1, AllCommands.scoreProcessor, () -> coralMode));
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b().onTrue(AllCommands.scoreL3);
-    joy.y()
-        .onTrue(
-            new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreBarge, () -> coralMode));
+    joy.y().onTrue(new ConditionalCommand(
+      new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreL4Inverse, () -> forward), 
+      AllCommands.scoreBarge, 
+      () -> coralMode));
 
     joy.leftTrigger()
         .whileTrue(
             new ConditionalCommand(
                 AllCommands.intake, AllCommands.lowReefAlgaeIntake, () -> coralMode));
-    joy.rightTrigger().whileTrue(AllCommands.eject);
-    // new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
+    joy.rightTrigger()
+        .whileTrue(AllCommands.eject);
+
+    joy.rightBumper().onTrue(
+      new InstantCommand(() -> {forward = false;})
+    );
+
+    joy.leftBumper().onTrue(
+      new InstantCommand(() -> {forward = true;})
+    );
+            // new ConditionalCommand(AllCommands.eject, AllCommands.ejectAlgae, () -> coralMode));
     // joy.povUp().onTrue(new InstantCommand(() -> {
     //   CascadeSubsystem.getInstance().getCurrentCommand().end(true);
     //
