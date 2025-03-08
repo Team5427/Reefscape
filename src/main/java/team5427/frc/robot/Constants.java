@@ -469,7 +469,7 @@ public final class Constants {
     public static final Distance kFloorIntakeDistance = Feet.of(0.6);
 
     public static final Distance kL1Distance = Feet.of(0.25);
-    public static final Distance kL2Distance = Feet.of(0.25);
+    public static final Distance kL2Distance = Feet.of(0.3);
     public static final Distance kL3Distance = Feet.of(1.4);
     public static final Distance kL4Distance = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
@@ -483,7 +483,7 @@ public final class Constants {
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(10.0);
 
-    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(5.0);
