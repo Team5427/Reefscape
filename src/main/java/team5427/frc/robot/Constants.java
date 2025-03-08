@@ -206,6 +206,8 @@ public final class Constants {
       public static final double drivekS = 0.0;
       public static final double drivekV = 45.0;
     }
+
+    public static final double kDampenerDampeningAmount = 0.9;
   }
 
   public static class EndEffectorConstants {
@@ -469,7 +471,7 @@ public final class Constants {
     public static final Distance kFloorIntakeDistance = Feet.of(0.6);
 
     public static final Distance kL1Distance = Feet.of(0.25);
-    public static final Distance kL2Distance = Feet.of(0.25);
+    public static final Distance kL2Distance = Feet.of(0.3);
     public static final Distance kL3Distance = Feet.of(1.4);
     public static final Distance kL4Distance = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
@@ -483,7 +485,7 @@ public final class Constants {
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(10.0);
 
-    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(5.0);
@@ -510,12 +512,12 @@ public final class Constants {
           kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kServoConfiguration.maxAcceleration = kServoConfiguration.maxVelocity * 3.0;
 
-      kServoConfiguration.kP = 0.8;
+      kServoConfiguration.kP = 1.5;
     }
 
     public static final Rotation2d kStowPosition = Rotation2d.kZero;
     public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(45.0);
-    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(110.0);
+    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(120.0);
   }
 
   public static class ProngEffectorConstants {
@@ -569,6 +571,8 @@ public final class Constants {
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(204.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
+
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(105.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);

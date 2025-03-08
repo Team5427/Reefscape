@@ -48,6 +48,12 @@ public class PilotingControls {
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
+    joy.rightBumper().onTrue(new InstantCommand(() -> {
+      SwerveSubsystem.getInstance().setGyroLock(true);
+    })).onFalse(new InstantCommand(() -> {
+      SwerveSubsystem.getInstance().setGyroLock(false);
+    }));
+
     joy.y()
         .and(() -> RobotBase.isReal())
         .onTrue(
