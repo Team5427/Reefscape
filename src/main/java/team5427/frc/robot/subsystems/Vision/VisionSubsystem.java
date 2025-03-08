@@ -11,6 +11,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
@@ -24,7 +25,7 @@ import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
 import team5427.lib.drivers.VirtualSubsystem;
 
-public class VisionSubsystem extends VirtualSubsystem {
+public class VisionSubsystem extends SubsystemBase {
   private VisionIO[] io = new VisionIO[VisionConstants.kCameraCount];
   private VisionIOInputsAutoLogged[] inputsAutoLogged =
       new VisionIOInputsAutoLogged[VisionConstants.kCameraCount];

@@ -104,7 +104,7 @@ public class RobotContainer {
     SwerveSubsystem.getInstance();
     ProngSubsystem.getInstance();
     CascadeSubsystem.getInstance();
-    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
+    // VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
   }
 
   private void createNamedCommands() {

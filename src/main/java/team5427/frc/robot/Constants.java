@@ -184,7 +184,7 @@ public final class Constants {
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
 
       // Tunable values
-      kSteerMotorConfiguration.kP = 6.7; // 7.0
+      kSteerMotorConfiguration.kP = 7.0; // 7.0
       kSteerMotorConfiguration.kD = 0.18;
       // kSteerMotorConfiguration.kS = 0.21;
       kSteerMotorConfiguration.kA = 0.1;
@@ -361,7 +361,7 @@ public final class Constants {
 
     public static final Transform3d kSwerveCamTransform =
         new Transform3d(
-            0.233965, 0.27517, Units.inchesToMeters(8.215), new Rotation3d(0, 15, 180 - 152.5));
+            0.233965, 0.27517, Units.inchesToMeters(8.215), new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(180 - 152.5)));
     public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
     public static final Transform3d kQuestCameraTransform =
         new Transform3d(0, 0, 0, Rotation3d.kZero);
