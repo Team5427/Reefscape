@@ -12,12 +12,8 @@ public class OperatingControls {
 
   private boolean coralMode = true;
 
-  private Trigger y;
-
   public OperatingControls() {
     joy = new CommandXboxController(1);
-
-    y = joy.y();
 
     joy.a()
         .onTrue(
@@ -25,7 +21,7 @@ public class OperatingControls {
                 AllCommands.scoreL1, AllCommands.scoreProcessor, () -> coralMode));
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b().onTrue(AllCommands.scoreL3);
-    y.onTrue(new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreBarge, () -> coralMode));
+    joy.y().onTrue(new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreBarge, () -> coralMode));
 
     joy.leftTrigger()
         .whileTrue(
@@ -42,7 +38,7 @@ public class OperatingControls {
 
     joy.povDown().onTrue(AllCommands.resetSubsystems);
 
-    joy.povUp().onTrue(AllCommands.climbStep);
+    // joy.povUp().onTrue(AllCommands.climbStep);
 
     joy.povRight()
         .onTrue(

@@ -471,7 +471,7 @@ public final class Constants {
     public static final Distance kL1Distance = Feet.of(0.25);
     public static final Distance kL2Distance = Feet.of(0.25);
     public static final Distance kL3Distance = Feet.of(1.4);
-    public static final Distance kL4Distance = Feet.of(3.65);
+    public static final Distance kL4Distance = Feet.of(3.55);
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
 
@@ -481,12 +481,12 @@ public final class Constants {
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
     public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(70.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
-    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(-13.0);
+    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(10.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(10.0);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(5.0);
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
 
@@ -529,7 +529,7 @@ public final class Constants {
 
     static {
       kWristConfiguration.gearRatio =
-          new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
+          new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (17.0 / 18.0));
       kWristConfiguration.idleState = IdleState.kBrake;
       kWristConfiguration.isInverted = true;
       kWristConfiguration.mode = MotorMode.kServo;
@@ -539,10 +539,10 @@ public final class Constants {
           kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
-      kWristConfiguration.kP = 12;
+      kWristConfiguration.kP = 8.0;
 
-      kWristConfiguration.altA = kWristConfiguration.maxAcceleration / 7.0;
-      kWristConfiguration.altV = kWristConfiguration.maxVelocity / 3.0;
+      kWristConfiguration.altA = kWristConfiguration.maxAcceleration / 2.0;
+      kWristConfiguration.altV = kWristConfiguration.maxVelocity;
     }
 
     public static final MotorConfiguration kRollerConfiguration = new MotorConfiguration();
@@ -565,14 +565,14 @@ public final class Constants {
 
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
-    public static final Rotation2d kZeroPosition = Rotation2d.kZero;
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(150.0);
+    public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-20.0);
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(215.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(0.0);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-20.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
 

@@ -23,7 +23,7 @@ public class AllCommands {
   public static final Command scoreBarge = new Score(RobotConfigConstants.kScoreBarge);
   public static final Command scoreProcessor = new Score(RobotConfigConstants.kScoreProcessor);
 
-  public static final Command climbStep = new Climb();
+  // public static final Command climbStep = new Climb();
 
   public static final Command intake = new Intake(RobotConfigConstants.kCoralStationIntake);
   public static final Command lowReefAlgaeIntake =
@@ -32,12 +32,5 @@ public class AllCommands {
   public static final Command floorIntake = new FloorIntake();
   public static final Command ejectAlgae = new EjectAlgae();
 
-  public static final Command resetSubsystems =
-      new InstantCommand(
-          () -> {
-            CascadeSubsystem.getInstance().setPivotSetpoint(CascadeConstants.kStowRotation);
-            CascadeSubsystem.getInstance().setCascadeSetpoint(CascadeConstants.kStowDistance);
-            ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kStowPosition);
-            Climb.step = Climb.kReset;
-          });
+  public static final Command resetSubsystems = new ResetSubsystems();
 }

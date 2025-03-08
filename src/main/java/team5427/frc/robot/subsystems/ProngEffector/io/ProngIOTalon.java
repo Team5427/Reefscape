@@ -88,7 +88,7 @@ public class ProngIOTalon implements ProngIO {
         rollerVoltage);
 
     ParentDevice.optimizeBusUtilizationForAll(wristServo.getTalonFX(), rollerTalon.getTalonFX());
-    wristServo.setEncoderPosition(ProngEffectorConstants.kStowPosition);
+    wristServo.setEncoderPosition(ProngEffectorConstants.kZeroPosition);
   }
 
   @Override

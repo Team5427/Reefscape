@@ -50,7 +50,7 @@ public class SwerveModule {
       case REPLAY:
       case REAL:
         if (io != null) {
-          // newState.optimize(inputs.absolutePosition);
+          newState.optimize(inputs.absolutePosition);
           io.setModuleState(newState);
         }
         break;
