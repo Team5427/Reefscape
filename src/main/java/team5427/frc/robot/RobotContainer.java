@@ -64,8 +64,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(1.1, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(2.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(4.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(3.0, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -95,7 +95,7 @@ public class RobotContainer {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
     autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData(autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureButtonBindings();
   }

@@ -162,9 +162,9 @@ public final class Constants {
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 2.5;
+      kDriveMotorConfiguration.kP = 2.7;
       // kDriveMotorConfiguration.kV = 2.08;
-      kDriveMotorConfiguration.kA = 0.5;
+      kDriveMotorConfiguration.kA = 0.7;
       kDriveMotorConfiguration.kS = 0.23;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
@@ -184,10 +184,10 @@ public final class Constants {
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
 
       // Tunable values
-      kSteerMotorConfiguration.kP = 7.0; // 7.0
-      kSteerMotorConfiguration.kD = 0.18;
-      // kSteerMotorConfiguration.kS = 0.21;
-      kSteerMotorConfiguration.kA = 0.1;
+      kSteerMotorConfiguration.kP = 8.0; // 7.0
+      kSteerMotorConfiguration.kD = 0.15;
+      // // kSteerMotorConfiguration.kS = 0.21;
+      // kSteerMotorConfiguration.kA = 0.3;
       // kSteerMotorConfiguration.kA = 8.0;
       // kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
       // kSteerMotorConfiguration.altA = kSteerMotorConfiguration.maxAcceleration;
@@ -464,7 +464,7 @@ public final class Constants {
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
-    public static final double kPivotCancoderOffset = 0.128;
+    public static final double kPivotCancoderOffset = -.2783;
 
     public static final Distance kStowDistance = Feet.of(0.25);
     public static final Distance kIntakeDistance = Inches.of(1.0);
