@@ -22,6 +22,8 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
+
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
 import team5427.lib.motors.real.SteelTalonFX;
@@ -114,7 +116,7 @@ public class ModuleIOTalon implements ModuleIO {
     driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent();
     steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent();
 
-    BaseStatusSignal.setUpdateFrequencyForAll(400.0, driveMotorPosition, steerMotorPosition);
+    BaseStatusSignal.setUpdateFrequencyForAll(Constants.kOdometryFrequency, driveMotorPosition, steerMotorPosition);
 
     // steerMotorVelocity);
     BaseStatusSignal.setUpdateFrequencyForAll(

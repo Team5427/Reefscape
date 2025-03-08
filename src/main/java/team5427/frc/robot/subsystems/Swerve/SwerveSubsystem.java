@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.concurrent.locks.Lock;
@@ -23,6 +24,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
+import team5427.frc.robot.Robot;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
@@ -39,7 +41,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveModule[] modules;
   private GyroIO gyroIO;
   private GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
-  private ChassisSpeeds currentRobotRelativeSpeeds;
+  private ChassisSpeeds inputSpeeds;
   private SwerveModuleState[] actualModuleStates;
   private boolean bypass = false;
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
@@ -96,7 +98,7 @@ public class SwerveSubsystem extends SubsystemBase {
         break;
     }
     isFieldOp = true;
-    currentRobotRelativeSpeeds = new ChassisSpeeds(0, 0, 0);
+    inputSpeeds = new ChassisSpeeds(0, 0, 0);
     PhoenixOdometryThread.getInstance().start();
 
     actualModuleStates = getModuleStates();
@@ -108,13 +110,17 @@ public class SwerveSubsystem extends SubsystemBase {
             RotationsPerSecond.of(SwerveConstants.kSteerMotorConfiguration.maxVelocity / 60.0));
     previousSetpoint =
         new SwerveSetpoint(
-            currentRobotRelativeSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
+            inputSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
 
     System.out.println("Created New Swerve");
   }
 
   public void setChassisSpeeds(ChassisSpeeds newSpeeds) {
-    this.currentRobotRelativeSpeeds = newSpeeds;
+    this.inputSpeeds = newSpeeds;
+  }
+
+  public void setFieldRelativeSpeeds(ChassisSpeeds newSpeeds){
+    
   }
 
   public SwerveModuleState[] getModuleStates() {
@@ -139,12 +145,15 @@ public class SwerveSubsystem extends SubsystemBase {
       gyroDisconnectedAlert.set(true);
     }
     ChassisSpeeds fieldRelativeSpeeds;
+    if(DriverStation.isAutonomous()){
+      
+    }
     if (Constants.currentMode != Mode.SIM) {
       fieldRelativeSpeeds =
-          ChassisSpeeds.fromRobotRelativeSpeeds(currentRobotRelativeSpeeds, getGyroRotation());
+          ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     } else {
       fieldRelativeSpeeds =
-          ChassisSpeeds.fromRobotRelativeSpeeds(currentRobotRelativeSpeeds, getRotation());
+          ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
     }
     ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
@@ -196,13 +205,13 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       // Apply update
-      // poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
     
     // Update gyro alert
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
-    Logger.recordOutput("SwerveOutput/RobotRelativeChassisSpeeds", currentRobotRelativeSpeeds);
+    Logger.recordOutput("SwerveOutput/RobotRelativeChassisSpeeds", inputSpeeds);
     // Logger.recordOutput("SwerveOutput/DiscretizedChassisSpeeds", discretizedSpeeds);
     Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
