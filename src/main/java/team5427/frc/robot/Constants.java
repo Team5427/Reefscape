@@ -206,6 +206,8 @@ public final class Constants {
       public static final double drivekS = 0.0;
       public static final double drivekV = 45.0;
     }
+
+    public static final double kDampenerDampeningAmount = 0.9;
   }
 
   public static class EndEffectorConstants {
@@ -510,12 +512,12 @@ public final class Constants {
           kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kServoConfiguration.maxAcceleration = kServoConfiguration.maxVelocity * 3.0;
 
-      kServoConfiguration.kP = 0.8;
+      kServoConfiguration.kP = 1.5;
     }
 
     public static final Rotation2d kStowPosition = Rotation2d.kZero;
     public static final Rotation2d kPrepPosition = Rotation2d.fromDegrees(45.0);
-    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(110.0);
+    public static final Rotation2d kActivePosition = Rotation2d.fromDegrees(120.0);
   }
 
   public static class ProngEffectorConstants {
@@ -569,6 +571,8 @@ public final class Constants {
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(204.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
+
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(105.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);

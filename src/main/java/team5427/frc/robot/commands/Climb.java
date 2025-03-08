@@ -4,8 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.frc.robot.Constants.ClimbConstants;
+import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 
 public class Climb extends Command {
 
@@ -13,6 +15,7 @@ public class Climb extends Command {
 
   private CascadeSubsystem cascadeSubsystem;
   private ClimberSubsystem climberSubsystem;
+  private ProngSubsystem prongSubsystem;
 
   public static final int kReset = 0;
   public static final int kPrep = 1;
@@ -22,6 +25,7 @@ public class Climb extends Command {
   public Climb() {
     cascadeSubsystem = CascadeSubsystem.getInstance();
     climberSubsystem = ClimberSubsystem.getInstance();
+    prongSubsystem = ProngSubsystem.getInstance();
     addRequirements(cascadeSubsystem, climberSubsystem);
   }
 
@@ -29,6 +33,7 @@ public class Climb extends Command {
   public void initialize() {
     step += 1;
     Logger.recordOutput("Climber Step", step);
+    prongSubsystem.setWristSetpoint(ProngEffectorConstants.kClimbRotation);
     switch (step) {
       case kPrep:
         cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);

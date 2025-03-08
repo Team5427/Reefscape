@@ -47,6 +47,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public static DrivingStates state;
 
+  private boolean gyroLock = false;
+
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
         new SwerveModulePosition(),
@@ -140,11 +142,15 @@ public class SwerveSubsystem extends SubsystemBase {
       gyroDisconnectedAlert.set(true);
     }
     ChassisSpeeds relativeSpeeds;
+    if(gyroLock){
+      inputSpeeds.omegaRadiansPerSecond = 0;
+    }
     if (Constants.currentMode != Mode.SIM) {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     } else {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
-    }
+    } 
+
     ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
     // previousSetpoint =
@@ -207,6 +213,14 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
     Logger.recordOutput("Odometry/Robot", getPose());
+  }
+
+  public void setGyroLock(boolean setLock){
+    this.gyroLock = setLock;
+  }
+
+  public boolean getGyroLock(){
+    return this.gyroLock;
   }
 
   public void resetGyro(Rotation2d angle) {

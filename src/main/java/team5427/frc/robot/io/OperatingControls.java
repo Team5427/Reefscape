@@ -57,7 +57,7 @@ public class OperatingControls {
 
     joy.povDown().onTrue(AllCommands.resetSubsystems);
 
-    // joy.povUp().onTrue(AllCommands.climbStep);
+    joy.povUp().onTrue(AllCommands.climbStep);
 
     joy.povRight()
         .onTrue(

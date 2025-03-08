@@ -21,7 +21,7 @@ public class AllCommands {
   public static final Command scoreBarge = new Score(RobotConfigConstants.kScoreBarge);
   public static final Command scoreProcessor = new Score(RobotConfigConstants.kScoreProcessor);
 
-  // public static final Command climbStep = new Climb();
+  public static final Command climbStep = new Climb();
 
   public static final Command intake = new Intake(RobotConfigConstants.kCoralStationIntake);
   public static final Command lowReefAlgaeIntake =
