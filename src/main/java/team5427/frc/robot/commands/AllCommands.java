@@ -20,6 +20,8 @@ public class AllCommands {
   public static final Command scoreL3 = new Score(RobotConfigConstants.kScoreL3);
   public static final Command scoreL4 = new Score(RobotConfigConstants.kScoreL4);
 
+  public static final Command scoreL4Inverse = new Score(RobotConfigConstants.kScoreL4Inverse);
+
   public static final Command scoreBarge = new Score(RobotConfigConstants.kScoreBarge);
   public static final Command scoreProcessor = new Score(RobotConfigConstants.kScoreProcessor);
 

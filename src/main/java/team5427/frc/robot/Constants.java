@@ -486,7 +486,8 @@ public final class Constants {
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(30.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(15.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(10.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(2.5);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(3.5);
+    public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
 
@@ -573,6 +574,7 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-35.0);
+    public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(300.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
 
@@ -608,6 +610,13 @@ public final class Constants {
             CascadeConstants.kL4Rotation,
             CascadeConstants.kL4Distance,
             ProngEffectorConstants.kL4Rotation);
+
+    public static final RawScoringConfiguration kScoreL4Inverse = 
+        new RawScoringConfiguration(
+            CascadeConstants.kL4RotationInverse,
+            CascadeConstants.kL4Distance,
+            ProngEffectorConstants.kL4RotationInverse
+        );
 
     public static final RawScoringConfiguration kScoreBarge =
         new RawScoringConfiguration(
