@@ -1,6 +1,7 @@
 package team5427.frc.robot.subsystems.Climb.io;
 
 import static edu.wpi.first.units.Units.Rotations;
+import static edu.wpi.first.units.Units.Volt;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
@@ -61,5 +62,15 @@ public class ClimbIOTalon implements ClimbIO {
   @Override
   public void setHookSetpoint(Rotation2d setpoint) {
     hookServo.setSetpoint(setpoint);
+  }
+
+  @Override
+  public void setHookVoltage(Voltage volts) {
+   hookServo.setRawVoltage(volts.in(Volt));
+  }
+
+  @Override
+  public void setHookPosition(Rotation2d angle){
+    hookServo.setEncoderPosition(angle);
   }
 }

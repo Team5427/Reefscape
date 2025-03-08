@@ -27,4 +27,8 @@ public interface ClimbIO {
   public void updateInputs(ClimbIOInputs inputs);
 
   public void setHookSetpoint(Rotation2d setpoint);
+
+  public void setHookVoltage(Voltage volts);
+
+  public void setHookPosition(Rotation2d angle);
 }
