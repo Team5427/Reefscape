@@ -175,6 +175,31 @@ public final class Constants {
     public static final double kGray = 0.95;
     public static final double kDarkGray = 0.97;
     public static final double kBlack = 0.99;
+
+    public static double kShot;
+    public static double kSolid; 
+    public static double kBreath;
+    public static double kStrobe;
+    public static double kLightChase;
+    public static double kLarsonScanner;
+
+    static {
+      if (kAlliance.get()==Alliance.Red) {
+        kShot = kShotRed;
+        kSolid = kRed;
+        kBreath = kBreathRed;
+        kStrobe = kStrobeRed;
+        kLightChase = kLightChaseRed;
+        kLarsonScanner = kLarsonScannerRed;
+      } else {
+        kShot = kShotBlue;
+        kSolid = kBlue;
+        kBreath = kBreathBlue;
+        kStrobe = kStrobeBlue;
+        kLightChase = kLightChaseBlue;
+        kLarsonScanner = kLarsonScannerGray;
+      }
+    }
   }
 
 
