@@ -73,7 +73,7 @@ public class OperatingControls {
                 () -> {
                   coralMode = false;
                 }));
-    
+
     joy.leftStick().whileTrue(new HomeCascade());
   }
 }

@@ -7,8 +7,6 @@ import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.Optional;
-import java.util.concurrent.locks.Lock;
-
 import org.littletonrobotics.junction.Logger;
 import org.team4206.battleaid.common.TunedJoystick;
 import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
@@ -39,8 +37,6 @@ public class ChassisMovement extends Command {
     addRequirements(swerveSubsystem);
   }
 
-
-
   @Override
   public void initialize() {
     swerveSubsystem.setFieldOp(DriverStation.getAlliance().get().equals(Alliance.Red));
@@ -66,12 +62,12 @@ public class ChassisMovement extends Command {
             -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
         vy =
             -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-        
+
         omegaRadians =
             -tunedJoystickQuadratic.getLeftX()
                 * Math.abs(tunedJoystickLinear.getLeftX())
                 * Math.PI
-                * SwerveConstants.kDriveMotorConfiguration.maxVelocity ;
+                * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
 
         vx *= (1 - dampener);
         vy *= (1 - dampener);

@@ -66,11 +66,11 @@ public class ClimbIOTalon implements ClimbIO {
 
   @Override
   public void setHookVoltage(Voltage volts) {
-   hookServo.setRawVoltage(volts.in(Volt));
+    hookServo.setRawVoltage(volts.in(Volt));
   }
 
   @Override
-  public void setHookPosition(Rotation2d angle){
+  public void setHookPosition(Rotation2d angle) {
     hookServo.setEncoderPosition(angle);
   }
 }

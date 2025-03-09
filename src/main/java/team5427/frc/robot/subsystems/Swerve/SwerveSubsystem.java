@@ -141,15 +141,19 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       gyroDisconnectedAlert.set(true);
     }
+    for (SwerveModule module : modules) {
+      module.periodic();
+    }
+    odometryLock.unlock();
     ChassisSpeeds relativeSpeeds;
-    if(gyroLock){
+    if (gyroLock) {
       inputSpeeds.omegaRadiansPerSecond = 0;
     }
     if (Constants.currentMode != Mode.SIM) {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     } else {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
-    } 
+    }
 
     ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
@@ -167,10 +171,8 @@ public class SwerveSubsystem extends SubsystemBase {
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
       modules[i].setModuleState(moduleStates[i]);
-      modules[i].periodic();
       actualModuleStates[i] = modules[i].getModuleState();
     }
-    odometryLock.unlock();
 
     // Update odometry
     double[] sampleTimestamps =
@@ -215,11 +217,11 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("Odometry/Robot", getPose());
   }
 
-  public void setGyroLock(boolean setLock){
+  public void setGyroLock(boolean setLock) {
     this.gyroLock = setLock;
   }
 
-  public boolean getGyroLock(){
+  public boolean getGyroLock() {
     return this.gyroLock;
   }
 

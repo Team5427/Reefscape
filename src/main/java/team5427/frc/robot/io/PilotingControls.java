@@ -1,7 +1,5 @@
 package team5427.frc.robot.io;
 
-import java.util.Optional;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -9,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.commands.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 public class PilotingControls {
 
@@ -51,11 +48,17 @@ public class PilotingControls {
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
-    joy.leftBumper().onTrue(new InstantCommand(() -> {
-      SwerveSubsystem.getInstance().setGyroLock(true);
-    })).onFalse(new InstantCommand(() -> {
-      SwerveSubsystem.getInstance().setGyroLock(false);
-    }));
+    joy.leftBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  SwerveSubsystem.getInstance().setGyroLock(true);
+                }))
+        .onFalse(
+            new InstantCommand(
+                () -> {
+                  SwerveSubsystem.getInstance().setGyroLock(false);
+                }));
 
     joy.y()
         .and(() -> RobotBase.isReal())
