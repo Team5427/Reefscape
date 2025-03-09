@@ -155,16 +155,16 @@ public final class Constants {
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
       kDriveMotorConfiguration.withFOC = true;
 
-      kDriveMotorConfiguration.currentLimit = 80;
+      kDriveMotorConfiguration.currentLimit = 73;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity =
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 2.7;
+      kDriveMotorConfiguration.kP = 2.3;
       // kDriveMotorConfiguration.kV = 2.08;
-      kDriveMotorConfiguration.kA = 0.7;
+      kDriveMotorConfiguration.kA = 1.2;
       kDriveMotorConfiguration.kS = 0.23;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
@@ -176,7 +176,7 @@ public final class Constants {
       kSteerMotorConfiguration.gearRatio = SwerveUtil.kSDSSteerGearRatioMK4n;
       kSteerMotorConfiguration.idleState = IdleState.kBrake;
       kSteerMotorConfiguration.mode = MotorMode.kServo;
-      kSteerMotorConfiguration.currentLimit = 30;
+      kSteerMotorConfiguration.currentLimit = 60;
       kSteerMotorConfiguration.withFOC = true;
 
       kSteerMotorConfiguration.maxVelocity =
@@ -184,13 +184,13 @@ public final class Constants {
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
 
       // Tunable values
-      kSteerMotorConfiguration.kP = 8.0; // 7.0
-      kSteerMotorConfiguration.kD = 0.15;
-      // // kSteerMotorConfiguration.kS = 0.21;
-      // kSteerMotorConfiguration.kA = 0.3;
+      kSteerMotorConfiguration.kP = 4.05; // 7.0
+      kSteerMotorConfiguration.kD = 0.0004;
+      // kSteerMotorConfiguration.kS = 0.21;
+      kSteerMotorConfiguration.kA = 0.3;
       // kSteerMotorConfiguration.kA = 8.0;
-      // kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
-      // kSteerMotorConfiguration.altA = kSteerMotorConfiguration.maxAcceleration;
+      kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
+      kSteerMotorConfiguration.altA = kSteerMotorConfiguration.maxAcceleration;
     }
 
     public static final CANDeviceId kPigeonCANId = new CANDeviceId(11, "*");

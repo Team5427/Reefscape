@@ -7,13 +7,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Dummy Real"
+            "pathName": "Dummy Real.0"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Dummy Real.1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Intake Station"
+            "name": "Score L3"
           }
         }
       ]
