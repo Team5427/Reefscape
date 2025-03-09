@@ -1,4 +1,4 @@
-package team5427.frc.robot.commands;
+package team5427.frc.robot.commands.outtake;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;

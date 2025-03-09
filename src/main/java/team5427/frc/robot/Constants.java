@@ -12,21 +12,25 @@ import com.pathplanner.lib.config.RobotConfig;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.filter.MedianFilter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
+import team5427.frc.robot.FieldConstants.ReefHeight;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
 import team5427.lib.kinematics.SwerveUtil;
@@ -90,6 +94,8 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
+    public static ProfiledPIDController kRotationPIDController;
+
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -98,6 +104,10 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
     public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
+
+    static {
+      kRotationPIDController = new ProfiledPIDController(2.0, 0.0, 0.0, new Constraints(1, 1));
+    }
 
     static {
       kSIMSteerController.enableContinuousInput(-0.5, 0.5);
@@ -651,5 +661,29 @@ public final class Constants {
             ProngEffectorConstants.kLowReefAlgaeRotation,
             MetersPerSecond.of(3.5),
             false);
+
+    public static final Transform3d kRobotScoringTranslation =
+        new Transform3d(0, 0.04, 0, Rotation3d.kZero);
+
+    public static final Pose2d[] kReefPoses = new Pose2d[12];
+
+    static {
+      // kReefPoses[0] =
+      //   new Pose2d(3.15, 4.19, Rotation2d.fromDegrees(0.0));
+      // for(int i = 0; i < 12; i++){
+      //
+      // kScoreL1.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L1);
+      //
+      // kScoreL2.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L2);
+      //
+      // kScoreL3.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L3);
+      //
+      // kScoreL4.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L4);
+      // }
+
+      for (int i = 0; i < 12; i++) {
+        kReefPoses[i] = FieldConstants.Reef.branchPositions.get(i).get(ReefHeight.L4).toPose2d();
+      }
+    }
   }
 }

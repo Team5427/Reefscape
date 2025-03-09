@@ -1,4 +1,4 @@
-package team5427.frc.robot.commands;
+package team5427.frc.robot.commands.chassis;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
