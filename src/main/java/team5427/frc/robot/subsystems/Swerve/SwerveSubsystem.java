@@ -1,10 +1,14 @@
 package team5427.frc.robot.subsystems.Swerve;
 
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
 
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
+
+import edu.wpi.first.hal.PowerJNI;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,6 +20,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.concurrent.locks.Lock;
@@ -155,19 +160,25 @@ public class SwerveSubsystem extends SubsystemBase {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
     }
 
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
+    // ChassisSpeeds discretizedSpeeds =
+    //     ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
-    //         fieldRelativeSpeeds, // The desired target speeds
-    //         0.02 // The loop time of the robot code, in seconds
+    //         relativeSpeeds, // The desired target speeds
+    //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
     //         );
-    // SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
+    previousSetpoint =
+    setpointGenerator.generateSetpoint(
+        previousSetpoint, // The previous setpoint
+        relativeSpeeds, // The desired target speeds
+        Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+        );
+    SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
     // SwerveModuleState[] moduleStates = new SwerveModuleState[4];
     // for (int i = 0; i < moduleStates.length; i++) moduleStates[i] = new SwerveModuleState();
-    SwerveModuleState[] moduleStates =
-        SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    // SwerveModuleState[] moduleStates =
+    //     SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
     for (int i = 0; i < modules.length; i++) {
       modules[i].setModuleState(moduleStates[i]);
