@@ -42,7 +42,6 @@ public class RobotContainer {
       e.printStackTrace();
     }
 
-    initSubsystems();
     createNamedCommands();
 
     // Configure AutoBuilder last
@@ -93,13 +92,6 @@ public class RobotContainer {
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureButtonBindings();
-  }
-
-  private void initSubsystems() {
-    SwerveSubsystem.getInstance();
-    // ProngSubsystem.getInstance();
-    // CascadeSubsystem.getInstance();
-    // VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
   }
 
   private void createNamedCommands() {

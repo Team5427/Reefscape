@@ -12,6 +12,11 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
+import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.test.InverseKinematicTest;
 
 // import frc.robot.BuildConstants;
@@ -25,6 +30,11 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+
+  private SwerveSubsystem m_swerve;
+  private CascadeSubsystem m_cascade;
+  private ProngSubsystem m_endEffector;
+  private ClimberSubsystem m_climber;
 
   // private SteelTalonFX talon0;
   // private SteelTalonFX talonSteer0;
@@ -42,6 +52,12 @@ public class Robot extends LoggedRobot {
     Logger.recordMetadata("Reefscape", "Steel Talons 5427 Robot Code for the Game Reefscape, 2025");
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
     // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
+
+    m_swerve = SwerveSubsystem.getInstance();
+    m_cascade = CascadeSubsystem.getInstance();
+    m_endEffector = ProngSubsystem.getInstance();
+    m_climber = ClimberSubsystem.getInstance();
+
     if (RobotBase.isReal()) {
       Constants.currentMode = Constants.Mode.REAL;
     } else if (RobotBase.isSimulation()) {
