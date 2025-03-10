@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.commands.AllCommands;
+import team5427.frc.robot.io.LightTriggers;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -111,6 +112,7 @@ public class RobotContainer {
   public void configureButtonBindings() {
     new PilotingControls();
     // new OperatingControls();
+    new LightTriggers();
   }
 
   /**
