@@ -2,6 +2,7 @@ package team5427.frc.robot.subsystems.Swerve;
 
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Volts;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -127,7 +128,9 @@ public class SwerveModule {
 
   /** Runs the module with the specified output while moving at zero speed. */
   public void runSteerCharacterization(double output) {
-    io.setSteerPositionSetpoint(Amps.of(output));
+    // Characterizing TorqueCurrentFOC for steer usually doesnt work.
+    // io.setSteerPositionSetpoint(Amps.of(output));
+    io.setSteerPositionSetpoint(Volts.of(output));
     io.setDriveSpeedSetpoint(Amps.of(0.0));
   }
 

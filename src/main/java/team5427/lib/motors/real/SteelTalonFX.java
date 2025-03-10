@@ -4,6 +4,7 @@ import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.Rotation;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
+import static edu.wpi.first.units.Units.Volt;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -14,6 +15,7 @@ import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
 import com.ctre.phoenix6.controls.VelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.VelocityVoltage;
+import com.ctre.phoenix6.controls.VoltageOut;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -22,6 +24,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
@@ -53,6 +56,7 @@ public class SteelTalonFX implements IMotorController {
       new VelocityDutyCycle(RotationsPerSecond.of(0.0));
   public VelocityTorqueCurrentFOC velocityTorqueCurrentFOCRequest =
       new VelocityTorqueCurrentFOC(RotationsPerSecond.of(0.0));
+  public VoltageOut voltageOut = new VoltageOut(Volt.of(0.0));
   private boolean useTorqueCurrentFOC = false;
 
   public SteelTalonFX(CANDeviceId id) {
@@ -127,7 +131,6 @@ public class SteelTalonFX implements IMotorController {
 
     talonConfig.TorqueCurrent.PeakForwardTorqueCurrent = configuration.currentLimit;
     talonConfig.TorqueCurrent.PeakReverseTorqueCurrent = -configuration.currentLimit;
-
     talonFX.getConfigurator().apply(talonConfig);
   }
 
@@ -302,7 +305,11 @@ public class SteelTalonFX implements IMotorController {
 
   @Override
   public void setRawVoltage(double voltage) {
-    talonFX.setVoltage(voltage);
+    talonFX.setControl(voltageOut.withOutput(voltage).withEnableFOC(withFOC));
+  }
+
+  public void setRawCurrent(double current){
+    talonFX.setControl(torqueCurrentFOCRequest.withOutput(current));
   }
 
   @Override

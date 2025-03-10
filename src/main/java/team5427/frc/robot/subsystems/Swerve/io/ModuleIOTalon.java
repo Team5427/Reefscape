@@ -1,5 +1,7 @@
 package team5427.frc.robot.subsystems.Swerve.io;
 
+import static edu.wpi.first.units.Units.Amp;
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -8,6 +10,7 @@ import static edu.wpi.first.units.Units.Volt;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
@@ -23,6 +26,9 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
+
+import org.checkerframework.checker.units.qual.A;
+
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
@@ -238,14 +244,17 @@ public class ModuleIOTalon implements ModuleIO {
 
   @Override
   public void setDriveSpeedSetpoint(Current current) {
-    TorqueCurrentFOC torqueCurrentFOC = driveMotor.torqueCurrentFOCRequest;
-    driveMotor.getTalonFX().setControl(torqueCurrentFOC.withOutput(current));
+    driveMotor.setRawCurrent(current.in(Amp));
   }
 
   @Override
   public void setSteerPositionSetpoint(Current current) {
-    TorqueCurrentFOC torqueCurrentFOC = steerMotor.torqueCurrentFOCRequest;
-    steerMotor.getTalonFX().setControl(torqueCurrentFOC.withOutput(current));
+    steerMotor.setRawCurrent(current.in(Amps));
+  }
+
+  @Override
+  public void setSteerPositionSetpoint(Voltage volts){
+    steerMotor.setRawVoltage(volts.in(Volt));
   }
 
   /**
