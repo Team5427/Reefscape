@@ -58,6 +58,7 @@ public class SteelTalonFX implements IMotorController {
       new VelocityTorqueCurrentFOC(RotationsPerSecond.of(0.0));
   public VoltageOut voltageOut = new VoltageOut(Volt.of(0.0));
   private boolean useTorqueCurrentFOC = false;
+  private boolean usePositionVoltage = false;
 
   public SteelTalonFX(CANDeviceId id) {
     this.id = id;
@@ -183,11 +184,18 @@ public class SteelTalonFX implements IMotorController {
           talonFX.setControl(
               positionTorqueCurrentFOCRequest.withPosition(Rotation.of(setpoint.getRotations())));
         } else {
+          if(usePositionVoltage){
+            talonFX.setControl(
+              positionVoltageRequest
+                  .withPosition(Rotation.of(setpoint.getRotations()))
+                  .withEnableFOC(withFOC));
+          } else{
 
           talonFX.setControl(
               positionDutyCycleRequest
                   .withPosition(Rotation.of(setpoint.getRotations()))
                   .withEnableFOC(withFOC));
+          }
         }
         break;
       default:
@@ -344,9 +352,12 @@ public class SteelTalonFX implements IMotorController {
         break;
       case kServo:
         this.setpoint = setpoint;
-        // talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
-        talonFX.setControl(
-            positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
+        if(usePositionVoltage){
+        talonFX.setControl(positionVoltageRequest.withPosition(setpoint).withEnableFOC(withFOC));
+        } else{
+          talonFX.setControl(
+              positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
+        }
         DriverStation.reportWarning(
             "Warning: TalonFX motor with the id "
                 + talonFX.getDeviceID()
@@ -384,5 +395,13 @@ public class SteelTalonFX implements IMotorController {
 
   public void useTorqueCurrentFOC(boolean using) {
     this.useTorqueCurrentFOC = using;
+  }
+
+  public boolean isUsingPositionVoltage() {
+    return this.usePositionVoltage;
+  }
+
+  public void usePositionVoltage(boolean using) {
+    this.usePositionVoltage = using;
   }
 }
