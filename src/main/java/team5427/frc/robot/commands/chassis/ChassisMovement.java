@@ -1,4 +1,4 @@
-package team5427.frc.robot.commands;
+package team5427.frc.robot.commands.chassis;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -76,7 +76,9 @@ public class ChassisMovement extends Command {
         ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
         if (joy.getLeftTriggerAxis() >= 0.1) {
           inputSpeeds = new ChassisSpeeds(0, 0, 0);
-          swerveSubsystem.stop();
+          swerveSubsystem.stop(true);
+        } else{
+          swerveSubsystem.stop(false);
         }
         swerveSubsystem.setChassisSpeeds(inputSpeeds);
       }

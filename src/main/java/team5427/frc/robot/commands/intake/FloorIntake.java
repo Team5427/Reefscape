@@ -1,4 +1,4 @@
-package team5427.frc.robot.commands;
+package team5427.frc.robot.commands.intake;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 

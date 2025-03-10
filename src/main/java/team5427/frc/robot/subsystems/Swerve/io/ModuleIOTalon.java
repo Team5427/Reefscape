@@ -1,5 +1,7 @@
 package team5427.frc.robot.subsystems.Swerve.io;
 
+import static edu.wpi.first.units.Units.Amp;
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -8,6 +10,8 @@ import static edu.wpi.first.units.Units.Volt;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -22,6 +26,9 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
+
+import org.checkerframework.checker.units.qual.A;
+
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
@@ -42,6 +49,8 @@ public class ModuleIOTalon implements ModuleIO {
   private StatusSignal<Angle> absolutePosition;
   private StatusSignal<Current> steerMotorCurrent;
   private StatusSignal<Current> driveMotorCurrent;
+  private StatusSignal<Current> driveTorqueCurrent;
+  private StatusSignal<Current> steerTorqueCurrent;
   private StatusSignal<Angle> driveMotorPosition;
   private StatusSignal<Angle> steerMotorPosition;
   private StatusSignal<AngularVelocity> driveMotorVelocity;
@@ -114,6 +123,8 @@ public class ModuleIOTalon implements ModuleIO {
     steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage();
     driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent();
     steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent();
+    driveTorqueCurrent = driveMotor.getTalonFX().getTorqueCurrent();
+    steerTorqueCurrent = steerMotor.getTalonFX().getTorqueCurrent();
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         Constants.kOdometryFrequency, driveMotorPosition, steerMotorPosition);
@@ -169,6 +180,9 @@ public class ModuleIOTalon implements ModuleIO {
 
     inputs.driveMotorPosition =
         Rotation2d.fromRotations(driveMotor.getEncoderPosition(driveMotorPosition));
+    inputs.driveMotorAngularVelocity = driveMotorVelocity.getValue();
+    inputs.driveMotorLinearVelocity =
+        MetersPerSecond.of(driveMotor.getEncoderVelocity(driveMotorVelocity));
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getEncoderVelocity(steerMotorVelocity) / 60.0);
 
@@ -228,6 +242,21 @@ public class ModuleIOTalon implements ModuleIO {
     driveMotor.setRawVoltage(volts.in(Volt));
   }
 
+  @Override
+  public void setDriveSpeedSetpoint(Current current) {
+    driveMotor.setRawCurrent(current.in(Amp));
+  }
+
+  @Override
+  public void setSteerPositionSetpoint(Current current) {
+    steerMotor.setRawCurrent(current.in(Amps));
+  }
+
+  @Override
+  public void setSteerPositionSetpoint(Voltage volts){
+    steerMotor.setRawVoltage(volts.in(Volt));
+  }
+
   /**
    * @param setpoint - <strong>Rotation2d</strong> setpoint for steer motor (module angle)
    */
@@ -249,6 +278,7 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void stop() {
 
+    // might be the problem line for the spasiming
     setSteerPositionSetpoint(Rotation2d.fromRotations(steerMotorPosition.getValue().in(Rotations)));
 
     setDriveSpeedSetpoint(MetersPerSecond.of(0.0));

@@ -1,6 +1,7 @@
 package team5427.frc.robot.subsystems.Swerve.io;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -22,6 +23,8 @@ public interface ModuleIO {
     public SwerveModulePosition currentModulePosition =
         new SwerveModulePosition(0, absolutePosition);
     public Rotation2d driveMotorPosition = new Rotation2d(0);
+    public AngularVelocity driveMotorAngularVelocity = RotationsPerSecond.of(0);
+    public LinearVelocity driveMotorLinearVelocity = MetersPerSecond.of(0.0);
     public AngularVelocity steerMotorVelocityRotations = RotationsPerSecond.of(0.0);
 
     public Voltage driveMotorVoltage = Volts.of(0.0);
@@ -29,6 +32,9 @@ public interface ModuleIO {
 
     public Current driveMotorCurrent = Amps.of(0.0);
     public Current steerMotorCurrent = Amps.of(0.0);
+
+    public Current driveTorqueCurrent = Amps.of(0.0);
+    public Current steerTorqueCurrent = Amps.of(0.0);
 
     public boolean driveMotorConnected = false;
     public boolean steerMotorConnected = false;
@@ -47,12 +53,18 @@ public interface ModuleIO {
    */
   public default void setDriveSpeedSetpoint(Voltage volts) {}
 
+  public default void setDriveSpeedSetpoint(Current current) {}
+  ;
+
   public default void setSteerPositionSetpoint(Rotation2d position) {}
 
   /*
    * Needs a voltage
    */
   public default void setSteerPositionSetpoint(Voltage volts) {}
+
+  public default void setSteerPositionSetpoint(Current current) {}
+  ;
 
   public default void setModuleState(SwerveModuleState state) {}
 
