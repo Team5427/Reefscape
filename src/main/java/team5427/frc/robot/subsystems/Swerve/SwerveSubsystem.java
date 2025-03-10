@@ -7,9 +7,8 @@ import static edu.wpi.first.units.Units.Volts;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
-
-import edu.wpi.first.hal.PowerJNI;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -20,8 +19,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -63,9 +62,7 @@ public class SwerveSubsystem extends SubsystemBase {
       };
 
   private Rotation2d rawGyroRotation = new Rotation2d();
-  private SwerveDrivePoseEstimator poseEstimator =
-      new SwerveDrivePoseEstimator(
-          SwerveConstants.m_kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+  private SwerveDrivePoseEstimator poseEstimator;
 
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
@@ -116,10 +113,22 @@ public class SwerveSubsystem extends SubsystemBase {
     previousSetpoint =
         new SwerveSetpoint(inputSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
 
+    poseEstimator =
+        new SwerveDrivePoseEstimator(
+            SwerveConstants.m_kinematics,
+            rawGyroRotation,
+            lastModulePositions,
+            Pose2d.kZero,
+            VecBuilder.fill(0.2, 0.2, 0.1),
+            VecBuilder.fill(0.4, 0.4, 0.7));
     System.out.println("Created New Swerve");
   }
 
   public void setChassisSpeeds(ChassisSpeeds newSpeeds) {
+    this.inputSpeeds = newSpeeds;
+  }
+
+  public void setChassisSpeeds(ChassisSpeeds newSpeeds, DriveFeedforwards feedforwards) {
     this.inputSpeeds = newSpeeds;
   }
 
@@ -166,14 +175,17 @@ public class SwerveSubsystem extends SubsystemBase {
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
     //         relativeSpeeds, // The desired target speeds
-    //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+    //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) //
+    // The loop time of the robot code, in seconds
     //         );
     previousSetpoint =
-    setpointGenerator.generateSetpoint(
-        previousSetpoint, // The previous setpoint
-        relativeSpeeds, // The desired target speeds
-        Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
-        );
+        setpointGenerator.generateSetpoint(
+            previousSetpoint, // The previous setpoint
+            relativeSpeeds, // The desired target speeds
+            Seconds.of(Constants.kLoopSpeed),
+            Volts.of(
+                RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+            );
     SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
     // SwerveModuleState[] moduleStates = new SwerveModuleState[4];
     // for (int i = 0; i < moduleStates.length; i++) moduleStates[i] = new SwerveModuleState();

@@ -6,7 +6,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import java.util.Map;
-import team5427.frc.robot.FieldConstants.ReefHeight;
+import team5427.frc.robot.Field.ReefLevel;
 
 public class RawScoringConfiguration {
 
@@ -14,9 +14,9 @@ public class RawScoringConfiguration {
   private final Distance cascadeHeight;
   private final Rotation2d wristAngle;
 
-  private Map<ReefHeight, Pose3d> scoringPose;
+  private Map<ReefLevel, Pose3d> scoringPose;
 
-  private ReefHeight reefHeight;
+  private ReefLevel reefHeight;
 
   public RawScoringConfiguration() {
     this.cascadeAngle = Rotation2d.kZero;
@@ -37,7 +37,7 @@ public class RawScoringConfiguration {
       Rotation2d cascadeAngle,
       Distance cascadeHeight,
       Rotation2d wristAngle,
-      Map<ReefHeight, Pose3d> scoringPose) {
+      Map<ReefLevel, Pose3d> scoringPose) {
     this.cascadeAngle = cascadeAngle;
     this.cascadeHeight = cascadeHeight;
     this.wristAngle = wristAngle;
@@ -48,8 +48,8 @@ public class RawScoringConfiguration {
       Rotation2d cascadeAngle,
       Distance cascadeHeight,
       Rotation2d wristAngle,
-      Map<ReefHeight, Pose3d> scoringPose,
-      ReefHeight height) {
+      Map<ReefLevel, Pose3d> scoringPose,
+      ReefLevel height) {
     this.cascadeAngle = cascadeAngle;
     this.cascadeHeight = cascadeHeight;
     this.wristAngle = wristAngle;
@@ -57,17 +57,17 @@ public class RawScoringConfiguration {
     this.reefHeight = height;
   }
 
-  public RawScoringConfiguration setScoringPoses(Map<ReefHeight, Pose3d> map) {
+  public RawScoringConfiguration setScoringPoses(Map<ReefLevel, Pose3d> map) {
     this.scoringPose = map;
     return this;
   }
 
-  public RawScoringConfiguration setReefHeight(ReefHeight height) {
+  public RawScoringConfiguration setReefHeight(ReefLevel height) {
     this.reefHeight = height;
     return this;
   }
 
-  public Pose3d getPose(ReefHeight height) {
+  public Pose3d getPose(ReefLevel height) {
     return scoringPose.get(height);
   }
 
@@ -87,7 +87,7 @@ public class RawScoringConfiguration {
     return wristAngle;
   }
 
-  public Map<ReefHeight, Pose3d> getScoringPose() {
+  public Map<ReefLevel, Pose3d> getScoringPose() {
     return scoringPose;
   }
 }

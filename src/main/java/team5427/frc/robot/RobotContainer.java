@@ -35,7 +35,13 @@ public class RobotContainer {
     try {
       Constants.config = RobotConfig.fromGUISettings();
       System.out.println("Robot Config Loaded");
-      System.out.println(Constants.config.numModules);
+      System.out.println(
+          "Module Count: "
+              + Constants.config.numModules
+              + " Max Torque Friction: "
+              + Constants.config.maxTorqueFriction
+              + " Wheel Friction Force: "
+              + Constants.config.wheelFrictionForce);
     } catch (Exception e) {
       // Handle exception as needed
       System.out.println("Robot Config Failing");
@@ -55,7 +61,8 @@ public class RobotContainer {
         (speeds, feedforwards) ->
             SwerveSubsystem.getInstance()
                 .setChassisSpeeds(
-                    speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds.
+                    speeds, feedforwards), // Method that will drive the robot given ROBOT RELATIVE
+        // ChassisSpeeds.
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains

@@ -113,37 +113,15 @@ public class ArmInverseKinematics {
     }
 
     public Tuple2Plus<Rotation2d, Double> getAngleAndArmLength() {
-      double armLength =
-          (-2.0 * segmentLengths[0] * Math.cos(fixedAngle.getDegrees())
-                  + Math.sqrt(
-                      Math.pow(2.0 * segmentLengths[0] * Math.cos(fixedAngle.getDegrees()), 2)
-                          - 4.0
-                              * (Math.pow(segmentLengths[0], 2)
-                                  - Math.pow(targetLocation.getX(), 2)
-                                  - Math.pow(targetLocation.getZ(), 2))))
-              / 2.0;
-      Rotation2d angleZ =
-          Rotation2d.fromRadians(
-              Math.acos(
-                  (Math.pow(armLength, 2)
-                          + Math.pow(targetLocation.getX(), 2)
-                          + Math.pow(targetLocation.getZ(), 2)
-                          - Math.pow(segmentLengths[0], 2))
-                      / (2.0
-                          * armLength
-                          * Math.sqrt(
-                              Math.pow(targetLocation.getX(), 2)
-                                  + Math.pow(targetLocation.getZ(), 2)))));
-      Rotation2d angleW =
-          Rotation2d.fromRadians(
-              Math.acos(
-                  targetLocation.getX()
-                      / Math.sqrt(
-                          Math.pow(targetLocation.getX(), 2)
-                              + Math.pow(targetLocation.getZ(), 2))));
-
-      Rotation2d angleTheta = angleW.plus(angleZ);
-      return new Tuple2Plus<Rotation2d, Double>(angleTheta, armLength);
+      double b = targetLocation.getNorm();
+      double c = segmentLengths[0];
+      double theta = this.fixedAngle.getRadians();
+      double gamma = Math.asin(c * Math.sin(theta) / b);
+      double omega = Math.PI - theta - gamma;
+      double a = b * Math.sin(omega) / Math.sin(theta);
+      Rotation2d angleOffset = new Rotation2d(targetLocation.getX(), targetLocation.getZ());
+      Rotation2d finalAngle = new Rotation2d(gamma).plus(angleOffset);
+      return new Tuple2Plus<Rotation2d, Double>(finalAngle, a);
     }
   }
 }

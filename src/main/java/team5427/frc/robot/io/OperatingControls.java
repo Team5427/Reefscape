@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.commands.AllCommands;
-import team5427.frc.robot.commands.HomeCascade;
+import team5427.frc.robot.commands.homing.HomeCascade;
 
 public class OperatingControls {
 
