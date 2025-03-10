@@ -16,6 +16,19 @@ import team5427.frc.robot.subsystems.ProngEffector.io.ProngIOTalon;
 
 public class ProngSubsystem extends SubsystemBase {
 
+  public static enum GamePieceMode {
+    CORAL,
+    ALGAE
+  }
+
+  public static enum Direction {
+    FORWARD,
+    BACKWARD
+  }
+
+  public static GamePieceMode gamePieceMode = GamePieceMode.CORAL;
+  public static Direction direction = Direction.FORWARD;
+
   private ProngIO io;
   private ProngIOInputsAutoLogged inputsAutoLogged = new ProngIOInputsAutoLogged();
 
