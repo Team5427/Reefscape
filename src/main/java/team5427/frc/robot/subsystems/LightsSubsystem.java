@@ -26,6 +26,10 @@ public class LightsSubsystem extends SubsystemBase{
         this.pattern = pattern;
     }
 
+    public double getPattern() {
+        return pattern;
+    }
+
     public static LightsSubsystem getInstance() {
         if (m_instance == null) {
             m_instance = new LightsSubsystem();
