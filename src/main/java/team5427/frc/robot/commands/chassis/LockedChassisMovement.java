@@ -26,6 +26,10 @@ public class LockedChassisMovement extends Command {
 
   private Rotation2d rotationSetpoint = new Rotation2d();
 
+  private Pose2d[] matchingPoses;
+
+  private Pose2d robotPose = new Pose2d();
+
   public LockedChassisMovement(CommandXboxController driverJoystick, Rotation2d rotationSetpoint) {
     swerveSubsystem = SwerveSubsystem.getInstance();
     joy = driverJoystick;
@@ -54,6 +58,7 @@ public class LockedChassisMovement extends Command {
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     this.rotationSetpoint = pose.getRotation();
+    this.robotPose = swerveSubsystem.getPose();
 
     addRequirements(swerveSubsystem);
   }
@@ -70,8 +75,9 @@ public class LockedChassisMovement extends Command {
 
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
+    this.matchingPoses = matchingPoses;
+    this.robotPose = robotPose;
 
-    this.rotationSetpoint = robotPose.nearest(List.of(matchingPoses)).getRotation();
     addRequirements(swerveSubsystem);
   }
 
@@ -86,9 +92,9 @@ public class LockedChassisMovement extends Command {
 
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-
-    this.rotationSetpoint =
-        SwerveSubsystem.getInstance().getPose().nearest(List.of(matchingPoses)).getRotation();
+    this.matchingPoses = matchingPoses;
+    this.robotPose = swerveSubsystem.getPose();
+    updateRotationSetpoint();
     addRequirements(swerveSubsystem);
   }
 
@@ -103,6 +109,8 @@ public class LockedChassisMovement extends Command {
 
     if (DriverStation.isTeleop()) {
 
+      robotPose = swerveSubsystem.getPose();
+      updateRotationSetpoint();
       double dampener = joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount;
 
       double vx = 0.0, vy = 0.0;
@@ -125,6 +133,15 @@ public class LockedChassisMovement extends Command {
       }
       swerveSubsystem.setChassisSpeeds(inputSpeeds);
     }
+  }
+
+  public void updateRotationSetpoint() {
+    this.rotationSetpoint =
+        robotPose.nearest(List.of(matchingPoses)).getRotation().rotateBy(Rotation2d.k180deg);
+  }
+
+  public Rotation2d getRotationSetpoint() {
+    return this.rotationSetpoint;
   }
 
   @Override

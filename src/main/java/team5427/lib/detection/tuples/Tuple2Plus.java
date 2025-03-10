@@ -19,7 +19,7 @@ public class Tuple2Plus<R, T> implements TuplePlus {
   }
 
   public String toString() {
-    return r.toString() + t.toString();
+    return r.toString() + " " + t.toString();
   }
 
   @Override

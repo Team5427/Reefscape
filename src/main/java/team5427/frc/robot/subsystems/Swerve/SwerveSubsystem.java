@@ -1,5 +1,6 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
@@ -7,9 +8,8 @@ import static edu.wpi.first.units.Units.Volts;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
-
-import edu.wpi.first.hal.PowerJNI;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -19,10 +19,13 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -50,6 +53,8 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModuleState[] moduleStates;
 
+  private final SysIdRoutine sysId;
+
   public static DrivingStates state;
 
   private boolean gyroLock = false;
@@ -63,9 +68,7 @@ public class SwerveSubsystem extends SubsystemBase {
       };
 
   private Rotation2d rawGyroRotation = new Rotation2d();
-  private SwerveDrivePoseEstimator poseEstimator =
-      new SwerveDrivePoseEstimator(
-          SwerveConstants.m_kinematics, rawGyroRotation, lastModulePositions, new Pose2d());
+  private SwerveDrivePoseEstimator poseEstimator;
 
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
@@ -116,10 +119,32 @@ public class SwerveSubsystem extends SubsystemBase {
     previousSetpoint =
         new SwerveSetpoint(inputSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
 
+    poseEstimator =
+        new SwerveDrivePoseEstimator(
+            SwerveConstants.m_kinematics,
+            rawGyroRotation,
+            lastModulePositions,
+            Pose2d.kZero,
+            VecBuilder.fill(0.2, 0.2, 0.1),
+            VecBuilder.fill(0.4, 0.4, 0.7));
+
+    sysId =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                null,
+                null,
+                null,
+                (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
+            new SysIdRoutine.Mechanism(
+                (voltage) -> runDriveCharacterization(voltage.in(Volts)), null, this));
     System.out.println("Created New Swerve");
   }
 
   public void setChassisSpeeds(ChassisSpeeds newSpeeds) {
+    this.inputSpeeds = newSpeeds;
+  }
+
+  public void setChassisSpeeds(ChassisSpeeds newSpeeds, DriveFeedforwards feedforwards) {
     this.inputSpeeds = newSpeeds;
   }
 
@@ -166,14 +191,17 @@ public class SwerveSubsystem extends SubsystemBase {
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
     //         relativeSpeeds, // The desired target speeds
-    //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+    //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) //
+    // The loop time of the robot code, in seconds
     //         );
     previousSetpoint =
-    setpointGenerator.generateSetpoint(
-        previousSetpoint, // The previous setpoint
-        relativeSpeeds, // The desired target speeds
-        Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
-        );
+        setpointGenerator.generateSetpoint(
+            previousSetpoint, // The previous setpoint
+            relativeSpeeds, // The desired target speeds
+            Seconds.of(Constants.kLoopSpeed),
+            Volts.of(
+                RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+            );
     SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
     // SwerveModuleState[] moduleStates = new SwerveModuleState[4];
     // for (int i = 0; i < moduleStates.length; i++) moduleStates[i] = new SwerveModuleState();
@@ -238,6 +266,20 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void resetGyro(Rotation2d angle) {
     gyroIO.resetGyroYawAngle(angle);
+  }
+
+  /** Runs the drive in a straight line with the specified drive output. */
+  public void runDriveCharacterization(double output) {
+    for (int i = 0; i < 4; i++) {
+      modules[i].runDriveCharacterization(output);
+    }
+  }
+
+  /** Runs the steer with the specified steer output. */
+  public void runSteerCharacterization(double output) {
+    for (int i = 0; i < 4; i++) {
+      modules[i].runSteerCharacterization(output);
+    }
   }
 
   /**
@@ -325,6 +367,44 @@ public class SwerveSubsystem extends SubsystemBase {
       Matrix<N3, N1> visionMeasurementStdDevs) {
     poseEstimator.addVisionMeasurement(
         visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+  }
+
+  /** Returns the average velocity of the modules in rotations/sec (Phoenix native units). */
+  public double getFFCharacterizationVelocity() {
+    double output = 0.0;
+    for (int i = 0; i < 4; i++) {
+      output += modules[i].getFFCharacterizationVelocity() / 4.0;
+    }
+    return output;
+  }
+
+  /**
+   * Returns a command to run a quasistatic test in the specified direction. Change out the method
+   * name to run a different sys id test
+   */
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return run(() -> runDriveCharacterization(0.0))
+        .withTimeout(1.0)
+        .andThen(sysId.quasistatic(direction));
+  }
+
+  /**
+   * Returns a command to run a dynamic test in the specified direction. Change out the method name
+   * to run a different sys id test
+   */
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return run(() -> runDriveCharacterization(0.0))
+        .withTimeout(1.0)
+        .andThen(sysId.dynamic(direction));
+  }
+
+  /** Returns the position of each module in radians. */
+  public Angle[] getWheelRadiusCharacterizationPositions() {
+    Angle[] values = new Angle[4];
+    for (int i = 0; i < 4; i++) {
+      values[i] = Rotations.of(modules[i].getWheelRadiusCharacterizationPosition().getRotations());
+    }
+    return values;
   }
 
   public void stop() {

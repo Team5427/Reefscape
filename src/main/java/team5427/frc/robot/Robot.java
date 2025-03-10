@@ -12,7 +12,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import team5427.test.InverseKinematicTest;
 
 // import frc.robot.BuildConstants;
 
@@ -164,8 +163,6 @@ public class Robot extends LoggedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
-    InverseKinematicTest ikTest = new InverseKinematicTest();
-    ikTest.inverseKinematicsTest();
   }
 
   /** This function is called periodically during test mode. */

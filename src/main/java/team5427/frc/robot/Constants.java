@@ -30,7 +30,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
-import team5427.frc.robot.FieldConstants.ReefHeight;
+import team5427.frc.robot.Field.ReefLevel;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
 import team5427.lib.kinematics.SwerveUtil;
@@ -218,141 +218,6 @@ public final class Constants {
     }
 
     public static final double kDampenerDampeningAmount = 0.9;
-  }
-
-  public static class EndEffectorConstants {
-    //   public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
-    //   public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);
-    //   public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
-    //   public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
-
-    //   public static final CANDeviceId kWristCancoderCanID = new CANDeviceId(0);
-    //   public static final CANDeviceId kPivotCancoderCanID = new CANDeviceId(0);
-
-    //   public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
-    //   public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
-
-    //   public static ProfiledPIDController kSIMPivotController =
-    //       new ProfiledPIDController(1.1, 0, 1, (new Constraints(10, 20)));
-    //   public static ProfiledPIDController kSIMWristController =
-    //       new ProfiledPIDController(1.1, 0, 1, new Constraints(10, 20));
-
-    //   public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
-    //   public static MotorConfiguration kWristMotorConfiguration = new MotorConfiguration();
-    //   public static MotorConfiguration kCoralRollerMotorConfiguration = new MotorConfiguration();
-    //   public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
-
-    //   public static final Rotation2d kWristMinimumAngle = Rotation2d.fromDegrees(0);
-    //   public static final Rotation2d kWristMaximumAngle = Rotation2d.fromDegrees(180);
-    //   public static final Rotation2d kPivotMinimumAngle = Rotation2d.fromDegrees(0);
-    //   public static final Rotation2d kPivotMaximumAngle = Rotation2d.fromDegrees(180);
-
-    //   public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
-
-    //   public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
-    //   public static final ComplexGearRatio kPivotGearRatio =
-    //       new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
-    //   public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
-    //   public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
-
-    //   public static final double kWristCancoderOffset = 0.0;
-    //   public static final double kPivotCancoderOffset = 0.0;
-
-    //   static {
-    //     kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
-    //     kPivotMotorConfiguration.currentLimit = 40;
-    //     kPivotMotorConfiguration.idleState = IdleState.kBrake;
-    //     kPivotMotorConfiguration.mode = MotorMode.kServo;
-    //     kPivotMotorConfiguration.isInverted = false;
-
-    //     kPivotMotorConfiguration.withFOC = true;
-
-    //     kPivotMotorConfiguration.maxVelocity =
-    //         kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-    //     kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
-
-    //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration;
-    //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxVelocity;
-    //     kPivotMotorConfiguration.kG = 0.27;
-    //     kPivotMotorConfiguration.kA = 0.02;
-    //     kPivotMotorConfiguration.kV = 4.34;
-
-    //     kPivotMotorConfiguration.kP = 0.1;
-    //   }
-
-    //   static {
-    //     kWristMotorConfiguration.gearRatio = kPivotGearRatio;
-    //     kWristMotorConfiguration.currentLimit = 40;
-    //     kWristMotorConfiguration.idleState = IdleState.kBrake;
-    //     kWristMotorConfiguration.mode = MotorMode.kServo;
-    //     kWristMotorConfiguration.isInverted = false;
-
-    //     kPivotMotorConfiguration.withFOC = true;
-
-    //     kWristMotorConfiguration.maxVelocity =
-    //         kWristMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-    //     kWristMotorConfiguration.maxAcceleration = kWristMotorConfiguration.maxVelocity * 2.0;
-
-    //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxAcceleration;
-    //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxVelocity;
-    //     kWristMotorConfiguration.kA = 0.02;
-    //     kWristMotorConfiguration.kV = 4.34;
-
-    //     kWristMotorConfiguration.kP = 0.1;
-    //   }
-
-    //   static {
-    //     kCoralRollerMotorConfiguration.currentLimit = 30;
-    //     kCoralRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
-    //     kCoralRollerMotorConfiguration.isInverted = false;
-    //     kCoralRollerMotorConfiguration.mode = MotorMode.kFlywheel;
-    //     kCoralRollerMotorConfiguration.idleState = IdleState.kCoast;
-    //     kCoralRollerMotorConfiguration.finalDiameterMeters = kCoralWheelDiameter;
-
-    //     kPivotMotorConfiguration.withFOC = false;
-
-    //     kCoralRollerMotorConfiguration.maxVelocity =
-    //         kCoralRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
-    //     kCoralRollerMotorConfiguration.maxAcceleration =
-    //         kCoralRollerMotorConfiguration.maxVelocity * 2.0;
-
-    //     kCoralRollerMotorConfiguration.altA = kCoralRollerMotorConfiguration.maxAcceleration;
-    //     kCoralRollerMotorConfiguration.altV = kCoralRollerMotorConfiguration.maxVelocity;
-
-    //     kCoralRollerMotorConfiguration.kP = 0.1;
-    //     kCoralRollerMotorConfiguration.kA = 0.1;
-    //     kCoralRollerMotorConfiguration.kV = 0.1;
-    //     kCoralRollerMotorConfiguration.kD = 0.1;
-    //   }
-
-    //   static {
-    //     kAlgaeRollerMotorConfiguration.currentLimit = 30;
-    //     kAlgaeRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
-    //     kAlgaeRollerMotorConfiguration.isInverted = false;
-    //     kAlgaeRollerMotorConfiguration.mode = MotorMode.kFlywheel;
-    //     kAlgaeRollerMotorConfiguration.idleState = IdleState.kCoast;
-    //     kAlgaeRollerMotorConfiguration.finalDiameterMeters = kAlgaeWheelDiameter;
-
-    //     kPivotMotorConfiguration.withFOC = false;
-
-    //     kAlgaeRollerMotorConfiguration.maxVelocity =
-    //         kAlgaeRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
-    //     kAlgaeRollerMotorConfiguration.maxAcceleration =
-    //         kAlgaeRollerMotorConfiguration.maxVelocity * 2.0;
-
-    //     kAlgaeRollerMotorConfiguration.altA = kAlgaeRollerMotorConfiguration.maxAcceleration;
-    //     kAlgaeRollerMotorConfiguration.altV = kAlgaeRollerMotorConfiguration.maxVelocity;
-
-    //     kAlgaeRollerMotorConfiguration.kP = 0.1;
-    //     kAlgaeRollerMotorConfiguration.kA = 0.1;
-    //     kAlgaeRollerMotorConfiguration.kV = 0.1;
-    //     kAlgaeRollerMotorConfiguration.kD = 0.1;
-    //   }
-
-    //   static {
-    //     kSIMPivotController.setTolerance(0.05);
-    //     kSIMWristController.setTolerance(0.05);
-    //   }
   }
 
   public static class BlinkinConstants {
@@ -783,8 +648,143 @@ public final class Constants {
       // }
 
       for (int i = 0; i < 12; i++) {
-        kReefPoses[i] = FieldConstants.Reef.branchPositions.get(i).get(ReefHeight.L4).toPose2d();
+        kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
       }
     }
+  }
+
+  public static class EndEffectorConstants {
+    //   public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kCoralRollerMotorCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kAlgaeRollerMotorCanID = new CANDeviceId(0);
+
+    //   public static final CANDeviceId kWristCancoderCanID = new CANDeviceId(0);
+    //   public static final CANDeviceId kPivotCancoderCanID = new CANDeviceId(0);
+
+    //   public static final double kCoralWheelDiameter = Units.inchesToMeters(4.00);
+    //   public static final double kAlgaeWheelDiameter = Units.inchesToMeters(4.00);
+
+    //   public static ProfiledPIDController kSIMPivotController =
+    //       new ProfiledPIDController(1.1, 0, 1, (new Constraints(10, 20)));
+    //   public static ProfiledPIDController kSIMWristController =
+    //       new ProfiledPIDController(1.1, 0, 1, new Constraints(10, 20));
+
+    //   public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kWristMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kCoralRollerMotorConfiguration = new MotorConfiguration();
+    //   public static MotorConfiguration kAlgaeRollerMotorConfiguration = new MotorConfiguration();
+
+    //   public static final Rotation2d kWristMinimumAngle = Rotation2d.fromDegrees(0);
+    //   public static final Rotation2d kWristMaximumAngle = Rotation2d.fromDegrees(180);
+    //   public static final Rotation2d kPivotMinimumAngle = Rotation2d.fromDegrees(0);
+    //   public static final Rotation2d kPivotMaximumAngle = Rotation2d.fromDegrees(180);
+
+    //   public static final Rotation2d kPivotBufferAngle = Rotation2d.fromDegrees(10);
+
+    //   public static final ComplexGearRatio kWristGearRatio = new ComplexGearRatio((1.0));
+    //   public static final ComplexGearRatio kPivotGearRatio =
+    //       new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (15.0 / 36.0));
+    //   public static final ComplexGearRatio kCoralRollerGearRatio = new ComplexGearRatio((1.0));
+    //   public static final ComplexGearRatio kAlgaeRollerGearRatio = new ComplexGearRatio((1.0));
+
+    //   public static final double kWristCancoderOffset = 0.0;
+    //   public static final double kPivotCancoderOffset = 0.0;
+
+    //   static {
+    //     kPivotMotorConfiguration.gearRatio = kPivotGearRatio;
+    //     kPivotMotorConfiguration.currentLimit = 40;
+    //     kPivotMotorConfiguration.idleState = IdleState.kBrake;
+    //     kPivotMotorConfiguration.mode = MotorMode.kServo;
+    //     kPivotMotorConfiguration.isInverted = false;
+
+    //     kPivotMotorConfiguration.withFOC = true;
+
+    //     kPivotMotorConfiguration.maxVelocity =
+    //         kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+    //     kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity * 2.0;
+
+    //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration;
+    //     kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxVelocity;
+    //     kPivotMotorConfiguration.kG = 0.27;
+    //     kPivotMotorConfiguration.kA = 0.02;
+    //     kPivotMotorConfiguration.kV = 4.34;
+
+    //     kPivotMotorConfiguration.kP = 0.1;
+    //   }
+
+    //   static {
+    //     kWristMotorConfiguration.gearRatio = kPivotGearRatio;
+    //     kWristMotorConfiguration.currentLimit = 40;
+    //     kWristMotorConfiguration.idleState = IdleState.kBrake;
+    //     kWristMotorConfiguration.mode = MotorMode.kServo;
+    //     kWristMotorConfiguration.isInverted = false;
+
+    //     kPivotMotorConfiguration.withFOC = true;
+
+    //     kWristMotorConfiguration.maxVelocity =
+    //         kWristMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+    //     kWristMotorConfiguration.maxAcceleration = kWristMotorConfiguration.maxVelocity * 2.0;
+
+    //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxAcceleration;
+    //     kWristMotorConfiguration.altA = kWristMotorConfiguration.maxVelocity;
+    //     kWristMotorConfiguration.kA = 0.02;
+    //     kWristMotorConfiguration.kV = 4.34;
+
+    //     kWristMotorConfiguration.kP = 0.1;
+    //   }
+
+    //   static {
+    //     kCoralRollerMotorConfiguration.currentLimit = 30;
+    //     kCoralRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
+    //     kCoralRollerMotorConfiguration.isInverted = false;
+    //     kCoralRollerMotorConfiguration.mode = MotorMode.kFlywheel;
+    //     kCoralRollerMotorConfiguration.idleState = IdleState.kCoast;
+    //     kCoralRollerMotorConfiguration.finalDiameterMeters = kCoralWheelDiameter;
+
+    //     kPivotMotorConfiguration.withFOC = false;
+
+    //     kCoralRollerMotorConfiguration.maxVelocity =
+    //         kCoralRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+    //     kCoralRollerMotorConfiguration.maxAcceleration =
+    //         kCoralRollerMotorConfiguration.maxVelocity * 2.0;
+
+    //     kCoralRollerMotorConfiguration.altA = kCoralRollerMotorConfiguration.maxAcceleration;
+    //     kCoralRollerMotorConfiguration.altV = kCoralRollerMotorConfiguration.maxVelocity;
+
+    //     kCoralRollerMotorConfiguration.kP = 0.1;
+    //     kCoralRollerMotorConfiguration.kA = 0.1;
+    //     kCoralRollerMotorConfiguration.kV = 0.1;
+    //     kCoralRollerMotorConfiguration.kD = 0.1;
+    //   }
+
+    //   static {
+    //     kAlgaeRollerMotorConfiguration.currentLimit = 30;
+    //     kAlgaeRollerMotorConfiguration.gearRatio = kCoralRollerGearRatio;
+    //     kAlgaeRollerMotorConfiguration.isInverted = false;
+    //     kAlgaeRollerMotorConfiguration.mode = MotorMode.kFlywheel;
+    //     kAlgaeRollerMotorConfiguration.idleState = IdleState.kCoast;
+    //     kAlgaeRollerMotorConfiguration.finalDiameterMeters = kAlgaeWheelDiameter;
+
+    //     kPivotMotorConfiguration.withFOC = false;
+
+    //     kAlgaeRollerMotorConfiguration.maxVelocity =
+    //         kAlgaeRollerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKraken_MaxRPM);
+    //     kAlgaeRollerMotorConfiguration.maxAcceleration =
+    //         kAlgaeRollerMotorConfiguration.maxVelocity * 2.0;
+
+    //     kAlgaeRollerMotorConfiguration.altA = kAlgaeRollerMotorConfiguration.maxAcceleration;
+    //     kAlgaeRollerMotorConfiguration.altV = kAlgaeRollerMotorConfiguration.maxVelocity;
+
+    //     kAlgaeRollerMotorConfiguration.kP = 0.1;
+    //     kAlgaeRollerMotorConfiguration.kA = 0.1;
+    //     kAlgaeRollerMotorConfiguration.kV = 0.1;
+    //     kAlgaeRollerMotorConfiguration.kD = 0.1;
+    //   }
+
+    //   static {
+    //     kSIMPivotController.setTolerance(0.05);
+    //     kSIMWristController.setTolerance(0.05);
+    //   }
   }
 }

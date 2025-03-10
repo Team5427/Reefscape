@@ -8,6 +8,7 @@ import static edu.wpi.first.units.Units.Volt;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -42,6 +43,8 @@ public class ModuleIOTalon implements ModuleIO {
   private StatusSignal<Angle> absolutePosition;
   private StatusSignal<Current> steerMotorCurrent;
   private StatusSignal<Current> driveMotorCurrent;
+  private StatusSignal<Current> driveTorqueCurrent;
+  private StatusSignal<Current> steerTorqueCurrent;
   private StatusSignal<Angle> driveMotorPosition;
   private StatusSignal<Angle> steerMotorPosition;
   private StatusSignal<AngularVelocity> driveMotorVelocity;
@@ -114,6 +117,8 @@ public class ModuleIOTalon implements ModuleIO {
     steerMotorVoltage = steerMotor.getTalonFX().getMotorVoltage();
     driveMotorCurrent = driveMotor.getTalonFX().getStatorCurrent();
     steerMotorCurrent = steerMotor.getTalonFX().getStatorCurrent();
+    driveTorqueCurrent = driveMotor.getTalonFX().getTorqueCurrent();
+    steerTorqueCurrent = steerMotor.getTalonFX().getTorqueCurrent();
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         Constants.kOdometryFrequency, driveMotorPosition, steerMotorPosition);
@@ -169,6 +174,9 @@ public class ModuleIOTalon implements ModuleIO {
 
     inputs.driveMotorPosition =
         Rotation2d.fromRotations(driveMotor.getEncoderPosition(driveMotorPosition));
+    inputs.driveMotorAngularVelocity = driveMotorVelocity.getValue();
+    inputs.driveMotorLinearVelocity =
+        MetersPerSecond.of(driveMotor.getEncoderVelocity(driveMotorVelocity));
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getEncoderVelocity(steerMotorVelocity) / 60.0);
 
@@ -226,6 +234,12 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(Voltage volts) {
     driveMotor.setRawVoltage(volts.in(Volt));
+  }
+
+  @Override
+  public void setDriveSpeedSetpoint(Current current) {
+    TorqueCurrentFOC torqueCurrentFOC = driveMotor.torqueCurrentFOCRequest;
+    driveMotor.getTalonFX().setControl(torqueCurrentFOC.withOutput(current));
   }
 
   /**
