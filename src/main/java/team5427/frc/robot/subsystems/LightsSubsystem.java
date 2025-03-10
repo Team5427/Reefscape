@@ -10,6 +10,8 @@ public class LightsSubsystem extends SubsystemBase{
     private Spark blinkin;
     private double pattern;
 
+    private static LightsSubsystem m_instance;
+
     public LightsSubsystem() {
         blinkin = new Spark(BlinkinConstants.kBlinkinChannel);
     }
@@ -22,5 +24,12 @@ public class LightsSubsystem extends SubsystemBase{
 
     public void setPattern(double pattern) {
         this.pattern = pattern;
+    }
+
+    public static LightsSubsystem getInstance() {
+        if (m_instance == null) {
+            m_instance = new LightsSubsystem();
+        }
+        return m_instance;
     }
 }
