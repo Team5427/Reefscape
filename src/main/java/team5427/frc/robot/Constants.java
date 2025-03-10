@@ -460,7 +460,7 @@ public final class Constants {
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
 
-    public static final Distance kLowReefAlgaeDistance = Feet.of(1.55);
+    public static final Distance kLowReefAlgaeDistance = Feet.of(1.4);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
@@ -477,7 +477,7 @@ public final class Constants {
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
 
-    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(32.5);
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(30.0);
   }
 
   public static class ClimbConstants {
@@ -567,7 +567,7 @@ public final class Constants {
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
 
-    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(75.0);
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(70.0);
 
     public static final Current kIntakeMaxCurrent = Amp.of(20.0);
 
