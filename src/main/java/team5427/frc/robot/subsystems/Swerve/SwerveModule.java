@@ -1,5 +1,8 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -114,6 +117,28 @@ public class SwerveModule {
    */
   public double drivePosition() {
     return inputs.driveMotorPosition.getRotations();
+  }
+
+  /** Runs the module with the specified output while controlling to zero degrees. */
+  public void runDriveCharacterization(double output) {
+    io.setDriveSpeedSetpoint(Amps.of(output));
+    io.resetMotorSetpoint(new Rotation2d());
+  }
+
+  /** Runs the module with the specified output while moving at zero speed. */
+  public void runSteerCharacterization(double output) {
+    io.setSteerPositionSetpoint(Amps.of(output));
+    io.setDriveSpeedSetpoint(Amps.of(0.0));
+  }
+
+  /** Returns the module position in radians. */
+  public Rotation2d getWheelRadiusCharacterizationPosition() {
+    return inputs.driveMotorPosition;
+  }
+
+  /** Returns the module velocity in rotations/sec (Phoenix native units). */
+  public double getFFCharacterizationVelocity() {
+    return inputs.driveMotorAngularVelocity.in(RotationsPerSecond);
   }
 
   public void stop() {
