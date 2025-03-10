@@ -44,10 +44,25 @@ public class AllCommands {
 
   public static final Command resetSubsystems = new ResetSubsystems();
 
-  public static final Command switchToCoralMode = new InstantCommand(() -> {ProngSubsystem.gamePieceMode = GamePieceMode.CORAL;});
-  public static final Command switchToAlgaeMode = new InstantCommand(() -> {ProngSubsystem.gamePieceMode = GamePieceMode.ALGAE;});
+  public static final Command switchToCoralMode =
+      new InstantCommand(
+          () -> {
+            ProngSubsystem.gamePieceMode = GamePieceMode.CORAL;
+          });
+  public static final Command switchToAlgaeMode =
+      new InstantCommand(
+          () -> {
+            ProngSubsystem.gamePieceMode = GamePieceMode.ALGAE;
+          });
 
-  public static final Command switchToDirect = new InstantCommand(() -> {ProngSubsystem.direction = Direction.FORWARD;});
-  public static final Command switchToInverse = new InstantCommand(() -> {ProngSubsystem.direction = Direction.BACKWARD;});
-
+  public static final Command switchToDirect =
+      new InstantCommand(
+          () -> {
+            ProngSubsystem.direction = Direction.FORWARD;
+          });
+  public static final Command switchToInverse =
+      new InstantCommand(
+          () -> {
+            ProngSubsystem.direction = Direction.BACKWARD;
+          });
 }

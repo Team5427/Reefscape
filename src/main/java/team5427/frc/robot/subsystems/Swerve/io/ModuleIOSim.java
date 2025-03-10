@@ -5,8 +5,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
-import com.ctre.phoenix6.controls.TorqueCurrentFOC;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -67,8 +65,7 @@ public class ModuleIOSim implements ModuleIO {
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
-    
-   
+
     driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.6, 12.6));
     steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.6, 12.6));
     driveMotor.update(Constants.kLoopSpeed);
@@ -80,12 +77,17 @@ public class ModuleIOSim implements ModuleIO {
                 * Math.PI
                 * SwerveConstants.kWheelDiameterMeters
                 / 60.0,
-            Rotation2d.fromRotations(steerMotor.getAngularPositionRotations() - Math.floor(steerMotor.getAngularPositionRotations())));
+            Rotation2d.fromRotations(
+                steerMotor.getAngularPositionRotations()
+                    - Math.floor(steerMotor.getAngularPositionRotations())));
     inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getAngularPositionRotations());
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getAngularVelocityRPM() / 60.0);
 
-    inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getAngularPositionRotations() - Math.floor(steerMotor.getAngularPositionRotations()));
+    inputs.steerPosition =
+        Rotation2d.fromRotations(
+            steerMotor.getAngularPositionRotations()
+                - Math.floor(steerMotor.getAngularPositionRotations()));
 
     inputs.currentModulePosition =
         new SwerveModulePosition(
@@ -130,19 +132,20 @@ public class ModuleIOSim implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(Voltage volts) {
     driveAppliedVolts = volts.in(Volts);
-    
   }
 
   @Override
   public void setSteerPositionSetpoint(Rotation2d position) {
     SwerveConstants.kSIMSteerController.setSetpoint(position.getRotations());
     steerAppliedVolts =
-    SwerveConstants.kSIMSteerController.calculate(steerMotor.getAngularPositionRotations() - Math.floor(steerMotor.getAngularPositionRotations()));
+        SwerveConstants.kSIMSteerController.calculate(
+            steerMotor.getAngularPositionRotations()
+                - Math.floor(steerMotor.getAngularPositionRotations()));
   }
 
-    @Override
+  @Override
   public void setDriveSpeedSetpoint(Current current) {
-    driveAppliedVolts  =current.in(Amps);
+    driveAppliedVolts = current.in(Amps);
   }
 
   @Override

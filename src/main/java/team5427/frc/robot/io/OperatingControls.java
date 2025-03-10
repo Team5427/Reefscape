@@ -1,11 +1,9 @@
 package team5427.frc.robot.io;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.commands.homing.HomeCascade;
-
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Direction;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
@@ -20,22 +18,22 @@ public class OperatingControls {
     joy.a()
         .onTrue(
             new ConditionalCommand(
-                AllCommands.scoreL1, 
-                AllCommands.scoreProcessor, 
+                AllCommands.scoreL1,
+                AllCommands.scoreProcessor,
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b()
         .onTrue(
             new ConditionalCommand(
-              AllCommands.scoreL3, 
-              AllCommands.scoreL3Inverse, 
-              () -> ProngSubsystem.direction == Direction.FORWARD));
+                AllCommands.scoreL3,
+                AllCommands.scoreL3Inverse,
+                () -> ProngSubsystem.direction == Direction.FORWARD));
     joy.y()
         .onTrue(
             new ConditionalCommand(
                 new ConditionalCommand(
-                    AllCommands.scoreL4, 
-                    AllCommands.scoreL4Inverse, 
+                    AllCommands.scoreL4,
+                    AllCommands.scoreL4Inverse,
                     () -> ProngSubsystem.direction == Direction.FORWARD),
                 AllCommands.scoreBarge,
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
@@ -43,8 +41,8 @@ public class OperatingControls {
     joy.leftTrigger()
         .whileTrue(
             new ConditionalCommand(
-                AllCommands.intake, 
-                AllCommands.lowReefAlgaeIntake, 
+                AllCommands.intake,
+                AllCommands.lowReefAlgaeIntake,
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
     joy.rightTrigger().whileTrue(AllCommands.eject);

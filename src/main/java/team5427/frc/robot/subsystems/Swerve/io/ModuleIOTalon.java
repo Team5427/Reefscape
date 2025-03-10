@@ -10,8 +10,6 @@ import static edu.wpi.first.units.Units.Volt;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
-import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.TorqueCurrentFOC;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
@@ -26,9 +24,6 @@ import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
-
-import org.checkerframework.checker.units.qual.A;
-
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
@@ -103,6 +98,8 @@ public class ModuleIOTalon implements ModuleIO {
     steerMotor.setEncoderPosition(absolutePosition.refresh().getValue().in(Rotations));
     driveMotor.setEncoderPosition(0.0);
     driveMotor.useTorqueCurrentFOC(true);
+    steerMotor.useTorqueCurrentFOC(false);
+    steerMotor.usePositionVoltage(true);
 
     driveMotorPosition = driveMotor.getTalonFX().getPosition();
     steerMotorPosition = steerMotor.getTalonFX().getPosition();
@@ -253,7 +250,7 @@ public class ModuleIOTalon implements ModuleIO {
   }
 
   @Override
-  public void setSteerPositionSetpoint(Voltage volts){
+  public void setSteerPositionSetpoint(Voltage volts) {
     steerMotor.setRawVoltage(volts.in(Volt));
   }
 
