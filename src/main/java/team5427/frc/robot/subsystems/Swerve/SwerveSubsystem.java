@@ -210,18 +210,18 @@ public class SwerveSubsystem extends SubsystemBase {
     // SwerveModuleState[] moduleStates =
     //     SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
-    if(isStopped){
+    if (isStopped) {
       setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-    } 
-    
-      for (int i = 0; i < modules.length; i++) {
-        if(isStopped){
-          modules[i].stop();
-        } else {
-          modules[i].setModuleState(moduleStates[i]);
-        }
-        actualModuleStates[i] = modules[i].getModuleState();
+    }
+
+    for (int i = 0; i < modules.length; i++) {
+      if (isStopped) {
+        modules[i].stop();
+      } else {
+        modules[i].setModuleState(moduleStates[i]);
       }
+      actualModuleStates[i] = modules[i].getModuleState();
+    }
 
     // Update odometry
     double[] sampleTimestamps =
@@ -419,7 +419,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void stop(boolean enabled) {
     this.isStopped = enabled;
-    
   }
 
   public void bypass(boolean bypass) {

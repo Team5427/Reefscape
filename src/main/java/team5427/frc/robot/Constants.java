@@ -296,14 +296,14 @@ public final class Constants {
     public static final double kBlack = 0.99;
 
     public static double kShot;
-    public static double kSolid; 
+    public static double kSolid;
     public static double kBreath;
     public static double kStrobe;
     public static double kLightChase;
     public static double kLarsonScanner;
 
     static {
-      if (kAlliance.get()==Alliance.Red) {
+      if (kAlliance.get() == Alliance.Red) {
         kShot = kShotRed;
         kSolid = kRed;
         kBreath = kBreathRed;
@@ -594,12 +594,11 @@ public final class Constants {
             CascadeConstants.kL3Distance,
             ProngEffectorConstants.kL3Rotation);
 
-    public static final RawScoringConfiguration kScoreL3Inverse = 
+    public static final RawScoringConfiguration kScoreL3Inverse =
         new RawScoringConfiguration(
             CascadeConstants.kL3RotationInverse,
             CascadeConstants.kL3DistanceInverse,
-            ProngEffectorConstants.kL3RotationInverse
-        );
+            ProngEffectorConstants.kL3RotationInverse);
 
     public static final RawScoringConfiguration kScoreL4 =
         new RawScoringConfiguration(

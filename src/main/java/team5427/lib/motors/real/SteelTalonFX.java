@@ -24,7 +24,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.DriverStation;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.motors.IMotorController;
@@ -184,17 +183,17 @@ public class SteelTalonFX implements IMotorController {
           talonFX.setControl(
               positionTorqueCurrentFOCRequest.withPosition(Rotation.of(setpoint.getRotations())));
         } else {
-          if(usePositionVoltage){
+          if (usePositionVoltage) {
             talonFX.setControl(
-              positionVoltageRequest
-                  .withPosition(Rotation.of(setpoint.getRotations()))
-                  .withEnableFOC(withFOC));
-          } else{
+                positionVoltageRequest
+                    .withPosition(Rotation.of(setpoint.getRotations()))
+                    .withEnableFOC(withFOC));
+          } else {
 
-          talonFX.setControl(
-              positionDutyCycleRequest
-                  .withPosition(Rotation.of(setpoint.getRotations()))
-                  .withEnableFOC(withFOC));
+            talonFX.setControl(
+                positionDutyCycleRequest
+                    .withPosition(Rotation.of(setpoint.getRotations()))
+                    .withEnableFOC(withFOC));
           }
         }
         break;
@@ -316,7 +315,7 @@ public class SteelTalonFX implements IMotorController {
     talonFX.setControl(voltageOut.withOutput(voltage).withEnableFOC(withFOC));
   }
 
-  public void setRawCurrent(double current){
+  public void setRawCurrent(double current) {
     talonFX.setControl(torqueCurrentFOCRequest.withOutput(current));
   }
 
@@ -352,9 +351,9 @@ public class SteelTalonFX implements IMotorController {
         break;
       case kServo:
         this.setpoint = setpoint;
-        if(usePositionVoltage){
-        talonFX.setControl(positionVoltageRequest.withPosition(setpoint).withEnableFOC(withFOC));
-        } else{
+        if (usePositionVoltage) {
+          talonFX.setControl(positionVoltageRequest.withPosition(setpoint).withEnableFOC(withFOC));
+        } else {
           talonFX.setControl(
               positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
         }
