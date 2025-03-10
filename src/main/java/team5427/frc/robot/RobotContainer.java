@@ -5,6 +5,7 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import edu.wpi.first.wpilibj.DriverStation;
+import team5427.frc.robot.io.LightTriggers;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -67,6 +68,7 @@ public class RobotContainer {
   public void configureButtonBindings() {
     new PilotingControls();
     new OperatingControls();
+    new LightTriggers();
   }
 
   /**
