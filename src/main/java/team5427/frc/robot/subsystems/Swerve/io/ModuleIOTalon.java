@@ -98,8 +98,9 @@ public class ModuleIOTalon implements ModuleIO {
     steerMotor.setEncoderPosition(absolutePosition.refresh().getValue().in(Rotations));
     driveMotor.setEncoderPosition(0.0);
     driveMotor.useTorqueCurrentFOC(true);
-    steerMotor.useTorqueCurrentFOC(false);
-    steerMotor.usePositionVoltage(true);
+
+    // steerMotor.useTorqueCurrentFOC(false);
+    // steerMotor.usePositionVoltage(true);
 
     driveMotorPosition = driveMotor.getTalonFX().getPosition();
     steerMotorPosition = steerMotor.getTalonFX().getPosition();
