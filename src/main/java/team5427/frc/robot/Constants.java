@@ -86,7 +86,7 @@ public final class Constants {
     public static final double kTrackWidth = Units.inchesToMeters(22.75);
     public static final double kWheelBase = Units.inchesToMeters(22.75);
 
-    public static final PIDController kSIMSteerController = new PIDController(5, 0, 0.2);
+    public static final PIDController kSIMSteerController = new PIDController(0.5, 0, 0.);
     public static final SimpleMotorFeedforward kSIMSteerFeedforward =
         new SimpleMotorFeedforward(0, 0.01, 0);
 

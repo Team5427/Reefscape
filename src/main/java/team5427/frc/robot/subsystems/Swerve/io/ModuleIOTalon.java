@@ -242,6 +242,12 @@ public class ModuleIOTalon implements ModuleIO {
     driveMotor.getTalonFX().setControl(torqueCurrentFOC.withOutput(current));
   }
 
+  @Override
+  public void setSteerPositionSetpoint(Current current) {
+    TorqueCurrentFOC torqueCurrentFOC = steerMotor.torqueCurrentFOCRequest;
+    steerMotor.getTalonFX().setControl(torqueCurrentFOC.withOutput(current));
+  }
+
   /**
    * @param setpoint - <strong>Rotation2d</strong> setpoint for steer motor (module angle)
    */
@@ -263,6 +269,7 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void stop() {
 
+    // might be the problem line for the spasiming
     setSteerPositionSetpoint(Rotation2d.fromRotations(steerMotorPosition.getValue().in(Rotations)));
 
     setDriveSpeedSetpoint(MetersPerSecond.of(0.0));

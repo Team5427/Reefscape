@@ -53,6 +53,8 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModuleState[] moduleStates;
 
+  private boolean isStopped = false;
+
   private final SysIdRoutine sysId;
 
   public static DrivingStates state;
@@ -208,10 +210,18 @@ public class SwerveSubsystem extends SubsystemBase {
     // SwerveModuleState[] moduleStates =
     //     SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     actualModuleStates = new SwerveModuleState[modules.length];
-    for (int i = 0; i < modules.length; i++) {
-      modules[i].setModuleState(moduleStates[i]);
-      actualModuleStates[i] = modules[i].getModuleState();
-    }
+    if(isStopped){
+      setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
+    } 
+    
+      for (int i = 0; i < modules.length; i++) {
+        if(isStopped){
+          modules[i].stop();
+        } else {
+          modules[i].setModuleState(moduleStates[i]);
+        }
+        actualModuleStates[i] = modules[i].getModuleState();
+      }
 
     // Update odometry
     double[] sampleTimestamps =
@@ -407,12 +417,9 @@ public class SwerveSubsystem extends SubsystemBase {
     return values;
   }
 
-  public void stop() {
-    setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
-
-    for (SwerveModule module : modules) {
-      module.stop();
-    }
+  public void stop(boolean enabled) {
+    this.isStopped = enabled;
+    
   }
 
   public void bypass(boolean bypass) {

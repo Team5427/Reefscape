@@ -5,12 +5,15 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
+import com.ctre.phoenix6.controls.TorqueCurrentFOC;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Timer;
@@ -48,7 +51,7 @@ public class ModuleIOSim implements ModuleIO {
         new DCMotorSim(
             LinearSystemId.createDCMotorSystem(
                 steerMotorGearbox,
-                0.005,
+                0.003,
                 SwerveConstants.kSteerMotorConfiguration.gearRatio.getMathematicalGearRatio()),
             steerMotorGearbox);
     // steerController =
@@ -64,12 +67,8 @@ public class ModuleIOSim implements ModuleIO {
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
-    driveAppliedVolts =
-        driveFFVolts
-            + SwerveConstants.kSIMDriveController.calculate(
-                driveMotor.getAngularVelocityRadPerSec() * SwerveConstants.kWheelDiameterMeters);
-    steerAppliedVolts =
-        SwerveConstants.kSIMSteerController.calculate(steerMotor.getAngularPositionRotations());
+    
+   
     driveMotor.setInputVoltage(MathUtil.clamp(driveAppliedVolts, -12.6, 12.6));
     steerMotor.setInputVoltage(MathUtil.clamp(steerAppliedVolts, -12.6, 12.6));
     driveMotor.update(Constants.kLoopSpeed);
@@ -81,19 +80,19 @@ public class ModuleIOSim implements ModuleIO {
                 * Math.PI
                 * SwerveConstants.kWheelDiameterMeters
                 / 60.0,
-            Rotation2d.fromRotations(steerMotor.getAngularPositionRotations()));
+            Rotation2d.fromRotations(steerMotor.getAngularPositionRotations() - Math.floor(steerMotor.getAngularPositionRotations())));
     inputs.driveMotorPosition = Rotation2d.fromRotations(driveMotor.getAngularPositionRotations());
     inputs.steerMotorVelocityRotations =
         RotationsPerSecond.of(steerMotor.getAngularVelocityRPM() / 60.0);
 
-    inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getAngularPositionRotations());
+    inputs.steerPosition = Rotation2d.fromRotations(steerMotor.getAngularPositionRotations() - Math.floor(steerMotor.getAngularPositionRotations()));
 
     inputs.currentModulePosition =
         new SwerveModulePosition(
             driveMotor.getAngularPositionRotations()
                 * Math.PI
                 * SwerveConstants.kWheelDiameterMeters,
-            Rotation2d.fromRotations(steerMotor.getAngularPositionRotations()));
+            inputs.steerPosition);
     inputs.driveMotorVoltage = Volts.of(driveMotor.getInputVoltage());
     inputs.steerMotorVoltage = Volts.of(steerMotor.getInputVoltage());
 
@@ -103,6 +102,7 @@ public class ModuleIOSim implements ModuleIO {
     inputs.driveMotorCurrent = Amps.of(driveMotor.getCurrentDrawAmps());
     inputs.steerMotorCurrent = Amps.of(steerMotor.getCurrentDrawAmps());
 
+    inputs.absolutePosition = inputs.steerPosition;
     inputs.odometryTimestamps = new double[] {Timer.getTimestamp()};
     inputs.odometryDrivePositionsMeters =
         new double[] {
@@ -118,6 +118,10 @@ public class ModuleIOSim implements ModuleIO {
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
     driveFFVolts = SwerveConstants.kSIMDriveFeedforward.calculate(speed.in(MetersPerSecond));
     SwerveConstants.kSIMDriveController.setSetpoint(speed.in(MetersPerSecond));
+    driveAppliedVolts =
+        driveFFVolts
+            + SwerveConstants.kSIMDriveController.calculate(
+                driveMotor.getAngularVelocityRadPerSec() * SwerveConstants.kWheelDiameterMeters);
   }
 
   /*
@@ -126,11 +130,24 @@ public class ModuleIOSim implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(Voltage volts) {
     driveAppliedVolts = volts.in(Volts);
+    
   }
 
   @Override
   public void setSteerPositionSetpoint(Rotation2d position) {
     SwerveConstants.kSIMSteerController.setSetpoint(position.getRotations());
+    steerAppliedVolts =
+    SwerveConstants.kSIMSteerController.calculate(steerMotor.getAngularPositionRotations() - Math.floor(steerMotor.getAngularPositionRotations()));
+  }
+
+    @Override
+  public void setDriveSpeedSetpoint(Current current) {
+    driveAppliedVolts  =current.in(Amps);
+  }
+
+  @Override
+  public void setSteerPositionSetpoint(Current current) {
+    steerAppliedVolts = current.in(Amps);
   }
 
   /*
@@ -148,11 +165,14 @@ public class ModuleIOSim implements ModuleIO {
     setSteerPositionSetpoint(state.angle);
   }
 
-  public void resetMotorSetpoint() {}
+  public void resetMotorSetpoint() {
+    driveMotor.setState(0, 0);
+    steerMotor.setAngle(0);
+  }
 
   @Override
   public void stop() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'stop'");
+    driveMotor.setInputVoltage(0.0);
+    steerMotor.setInputVoltage(0.0);
   }
 }
