@@ -65,7 +65,7 @@ public class PilotingControls {
                   SwerveSubsystem.getInstance().setGyroLock(false);
                 }));
 
-    joy.leftStick().onTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
+    joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
 
     joy.y()
         .and(() -> RobotBase.isReal())
@@ -76,6 +76,6 @@ public class PilotingControls {
                   ;
                 }));
 
-    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
+    // VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
   }
 }
