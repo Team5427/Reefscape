@@ -190,7 +190,7 @@ public final class Constants {
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 2.3;
+      kDriveMotorConfiguration.kP = 3.3;
       // kDriveMotorConfiguration.kV = 2.08;
       kDriveMotorConfiguration.kA = 1.2;
       kDriveMotorConfiguration.kS = 0.23;
@@ -214,7 +214,7 @@ public final class Constants {
       // Tunable values
       kSteerMotorConfiguration.kP = 4.05; // 7.0
       kSteerMotorConfiguration.kD = 0.0004;
-      // kSteerMotorConfiguration.kS = 0.21;
+      kSteerMotorConfiguration.kS = 4.0;
       kSteerMotorConfiguration.kA = 0.3;
       // kSteerMotorConfiguration.kA = 8.0;
       kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
