@@ -41,6 +41,7 @@ public class RobotContainer {
             ::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
         SwerveSubsystem.getInstance()
             ::getCurrentChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        // SwerveSubsystem.getInstance()::setChassisSpeeds,
         (speeds, feedforwards) ->
             SwerveSubsystem.getInstance()
                 .setChassisSpeeds(
@@ -50,7 +51,7 @@ public class RobotContainer {
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
             new PIDConstants(2.5, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(0.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(4.0, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
