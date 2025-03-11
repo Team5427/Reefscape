@@ -178,6 +178,8 @@ public class SwerveSubsystem extends SubsystemBase {
       module.periodic();
     }
     odometryLock.unlock();
+
+    if (DriverStation.isAutonomous()) isStopped = false;
     ChassisSpeeds relativeSpeeds;
     if (gyroLock) {
       inputSpeeds.omegaRadiansPerSecond = 0;
@@ -194,22 +196,22 @@ public class SwerveSubsystem extends SubsystemBase {
     //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) //
     // The loop time of the robot code, in seconds
     //         );
-    if (DriverStation.isTeleop() && false) {
-      previousSetpoint =
-          setpointGenerator.generateSetpoint(
-              previousSetpoint, // The previous setpoint
-              relativeSpeeds, // The desired target speeds
-              Seconds.of(Constants.kLoopSpeed),
-              Volts.of(
-                  RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
-              );
-      moduleStates = previousSetpoint.moduleStates();
-    } else {
+    // if (DriverStation.isTeleop() && false) {
+    //   previousSetpoint =
+    //       setpointGenerator.generateSetpoint(
+    //           previousSetpoint, // The previous setpoint
+    //           relativeSpeeds, // The desired target speeds
+    //           Seconds.of(Constants.kLoopSpeed),
+    //           Volts.of(
+    //               RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+    //           );
+    //   moduleStates = previousSetpoint.moduleStates();
+    // } else {
       ChassisSpeeds discretizedSpeeds =
           ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
       moduleStates =
           SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
-    }
+    // }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {
       setChassisSpeeds(new ChassisSpeeds(0, 0, 0));
@@ -365,7 +367,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    poseEstimator.resetPosition(rawGyroRotation, getModulePositions(), pose);
+    poseEstimator.resetPosition(getGyroRotation().unaryMinus(), getModulePositions(), pose);
+    resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 
   /**

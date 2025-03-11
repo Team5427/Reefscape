@@ -36,7 +36,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-
     createNamedCommands();
 
     // Configure AutoBuilder last
@@ -89,18 +88,18 @@ public class RobotContainer {
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
     //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)",
-        SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)",
-        SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    // autoChooser.addOption(
+    //     "Drive SysId (Quasistatic Forward)",
+    //     SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    // autoChooser.addOption(
+    //     "Drive SysId (Quasistatic Reverse)",
+    //     SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // autoChooser.addOption(
+    //     "Drive SysId (Dynamic Forward)",
+    //     SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+    // autoChooser.addOption(
+    //     "Drive SysId (Dynamic Reverse)",
+    //     SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -113,11 +112,6 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
     // NamedCommands.registerCommand("Intake Station", AllCommands.intake);
     // NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
-    // NamedCommands.registerCommand("Score L3", null);
-    // NamedCommands.registerCommand("Score L4", null);
-    // NamedCommands.registerCommand("Eject Coral", null);
-    // NamedCommands.registerCommand("Intake Station", null);
-    // NamedCommands.registerCommand("Reset All", null);
   }
 
   public void configureButtonBindings() {

@@ -150,6 +150,7 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+    System.out.println("Switched to Auton");
   }
 
   /** This function is called periodically during autonomous. */
