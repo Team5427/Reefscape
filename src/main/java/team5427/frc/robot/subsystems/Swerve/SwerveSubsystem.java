@@ -278,7 +278,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro(Rotation2d angle) {
-    gyroIO.resetGyroYawAngle(angle);
+    gyroIO.resetGyroYawAngle(angle.unaryMinus());
   }
 
   /** Runs the drive in a straight line with the specified drive output. */
@@ -367,7 +367,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    poseEstimator.resetPosition(getGyroRotation().unaryMinus(), getModulePositions(), pose);
+
+    poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
     resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 
@@ -397,9 +398,10 @@ public class SwerveSubsystem extends SubsystemBase {
    * name to run a different sys id test
    */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return run(() -> runDriveCharacterization(20.0))
-        .withTimeout(1.0)
-        .andThen(sysId.quasistatic(direction));
+    // return run(() -> runDriveCharacterization(80.0))
+    //     .withTimeout(1.0)
+    //     .andThen(sysId.quasistatic(direction));
+    return sysId.quasistatic(direction);
   }
 
   /**
@@ -407,9 +409,10 @@ public class SwerveSubsystem extends SubsystemBase {
    * to run a different sys id test
    */
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return run(() -> runDriveCharacterization(20.0))
-        .withTimeout(1.0)
-        .andThen(sysId.dynamic(direction));
+    // return run(() -> runDriveCharacterization(80.0))
+    //     .withTimeout(1.0)
+    //     .andThen(sysId.dynamic(direction));
+    return sysId.dynamic(direction);
   }
 
   /** Returns the position of each module in radians. */

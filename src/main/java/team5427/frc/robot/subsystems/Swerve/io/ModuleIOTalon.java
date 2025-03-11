@@ -177,7 +177,7 @@ public class ModuleIOTalon implements ModuleIO {
     // driveMotor.updateStatusSignals();
 
     inputs.driveMotorPosition =
-        Rotation2d.fromRotations(driveMotor.getEncoderPosition(driveMotorPosition));
+        Rotation2d.fromRotations(driveMotorPosition.getValue().in(Rotations));
     inputs.driveMotorAngularVelocity = driveMotorVelocity.getValue();
     inputs.driveMotorLinearVelocity =
         MetersPerSecond.of(driveMotor.getEncoderVelocity(driveMotorVelocity));

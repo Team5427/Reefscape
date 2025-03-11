@@ -16,6 +16,7 @@ import org.littletonrobotics.junction.Logger;
 
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.LightTriggers;
+import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -88,18 +89,18 @@ public class RobotContainer {
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
     //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    // autoChooser.addOption(
-    //     "Drive SysId (Quasistatic Forward)",
-    //     SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    // autoChooser.addOption(
-    //     "Drive SysId (Quasistatic Reverse)",
-    //     SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    // autoChooser.addOption(
-    //     "Drive SysId (Dynamic Forward)",
-    //     SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
-    // autoChooser.addOption(
-    //     "Drive SysId (Dynamic Reverse)",
-    //     SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Forward)",
+        SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Reverse)",
+        SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Forward)",
+        SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Reverse)",
+        SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
@@ -116,7 +117,7 @@ public class RobotContainer {
 
   public void configureButtonBindings() {
     new PilotingControls();
-    // new OperatingControls();
+    new OperatingControls();
     // new LightTriggers();
   }
 
