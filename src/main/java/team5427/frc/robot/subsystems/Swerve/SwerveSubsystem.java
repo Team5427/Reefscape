@@ -21,6 +21,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -186,9 +187,6 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
     }
-
-    // ChassisSpeeds discretizedSpeeds =
-    //     ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
@@ -196,19 +194,22 @@ public class SwerveSubsystem extends SubsystemBase {
     //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) //
     // The loop time of the robot code, in seconds
     //         );
-    previousSetpoint =
-        setpointGenerator.generateSetpoint(
-            previousSetpoint, // The previous setpoint
-            relativeSpeeds, // The desired target speeds
-            Seconds.of(Constants.kLoopSpeed),
-            Volts.of(
-                RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
-            );
-    SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
-    // SwerveModuleState[] moduleStates = new SwerveModuleState[4];
-    // for (int i = 0; i < moduleStates.length; i++) moduleStates[i] = new SwerveModuleState();
-    // SwerveModuleState[] moduleStates =
-    //     SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    if (DriverStation.isTeleop()) {
+      previousSetpoint =
+          setpointGenerator.generateSetpoint(
+              previousSetpoint, // The previous setpoint
+              relativeSpeeds, // The desired target speeds
+              Seconds.of(Constants.kLoopSpeed),
+              Volts.of(
+                  RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+              );
+      SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
+    } else {
+      ChassisSpeeds discretizedSpeeds =
+          ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
+      SwerveModuleState[] moduleStates =
+          SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {
       setChassisSpeeds(new ChassisSpeeds(0, 0, 0));

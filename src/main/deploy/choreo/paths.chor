@@ -5,6 +5,20 @@
  "variables":{
   "expressions":{},
   "poses":{
+   "Center Start":{
+    "x":{
+     "exp":"7.25 m",
+     "val":7.25
+    },
+    "y":{
+     "exp":"4.15 m",
+     "val":4.15
+    },
+    "heading":{
+     "exp":"180 deg",
+     "val":3.141592653589793
+    }
+   },
    "Deep Left Side Right Coral":{
     "x":{
      "exp":"5 m",
@@ -25,8 +39,8 @@
      "val":7.25
     },
     "y":{
-     "exp":"6 m",
-     "val":6.0
+     "exp":"6.15 m",
+     "val":6.15
     },
     "heading":{
      "exp":"-90 deg",

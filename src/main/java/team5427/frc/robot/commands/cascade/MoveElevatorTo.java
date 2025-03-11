@@ -25,7 +25,7 @@ public class MoveElevatorTo extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return cascadeSubsystem.cascadeAtGoal();
   }
 
   @Override
