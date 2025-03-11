@@ -51,10 +51,10 @@ public class Robot extends LoggedRobot {
     Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
     // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
 
-    m_swerve = SwerveSubsystem.getInstance();
-    m_cascade = CascadeSubsystem.getInstance();
-    m_endEffector = ProngSubsystem.getInstance();
-    m_climber = ClimberSubsystem.getInstance();
+    // m_swerve = SwerveSubsystem.getInstance();
+    // m_cascade = CascadeSubsystem.getInstance();
+    // m_endEffector = ProngSubsystem.getInstance();
+    // m_climber = ClimberSubsystem.getInstance();
 
     if (RobotBase.isReal()) {
       Constants.currentMode = Constants.Mode.REAL;

@@ -61,6 +61,24 @@ public final class Constants {
 
   public static RobotConfig config;
 
+  static {
+    try {
+      Constants.config = RobotConfig.fromGUISettings();
+      System.out.println("Robot Config Loaded");
+      System.out.println(
+          "Module Count: "
+              + Constants.config.numModules
+              + " Max Torque Friction: "
+              + Constants.config.maxTorqueFriction
+              + " Wheel Friction Force: "
+              + Constants.config.wheelFrictionForce);
+    } catch (Exception e) {
+      // Handle exception as needed
+      System.out.println("Robot Config Failing");
+      e.printStackTrace();
+    }
+  }
+
   public static enum Mode {
     /** Running on a real robot. */
     REAL,

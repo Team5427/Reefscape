@@ -52,7 +52,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveModuleState[] actualModuleStates;
   private boolean bypass = false;
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-  private SwerveModuleState[] moduleStates;
+  private SwerveModuleState[] moduleStates = new SwerveModuleState[4];
 
   private boolean isStopped = false;
 
@@ -194,7 +194,7 @@ public class SwerveSubsystem extends SubsystemBase {
     //         Seconds.of(Constants.kLoopSpeed), Volts.of( RobotController.getBatteryVoltage()) //
     // The loop time of the robot code, in seconds
     //         );
-    if (DriverStation.isTeleop()) {
+    if (DriverStation.isTeleop() && false) {
       previousSetpoint =
           setpointGenerator.generateSetpoint(
               previousSetpoint, // The previous setpoint
@@ -203,11 +203,11 @@ public class SwerveSubsystem extends SubsystemBase {
               Volts.of(
                   RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
               );
-      SwerveModuleState[] moduleStates = previousSetpoint.moduleStates();
+      moduleStates = previousSetpoint.moduleStates();
     } else {
       ChassisSpeeds discretizedSpeeds =
           ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
-      SwerveModuleState[] moduleStates =
+      moduleStates =
           SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     }
     actualModuleStates = new SwerveModuleState[modules.length];
@@ -394,7 +394,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * name to run a different sys id test
    */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return run(() -> runDriveCharacterization(0.0))
+    return run(() -> runDriveCharacterization(20.0))
         .withTimeout(1.0)
         .andThen(sysId.quasistatic(direction));
   }
@@ -404,7 +404,7 @@ public class SwerveSubsystem extends SubsystemBase {
    * to run a different sys id test
    */
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return run(() -> runDriveCharacterization(0.0))
+    return run(() -> runDriveCharacterization(20.0))
         .withTimeout(1.0)
         .andThen(sysId.dynamic(direction));
   }

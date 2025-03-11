@@ -35,21 +35,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    try {
-      Constants.config = RobotConfig.fromGUISettings();
-      System.out.println("Robot Config Loaded");
-      System.out.println(
-          "Module Count: "
-              + Constants.config.numModules
-              + " Max Torque Friction: "
-              + Constants.config.maxTorqueFriction
-              + " Wheel Friction Force: "
-              + Constants.config.wheelFrictionForce);
-    } catch (Exception e) {
-      // Handle exception as needed
-      System.out.println("Robot Config Failing");
-      e.printStackTrace();
-    }
+
 
     createNamedCommands();
 
@@ -127,6 +113,11 @@ public class RobotContainer {
     // NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
     // NamedCommands.registerCommand("Intake Station", AllCommands.intake);
     // NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
+    // NamedCommands.registerCommand("Score L3", null);
+    // NamedCommands.registerCommand("Score L4", null);
+    // NamedCommands.registerCommand("Eject Coral", null);
+    // NamedCommands.registerCommand("Intake Station", null);
+    // NamedCommands.registerCommand("Reset All", null);
   }
 
   public void configureButtonBindings() {
