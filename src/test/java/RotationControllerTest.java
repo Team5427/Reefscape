@@ -21,7 +21,8 @@
 //     System.out.println("Rotation setpoint: " + lockedChassisMovement.getRotationSetpoint());
 //     System.out.println("Robot Pose: " + SwerveSubsystem.getInstance().getPose());
 //     Pose2d closestReefPose =
-//         SwerveSubsystem.getInstance().getPose().nearest(List.of(RobotConfigConstants.kReefPoses));
+//
+// SwerveSubsystem.getInstance().getPose().nearest(List.of(RobotConfigConstants.kReefPoses));
 //     System.out.println("Closest Reef Branch Pose: " + closestReefPose);
 //     assertTrue(
 //         closestReefPose

@@ -1,5 +1,6 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
@@ -20,10 +21,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.units.measure.Velocity;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Alert;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -135,8 +137,8 @@ public class SwerveSubsystem extends SubsystemBase {
         new SysIdRoutine(
             new SysIdRoutine.Config(
                 null,
-                null,
-                null,
+                Volts.of(70),
+              Seconds.of(10.0),
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
                 (voltage) -> runDriveCharacterization(voltage.in(Volts)), null, this));
@@ -203,14 +205,14 @@ public class SwerveSubsystem extends SubsystemBase {
     //           relativeSpeeds, // The desired target speeds
     //           Seconds.of(Constants.kLoopSpeed),
     //           Volts.of(
-    //               RobotController.getBatteryVoltage()) // The loop time of the robot code, in seconds
+    //               RobotController.getBatteryVoltage()) // The loop time of the robot code, in
+    // seconds
     //           );
     //   moduleStates = previousSetpoint.moduleStates();
     // } else {
-      ChassisSpeeds discretizedSpeeds =
-          ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
-      moduleStates =
-          SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    ChassisSpeeds discretizedSpeeds =
+        ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
+    moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     // }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {
@@ -278,7 +280,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro(Rotation2d angle) {
-    gyroIO.resetGyroYawAngle(angle);
+    gyroIO.resetGyroYawAngle(angle.unaryMinus());
   }
 
   /** Runs the drive in a straight line with the specified drive output. */
@@ -397,9 +399,10 @@ public class SwerveSubsystem extends SubsystemBase {
    * name to run a different sys id test
    */
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return run(() -> runDriveCharacterization(20.0))
-        .withTimeout(1.0)
-        .andThen(sysId.quasistatic(direction));
+    // return run(() -> runDriveCharacterization(80.0))
+    //     .withTimeout(1.0)
+    //     .andThen(sysId.quasistatic(direction));
+    return sysId.quasistatic(direction);
   }
 
   /**
@@ -407,9 +410,10 @@ public class SwerveSubsystem extends SubsystemBase {
    * to run a different sys id test
    */
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return run(() -> runDriveCharacterization(20.0))
-        .withTimeout(1.0)
-        .andThen(sysId.dynamic(direction));
+    // return run(() -> runDriveCharacterization(80.0))
+    //     .withTimeout(1.0)
+    //     .andThen(sysId.dynamic(direction));
+    return sysId.dynamic(direction);
   }
 
   /** Returns the position of each module in radians. */
