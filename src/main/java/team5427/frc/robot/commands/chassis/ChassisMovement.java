@@ -71,7 +71,6 @@ public class ChassisMovement extends Command {
 
         vx *= (1 - dampener);
         vy *= (1 - dampener);
-        omegaRadians *= 0.1;
         omegaRadians *= (1 - dampener);
 
         ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
