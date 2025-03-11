@@ -55,8 +55,8 @@ public class VisionSubsystem extends SubsystemBase {
       case REAL:
         io[0] =
             new VisionIOPhoton(VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
-        // io[1] = new VisionIOPhoton(VisionConstants.kBackCamName,
-        // VisionConstants.kBackCamTransform);
+        io[1] = new VisionIOPhoton(VisionConstants.kIntakeCamName,
+        VisionConstants.kIntakeCamTransform);
         // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {

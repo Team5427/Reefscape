@@ -341,10 +341,10 @@ public final class Constants {
 
   public static class VisionConstants {
     public static final String kSwerveCamName = "swerveCam";
-    // public static final String intakeCamName = "intakeCam";
+    public static final String kIntakeCamName = "intakeCam";
     // public static final String kBackCamName = "backCam";
 
-    public static final int kCameraCount = 1;
+    public static final int kCameraCount = 2;
 
     public static final double kMaxAmbiguity = 0.20;
 
@@ -359,7 +359,7 @@ public final class Constants {
             0.27517,
             Units.inchesToMeters(8.215),
             new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(180 - 152.5)));
-    public static final Transform3d kBackCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
+    public static final Transform3d kIntakeCamTransform = new Transform3d(0, 0, 0, Rotation3d.kZero);
     public static final Transform3d kQuestCameraTransform =
         new Transform3d(0, 0, 0, Rotation3d.kZero);
 
