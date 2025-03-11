@@ -99,7 +99,7 @@ public class VisionSubsystem extends SubsystemBase {
   public void periodic() {
     for (int i = 0; i < io.length; i++) {
       io[i].updateInputs(inputsAutoLogged[i]);
-      Logger.processInputs("Vision/Camera" + Integer.toString(i), inputsAutoLogged[i]);
+      Logger.processInputs("Vision/Camera " + Integer.toString(i), inputsAutoLogged[i]);
     }
     // Initialize logging values
     // List<Pose3d> allTagPoses = new LinkedList<>();
@@ -176,12 +176,7 @@ public class VisionSubsystem extends SubsystemBase {
                           * (Timer.getTimestamp() - observation.timestamp());
 
           // Add pose to log
-          // robotPoses.add(observation.pose());
-          // if (rejectPose) {
-          //   robotPosesRejected.add(observation.pose());
-          // } else {
-          //   robotPosesAccepted.add(observation.pose());
-          // }
+          
 
           // Skip if rejected
           if (rejectPose) {
@@ -203,6 +198,7 @@ public class VisionSubsystem extends SubsystemBase {
               observation.pose().toPose2d(),
               observation.timestamp(),
               VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
+          Logger.recordOutput("Vision Pose " + cameraIndex, observation.pose());
         }
       }
 

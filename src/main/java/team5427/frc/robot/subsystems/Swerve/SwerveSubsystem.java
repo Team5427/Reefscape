@@ -130,8 +130,8 @@ public class SwerveSubsystem extends SubsystemBase {
             rawGyroRotation,
             lastModulePositions,
             Pose2d.kZero,
-            VecBuilder.fill(0.2, 0.2, 0.1),
-            VecBuilder.fill(0.4, 0.4, 0.7));
+            VecBuilder.fill(0.6, 0.6, 0.1),
+            VecBuilder.fill(0.2, 0.2, 0.7));
 
     sysId =
         new SysIdRoutine(

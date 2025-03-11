@@ -1,5 +1,7 @@
 package team5427.frc.robot.io;
 
+import java.util.Optional;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -9,6 +11,7 @@ import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 public class PilotingControls {
 
@@ -73,6 +76,6 @@ public class PilotingControls {
                   ;
                 }));
 
-    // VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
+    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
   }
 }
