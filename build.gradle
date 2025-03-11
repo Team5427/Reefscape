@@ -139,7 +139,6 @@ dependencies {
     annotationProcessor "org.littletonrobotics.akit:akit-autolog:$akitJson.version"
 
     implementation 'org.team4206:battleaid:0.4.0'
-    implementation "javax.annotation:javax.annotation-api:1.3.2"
 }
 
 test {

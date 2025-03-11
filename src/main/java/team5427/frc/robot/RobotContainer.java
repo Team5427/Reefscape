@@ -122,17 +122,17 @@ public class RobotContainer {
   }
 
   private void createNamedCommands() {
-    NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);
-    NamedCommands.registerCommand("Score L4", AllCommands.scoreL4);
-    NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
-    NamedCommands.registerCommand("Intake Station", AllCommands.intake);
-    NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
+    // NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);
+    // NamedCommands.registerCommand("Score L4", AllCommands.scoreL4);
+    // NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
+    // NamedCommands.registerCommand("Intake Station", AllCommands.intake);
+    // NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
   }
 
   public void configureButtonBindings() {
     new PilotingControls();
     // new OperatingControls();
-    new LightTriggers();
+    // new LightTriggers();
   }
 
   /**
