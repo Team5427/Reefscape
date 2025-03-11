@@ -6,12 +6,20 @@ import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.BlinkinConstants;
 
 public class LightsSubsystem extends SubsystemBase {
+
   private Spark blinkin;
   private double pattern;
 
   private static LightsSubsystem m_instance;
 
-  public LightsSubsystem() {
+  public static LightsSubsystem getInstance() {
+    if (m_instance == null) {
+      m_instance = new LightsSubsystem();
+    }
+    return m_instance;
+  }
+
+  private LightsSubsystem() {
     blinkin = new Spark(BlinkinConstants.kBlinkinChannel);
   }
 
@@ -27,12 +35,5 @@ public class LightsSubsystem extends SubsystemBase {
 
   public double getPattern() {
     return pattern;
-  }
-
-  public static LightsSubsystem getInstance() {
-    if (m_instance == null) {
-      m_instance = new LightsSubsystem();
-    }
-    return m_instance;
   }
 }
