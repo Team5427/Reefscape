@@ -3,6 +3,7 @@ package team5427.frc.robot.subsystems.Swerve.io;
 import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radian;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volt;
@@ -177,7 +178,7 @@ public class ModuleIOTalon implements ModuleIO {
     // driveMotor.updateStatusSignals();
 
     inputs.driveMotorPosition =
-        Rotation2d.fromRotations(driveMotorPosition.getValue().in(Rotations));
+        Rotation2d.fromRadians(driveMotorPosition.getValue().in(Radian));
     inputs.driveMotorAngularVelocity = driveMotorVelocity.getValue();
     inputs.driveMotorLinearVelocity =
         MetersPerSecond.of(driveMotor.getEncoderVelocity(driveMotorVelocity));

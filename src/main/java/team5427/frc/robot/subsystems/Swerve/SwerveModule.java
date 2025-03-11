@@ -1,6 +1,7 @@
 package team5427.frc.robot.subsystems.Swerve;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -123,7 +124,7 @@ public class SwerveModule {
   /** Runs the module with the specified output while controlling to zero degrees. */
   public void runDriveCharacterization(double output) {
     io.setDriveSpeedSetpoint(Amps.of(output));
-    io.resetMotorSetpoint(new Rotation2d());
+    io.resetMotorSetpoint(new Rotation2d(0));
   }
 
   /** Runs the module with the specified output while moving at zero speed. */
@@ -131,7 +132,7 @@ public class SwerveModule {
     // Characterizing TorqueCurrentFOC for steer usually doesnt work.
     // io.setSteerPositionSetpoint(Amps.of(output));
     io.setSteerPositionSetpoint(Volts.of(output));
-    io.setDriveSpeedSetpoint(Amps.of(0.0));
+    io.setDriveSpeedSetpoint(MetersPerSecond.of(0.0));
   }
 
   /** Returns the module position in radians. */
