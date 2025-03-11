@@ -203,6 +203,9 @@ public class ModuleIOTalon implements ModuleIO {
     inputs.driveMotorCurrent = driveMotorCurrent.getValue();
     inputs.steerMotorCurrent = steerMotorCurrent.getValue();
 
+    inputs.driveTorqueCurrent = driveTorqueCurrent.getValue();
+    inputs.steerTorqueCurrent = steerTorqueCurrent.getValue();
+
     inputs.odometryTimestamps =
         timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
     inputs.odometryDrivePositionsMeters =

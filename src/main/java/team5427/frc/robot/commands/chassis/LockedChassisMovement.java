@@ -81,6 +81,24 @@ public class LockedChassisMovement extends Command {
     addRequirements(swerveSubsystem);
   }
 
+  public LockedChassisMovement(
+      CommandXboxController driverJoystick, Pose2d robotPose, List<Pose2d> matchingPoses) {
+    swerveSubsystem = SwerveSubsystem.getInstance();
+    joy = driverJoystick;
+    tunedJoystickLinear = new TunedJoystick(joy.getHID());
+    tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
+
+    tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
+    tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
+
+    tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
+    tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
+    this.matchingPoses = (Pose2d[]) matchingPoses.toArray();
+    this.robotPose = robotPose;
+
+    addRequirements(swerveSubsystem);
+  }
+
   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d[] matchingPoses) {
     swerveSubsystem = SwerveSubsystem.getInstance();
     joy = driverJoystick;
