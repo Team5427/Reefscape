@@ -140,8 +140,8 @@ public class SwerveSubsystem extends SubsystemBase {
     sysId =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-              Volts.per(Seconds).of(5.0),
-                Volts.of(60),
+              Volts.per(Seconds).of(7.0),
+                Volts.of(70),
               null,
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
