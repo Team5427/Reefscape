@@ -191,6 +191,7 @@ public class SwerveSubsystem extends SubsystemBase {
       inputSpeeds.omegaRadiansPerSecond = 0;
     }
     if (Constants.currentMode != Mode.SIM) {
+      // inputSpeeds.times(-1);
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     } else {
       relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
@@ -269,7 +270,7 @@ public class SwerveSubsystem extends SubsystemBase {
     gyroDisconnectedAlert.set(!gyroInputs.connected && Constants.currentMode != Mode.SIM);
 
     Logger.recordOutput("SwerveOutput/RobotRelativeChassisSpeeds", inputSpeeds);
-    // Logger.recordOutput("SwerveOutput/DiscretizedChassisSpeeds", discretizedSpeeds);
+    Logger.recordOutput("SwerveOutput/DiscretizedChassisSpeeds", discretizedSpeeds);
     Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
@@ -285,7 +286,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro(Rotation2d angle) {
-    gyroIO.resetGyroYawAngle(angle.unaryMinus());
+    gyroIO.resetGyroYawAngle(angle);
   }
 
   /** Runs the drive in a straight line with the specified drive output. */
@@ -374,7 +375,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
+    poseEstimator.resetPose(pose);
     resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 
