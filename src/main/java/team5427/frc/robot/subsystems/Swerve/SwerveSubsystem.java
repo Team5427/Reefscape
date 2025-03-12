@@ -374,6 +374,10 @@ public class SwerveSubsystem extends SubsystemBase {
     resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 
+  public void resetAutonPose(Pose2d pose) {
+    poseEstimator.resetPose(pose);
+  }
+
   /**
    * Adds a new timestamped vision measurement. Meant to be a bridge method, actual vision
    * processing should be done in a seperate subsystem
