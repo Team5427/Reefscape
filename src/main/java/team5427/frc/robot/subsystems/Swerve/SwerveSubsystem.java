@@ -186,10 +186,13 @@ public class SwerveSubsystem extends SubsystemBase {
       inputSpeeds.omegaRadiansPerSecond = 0;
     }
     // this, and the relavant methods it calls are the sources of error
-    relativeSpeeds =
-        Constants.currentMode != Mode.SIM
-            ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
-            : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
+    // relativeSpeeds =
+    //     Constants.currentMode != Mode.SIM
+    //         ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
+    //         : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
+    relativeSpeeds = DriverStation.isAutonomous() 
+        ? inputSpeeds
+        : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
