@@ -49,11 +49,11 @@ public class ClimberSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputsAutoLogged);
-    if (!manualRunning) {
-      io.setHookVoltage(manualRunVoltage);
-    } else {
+    // if (!manualRunning) {
+    //   io.setHookVoltage(manualRunVoltage);
+    // } else {
       io.setHookSetpoint(climbHooksSetpoint);
-    }
+    // }
 
     Logger.processInputs("Climb", inputsAutoLogged);
 

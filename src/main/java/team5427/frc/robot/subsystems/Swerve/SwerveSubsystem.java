@@ -19,6 +19,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
@@ -213,9 +214,10 @@ public class SwerveSubsystem extends SubsystemBase {
     //           );
     //   moduleStates = previousSetpoint.moduleStates();
     // } else {
-    ChassisSpeeds discretizedSpeeds =
+    ChassisSpeeds discretizedSpeeds = 
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
     moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
     // }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {

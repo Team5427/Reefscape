@@ -33,7 +33,6 @@ public class Climb extends Command {
   public void initialize() {
     step += 1;
     Logger.recordOutput("Climber Step", step);
-    prongSubsystem.setWristSetpoint(ProngEffectorConstants.kClimbRotation);
     switch (step) {
       case kPrep:
         cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
@@ -49,6 +48,7 @@ public class Climb extends Command {
         cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
         cascadeSubsystem.setPivotSetpoint(CascadeConstants.kTempClimbRotation);
         climberSubsystem.setSetpoint(ClimbConstants.kActivePosition);
+        prongSubsystem.setWristSetpoint(ProngEffectorConstants.kClimbRotation);
         break;
       default:
         break;
