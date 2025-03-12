@@ -15,6 +15,12 @@
           "data": {
             "name": "Score L4"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
+          }
         }
       ]
     }

@@ -186,10 +186,13 @@ public class SwerveSubsystem extends SubsystemBase {
       inputSpeeds.omegaRadiansPerSecond = 0;
     }
     // this, and the relavant methods it calls are the sources of error
-    relativeSpeeds =
-        Constants.currentMode != Mode.SIM
-            ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
-            : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
+    // relativeSpeeds =
+    //     Constants.currentMode != Mode.SIM
+    //         ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
+    //         : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
+    relativeSpeeds = DriverStation.isAutonomous() 
+        ? inputSpeeds
+        : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
@@ -213,8 +216,8 @@ public class SwerveSubsystem extends SubsystemBase {
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
 
     moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
+    // SwerveDriveKinematics.desaturateWheelSpeeds(
+    //     moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
     // }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {
