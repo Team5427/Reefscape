@@ -216,8 +216,8 @@ public class SwerveSubsystem extends SubsystemBase {
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
 
     moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
+    // SwerveDriveKinematics.desaturateWheelSpeeds(
+    //     moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
     // }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {
