@@ -73,7 +73,6 @@ public class PilotingControls {
             new InstantCommand(
                 () -> {
                   SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
-                  ;
                 }));
 
     // VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
