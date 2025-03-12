@@ -35,7 +35,6 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
-import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
@@ -371,7 +370,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public void setPose(Pose2d pose) {
     // poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
     poseEstimator.resetPose(pose);
-    resetGyro(poseEstimator.getEstimatedPosition().getRotation());
+    // resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 
   /**
