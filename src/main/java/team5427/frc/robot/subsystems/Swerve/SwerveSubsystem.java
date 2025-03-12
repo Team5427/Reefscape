@@ -35,6 +35,7 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
+import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
@@ -128,14 +129,14 @@ public class SwerveSubsystem extends SubsystemBase {
             rawGyroRotation,
             lastModulePositions,
             Pose2d.kZero,
-            VecBuilder.fill(0.6, 0.6, 0.001),
-            VecBuilder.fill(0.2, 0.2, 10));
+            VecBuilder.fill(0.6, 0.6, 0.1),
+            VecBuilder.fill(0.2, 0.2, 0.7));
 
     sysId =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                Volts.per(Seconds).of(1.0),
-                Volts.of(12),
+                Volts.per(Seconds).of(7.0),
+                Volts.of(70),
                 null,
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
@@ -147,9 +148,13 @@ public class SwerveSubsystem extends SubsystemBase {
     this.inputSpeeds = newSpeeds;
   }
 
-  public void setChassisSpeeds(ChassisSpeeds newSpeeds, DriveFeedforwards feedforwards) {
-    this.inputSpeeds = newSpeeds;
+  public void setSpeedsAuton(ChassisSpeeds speeds) {
+    setChassisSpeeds(speeds);
   }
+
+  // public void setChassisSpeeds(ChassisSpeeds newSpeeds, DriveFeedforwards feedforwards) {
+  //   this.inputSpeeds = newSpeeds;
+  // }
 
   public void setFieldRelativeSpeeds(ChassisSpeeds newSpeeds) {}
 
@@ -353,6 +358,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getCurrentChassisSpeeds() {
     return SwerveConstants.m_kinematics.toChassisSpeeds(getModuleStates());
+    // return inputSpeeds;
+  }
+
+  public ChassisSpeeds getRobotRelativeSpeeds() {
+    return ChassisSpeeds.fromFieldRelativeSpeeds(getCurrentChassisSpeeds(), getGyroRotation());
   }
 
   /** Returns the current odometry pose. */
@@ -370,7 +380,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public void setPose(Pose2d pose) {
     // poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
     poseEstimator.resetPose(pose);
-    // resetGyro(poseEstimator.getEstimatedPosition().getRotation());
+    resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 
   public void resetAutonPose(Pose2d pose) {

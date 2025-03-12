@@ -9,6 +9,12 @@
           "data": {
             "pathName": "Center Auto.0"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
+          }
         }
       ]
     }
