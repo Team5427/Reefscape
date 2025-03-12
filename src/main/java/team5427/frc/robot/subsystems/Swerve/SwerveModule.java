@@ -124,7 +124,7 @@ public class SwerveModule {
   /** Runs the module with the specified output while controlling to zero degrees. */
   public void runDriveCharacterization(double output) {
     io.setDriveSpeedSetpoint(Amps.of(output));
-    io.resetMotorSetpoint(new Rotation2d(0));
+    io.setSteerPositionSetpoint(new Rotation2d(0));
   }
 
   /** Runs the module with the specified output while moving at zero speed. */

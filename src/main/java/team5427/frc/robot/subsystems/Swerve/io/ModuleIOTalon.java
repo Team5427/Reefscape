@@ -108,6 +108,7 @@ public class ModuleIOTalon implements ModuleIO {
 
     driveMotorVelocity = driveMotor.getTalonFX().getVelocity();
     steerMotorVelocity = steerMotor.getTalonFX().getVelocity();
+    
 
     timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
     drivePositionQueue =
@@ -197,6 +198,9 @@ public class ModuleIOTalon implements ModuleIO {
 
     inputs.driveMotorVoltage = driveMotorVoltage.getValue();
     inputs.steerMotorVoltage = steerMotorVoltage.getValue();
+
+    inputs.driveMotorRotations = driveMotorPosition.getValueAsDouble();
+    inputs.driveMotorRotationsPerSecond = driveMotorVelocity.getValueAsDouble();
 
     inputs.driveMotorConnected = driveMotor.getTalonFX().isConnected();
     inputs.steerMotorConnected = steerMotor.getTalonFX().isConnected();

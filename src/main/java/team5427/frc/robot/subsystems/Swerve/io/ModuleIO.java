@@ -24,6 +24,8 @@ public interface ModuleIO {
         new SwerveModulePosition(0, absolutePosition);
     public Rotation2d driveMotorPosition = new Rotation2d(0);
     public AngularVelocity driveMotorAngularVelocity = RotationsPerSecond.of(0);
+    public double driveMotorRotationsPerSecond = 0.0;
+    public double driveMotorRotations = 0.0;
     public LinearVelocity driveMotorLinearVelocity = MetersPerSecond.of(0.0);
     public AngularVelocity steerMotorVelocityRotations = RotationsPerSecond.of(0.0);
 
