@@ -62,21 +62,6 @@ public final class Constants {
   public static RobotConfig config;
 
   static {
-    try {
-      Constants.config = RobotConfig.fromGUISettings();
-      System.out.println("Robot Config Loaded");
-      System.out.println(
-          "Module Count: "
-              + Constants.config.numModules
-              + " Max Torque Friction: "
-              + Constants.config.maxTorqueFriction
-              + " Wheel Friction Force: "
-              + Constants.config.wheelFrictionForce);
-    } catch (Exception e) {
-      // Handle exception as needed
-      System.out.println("Robot Config Failing");
-      e.printStackTrace();
-    }
   }
 
   public static enum Mode {
@@ -357,10 +342,14 @@ public final class Constants {
         new Transform3d(
             Units.inchesToMeters(-11.048439965),
             Units.inchesToMeters(8.804096310),
-            Units.inchesToMeters( 8.540489626),
+            Units.inchesToMeters(8.540489626),
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
     public static final Transform3d kIntakeCamTransform =
-        new Transform3d(Units.inchesToMeters(-11.048439965), Units.inchesToMeters(-8.804096310), Units.inchesToMeters(-8.540489626), new Rotation3d(0, Units.degreesToRadians(-15), -0.47976945625357));
+        new Transform3d(
+            Units.inchesToMeters(-11.048439965),
+            Units.inchesToMeters(-8.804096310),
+            Units.inchesToMeters(-8.540489626),
+            new Rotation3d(0, Units.degreesToRadians(-15), -0.47976945625357));
 
     public static final Transform3d kQuestCameraTransform =
         new Transform3d(0, 0, 0, Rotation3d.kZero);

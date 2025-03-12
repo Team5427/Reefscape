@@ -108,7 +108,6 @@ public class ModuleIOTalon implements ModuleIO {
 
     driveMotorVelocity = driveMotor.getTalonFX().getVelocity();
     steerMotorVelocity = steerMotor.getTalonFX().getVelocity();
-    
 
     timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
     drivePositionQueue =
@@ -178,8 +177,7 @@ public class ModuleIOTalon implements ModuleIO {
     // steerMotor.updateStatusSignals();
     // driveMotor.updateStatusSignals();
 
-    inputs.driveMotorPosition =
-        Rotation2d.fromRadians(driveMotorPosition.getValue().in(Radian));
+    inputs.driveMotorPosition = Rotation2d.fromRadians(driveMotorPosition.getValue().in(Radian));
     inputs.driveMotorAngularVelocity = driveMotorVelocity.getValue();
     inputs.driveMotorLinearVelocity =
         MetersPerSecond.of(driveMotor.getEncoderVelocity(driveMotorVelocity));
@@ -274,8 +272,10 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void setModuleState(SwerveModuleState state) {
     Rotation2d currentAngle = Rotation2d.fromRotations(absolutePosition.getValue().in(Rotations));
+
     state.optimize(currentAngle);
     state.cosineScale(currentAngle);
+
     targetModuleState = state;
     setDriveSpeedSetpoint(MetersPerSecond.of(targetModuleState.speedMetersPerSecond));
     setSteerPositionSetpoint(targetModuleState.angle);

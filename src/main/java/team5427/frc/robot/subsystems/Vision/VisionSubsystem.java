@@ -176,7 +176,6 @@ public class VisionSubsystem extends SubsystemBase {
                           * (Timer.getTimestamp() - observation.timestamp());
 
           // Add pose to log
-          
 
           // Skip if rejected
           if (rejectPose) {
