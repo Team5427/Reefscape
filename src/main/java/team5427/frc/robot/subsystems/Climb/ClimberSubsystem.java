@@ -52,7 +52,7 @@ public class ClimberSubsystem extends SubsystemBase {
     // if (!manualRunning) {
     //   io.setHookVoltage(manualRunVoltage);
     // } else {
-      io.setHookSetpoint(climbHooksSetpoint);
+    io.setHookSetpoint(climbHooksSetpoint);
     // }
 
     Logger.processInputs("Climb", inputsAutoLogged);

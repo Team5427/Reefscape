@@ -3,6 +3,7 @@ package team5427.frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -12,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import org.littletonrobotics.junction.Logger;
-
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
@@ -35,6 +35,21 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    try {
+      Constants.config = RobotConfig.fromGUISettings();
+      System.out.println("Robot Config Loaded");
+      System.out.println(
+          "Module Count: "
+              + Constants.config.numModules
+              + " Max Torque Friction: "
+              + Constants.config.maxTorqueFriction
+              + " Wheel Friction Force: "
+              + Constants.config.wheelFrictionForce);
+    } catch (Exception e) {
+      // Handle exception as needed
+      System.out.println("Robot Config Failing");
+      e.printStackTrace();
+    }
     createNamedCommands();
 
     // Configure AutoBuilder last
@@ -45,10 +60,9 @@ public class RobotContainer {
         SwerveSubsystem.getInstance()
             ::getCurrentChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         // SwerveSubsystem.getInstance()::setChassisSpeeds,
-        (speeds, feedforwards) ->
+        (speeds) ->
             SwerveSubsystem.getInstance()
-                .setChassisSpeeds(
-                    speeds, feedforwards), // Method that will drive the robot given ROBOT RELATIVE
+                .setChassisSpeeds(speeds), // Method that will drive the robot given ROBOT RELATIVE
         // ChassisSpeeds.
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following

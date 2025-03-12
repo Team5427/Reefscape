@@ -1,13 +1,9 @@
 package team5427.frc.robot.subsystems.Swerve;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volt;
 import static edu.wpi.first.units.Units.Volts;
-import static edu.wpi.first.units.Units.VoltsPerMeterPerSecond;
-import static edu.wpi.first.units.Units.VoltsPerRadianPerSecond;
 
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
@@ -25,8 +21,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Angle;
-import edu.wpi.first.units.measure.Velocity;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -41,6 +35,7 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
+import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
@@ -140,9 +135,9 @@ public class SwerveSubsystem extends SubsystemBase {
     sysId =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-              Volts.per(Seconds).of(7.0),
+                Volts.per(Seconds).of(7.0),
                 Volts.of(70),
-              null,
+                null,
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
                 (voltage) -> runDriveCharacterization(voltage.in(Volts)), null, this));
@@ -180,22 +175,17 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       gyroDisconnectedAlert.set(true);
     }
-    for (SwerveModule module : modules) {
-      module.periodic();
-    }
-    odometryLock.unlock();
 
     if (DriverStation.isAutonomous()) isStopped = false;
     ChassisSpeeds relativeSpeeds;
     if (gyroLock) {
       inputSpeeds.omegaRadiansPerSecond = 0;
     }
-    if (Constants.currentMode != Mode.SIM) {
-      // inputSpeeds.times(-1);
-      relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
-    } else {
-      relativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
-    }
+    // this, and the relavant methods it calls are the sources of error
+    relativeSpeeds =
+        Constants.currentMode != Mode.SIM
+            ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
+            : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
@@ -215,10 +205,12 @@ public class SwerveSubsystem extends SubsystemBase {
     //           );
     //   moduleStates = previousSetpoint.moduleStates();
     // } else {
-    ChassisSpeeds discretizedSpeeds = 
+    ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
+
     moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
-    SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        moduleStates, SwerveConstants.kDriveMotorConfiguration.maxVelocity);
     // }
     actualModuleStates = new SwerveModuleState[modules.length];
     if (isStopped) {
@@ -232,7 +224,9 @@ public class SwerveSubsystem extends SubsystemBase {
         modules[i].setModuleState(moduleStates[i]);
       }
       actualModuleStates[i] = modules[i].getModuleState();
+      modules[i].periodic();
     }
+    odometryLock.unlock();
 
     // Update odometry
     double[] sampleTimestamps =
@@ -255,7 +249,7 @@ public class SwerveSubsystem extends SubsystemBase {
       // Update gyro angle
       if (gyroInputs.connected) {
         // Use the real gyro angle
-        rawGyroRotation = gyroInputs.odometryYawPositions[i];
+        rawGyroRotation = gyroInputs.odometryYawPositions[i].unaryMinus();
       } else {
         // Use the angle delta from the kinematics and module deltas
         Twist2d twist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
@@ -375,6 +369,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
+    // poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
     poseEstimator.resetPose(pose);
     resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
