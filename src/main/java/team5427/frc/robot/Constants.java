@@ -97,7 +97,7 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
-    public static ProfiledPIDController kRotationPIDController;
+    public static ProfiledPIDController kRotationPIDController = new ProfiledPIDController(0.3, 0.0, 0.0, new Constraints(0.5, 1));;
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -107,10 +107,6 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
     public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
-
-    static {
-      kRotationPIDController = new ProfiledPIDController(1.0, 0.0, 0.0, new Constraints(0.5, 1));
-    }
 
     static {
       kSIMSteerController.enableContinuousInput(-0.5, 0.5);
@@ -404,10 +400,10 @@ public final class Constants {
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .155;
-      // kCascadeDriverConfiguration.kI = .2;
-      // kCascadeDriverConfiguration.kG = 0.36;
-      kCascadeDriverConfiguration.kD = 0.02;
+      kCascadeDriverConfiguration.kP = .3;
+      // kCascadeDriverConfiguration.kI = .08;
+      // kCascadeDriverConfiguration.kG = 0.036;
+      kCascadeDriverConfiguration.kD = 0.05;
       // kCascadeDriverConfiguration.kV = 3.0;
       // kCascadeDriverConfiguration.kV = .50;
       // kCascadeDriverConfiguration.kA = 0.05;
@@ -434,14 +430,14 @@ public final class Constants {
 
       kPivotConfiguration.maxVelocity =
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-      kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity / 1.5;
+      kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity * 1.1;
 
-      kPivotConfiguration.kP = 20.0;
-      kPivotConfiguration.kD = 0.0;
+      kPivotConfiguration.kP = 60.0;
+      kPivotConfiguration.kD = 0.1;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
       // kPivotConfiguration.kS = 0.0;
-      // kPivotConfiguration.kG = 0.32;
+      kPivotConfiguration.kG = 0.32;
 
       kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
       kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
@@ -469,7 +465,8 @@ public final class Constants {
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
 
-    public static final Distance kLowReefAlgaeDistance = Feet.of(1.4);
+    public static final Distance kLowReefAlgaeDistance = Feet.of(0.5);
+    public static final Distance kHighReefAlgaeDistance = Feet.of(1.55);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
@@ -486,7 +483,8 @@ public final class Constants {
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
 
-    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(30.0);
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(15.0);
+    public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(10.0);
   }
 
   public static class ClimbConstants {
@@ -500,6 +498,8 @@ public final class Constants {
       kServoConfiguration.isInverted = true;
       kServoConfiguration.mode = MotorMode.kServo;
       kServoConfiguration.withFOC = false;
+
+      kServoConfiguration.currentLimit = 50;
 
       kServoConfiguration.maxVelocity =
           kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
@@ -576,7 +576,8 @@ public final class Constants {
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
 
-    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(70.0);
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(55.0);
+    public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(50.0);
 
     public static final Current kIntakeMaxCurrent = Amp.of(20.0);
 
@@ -648,6 +649,15 @@ public final class Constants {
             ProngEffectorConstants.kLowReefAlgaeRotation,
             MetersPerSecond.of(3.5),
             false);
+
+    public static final RawIntakeConfiguration kReefHighAlgaeIntake = 
+        new RawIntakeConfiguration(
+            CascadeConstants.kHighReefAlgaeRotation,
+            CascadeConstants.kHighReefAlgaeDistance,
+            ProngEffectorConstants.kHighReefAlgaeRotation,
+            MetersPerSecond.of(3.5),
+            false
+        );
 
     public static final Transform3d kRobotScoringTranslation =
         new Transform3d(0, 0.04, 0, Rotation3d.kZero);

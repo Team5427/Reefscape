@@ -27,14 +27,14 @@ public class OperatingControls {
             new ConditionalCommand(
                 AllCommands.scoreL3,
                 AllCommands.scoreL3Inverse,
-                () -> ProngSubsystem.direction == Direction.FORWARD));
+                () -> true));
     joy.y()
         .onTrue(
             new ConditionalCommand(
                 new ConditionalCommand(
                     AllCommands.scoreL4,
                     AllCommands.scoreL4Inverse,
-                    () -> ProngSubsystem.direction == Direction.FORWARD),
+                    () -> true),
                 AllCommands.scoreBarge,
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
@@ -42,10 +42,17 @@ public class OperatingControls {
         .whileTrue(
             new ConditionalCommand(
                 AllCommands.intake,
-                AllCommands.lowReefAlgaeIntake,
+                new ConditionalCommand(
+                    AllCommands.lowReefAlgaeIntake,
+                    AllCommands.highReefAlgaeIntake,
+                    () -> ProngSubsystem.direction == Direction.FORWARD
+                ),
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
-    joy.rightTrigger().whileTrue(AllCommands.eject);
+    joy.rightTrigger().whileTrue(new ConditionalCommand(
+        AllCommands.eject, 
+        AllCommands.ejectAlgae, 
+        () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
     joy.rightBumper().onTrue(AllCommands.switchToInverse);
 

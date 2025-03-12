@@ -118,12 +118,12 @@ public class SwerveModule {
    * Returns the drive motor position in rotations
    */
   public double drivePosition() {
-    return inputs.driveMotorPosition.getRotations();
+    return inputs.driveMotorRotations;
   }
 
   /** Runs the module with the specified output while controlling to zero degrees. */
   public void runDriveCharacterization(double output) {
-    io.setDriveSpeedSetpoint(Amps.of(output));
+    io.setDriveSpeedSetpoint(Volts.of(output));
     io.setSteerPositionSetpoint(new Rotation2d(0));
   }
 

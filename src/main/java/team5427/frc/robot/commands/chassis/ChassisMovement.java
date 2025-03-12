@@ -77,10 +77,12 @@ public class ChassisMovement extends Command {
         if (joy.getLeftTriggerAxis() >= 0.1) {
           inputSpeeds = new ChassisSpeeds(0, 0, 0);
           swerveSubsystem.stop(true);
+          return;
         } else {
           swerveSubsystem.stop(false);
+          swerveSubsystem.setChassisSpeeds(inputSpeeds);
         }
-        swerveSubsystem.setChassisSpeeds(inputSpeeds);
+        
       }
     }
   }

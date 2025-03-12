@@ -128,14 +128,14 @@ public class SwerveSubsystem extends SubsystemBase {
             rawGyroRotation,
             lastModulePositions,
             Pose2d.kZero,
-            VecBuilder.fill(0.6, 0.6, 0.1),
-            VecBuilder.fill(0.2, 0.2, 0.7));
+            VecBuilder.fill(0.6, 0.6, 0.001),
+            VecBuilder.fill(0.2, 0.2, 10));
 
     sysId =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                Volts.per(Seconds).of(7.0),
-                Volts.of(70),
+                Volts.per(Seconds).of(1.0),
+                Volts.of(12),
                 null,
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
