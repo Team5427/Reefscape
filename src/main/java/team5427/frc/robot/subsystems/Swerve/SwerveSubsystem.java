@@ -35,6 +35,7 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
+import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
@@ -180,11 +181,11 @@ public class SwerveSubsystem extends SubsystemBase {
     if (gyroLock) {
       inputSpeeds.omegaRadiansPerSecond = 0;
     }
+    // this, and the relavant methods it calls are the sources of error
     relativeSpeeds =
         Constants.currentMode != Mode.SIM
             ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
             : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
-
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
