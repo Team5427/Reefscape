@@ -190,7 +190,7 @@ public final class Constants {
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 1.3;
+      kDriveMotorConfiguration.kP = 2.54;
       // kDriveMotorConfiguration.kV = 2.08;
       kDriveMotorConfiguration.kA = 1.2;
       kDriveMotorConfiguration.kS = 0.23;
@@ -212,7 +212,7 @@ public final class Constants {
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
 
       // Tunable values
-      kSteerMotorConfiguration.kP = 4.427; // 7.0
+      kSteerMotorConfiguration.kP = 6.800; // 7.0
       kSteerMotorConfiguration.kD = 0.0004;
       // kSteerMotorConfiguration.kS = 4.0;
       kSteerMotorConfiguration.kA = 0.3;
@@ -484,7 +484,7 @@ public final class Constants {
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
-    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(70.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(75.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(10.0);
 
@@ -573,10 +573,10 @@ public final class Constants {
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(204.0);
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(208.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
 
-    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(105.0);
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(120.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(.986);
