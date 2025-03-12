@@ -178,7 +178,7 @@ public final class Constants {
       kDriveMotorConfiguration.kP = 2.54;
       // kDriveMotorConfiguration.kV = 2.08;
       kDriveMotorConfiguration.kA = 1.2;
-      kDriveMotorConfiguration.kS = 0.23;
+      kDriveMotorConfiguration.kS = 1.1;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }

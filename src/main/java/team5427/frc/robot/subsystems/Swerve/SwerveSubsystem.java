@@ -279,7 +279,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro(Rotation2d angle) {
-    gyroIO.resetGyroYawAngle(angle.unaryMinus());
+    gyroIO.resetGyroYawAngle(angle);
   }
 
   /** Runs the drive in a straight line with the specified drive output. */
@@ -371,6 +371,10 @@ public class SwerveSubsystem extends SubsystemBase {
     // poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
     poseEstimator.resetPose(pose);
     // resetGyro(poseEstimator.getEstimatedPosition().getRotation());
+  }
+
+  public void resetAutonPose(Pose2d pose) {
+    poseEstimator.resetPose(pose);
   }
 
   /**
