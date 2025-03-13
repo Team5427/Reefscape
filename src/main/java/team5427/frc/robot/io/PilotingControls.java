@@ -1,11 +1,11 @@
 package team5427.frc.robot.io;
 
-import java.util.Optional;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import java.util.Optional;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
@@ -67,6 +67,18 @@ public class PilotingControls {
 
     joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
 
+    joy.a()
+        .onTrue(
+            new ConditionalCommand(
+                new InstantCommand(
+                    () -> {
+                      SwerveSubsystem.getInstance()
+                          .resetAutonPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
+                    }),
+                new InstantCommand(),
+                () -> {
+                  return VisionSubsystem.getInstance().getLatestPose() != null;
+                }));
     joy.y()
         .and(() -> RobotBase.isReal())
         .onTrue(
@@ -76,5 +88,6 @@ public class PilotingControls {
                 }));
 
     VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
+    // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }
 }

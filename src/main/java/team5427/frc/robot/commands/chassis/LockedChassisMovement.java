@@ -137,8 +137,7 @@ public class LockedChassisMovement extends Command {
 
       double omegaRadians =
           SwerveConstants.kRotationPIDController.calculate(
-              swerveSubsystem.getRotation().getRadians(),
-              this.rotationSetpoint.getRadians());
+              swerveSubsystem.getRotation().getRadians(), this.rotationSetpoint.getRadians());
 
       vx *= (1 - dampener);
       vy *= (1 - dampener);
@@ -153,7 +152,6 @@ public class LockedChassisMovement extends Command {
         swerveSubsystem.stop(false);
         swerveSubsystem.setChassisSpeeds(inputSpeeds);
       }
-      
     }
   }
 

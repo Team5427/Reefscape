@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
@@ -35,7 +34,6 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
-import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
@@ -126,11 +124,11 @@ public class SwerveSubsystem extends SubsystemBase {
     poseEstimator =
         new SwerveDrivePoseEstimator(
             SwerveConstants.m_kinematics,
-            rawGyroRotation,
+            getGyroRotation(),
             lastModulePositions,
             Pose2d.kZero,
-            VecBuilder.fill(0.6, 0.6, 0.1),
-            VecBuilder.fill(0.2, 0.2, 0.7));
+            VecBuilder.fill(0.1, 0.1, 0.08),
+            VecBuilder.fill(0.9, 0.9, 0.7));
 
     sysId =
         new SysIdRoutine(
@@ -190,9 +188,10 @@ public class SwerveSubsystem extends SubsystemBase {
     //     Constants.currentMode != Mode.SIM
     //         ? ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation())
     //         : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getRotation());
-    relativeSpeeds = DriverStation.isAutonomous() 
-        ? inputSpeeds
-        : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
+    relativeSpeeds =
+        DriverStation.isAutonomous()
+            ? inputSpeeds
+            : ChassisSpeeds.fromRobotRelativeSpeeds(inputSpeeds, getGyroRotation());
     // previousSetpoint =
     //     setpointGenerator.generateSetpoint(
     //         previousSetpoint, // The previous setpoint
@@ -381,8 +380,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Resets the current odometry pose. */
   public void setPose(Pose2d pose) {
-    // poseEstimator.resetPosition(pose.getRotation(), getModulePositions(), pose);
-    poseEstimator.resetPose(pose);
+    poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), pose);
+    // poseEstimator.resetPose(pose);
     resetGyro(poseEstimator.getEstimatedPosition().getRotation());
   }
 

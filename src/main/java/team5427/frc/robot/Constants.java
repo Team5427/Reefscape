@@ -97,7 +97,9 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
-    public static ProfiledPIDController kRotationPIDController = new ProfiledPIDController(0.3, 0.0, 0.0, new Constraints(0.5, 1));;
+    public static ProfiledPIDController kRotationPIDController =
+        new ProfiledPIDController(0.3, 0.0, 0.0, new Constraints(0.5, 1));
+    ;
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -109,6 +111,7 @@ public final class Constants {
     public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
 
     static {
+      kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
       kSIMSteerController.enableContinuousInput(-0.5, 0.5);
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(3, "*");
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(5, "*");
@@ -216,7 +219,7 @@ public final class Constants {
       public static final double drivekV = 45.0;
     }
 
-    public static final double kDampenerDampeningAmount = 0.9;
+    public static final double kDampenerDampeningAmount = 0.7;
   }
 
   public static class BlinkinConstants {
@@ -325,7 +328,7 @@ public final class Constants {
     public static final String kIntakeCamName = "intakeCam";
     // public static final String kBackCamName = "backCam";
 
-    public static final int kCameraCount = 2;
+    public static final int kCameraCount = 1;
 
     public static final double kMaxAmbiguity = 0.20;
 
@@ -355,15 +358,15 @@ public final class Constants {
     // Standard deviation baselines, for 1 meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
     /** Larger stddev equals more doubt in Meters */
-    public static double kLinearStdDevBaseline = 0.04;
+    public static double kLinearStdDevBaseline = 0.01;
 
     /** Larger stddev equals more doubt in Radians */
-    public static double kAngularStdDevBaseline = 0.09;
+    public static double kAngularStdDevBaseline = 0.2;
 
     public static double[] kCameraStdDevFactors =
         new double[] {
-          1.0, // Swerve Cam
-          1.0 // Back Cam
+          0.2, // Swerve Cam
+          1.0 // Intake Cam
         };
 
     public static double kQuestStdDevBaseline = 0.001;
@@ -458,9 +461,9 @@ public final class Constants {
 
     public static final Distance kL2Distance = Meters.of(0.0);
 
-    public static final Distance kL3Distance = Meters.of(0.3415);
+    public static final Distance kL3Distance = Meters.of(0.3015);
     public static final Distance kL3DistanceInverse = Feet.of(1.25);
-    public static final Distance kL4Distance = Meters.of(1.124);
+    public static final Distance kL4Distance = Meters.of(1.114); // 1.124
     public static final Distance kL4DistanceInverse = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
@@ -470,9 +473,9 @@ public final class Constants {
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
-    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(75.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(80.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
-    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(10.0);
+    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(9.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(12.898);
@@ -565,13 +568,13 @@ public final class Constants {
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(208.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
 
-    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(120.0);
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(135.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(.986);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.932);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(200.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-28.05);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-27.05);
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(280.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
@@ -650,14 +653,13 @@ public final class Constants {
             MetersPerSecond.of(3.5),
             false);
 
-    public static final RawIntakeConfiguration kReefHighAlgaeIntake = 
+    public static final RawIntakeConfiguration kReefHighAlgaeIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kHighReefAlgaeRotation,
             CascadeConstants.kHighReefAlgaeDistance,
             ProngEffectorConstants.kHighReefAlgaeRotation,
             MetersPerSecond.of(3.5),
-            false
-        );
+            false);
 
     public static final Transform3d kRobotScoringTranslation =
         new Transform3d(0, 0.04, 0, Rotation3d.kZero);

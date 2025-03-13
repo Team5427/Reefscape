@@ -82,7 +82,6 @@ public class ChassisMovement extends Command {
           swerveSubsystem.stop(false);
           swerveSubsystem.setChassisSpeeds(inputSpeeds);
         }
-        
       }
     }
   }

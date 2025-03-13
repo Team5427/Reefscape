@@ -38,6 +38,8 @@ public class VisionSubsystem extends SubsystemBase {
 
   private static VisionSubsystem m_instance;
 
+  private Pose3d latestPoseMeasurement;
+
   public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer) {
     if (m_instance == null) {
       if (consumer.isEmpty()) {
@@ -49,13 +51,22 @@ public class VisionSubsystem extends SubsystemBase {
     return m_instance;
   }
 
+  public static VisionSubsystem getInstance() {
+    if (m_instance == null) {
+
+      DriverStation.reportWarning("Vision Subsystem Not provided Vision Consumer", true);
+      return null;
+    }
+    return m_instance;
+  }
+
   private VisionSubsystem(VisionConsumer consumer) {
     super();
     switch (Constants.currentMode) {
       case REAL:
+        // io[0] =
+        //     new VisionIOPhoton(VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
         io[0] =
-            new VisionIOPhoton(VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
-        io[1] =
             new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform);
         // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
 
@@ -164,16 +175,16 @@ public class VisionSubsystem extends SubsystemBase {
                   || observation.pose().getX() < 0.0
                   || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
                   || observation.pose().getY() < 0.0
-                  || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth()
+                  || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
                   // Must not be an impossible pose to acheive based on max drivetrain speeds
-                  || observation
-                          .pose()
-                          .toPose2d()
-                          .relativeTo(SwerveSubsystem.getInstance().getPose())
-                          .getTranslation()
-                          .getNorm()
-                      > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-                          * (Timer.getTimestamp() - observation.timestamp());
+                  // || observation
+                  //         .pose()
+                  //         .toPose2d()
+                  //         .relativeTo(SwerveSubsystem.getInstance().getPose())
+                  //         .getTranslation()
+                  //         .getNorm()
+                  //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+                  //         * (Timer.getTimestamp() - observation.timestamp());
 
           // Add pose to log
 
@@ -198,6 +209,7 @@ public class VisionSubsystem extends SubsystemBase {
               observation.timestamp(),
               VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
           Logger.recordOutput("Vision Pose " + cameraIndex, observation.pose());
+          latestPoseMeasurement = observation.pose();
         }
       }
 
@@ -235,6 +247,10 @@ public class VisionSubsystem extends SubsystemBase {
       //     "Vision/Summary/RobotPosesRejected",
       //     allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
     }
+  }
+
+  public Pose3d getLatestPose() {
+    return this.latestPoseMeasurement;
   }
 
   @FunctionalInterface

@@ -28,11 +28,12 @@ public class Score extends Command {
 
   @Override
   public boolean isFinished() {
-    return false;
+    return cascadeSubsystem.cascadeAtGoal();
   }
 
   @Override
   public void end(boolean interrupted) {
     // prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
+    System.out.println("At Goal");
   }
 }

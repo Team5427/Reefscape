@@ -24,17 +24,11 @@ public class OperatingControls {
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b()
         .onTrue(
-            new ConditionalCommand(
-                AllCommands.scoreL3,
-                AllCommands.scoreL3Inverse,
-                () -> true));
+            new ConditionalCommand(AllCommands.scoreL3, AllCommands.scoreL3Inverse, () -> true));
     joy.y()
         .onTrue(
             new ConditionalCommand(
-                new ConditionalCommand(
-                    AllCommands.scoreL4,
-                    AllCommands.scoreL4Inverse,
-                    () -> true),
+                new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreL4Inverse, () -> true),
                 AllCommands.scoreBarge,
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
@@ -45,14 +39,15 @@ public class OperatingControls {
                 new ConditionalCommand(
                     AllCommands.lowReefAlgaeIntake,
                     AllCommands.highReefAlgaeIntake,
-                    () -> ProngSubsystem.direction == Direction.FORWARD
-                ),
+                    () -> ProngSubsystem.direction == Direction.FORWARD),
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
-    joy.rightTrigger().whileTrue(new ConditionalCommand(
-        AllCommands.eject, 
-        AllCommands.ejectAlgae, 
-        () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
+    joy.rightTrigger()
+        .whileTrue(
+            new ConditionalCommand(
+                AllCommands.eject,
+                AllCommands.ejectAlgae,
+                () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
     joy.rightBumper().onTrue(AllCommands.switchToInverse);
 
