@@ -59,7 +59,7 @@ public class RobotContainer {
             ::resetAutonPose, // Method to reset odometry (will be called if your auto has a
         // starting pose)
         SwerveSubsystem.getInstance()
-            ::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            ::getCurrentRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         SwerveSubsystem.getInstance()::setSpeedsAuton,
         // (speeds) ->
         //     SwerveSubsystem.getInstance()

@@ -364,7 +364,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // return inputSpeeds;
   }
 
-  public ChassisSpeeds getRobotRelativeSpeeds() {
+  public ChassisSpeeds getCurrentRobotRelativeSpeeds() {
     return ChassisSpeeds.fromFieldRelativeSpeeds(getCurrentChassisSpeeds(), getGyroRotation());
   }
 

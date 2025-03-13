@@ -448,7 +448,7 @@ public final class Constants {
     public static final Distance kCascadeTolerance = Centimeters.of(1.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
-    public static final double kPivotCancoderOffset = -.2783;
+    public static final double kPivotCancoderOffset = -.2651;
 
     public static final Distance kStowDistance = Feet.of(0.25);
     public static final Distance kIntakeDistance = Inches.of(1.0);
