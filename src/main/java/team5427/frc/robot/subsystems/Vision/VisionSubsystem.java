@@ -12,14 +12,11 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
-import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.Constants.VisionConstants;
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
@@ -65,7 +62,8 @@ public class VisionSubsystem extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
         // io[0] =
-        //     new VisionIOPhoton(VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform);
+        //     new VisionIOPhoton(VisionConstants.kSwerveCamName,
+        // VisionConstants.kSwerveCamTransform);
         io[0] =
             new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform);
         // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
@@ -176,15 +174,15 @@ public class VisionSubsystem extends SubsystemBase {
                   || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
                   || observation.pose().getY() < 0.0
                   || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
-                  // Must not be an impossible pose to acheive based on max drivetrain speeds
-                  // || observation
-                  //         .pose()
-                  //         .toPose2d()
-                  //         .relativeTo(SwerveSubsystem.getInstance().getPose())
-                  //         .getTranslation()
-                  //         .getNorm()
-                  //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-                  //         * (Timer.getTimestamp() - observation.timestamp());
+          // Must not be an impossible pose to acheive based on max drivetrain speeds
+          // || observation
+          //         .pose()
+          //         .toPose2d()
+          //         .relativeTo(SwerveSubsystem.getInstance().getPose())
+          //         .getTranslation()
+          //         .getNorm()
+          //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+          //         * (Timer.getTimestamp() - observation.timestamp());
 
           // Add pose to log
 

@@ -98,8 +98,7 @@ public final class Constants {
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
     public static ProfiledPIDController kRotationPIDController =
-        new ProfiledPIDController(0.3, 0.0, 0.0, new Constraints(0.5, 1));
-    ;
+        new ProfiledPIDController(0.1, 0.0, 0.0, new Constraints(2, 5));
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -112,6 +111,7 @@ public final class Constants {
 
     static {
       kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+      kRotationPIDController.setTolerance(Rotation2d.fromDegrees(1).getRadians());
       kSIMSteerController.enableContinuousInput(-0.5, 0.5);
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(3, "*");
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(5, "*");

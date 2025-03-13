@@ -2,6 +2,7 @@ package team5427.frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import team5427.frc.robot.Constants.BlinkinConstants;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.commands.cascade.Climb;
@@ -11,6 +12,7 @@ import team5427.frc.robot.commands.intake.FloorIntake;
 import team5427.frc.robot.commands.intake.Intake;
 import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
+import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Direction;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
@@ -40,9 +42,21 @@ public class AllCommands {
       new Intake(RobotConfigConstants.kReefLowAlgaeIntake);
   public static final Command highReefAlgaeIntake =
       new Intake(RobotConfigConstants.kReefHighAlgaeIntake);
-  public static final Command eject = new EjectGamePiece(true);
+  public static final Command eject =
+      new EjectGamePiece(true)
+          .alongWith(
+              new InstantCommand(
+                  () -> {
+                    LightsSubsystem.getInstance().setPattern(BlinkinConstants.kStrobeWhite);
+                  }));
   public static final Command floorIntake = new FloorIntake();
-  public static final Command ejectAlgae = new EjectGamePiece(false);
+  public static final Command ejectAlgae =
+      new EjectGamePiece(false)
+          .alongWith(
+              new InstantCommand(
+                  () -> {
+                    LightsSubsystem.getInstance().setPattern(BlinkinConstants.kStrobeBlue);
+                  }));
 
   public static final Command resetSubsystems = new ResetSubsystems();
 
@@ -50,11 +64,13 @@ public class AllCommands {
       new InstantCommand(
           () -> {
             ProngSubsystem.gamePieceMode = GamePieceMode.CORAL;
+            LightsSubsystem.getInstance().setPattern(BlinkinConstants.kWhite);
           });
   public static final Command switchToAlgaeMode =
       new InstantCommand(
           () -> {
             ProngSubsystem.gamePieceMode = GamePieceMode.ALGAE;
+            LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
           });
 
   public static final Command switchToDirect =

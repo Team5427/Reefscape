@@ -315,6 +315,9 @@ public class SwerveSubsystem extends SubsystemBase {
    * @return Angle from the gyro
    */
   public Rotation2d getGyroRotation() {
+    if (gyroInputs == null) {
+      return Rotation2d.kZero;
+    }
 
     return gyroInputs.yawPosition.unaryMinus();
   }
