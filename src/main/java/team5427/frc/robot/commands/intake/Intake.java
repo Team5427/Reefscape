@@ -29,7 +29,7 @@ public class Intake extends Command {
     cascadeSubsystem.setPivotSetpoint(config.getCascadeAngle());
     cascadeSubsystem.setCascadeSetpoint(config.getCascadeHeight());
     prongSubsystem.setWristSetpoint(config.getWristAngle());
-    prongSubsystem.setRollerSetpoint(config.getRollerSpeeds().times(config.isCoral() ? -1 : 1));
+    prongSubsystem.setRollerVelocity(config.getRollerSpeeds().times(config.isCoral() ? -1 : 1));
   }
 
   @Override
@@ -45,7 +45,7 @@ public class Intake extends Command {
             : ProngEffectorConstants.kAlgaeStowPosition);
 
     double staticSpeeds = config.getRollerSpeeds().magnitude() / (config.isCoral() ? 4 : 1.5);
-    prongSubsystem.setRollerSetpoint(
+    prongSubsystem.setRollerVelocity(
         MetersPerSecond.of(Math.copySign(staticSpeeds, config.isCoral() ? -1 : 1)));
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
   }

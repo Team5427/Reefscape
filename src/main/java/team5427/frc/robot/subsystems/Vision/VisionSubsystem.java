@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lombok.Getter;
+
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
@@ -35,7 +37,7 @@ public class VisionSubsystem extends SubsystemBase {
 
   private static VisionSubsystem m_instance;
 
-  private Pose3d latestPoseMeasurement;
+  @Getter private Pose3d latestPoseMeasurement;
 
   public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer) {
     if (m_instance == null) {
@@ -245,10 +247,6 @@ public class VisionSubsystem extends SubsystemBase {
       //     "Vision/Summary/RobotPosesRejected",
       //     allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
     }
-  }
-
-  public Pose3d getLatestPose() {
-    return this.latestPoseMeasurement;
   }
 
   @FunctionalInterface

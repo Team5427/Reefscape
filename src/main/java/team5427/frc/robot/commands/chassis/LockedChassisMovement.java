@@ -146,10 +146,10 @@ public class LockedChassisMovement extends Command {
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
       if (joy.getLeftTriggerAxis() >= 0.1) {
         inputSpeeds = new ChassisSpeeds(0, 0, 0);
-        swerveSubsystem.stop(true);
+        swerveSubsystem.setStopped(true);
         return;
       } else {
-        swerveSubsystem.stop(false);
+        swerveSubsystem.setStopped(false);
         swerveSubsystem.setChassisSpeeds(inputSpeeds);
       }
     }

@@ -7,6 +7,9 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.SuperStructureEnum.ProngEffectorStates;
@@ -32,8 +35,8 @@ public class ProngSubsystem extends SubsystemBase {
   private ProngIO io;
   private ProngIOInputsAutoLogged inputsAutoLogged = new ProngIOInputsAutoLogged();
 
-  private Rotation2d wristSetpoint;
-  private LinearVelocity rollerVelocity;
+  @Getter @Setter private Rotation2d wristSetpoint;
+  @Getter @Setter private LinearVelocity rollerVelocity;
 
   private static ProngSubsystem m_instance;
 
@@ -58,22 +61,6 @@ public class ProngSubsystem extends SubsystemBase {
     rollerVelocity = MetersPerSecond.of(-0.5);
     wristSetpoint = Rotation2d.kZero;
     state = ProngEffectorStates.IDLE;
-  }
-
-  public void setWristSetpoint(Rotation2d setpoint) {
-    this.wristSetpoint = setpoint;
-  }
-
-  public void setRollerSetpoint(LinearVelocity rollerVelocity) {
-    this.rollerVelocity = rollerVelocity;
-  }
-
-  public Rotation2d getWristSetpoint() {
-    return wristSetpoint;
-  }
-
-  public LinearVelocity getRollerSetpoint() {
-    return rollerVelocity;
   }
 
   public boolean hasObject() {

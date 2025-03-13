@@ -26,6 +26,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -49,17 +52,17 @@ public class SwerveSubsystem extends SubsystemBase {
   private GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
   private ChassisSpeeds inputSpeeds;
   private SwerveModuleState[] actualModuleStates;
-  private boolean bypass = false;
+  @Getter @Setter private boolean bypass = false;
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModuleState[] moduleStates = new SwerveModuleState[4];
 
-  private boolean isStopped = false;
+  @Getter @Setter private boolean isStopped = false;
 
   private final SysIdRoutine sysId;
 
   public static DrivingStates state;
 
-  private boolean gyroLock = false;
+  @Getter @Setter private boolean gyroLock = false;
 
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
       new SwerveModulePosition[] {
@@ -74,7 +77,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
-  private boolean isFieldOp;
+  @Getter @Setter private boolean isFieldOp;
 
   private SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
@@ -277,14 +280,6 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("Odometry/Robot", getPose());
   }
 
-  public void setGyroLock(boolean setLock) {
-    this.gyroLock = setLock;
-  }
-
-  public boolean getGyroLock() {
-    return this.gyroLock;
-  }
-
   public void resetGyro(Rotation2d angle) {
     gyroIO.resetGyroYawAngle(angle);
   }
@@ -320,14 +315,6 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     return gyroInputs.yawPosition.unaryMinus();
-  }
-
-  public boolean getFieldOp() {
-    return isFieldOp;
-  }
-
-  public void setFieldOp(boolean op) {
-    isFieldOp = op;
   }
 
   public SwerveModuleState getModuleState(int index) {
@@ -444,11 +431,4 @@ public class SwerveSubsystem extends SubsystemBase {
     return values;
   }
 
-  public void stop(boolean enabled) {
-    this.isStopped = enabled;
-  }
-
-  public void bypass(boolean bypass) {
-    this.bypass = bypass;
-  }
 }

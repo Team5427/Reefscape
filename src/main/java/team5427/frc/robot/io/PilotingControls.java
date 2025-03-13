@@ -73,11 +73,11 @@ public class PilotingControls {
                 new InstantCommand(
                     () -> {
                       SwerveSubsystem.getInstance()
-                          .resetAutonPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
+                          .resetAutonPose(VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
                     }),
                 new InstantCommand(),
                 () -> {
-                  return VisionSubsystem.getInstance().getLatestPose() != null;
+                  return VisionSubsystem.getInstance().getLatestPoseMeasurement() != null;
                 }));
     joy.y()
         .and(() -> RobotBase.isReal())

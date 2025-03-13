@@ -19,7 +19,7 @@ public class EjectGamePiece extends Command {
 
   @Override
   public void initialize() {
-    prongSubsystem.setRollerSetpoint(MetersPerSecond.of(5.0 * (isCoral ? 1 : -1)));
+    prongSubsystem.setRollerVelocity(MetersPerSecond.of(5.0 * (isCoral ? 1 : -1)));
   }
 
   @Override
@@ -29,6 +29,6 @@ public class EjectGamePiece extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    prongSubsystem.setRollerSetpoint(MetersPerSecond.of(0.0));
+    prongSubsystem.setRollerVelocity(MetersPerSecond.of(0.0));
   }
 }

@@ -23,7 +23,7 @@ public class FloorIntake extends Command {
   public void execute() {
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kAlgaeIntakeRotation);
     cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kFloorIntakeDistance);
-    prongSubsystem.setRollerSetpoint(MetersPerSecond.of(3.0));
+    prongSubsystem.setRollerVelocity(MetersPerSecond.of(3.0));
     prongSubsystem.setWristSetpoint(ProngEffectorConstants.kFloorIntakePosition);
   }
 
@@ -36,7 +36,7 @@ public class FloorIntake extends Command {
   public void end(boolean interrupted) {
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
     cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
-    prongSubsystem.setRollerSetpoint(MetersPerSecond.of(2.0));
+    prongSubsystem.setRollerVelocity(MetersPerSecond.of(2.0));
     prongSubsystem.setWristSetpoint(ProngEffectorConstants.kStowPosition);
   }
 }

@@ -26,7 +26,7 @@ public class CoralIntakeTest extends Command {
 
   @Override
   public void execute() {
-    prongEffectorSubsystem.setRollerSetpoint(MetersPerSecond.of(-1.5));
+    prongEffectorSubsystem.setRollerVelocity(MetersPerSecond.of(-1.5));
     prongEffectorSubsystem.setWristSetpoint(ProngEffectorConstants.kIntakePosition);
     cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kIntakeDistance);
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kIntakeRotation);
@@ -41,7 +41,7 @@ public class CoralIntakeTest extends Command {
 
   @Override
   public void end(boolean interruped) {
-    prongEffectorSubsystem.setRollerSetpoint(MetersPerSecond.of(0.0));
+    prongEffectorSubsystem.setRollerVelocity(MetersPerSecond.of(0.0));
     prongEffectorSubsystem.setWristSetpoint(ProngEffectorConstants.kZeroPosition);
     cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
