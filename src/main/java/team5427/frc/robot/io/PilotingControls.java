@@ -87,7 +87,7 @@ public class PilotingControls {
                   SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
                 }));
 
-    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement));
+    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement), Optional.of(SwerveSubsystem.getInstance()::getPose));
     // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }
 }

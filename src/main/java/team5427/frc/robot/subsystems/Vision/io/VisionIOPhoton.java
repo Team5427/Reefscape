@@ -1,20 +1,29 @@
 package team5427.frc.robot.subsystems.Vision.io;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.Timer;
+
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
+
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
+
 import team5427.frc.robot.Constants.VisionConstants;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class VisionIOPhoton implements VisionIO {
 
@@ -24,7 +33,11 @@ public class VisionIOPhoton implements VisionIO {
 
   PhotonPoseEstimator photonPoseEstimator;
 
-  public VisionIOPhoton(String cameraName, Transform3d cameraTransform) {
+  Transform3d cameraOffset;
+
+  Supplier<Pose2d> getReferencePose;
+
+  public VisionIOPhoton(String cameraName, Transform3d cameraTransform, Supplier<Pose2d> getReferencePose) {
     cam = new PhotonCamera(cameraName);
 
     photonPoseEstimator =
@@ -32,7 +45,9 @@ public class VisionIOPhoton implements VisionIO {
             VisionConstants.kAprilTagLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             cameraTransform);
-    photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+    photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
+    this.cameraOffset = cameraTransform;
+    this.getReferencePose = getReferencePose;
   }
 
   @Override
@@ -42,7 +57,10 @@ public class VisionIOPhoton implements VisionIO {
     List<PoseObservation> obs = new LinkedList<PoseObservation>();
 
     for (int i = results.size() - 1; i > 0; i--) {
+      photonPoseEstimator.setReferencePose(getReferencePose.get());
+     
       if (results.get(i).multitagResult.isPresent()) {
+        photonPoseEstimator.update(results.get(i));
         Pose3d pose =
             new Pose3d(
                 results.get(i).getMultiTagResult().get().estimatedPose.best.getTranslation(),
@@ -71,12 +89,14 @@ public class VisionIOPhoton implements VisionIO {
         // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
         // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
       } else {
+        photonPoseEstimator.update(results.get(i));
+        // photonPoseEstimator.addHeadingData(Timer.getTimestamp(), SwerveSubsystem.getInstance().getGyroRotation());
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
           Pose3d pose =
               new Pose3d(
                   target.bestCameraToTarget.getTranslation(),
-                  target.bestCameraToTarget.getRotation());
+                  target.bestCameraToTarget.getRotation()).transformBy(cameraOffset);
           obs.add(
               new PoseObservation(
                   results.get(i).getTimestampSeconds(),

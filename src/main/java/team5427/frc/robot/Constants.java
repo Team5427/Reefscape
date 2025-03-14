@@ -177,7 +177,7 @@ public final class Constants {
       kDriveMotorConfiguration.kP = 2.54;
       // kDriveMotorConfiguration.kV = 2.08;
       kDriveMotorConfiguration.kA = 1.2;
-      kDriveMotorConfiguration.kS = 1.1;
+      kDriveMotorConfiguration.kS = 1.0;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }
@@ -198,7 +198,7 @@ public final class Constants {
       // Tunable values
       kSteerMotorConfiguration.kP = 4.613; // 7.0
       kSteerMotorConfiguration.kD = 0.0004;
-      // kSteerMotorConfiguration.kS = 4.0;
+      kSteerMotorConfiguration.kS = 0.5;
       kSteerMotorConfiguration.kA = 0.3;
       // kSteerMotorConfiguration.kA = 8.0;
       kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
@@ -328,7 +328,7 @@ public final class Constants {
     public static final String kIntakeCamName = "intakeCam";
     // public static final String kBackCamName = "backCam";
 
-    public static final int kCameraCount = 1;
+    public static final int kCameraCount = 2;
 
     public static final double kMaxAmbiguity = 0.20;
 
@@ -337,21 +337,28 @@ public final class Constants {
     public static final AprilTagFieldLayout kAprilTagLayout =
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
-    public static final Transform3d kSwerveCamTransform =
-        new Transform3d(
-            Units.inchesToMeters(-11.048439965),
-            Units.inchesToMeters(8.804096310),
-            Units.inchesToMeters(8.540489626),
-            new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
     public static final Transform3d kIntakeCamTransform =
         new Transform3d(
             Units.inchesToMeters(-11.048439965),
-            Units.inchesToMeters(-8.804096310),
-            Units.inchesToMeters(-8.540489626),
+            Units.inchesToMeters(8.804096310),
+            Units.inchesToMeters(9.375),
             new Rotation3d(0, Units.degreesToRadians(15), -0.47976945625357));
+    public static final Transform3d kSwerveCamTransform =
+        new Transform3d(
+            Units.inchesToMeters(11.048439965),
+            Units.inchesToMeters(9.375),
+            Units.inchesToMeters(8.540489626),
+            new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
     public static final Transform3d kQuestCameraTransform =
         new Transform3d(0, 0, 0, Rotation3d.kZero);
+
+  
+        public static  Transform3d[]kCameraTransforms = new Transform3d[kCameraCount];
+    static {
+      kCameraTransforms[0] = kIntakeCamTransform;
+      kCameraTransforms[1] = kSwerveCamTransform;
+    }
 
     public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
 
@@ -473,7 +480,7 @@ public final class Constants {
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
-    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(80.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(85.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(9.0);
 

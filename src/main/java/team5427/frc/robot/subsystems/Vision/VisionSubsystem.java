@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 
 import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.VisionConstants;
@@ -39,13 +41,13 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Getter private Pose3d latestPoseMeasurement;
 
-  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer) {
+  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer, Optional<Supplier<Pose2d>> referencePoseSupplier) {
     if (m_instance == null) {
-      if (consumer.isEmpty()) {
+      if (consumer.isEmpty() || referencePoseSupplier.isEmpty()) {
         DriverStation.reportWarning("Vision Subsystem Not provided Vision Consumer", true);
         return null;
       }
-      m_instance = new VisionSubsystem(consumer.get());
+      m_instance = new VisionSubsystem(consumer.get(), referencePoseSupplier.get());
     }
     return m_instance;
   }
@@ -59,15 +61,15 @@ public class VisionSubsystem extends SubsystemBase {
     return m_instance;
   }
 
-  private VisionSubsystem(VisionConsumer consumer) {
+  private VisionSubsystem(VisionConsumer consumer, Supplier<Pose2d> referencePoseSupplier) {
     super();
     switch (Constants.currentMode) {
       case REAL:
-        // io[0] =
-        //     new VisionIOPhoton(VisionConstants.kSwerveCamName,
-        // VisionConstants.kSwerveCamTransform);
+        io[1] =
+            new VisionIOPhoton(VisionConstants.kSwerveCamName,
+        VisionConstants.kSwerveCamTransform, referencePoseSupplier);
         io[0] =
-            new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform);
+            new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform, referencePoseSupplier);
         // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {
