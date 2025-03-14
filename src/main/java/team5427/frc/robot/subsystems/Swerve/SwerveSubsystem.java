@@ -8,17 +8,11 @@ import static edu.wpi.first.units.Units.Volts;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -26,16 +20,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import org.littletonrobotics.junction.AutoLogOutput;
+import lombok.Getter;
+import lombok.Setter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
-import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
@@ -88,7 +79,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public static SwerveSubsystem getInstance(Optional<OdometryConsumer> odometryConsumer) {
     if (m_instance == null) {
-      if(odometryConsumer.isEmpty()){
+      if (odometryConsumer.isEmpty()) {
         DriverStation.reportWarning("Swerve Subsystem Not provided Odometry Consumer", true);
         return null;
       }
@@ -287,7 +278,6 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
-  
   }
 
   public void resetGyro(Rotation2d angle) {
@@ -441,11 +431,9 @@ public class SwerveSubsystem extends SubsystemBase {
     return values;
   }
 
-
   @FunctionalInterface
   public static interface OdometryConsumer {
     public void accept(
-        double timestampSeconds,
-        Rotation2d rotation, SwerveModulePosition[] modulePositions);
+        double timestampSeconds, Rotation2d rotation, SwerveModulePosition[] modulePositions);
   }
 }

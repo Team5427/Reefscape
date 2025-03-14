@@ -11,10 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import org.team4206.battleaid.common.TunedJoystick;
 import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
-
-import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class LockedChassisMovement extends Command {
@@ -85,7 +84,7 @@ public class LockedChassisMovement extends Command {
 
   public LockedChassisMovement(
       CommandXboxController driverJoystick, Pose2d robotPose, List<Pose2d> matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance( null);
+    swerveSubsystem = SwerveSubsystem.getInstance(null);
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -129,7 +128,7 @@ public class LockedChassisMovement extends Command {
 
     if (DriverStation.isTeleop()) {
 
-      robotPose =  RobotState.getInstance().getEstimatedPose();
+      robotPose = RobotState.getInstance().getEstimatedPose();
       updateRotationSetpoint();
       double dampener = joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount;
 
@@ -139,7 +138,8 @@ public class LockedChassisMovement extends Command {
 
       double omegaRadians =
           SwerveConstants.kRotationPIDController.calculate(
-            RobotState.getInstance().getEstimatedPose().getRotation().getRadians(), this.rotationSetpoint.getRadians());
+              RobotState.getInstance().getEstimatedPose().getRotation().getRadians(),
+              this.rotationSetpoint.getRadians());
 
       vx *= (1 - dampener);
       vy *= (1 - dampener);

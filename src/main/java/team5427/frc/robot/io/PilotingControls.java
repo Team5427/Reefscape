@@ -6,10 +6,9 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.Optional;
-
-import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -53,7 +52,8 @@ public class PilotingControls {
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
 
-    SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement)).setDefaultCommand(new ChassisMovement(joy));
+    SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement))
+        .setDefaultCommand(new ChassisMovement(joy));
 
     joy.leftBumper()
         .onTrue(
@@ -74,8 +74,9 @@ public class PilotingControls {
             new ConditionalCommand(
                 new InstantCommand(
                     () -> {
-                      RobotState
-                          .getInstance().resetAllPose(VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
+                      RobotState.getInstance()
+                          .resetAllPose(
+                              VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
                     }),
                 new InstantCommand(),
                 () -> {
@@ -90,7 +91,10 @@ public class PilotingControls {
                   RobotState.getInstance().resetHeading(Rotation2d.kZero);
                 }));
 
-    VisionSubsystem.getInstance(Optional.of(RobotState.getInstance()::addVisionMeasurement), Optional.of(RobotState.getInstance()::getEstimatedPose), Optional.of(RobotState.getInstance()::getOdometryHeading));
+    VisionSubsystem.getInstance(
+        Optional.of(RobotState.getInstance()::addVisionMeasurement),
+        Optional.of(RobotState.getInstance()::getEstimatedPose),
+        Optional.of(RobotState.getInstance()::getOdometryHeading));
     // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }
 }

@@ -13,21 +13,19 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lombok.Getter;
-
 import java.util.Optional;
 import java.util.function.Supplier;
-
+import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
-import team5427.lib.detection.tuples.Tuple2Plus;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
+import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionSubsystem extends SubsystemBase {
   private VisionIO[] io = new VisionIO[VisionConstants.kCameraCount];
@@ -42,13 +40,20 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Getter private Pose3d latestPoseMeasurement;
 
-  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer, Optional<Supplier<Pose2d>> referencePoseSupplier, Optional<Supplier<Tuple2Plus<Double, Rotation2d>>> referenceHeadingSupplier) {
+  public static VisionSubsystem getInstance(
+      Optional<VisionConsumer> consumer,
+      Optional<Supplier<Pose2d>> referencePoseSupplier,
+      Optional<Supplier<Tuple2Plus<Double, Rotation2d>>> referenceHeadingSupplier) {
     if (m_instance == null) {
-      if (consumer.isEmpty() || referencePoseSupplier.isEmpty() || referenceHeadingSupplier.isEmpty()) {
+      if (consumer.isEmpty()
+          || referencePoseSupplier.isEmpty()
+          || referenceHeadingSupplier.isEmpty()) {
         DriverStation.reportWarning("Vision Subsystem Not provided Vision Consumer", true);
         return null;
       }
-      m_instance = new VisionSubsystem(consumer.get(), referencePoseSupplier.get(), referenceHeadingSupplier.get());
+      m_instance =
+          new VisionSubsystem(
+              consumer.get(), referencePoseSupplier.get(), referenceHeadingSupplier.get());
     }
     return m_instance;
   }
@@ -62,15 +67,25 @@ public class VisionSubsystem extends SubsystemBase {
     return m_instance;
   }
 
-  private VisionSubsystem(VisionConsumer consumer, Supplier<Pose2d> referencePoseSupplier, Supplier<Tuple2Plus<Double, Rotation2d>> referenceHeadingSupplier) {
+  private VisionSubsystem(
+      VisionConsumer consumer,
+      Supplier<Pose2d> referencePoseSupplier,
+      Supplier<Tuple2Plus<Double, Rotation2d>> referenceHeadingSupplier) {
     super();
     switch (Constants.currentMode) {
       case REAL:
         io[1] =
-            new VisionIOPhoton(VisionConstants.kSwerveCamName,
-        VisionConstants.kSwerveCamTransform, referencePoseSupplier, referenceHeadingSupplier);
+            new VisionIOPhoton(
+                VisionConstants.kSwerveCamName,
+                VisionConstants.kSwerveCamTransform,
+                referencePoseSupplier,
+                referenceHeadingSupplier);
         io[0] =
-            new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform, referencePoseSupplier, referenceHeadingSupplier);
+            new VisionIOPhoton(
+                VisionConstants.kIntakeCamName,
+                VisionConstants.kIntakeCamTransform,
+                referencePoseSupplier,
+                referenceHeadingSupplier);
         // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {

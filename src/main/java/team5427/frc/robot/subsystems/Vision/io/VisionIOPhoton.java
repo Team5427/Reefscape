@@ -7,24 +7,17 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.Timer;
-
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
-
-import com.ctre.phoenix6.swerve.SwerveDrivetrain;
-
 import team5427.frc.robot.Constants.VisionConstants;
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionIOPhoton implements VisionIO {
@@ -41,7 +34,11 @@ public class VisionIOPhoton implements VisionIO {
 
   Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
 
-  public VisionIOPhoton(String cameraName, Transform3d cameraTransform, Supplier<Pose2d> getReferencePose, Supplier<Tuple2Plus<Double,Rotation2d>> getHeadingData) {
+  public VisionIOPhoton(
+      String cameraName,
+      Transform3d cameraTransform,
+      Supplier<Pose2d> getReferencePose,
+      Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData) {
     cam = new PhotonCamera(cameraName);
 
     photonPoseEstimator =
@@ -64,7 +61,7 @@ public class VisionIOPhoton implements VisionIO {
     for (int i = results.size() - 1; i > 0; i--) {
       photonPoseEstimator.setReferencePose(getReferencePose.get());
       photonPoseEstimator.addHeadingData(getHeadingData.get().r, getHeadingData.get().t);
-     
+
       if (results.get(i).multitagResult.isPresent()) {
         photonPoseEstimator.update(results.get(i));
         Pose3d pose =
@@ -96,13 +93,15 @@ public class VisionIOPhoton implements VisionIO {
         // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
       } else {
         photonPoseEstimator.update(results.get(i));
-        // photonPoseEstimator.addHeadingData(Timer.getTimestamp(), SwerveSubsystem.getInstance().getGyroRotation());
+        // photonPoseEstimator.addHeadingData(Timer.getTimestamp(),
+        // SwerveSubsystem.getInstance().getGyroRotation());
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
           Pose3d pose =
               new Pose3d(
-                  target.bestCameraToTarget.getTranslation(),
-                  target.bestCameraToTarget.getRotation()).transformBy(cameraOffset);
+                      target.bestCameraToTarget.getTranslation(),
+                      target.bestCameraToTarget.getRotation())
+                  .transformBy(cameraOffset);
           obs.add(
               new PoseObservation(
                   results.get(i).getTimestampSeconds(),

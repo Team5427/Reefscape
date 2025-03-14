@@ -353,8 +353,8 @@ public final class Constants {
     public static final Transform3d kQuestCameraTransform =
         new Transform3d(0, 0, 0, Rotation3d.kZero);
 
-  
-        public static  Transform3d[]kCameraTransforms = new Transform3d[kCameraCount];
+    public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
+
     static {
       kCameraTransforms[0] = kIntakeCamTransform;
       kCameraTransforms[1] = kSwerveCamTransform;
