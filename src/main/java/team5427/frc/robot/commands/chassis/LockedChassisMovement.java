@@ -32,7 +32,7 @@ public class LockedChassisMovement extends Command {
   private Pose2d robotPose = new Pose2d();
 
   public LockedChassisMovement(CommandXboxController driverJoystick, Rotation2d rotationSetpoint) {
-    swerveSubsystem = SwerveSubsystem.getInstance(null);
+    swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -48,7 +48,7 @@ public class LockedChassisMovement extends Command {
   }
 
   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d pose) {
-    swerveSubsystem = SwerveSubsystem.getInstance(null);
+    swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -66,7 +66,7 @@ public class LockedChassisMovement extends Command {
 
   public LockedChassisMovement(
       CommandXboxController driverJoystick, Pose2d robotPose, Pose2d[] matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance(null);
+    swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -84,7 +84,7 @@ public class LockedChassisMovement extends Command {
 
   public LockedChassisMovement(
       CommandXboxController driverJoystick, Pose2d robotPose, List<Pose2d> matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance(null);
+    swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -101,7 +101,7 @@ public class LockedChassisMovement extends Command {
   }
 
   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d[] matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance(null);
+    swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);

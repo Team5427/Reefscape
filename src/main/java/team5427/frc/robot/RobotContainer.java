@@ -12,11 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
+import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -35,6 +38,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
+    LightsSubsystem.getInstance();
+
     try {
       Constants.config = RobotConfig.fromGUISettings();
       System.out.println("Robot Config Loaded");
@@ -50,6 +55,11 @@ public class RobotContainer {
       System.out.println("Robot Config Failing");
       e.printStackTrace();
     }
+    SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement));
+    VisionSubsystem.getInstance(
+        Optional.of(RobotState.getInstance()::addVisionMeasurement),
+        Optional.of(RobotState.getInstance()::getEstimatedPose),
+        Optional.of(RobotState.getInstance()::getOdometryHeading));
     createNamedCommands();
 
     // Configure AutoBuilder last
@@ -58,9 +68,9 @@ public class RobotContainer {
         RobotState.getInstance()
             ::resetAllPose, // Method to reset odometry (will be called if your auto has a
         // starting pose)
-        SwerveSubsystem.getInstance(null)
+        SwerveSubsystem.getInstance(Optional.empty())
             ::getCurrentRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        SwerveSubsystem.getInstance(null)::setSpeedsAuton,
+        SwerveSubsystem.getInstance(Optional.empty())::setSpeedsAuton,
         // (speeds) ->
         //     SwerveSubsystem.getInstance()
         //         .setChassisSpeeds(speeds), // Method that will drive the robot given ROBOT
@@ -83,7 +93,8 @@ public class RobotContainer {
           }
           return false;
         },
-        SwerveSubsystem.getInstance(null) // Reference to this subsystem to set requirements
+        SwerveSubsystem.getInstance(
+            Optional.empty()) // Reference to this subsystem to set requirements
         );
     // VisionSubsystem vision = new
     // VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
@@ -106,21 +117,32 @@ public class RobotContainer {
     //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
     autoChooser.addOption(
         "Drive SysId (Quasistatic Forward)",
-        SwerveSubsystem.getInstance(null).sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+        SwerveSubsystem.getInstance(Optional.empty())
+            .sysIdQuasistatic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Quasistatic Reverse)",
-        SwerveSubsystem.getInstance(null).sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+        SwerveSubsystem.getInstance(Optional.empty())
+            .sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
     autoChooser.addOption(
         "Drive SysId (Dynamic Forward)",
-        SwerveSubsystem.getInstance(null).sysIdDynamic(SysIdRoutine.Direction.kForward));
+        SwerveSubsystem.getInstance(Optional.empty())
+            .sysIdDynamic(SysIdRoutine.Direction.kForward));
     autoChooser.addOption(
         "Drive SysId (Dynamic Reverse)",
-        SwerveSubsystem.getInstance(null).sysIdDynamic(SysIdRoutine.Direction.kReverse));
+        SwerveSubsystem.getInstance(Optional.empty())
+            .sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureButtonBindings();
   }
+
+  //   public void addVisionMeasurement(
+  //     Pose2d visionRobotPoseMeters,
+  //     double timestampSeconds,
+  //     Matrix<N3, N1> visionMeasurementStdDevs) {
+
+  // }
 
   private void createNamedCommands() {
     NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);

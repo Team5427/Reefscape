@@ -354,7 +354,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public ChassisSpeeds getCurrentRobotRelativeSpeeds() {
-    return ChassisSpeeds.fromFieldRelativeSpeeds(getCurrentChassisSpeeds(), getGyroRotation());
+    return getCurrentChassisSpeeds();
   }
 
   /** Returns the current odometry pose. */

@@ -37,7 +37,7 @@ public class Intake extends Command {
 
   @Override
   public boolean isFinished() {
-    return prongSubsystem.hasObject() && config.isCoral();
+    return false;
   }
 
   @Override

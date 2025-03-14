@@ -2,7 +2,6 @@ package team5427.frc.robot.io;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.Optional;
@@ -12,7 +11,6 @@ import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 public class PilotingControls {
 
@@ -59,42 +57,40 @@ public class PilotingControls {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance(null).setGyroLock(true);
+                  SwerveSubsystem.getInstance(Optional.empty()).setGyroLock(true);
                 }))
         .onFalse(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance(null).setGyroLock(false);
+                  SwerveSubsystem.getInstance(Optional.empty()).setGyroLock(false);
                 }));
 
     joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
 
-    joy.a()
-        .onTrue(
-            new ConditionalCommand(
-                new InstantCommand(
-                    () -> {
-                      RobotState.getInstance()
-                          .resetAllPose(
-                              VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
-                    }),
-                new InstantCommand(),
-                () -> {
-                  return VisionSubsystem.getInstance().getLatestPoseMeasurement() != null;
-                }));
+    // joy.a()
+    //     .onTrue(
+    //         new ConditionalCommand(
+    //             new InstantCommand(
+    //                 () -> {
+    //                   RobotState.getInstance()
+    //                       .resetAllPose(
+    //
+    // VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
+    //                 }),
+    //             new InstantCommand(),
+    //             () -> {
+    //               return VisionSubsystem.getInstance().getLatestPoseMeasurement() !=
+    // Optional.empty();
+    //             }));
     joy.y()
         .and(() -> RobotBase.isReal())
         .onTrue(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance(null).resetGyro(Rotation2d.kZero);
+                  SwerveSubsystem.getInstance(Optional.empty()).resetGyro(Rotation2d.kZero);
                   RobotState.getInstance().resetHeading(Rotation2d.kZero);
                 }));
 
-    VisionSubsystem.getInstance(
-        Optional.of(RobotState.getInstance()::addVisionMeasurement),
-        Optional.of(RobotState.getInstance()::getEstimatedPose),
-        Optional.of(RobotState.getInstance()::getOdometryHeading));
     // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }
 }

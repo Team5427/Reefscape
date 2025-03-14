@@ -10,8 +10,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
+import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.SwerveConstants;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class RobotState {
@@ -96,6 +98,7 @@ public class RobotState {
       Pose2d resetPose, SwerveModulePosition[] modulePositions, Rotation2d gyroAngle) {
     resetOdometryPose(resetPose, modulePositions, gyroAngle);
     resetEstimatedPose(resetPose, modulePositions, gyroAngle);
+    SwerveSubsystem.getInstance(Optional.empty()).resetGyro(resetPose.getRotation());
   }
 
   public void resetOdometryPose(Pose2d resetPose) {

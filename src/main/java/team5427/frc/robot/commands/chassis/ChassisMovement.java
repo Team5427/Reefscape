@@ -24,7 +24,7 @@ public class ChassisMovement extends Command {
   private TunedJoystick tunedJoystickQuadratic;
 
   public ChassisMovement(CommandXboxController driverJoystick) {
-    swerveSubsystem = SwerveSubsystem.getInstance(null);
+    swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);

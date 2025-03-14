@@ -1,14 +1,9 @@
 package team5427.frc.robot.io;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import team5427.frc.robot.Constants.BlinkinConstants;
 import team5427.frc.robot.commands.AllCommands;
-import team5427.frc.robot.commands.cascade.Climb;
 import team5427.frc.robot.commands.homing.HomeCascade;
-import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Direction;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
@@ -68,36 +63,36 @@ public class OperatingControls {
 
     joy.leftStick().whileTrue(new HomeCascade());
 
-    Trigger kFirstClimbStage =
-        new Trigger(
-            () -> {
-              return Climb.step == Climb.kPrep;
-            });
-    kFirstClimbStage.whileTrue(
-        new InstantCommand(
-            () -> {
-              LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatGray);
-            }));
-    Trigger kSecondClimbStage =
-        new Trigger(
-            () -> {
-              return Climb.step == Climb.kActivate;
-            });
-    kSecondClimbStage.whileTrue(
-        new InstantCommand(
-            () -> {
-              LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatRed);
-            }));
+    //     Trigger kFirstClimbStage =
+    //         new Trigger(
+    //             () -> {
+    //               return Climb.step == Climb.kPrep;
+    //             });
+    //     kFirstClimbStage.whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatGray);
+    //             }));
+    //     Trigger kSecondClimbStage =
+    //         new Trigger(
+    //             () -> {
+    //               return Climb.step == Climb.kActivate;
+    //             });
+    //     kSecondClimbStage.whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatRed);
+    //             }));
 
-    Trigger kThirdClimbStage =
-        new Trigger(
-            () -> {
-              return Climb.step == Climb.kClimb;
-            });
-    kThirdClimbStage.whileTrue(
-        new InstantCommand(
-            () -> {
-              LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatWhite);
-            }));
+    //     Trigger kThirdClimbStage =
+    //         new Trigger(
+    //             () -> {
+    //               return Climb.step == Climb.kClimb;
+    //             });
+    //     kThirdClimbStage.whileTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatWhite);
+    //             }));
   }
 }

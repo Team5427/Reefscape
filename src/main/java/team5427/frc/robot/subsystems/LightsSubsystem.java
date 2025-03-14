@@ -45,7 +45,7 @@ public class LightsSubsystem extends SubsystemBase {
 
     if (ProngSubsystem.task == EETask.EJECTING) {
       if (CascadeSubsystem.getInstance().cascadeAtGoal()) {
-        pattern = BlinkinConstants.kGreen;
+        pattern = BlinkinConstants.kCp1BreathFast;
       }
     }
 
