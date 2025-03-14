@@ -36,12 +36,24 @@ public class RobotState {
   public RobotState() {
     this.odometry =
         new SwerveDriveOdometry(
-            SwerveConstants.m_kinematics, Rotation2d.kZero, new SwerveModulePosition[]{new SwerveModulePosition(0, Rotation2d.kZero),new SwerveModulePosition(0, Rotation2d.kZero),new SwerveModulePosition(0, Rotation2d.kZero),new SwerveModulePosition(0, Rotation2d.kZero)});
+            SwerveConstants.m_kinematics,
+            Rotation2d.kZero,
+            new SwerveModulePosition[] {
+              new SwerveModulePosition(0, Rotation2d.kZero),
+              new SwerveModulePosition(0, Rotation2d.kZero),
+              new SwerveModulePosition(0, Rotation2d.kZero),
+              new SwerveModulePosition(0, Rotation2d.kZero)
+            });
     this.poseEstimator =
         new SwerveDrivePoseEstimator(
             SwerveConstants.m_kinematics,
             Rotation2d.kZero,
-            new SwerveModulePosition[]{new SwerveModulePosition(0, Rotation2d.kZero),new SwerveModulePosition(0, Rotation2d.kZero),new SwerveModulePosition(0, Rotation2d.kZero),new SwerveModulePosition(0, Rotation2d.kZero)},
+            new SwerveModulePosition[] {
+              new SwerveModulePosition(0, Rotation2d.kZero),
+              new SwerveModulePosition(0, Rotation2d.kZero),
+              new SwerveModulePosition(0, Rotation2d.kZero),
+              new SwerveModulePosition(0, Rotation2d.kZero)
+            },
             Pose2d.kZero,
             odometryStateStdDevs,
             VecBuilder.fill(0.4, 0.4, 9));
