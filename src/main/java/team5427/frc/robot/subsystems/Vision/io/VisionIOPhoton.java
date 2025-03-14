@@ -3,6 +3,7 @@ package team5427.frc.robot.subsystems.Vision.io;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -24,6 +25,7 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain;
 
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionIOPhoton implements VisionIO {
 
@@ -37,7 +39,9 @@ public class VisionIOPhoton implements VisionIO {
 
   Supplier<Pose2d> getReferencePose;
 
-  public VisionIOPhoton(String cameraName, Transform3d cameraTransform, Supplier<Pose2d> getReferencePose) {
+  Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
+
+  public VisionIOPhoton(String cameraName, Transform3d cameraTransform, Supplier<Pose2d> getReferencePose, Supplier<Tuple2Plus<Double,Rotation2d>> getHeadingData) {
     cam = new PhotonCamera(cameraName);
 
     photonPoseEstimator =
@@ -45,9 +49,10 @@ public class VisionIOPhoton implements VisionIO {
             VisionConstants.kAprilTagLayout,
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             cameraTransform);
-    photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.AVERAGE_BEST_TARGETS);
+    photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
     this.cameraOffset = cameraTransform;
     this.getReferencePose = getReferencePose;
+    this.getHeadingData = getHeadingData;
   }
 
   @Override
@@ -58,6 +63,7 @@ public class VisionIOPhoton implements VisionIO {
 
     for (int i = results.size() - 1; i > 0; i--) {
       photonPoseEstimator.setReferencePose(getReferencePose.get());
+      photonPoseEstimator.addHeadingData(getHeadingData.get().r, getHeadingData.get().t);
      
       if (results.get(i).multitagResult.isPresent()) {
         photonPoseEstimator.update(results.get(i));

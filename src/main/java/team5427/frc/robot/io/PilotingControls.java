@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.Optional;
+
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
@@ -51,18 +53,18 @@ public class PilotingControls {
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
 
-    SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
+    SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement)).setDefaultCommand(new ChassisMovement(joy));
 
     joy.leftBumper()
         .onTrue(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance().setGyroLock(true);
+                  SwerveSubsystem.getInstance(null).setGyroLock(true);
                 }))
         .onFalse(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance().setGyroLock(false);
+                  SwerveSubsystem.getInstance(null).setGyroLock(false);
                 }));
 
     joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
@@ -72,8 +74,8 @@ public class PilotingControls {
             new ConditionalCommand(
                 new InstantCommand(
                     () -> {
-                      SwerveSubsystem.getInstance()
-                          .resetAutonPose(VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
+                      RobotState
+                          .getInstance().resetAllPose(VisionSubsystem.getInstance().getLatestPoseMeasurement().toPose2d());
                     }),
                 new InstantCommand(),
                 () -> {
@@ -84,10 +86,11 @@ public class PilotingControls {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
+                  SwerveSubsystem.getInstance(null).resetGyro(Rotation2d.kZero);
+                  RobotState.getInstance().resetHeading(Rotation2d.kZero);
                 }));
 
-    VisionSubsystem.getInstance(Optional.of(SwerveSubsystem.getInstance()::addVisionMeasurement), Optional.of(SwerveSubsystem.getInstance()::getPose));
+    VisionSubsystem.getInstance(Optional.of(RobotState.getInstance()::addVisionMeasurement), Optional.of(RobotState.getInstance()::getEstimatedPose), Optional.of(RobotState.getInstance()::getOdometryHeading));
     // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }
 }

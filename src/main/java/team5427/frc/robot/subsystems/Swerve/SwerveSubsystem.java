@@ -29,11 +29,13 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Optional;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.Mode;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.SuperStructureEnum.DrivingStates;
@@ -62,6 +64,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public static DrivingStates state;
 
+  private OdometryConsumer odometryConsumer;
+
   @Getter @Setter private boolean gyroLock = false;
 
   private SwerveModulePosition[] lastModulePositions = // For delta tracking
@@ -73,7 +77,7 @@ public class SwerveSubsystem extends SubsystemBase {
       };
 
   private Rotation2d rawGyroRotation = new Rotation2d();
-  private SwerveDrivePoseEstimator poseEstimator;
+  // private SwerveDrivePoseEstimator poseEstimator;
 
   private final Alert gyroDisconnectedAlert =
       new Alert("Disconnected gyro, using kinematics as fallback.", AlertType.kError);
@@ -82,14 +86,18 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
 
-  public static SwerveSubsystem getInstance() {
+  public static SwerveSubsystem getInstance(Optional<OdometryConsumer> odometryConsumer) {
     if (m_instance == null) {
-      m_instance = new SwerveSubsystem();
+      if(odometryConsumer.isEmpty()){
+        DriverStation.reportWarning("Swerve Subsystem Not provided Odometry Consumer", true);
+        return null;
+      }
+      m_instance = new SwerveSubsystem(odometryConsumer.get());
     }
     return m_instance;
   }
 
-  private SwerveSubsystem() {
+  private SwerveSubsystem(OdometryConsumer odometryConsumer) {
     modules = new SwerveModule[4];
 
     modules[SwerveUtil.kFrontLeftModuleIdx] = new SwerveModule(SwerveUtil.kFrontLeftModuleIdx);
@@ -124,14 +132,15 @@ public class SwerveSubsystem extends SubsystemBase {
     previousSetpoint =
         new SwerveSetpoint(inputSpeeds, actualModuleStates, DriveFeedforwards.zeros(4));
 
-    poseEstimator =
-        new SwerveDrivePoseEstimator(
-            SwerveConstants.m_kinematics,
-            getGyroRotation(),
-            lastModulePositions,
-            Pose2d.kZero,
-            VecBuilder.fill(0.1, 0.1, 0.08),
-            VecBuilder.fill(0.9, 0.9, 0.7));
+    // poseEstimator =
+    //     new SwerveDrivePoseEstimator(
+    //         SwerveConstants.m_kinematics,
+    //         getGyroRotation(),
+    //         lastModulePositions,
+    //         Pose2d.kZero,
+    //         VecBuilder.fill(0.1, 0.1, 0.08),
+    //         VecBuilder.fill(0.9, 0.9, 0.7));
+    this.odometryConsumer = odometryConsumer;
 
     sysId =
         new SysIdRoutine(
@@ -266,7 +275,8 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       // Apply update
-      poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
+      odometryConsumer.accept(sampleTimestamps[i], rawGyroRotation, modulePositions);
+      // poseEstimator.updateWithTime(sampleTimestamps[i], rawGyroRotation, modulePositions);
     }
 
     // Update gyro alert
@@ -277,7 +287,7 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
     Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
     Logger.recordOutput("SwerveOutput/TargetModuleStates", moduleStates);
-    Logger.recordOutput("Odometry/Robot", getPose());
+  
   }
 
   public void resetGyro(Rotation2d angle) {
@@ -358,38 +368,38 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   /** Returns the current odometry pose. */
-  @AutoLogOutput(key = "Odometry/Robot")
-  public Pose2d getPose() {
-    return poseEstimator.getEstimatedPosition();
-  }
+  // @AutoLogOutput(key = "Odometry/Robot")
+  // public Pose2d getPose() {
+  //   return poseEstimator.getEstimatedPosition();
+  // }
 
-  /** Returns the current odometry rotation. */
-  public Rotation2d getRotation() {
-    return getPose().getRotation();
-  }
+  // /** Returns the current odometry rotation. */
+  // public Rotation2d getRotation() {
+  //   return getPose().getRotation();
+  // }
 
-  /** Resets the current odometry pose. */
-  public void setPose(Pose2d pose) {
-    poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), pose);
-    // poseEstimator.resetPose(pose);
-    resetGyro(poseEstimator.getEstimatedPosition().getRotation());
-  }
+  // /** Resets the current odometry pose. */
+  // public void setPose(Pose2d pose) {
+  //   poseEstimator.resetPosition(getGyroRotation(), getModulePositions(), pose);
+  //   // poseEstimator.resetPose(pose);
+  //   resetGyro(poseEstimator.getEstimatedPosition().getRotation());
+  // }
 
-  public void resetAutonPose(Pose2d pose) {
-    poseEstimator.resetPose(pose);
-  }
+  // public void resetAutonPose(Pose2d pose) {
+  //   poseEstimator.resetPose(pose);
+  // }
 
-  /**
-   * Adds a new timestamped vision measurement. Meant to be a bridge method, actual vision
-   * processing should be done in a seperate subsystem
-   */
-  public void addVisionMeasurement(
-      Pose2d visionRobotPoseMeters,
-      double timestampSeconds,
-      Matrix<N3, N1> visionMeasurementStdDevs) {
-    poseEstimator.addVisionMeasurement(
-        visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
-  }
+  // /**
+  //  * Adds a new timestamped vision measurement. Meant to be a bridge method, actual vision
+  //  * processing should be done in a seperate subsystem
+  //  */
+  // public void addVisionMeasurement(
+  //     Pose2d visionRobotPoseMeters,
+  //     double timestampSeconds,
+  //     Matrix<N3, N1> visionMeasurementStdDevs) {
+  //   poseEstimator.addVisionMeasurement(
+  //       visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
+  // }
 
   /** Returns the average velocity of the modules in rotations/sec (Phoenix native units). */
   public double getFFCharacterizationVelocity() {
@@ -431,4 +441,11 @@ public class SwerveSubsystem extends SubsystemBase {
     return values;
   }
 
+
+  @FunctionalInterface
+  public static interface OdometryConsumer {
+    public void accept(
+        double timestampSeconds,
+        Rotation2d rotation, SwerveModulePosition[] modulePositions);
+  }
 }

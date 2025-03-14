@@ -24,6 +24,7 @@ import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
+import team5427.lib.detection.tuples.Tuple2Plus;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
@@ -41,13 +42,13 @@ public class VisionSubsystem extends SubsystemBase {
 
   @Getter private Pose3d latestPoseMeasurement;
 
-  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer, Optional<Supplier<Pose2d>> referencePoseSupplier) {
+  public static VisionSubsystem getInstance(Optional<VisionConsumer> consumer, Optional<Supplier<Pose2d>> referencePoseSupplier, Optional<Supplier<Tuple2Plus<Double, Rotation2d>>> referenceHeadingSupplier) {
     if (m_instance == null) {
-      if (consumer.isEmpty() || referencePoseSupplier.isEmpty()) {
+      if (consumer.isEmpty() || referencePoseSupplier.isEmpty() || referenceHeadingSupplier.isEmpty()) {
         DriverStation.reportWarning("Vision Subsystem Not provided Vision Consumer", true);
         return null;
       }
-      m_instance = new VisionSubsystem(consumer.get(), referencePoseSupplier.get());
+      m_instance = new VisionSubsystem(consumer.get(), referencePoseSupplier.get(), referenceHeadingSupplier.get());
     }
     return m_instance;
   }
@@ -61,15 +62,15 @@ public class VisionSubsystem extends SubsystemBase {
     return m_instance;
   }
 
-  private VisionSubsystem(VisionConsumer consumer, Supplier<Pose2d> referencePoseSupplier) {
+  private VisionSubsystem(VisionConsumer consumer, Supplier<Pose2d> referencePoseSupplier, Supplier<Tuple2Plus<Double, Rotation2d>> referenceHeadingSupplier) {
     super();
     switch (Constants.currentMode) {
       case REAL:
         io[1] =
             new VisionIOPhoton(VisionConstants.kSwerveCamName,
-        VisionConstants.kSwerveCamTransform, referencePoseSupplier);
+        VisionConstants.kSwerveCamTransform, referencePoseSupplier, referenceHeadingSupplier);
         io[0] =
-            new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform, referencePoseSupplier);
+            new VisionIOPhoton(VisionConstants.kIntakeCamName, VisionConstants.kIntakeCamTransform, referencePoseSupplier, referenceHeadingSupplier);
         // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {

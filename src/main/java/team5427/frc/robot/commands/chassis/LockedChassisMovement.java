@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Optional;
 import org.team4206.battleaid.common.TunedJoystick;
 import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
+
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -31,7 +33,7 @@ public class LockedChassisMovement extends Command {
   private Pose2d robotPose = new Pose2d();
 
   public LockedChassisMovement(CommandXboxController driverJoystick, Rotation2d rotationSetpoint) {
-    swerveSubsystem = SwerveSubsystem.getInstance();
+    swerveSubsystem = SwerveSubsystem.getInstance(null);
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -47,7 +49,7 @@ public class LockedChassisMovement extends Command {
   }
 
   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d pose) {
-    swerveSubsystem = SwerveSubsystem.getInstance();
+    swerveSubsystem = SwerveSubsystem.getInstance(null);
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -58,14 +60,14 @@ public class LockedChassisMovement extends Command {
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     this.rotationSetpoint = pose.getRotation();
-    this.robotPose = swerveSubsystem.getPose();
+    this.robotPose = RobotState.getInstance().getEstimatedPose();
 
     addRequirements(swerveSubsystem);
   }
 
   public LockedChassisMovement(
       CommandXboxController driverJoystick, Pose2d robotPose, Pose2d[] matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance();
+    swerveSubsystem = SwerveSubsystem.getInstance(null);
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -83,7 +85,7 @@ public class LockedChassisMovement extends Command {
 
   public LockedChassisMovement(
       CommandXboxController driverJoystick, Pose2d robotPose, List<Pose2d> matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance();
+    swerveSubsystem = SwerveSubsystem.getInstance( null);
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -100,7 +102,7 @@ public class LockedChassisMovement extends Command {
   }
 
   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d[] matchingPoses) {
-    swerveSubsystem = SwerveSubsystem.getInstance();
+    swerveSubsystem = SwerveSubsystem.getInstance(null);
     joy = driverJoystick;
     tunedJoystickLinear = new TunedJoystick(joy.getHID());
     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
@@ -111,7 +113,7 @@ public class LockedChassisMovement extends Command {
     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     this.matchingPoses = matchingPoses;
-    this.robotPose = swerveSubsystem.getPose();
+    this.robotPose = RobotState.getInstance().getEstimatedPose();
     updateRotationSetpoint();
     addRequirements(swerveSubsystem);
   }
@@ -127,7 +129,7 @@ public class LockedChassisMovement extends Command {
 
     if (DriverStation.isTeleop()) {
 
-      robotPose = swerveSubsystem.getPose();
+      robotPose =  RobotState.getInstance().getEstimatedPose();
       updateRotationSetpoint();
       double dampener = joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount;
 
@@ -137,7 +139,7 @@ public class LockedChassisMovement extends Command {
 
       double omegaRadians =
           SwerveConstants.kRotationPIDController.calculate(
-              swerveSubsystem.getRotation().getRadians(), this.rotationSetpoint.getRadians());
+            RobotState.getInstance().getEstimatedPose().getRotation().getRadians(), this.rotationSetpoint.getRadians());
 
       vx *= (1 - dampener);
       vy *= (1 - dampener);
