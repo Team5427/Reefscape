@@ -29,8 +29,14 @@ public class ProngSubsystem extends SubsystemBase {
     BACKWARD
   }
 
+  public static enum EETask {
+    INTAKING,
+    EJECTING
+  }
+
   public static GamePieceMode gamePieceMode = GamePieceMode.CORAL;
   public static Direction direction = Direction.FORWARD;
+  public static EETask task = EETask.INTAKING;
 
   private ProngIO io;
   private ProngIOInputsAutoLogged inputsAutoLogged = new ProngIOInputsAutoLogged();

@@ -8,6 +8,7 @@ import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.RawIntakeConfiguration;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.EETask;
 
 public class Intake extends Command {
 
@@ -26,6 +27,8 @@ public class Intake extends Command {
 
   @Override
   public void initialize() {
+
+    ProngSubsystem.task = EETask.INTAKING;
     cascadeSubsystem.setPivotSetpoint(config.getCascadeAngle());
     cascadeSubsystem.setCascadeSetpoint(config.getCascadeHeight());
     prongSubsystem.setWristSetpoint(config.getWristAngle());
@@ -44,7 +47,7 @@ public class Intake extends Command {
             ? ProngEffectorConstants.kStowPosition
             : ProngEffectorConstants.kAlgaeStowPosition);
 
-    double staticSpeeds = config.getRollerSpeeds().magnitude() / (config.isCoral() ? 4 : 1.5);
+    double staticSpeeds = config.getRollerSpeeds().magnitude() / (config.isCoral() ? 4 : 1.25);
     prongSubsystem.setRollerVelocity(
         MetersPerSecond.of(Math.copySign(staticSpeeds, config.isCoral() ? -1 : 1)));
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
