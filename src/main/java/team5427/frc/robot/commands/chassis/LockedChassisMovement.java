@@ -142,9 +142,9 @@ public class LockedChassisMovement extends Command {
               RobotState.getInstance().getEstimatedPose().getRotation().getRadians(),
               this.rotationSetpoint.getRadians());
 
-       vx *= MathUtil.clamp(1 - dampener, 0, 1);
-        vy *= MathUtil.clamp(1 - dampener, 0, 1);
-        omegaRadians *= MathUtil.clamp(1 - dampener, 0, 1);
+      vx *= MathUtil.clamp(1 - dampener, 0, 1);
+      vy *= MathUtil.clamp(1 - dampener, 0, 1);
+      omegaRadians *= MathUtil.clamp(1 - dampener, 0, 1);
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
       if (joy.getLeftTriggerAxis() >= 0.1) {

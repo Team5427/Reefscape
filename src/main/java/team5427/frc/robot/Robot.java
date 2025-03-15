@@ -129,7 +129,6 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
     RobotState.getInstance().log();
-   
 
     // Return to normal thread priority
     // Threads.setCurrentThreadPriority(false, 10);

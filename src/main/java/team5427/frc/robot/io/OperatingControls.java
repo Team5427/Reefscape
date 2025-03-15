@@ -3,7 +3,6 @@ package team5427.frc.robot.io;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.commands.AllCommands;
-import team5427.frc.robot.commands.homing.HomeCascade;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
@@ -39,12 +38,11 @@ public class OperatingControls {
                 new ConditionalCommand(
                     AllCommands.highReefAlgaeIntake,
                     new ConditionalCommand(
-                        AllCommands.lowReefAlgaeIntake, 
+                        AllCommands.lowReefAlgaeIntake,
                         AllCommands.floorAlgaeIntake,
                         () -> ProngSubsystem.level == Level.LOW),
                     // AllCommands.lowReefAlgaeIntake,
-                    () -> ProngSubsystem.level == Level.HIGH
-                ),
+                    () -> ProngSubsystem.level == Level.HIGH),
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
     joy.rightTrigger()

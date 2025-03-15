@@ -8,7 +8,6 @@ import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.commands.cascade.Climb;
 import team5427.frc.robot.commands.cascade.MoveElevatorTo;
 import team5427.frc.robot.commands.homing.ResetSubsystems;
-import team5427.frc.robot.commands.intake.FloorIntake;
 import team5427.frc.robot.commands.intake.Intake;
 import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
@@ -74,19 +73,17 @@ public class AllCommands {
             LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
           });
 
-  public static final Command nextLevel = 
+  public static final Command nextLevel =
       new InstantCommand(
           () -> {
-            ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW: Level.HIGH;
+            ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW : Level.HIGH;
             // ProngSubsystem.level = Level.HIGH;
-          }
-      );
+          });
 
-  public static final Command prevLevel = 
+  public static final Command prevLevel =
       new InstantCommand(
           () -> {
-            ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW: Level.FLOOR;
+            ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW : Level.FLOOR;
             // ProngSubsystem.level = Level.LOW;
-          }
-      );
+          });
 }

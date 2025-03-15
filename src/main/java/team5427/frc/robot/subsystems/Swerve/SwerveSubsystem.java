@@ -137,10 +137,9 @@ public class SwerveSubsystem extends SubsystemBase {
     sysId =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-              Volts.of(10).per(Second), // Use ramp rate of 5 A/s
-              Volts.of(20), // Use dynamic step of 10 A
-              Seconds.of(5), // Use timeout of 5 seconds
-              
+                Volts.of(10).per(Second), // Use ramp rate of 5 A/s
+                Volts.of(20), // Use dynamic step of 10 A
+                Seconds.of(5), // Use timeout of 5 seconds
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
                 (voltage) -> runDriveCharacterization(voltage.in(Volts)), null, this));

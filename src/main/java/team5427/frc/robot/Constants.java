@@ -579,9 +579,7 @@ public final class Constants {
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(210.0);
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(45.0);
 
-    public static final Rotation2d 
-    
-    kClimbRotation = Rotation2d.fromDegrees(210.0);
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(210.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(42.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(.986);
@@ -674,14 +672,13 @@ public final class Constants {
             MetersPerSecond.of(3.5),
             false);
 
-    public static final RawIntakeConfiguration kAlgaeFloorIntake = new RawIntakeConfiguration(
-      CascadeConstants.kFloorIntakeRotation,
-      CascadeConstants.kFloorIntakeDistance,
-      ProngEffectorConstants.kFloorIntakePosition,
-      MetersPerSecond.of(3.5),
-      false
-
-    );
+    public static final RawIntakeConfiguration kAlgaeFloorIntake =
+        new RawIntakeConfiguration(
+            CascadeConstants.kFloorIntakeRotation,
+            CascadeConstants.kFloorIntakeDistance,
+            ProngEffectorConstants.kFloorIntakePosition,
+            MetersPerSecond.of(3.5),
+            false);
 
     public static final Transform3d kRobotScoringTranslation =
         new Transform3d(0, 0.04, 0, Rotation3d.kZero);
