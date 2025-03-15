@@ -45,7 +45,7 @@ public class Climb extends Command {
         climberSubsystem.setSetpoint(ClimbConstants.kActivePosition);
         break;
       case kClimb:
-        cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
+        cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kZeroPosition);
         cascadeSubsystem.setPivotSetpoint(CascadeConstants.kTempClimbRotation);
         climberSubsystem.setSetpoint(ClimbConstants.kActivePosition);
         prongSubsystem.setWristSetpoint(ProngEffectorConstants.kClimbRotation);

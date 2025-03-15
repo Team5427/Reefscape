@@ -16,6 +16,7 @@ import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.lib.drivers.SteelTalonsLogger;
 
 // import frc.robot.BuildConstants;
 
@@ -87,6 +88,7 @@ public class Robot extends LoggedRobot {
     AutoLogOutputManager.addPackage("team5427.lib");
 
     Logger.start();
+    SteelTalonsLogger.logJoystickData();
     // steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
     m_robotContainer = new RobotContainer();
 
@@ -127,6 +129,7 @@ public class Robot extends LoggedRobot {
 
     CommandScheduler.getInstance().run();
     RobotState.getInstance().log();
+   
 
     // Return to normal thread priority
     // Threads.setCurrentThreadPriority(false, 10);

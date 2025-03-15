@@ -1,5 +1,6 @@
 package team5427.frc.robot.commands.chassis;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -141,9 +142,9 @@ public class LockedChassisMovement extends Command {
               RobotState.getInstance().getEstimatedPose().getRotation().getRadians(),
               this.rotationSetpoint.getRadians());
 
-      vx *= (1 - dampener);
-      vy *= (1 - dampener);
-      omegaRadians *= (1 - dampener);
+       vx *= MathUtil.clamp(1 - dampener, 0, 1);
+        vy *= MathUtil.clamp(1 - dampener, 0, 1);
+        omegaRadians *= MathUtil.clamp(1 - dampener, 0, 1);
 
       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
       if (joy.getLeftTriggerAxis() >= 0.1) {

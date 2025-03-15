@@ -177,7 +177,7 @@ public final class Constants {
       kDriveMotorConfiguration.kP = 2.54;
       // kDriveMotorConfiguration.kV = 2.08;
       kDriveMotorConfiguration.kA = 1.2;
-      kDriveMotorConfiguration.kS = 1.0;
+      kDriveMotorConfiguration.kS = 0.8;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }
@@ -219,7 +219,7 @@ public final class Constants {
       public static final double drivekV = 45.0;
     }
 
-    public static final double kDampenerDampeningAmount = 0.7;
+    public static final double kDampenerDampeningAmount = 0.95;
   }
 
   public static class BlinkinConstants {
@@ -410,7 +410,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .3;
+      kCascadeDriverConfiguration.kP = .25;
       // kCascadeDriverConfiguration.kI = .08;
       // kCascadeDriverConfiguration.kG = 0.036;
       kCascadeDriverConfiguration.kD = 0.05;
@@ -461,19 +461,21 @@ public final class Constants {
     public static final double kPivotCancoderOffset = -.2651;
 
     public static final Distance kStowDistance = Feet.of(0.25);
-    public static final Distance kIntakeDistance = Inches.of(1.0);
-    public static final Distance kFloorIntakeDistance = Feet.of(0.6);
+    public static final Distance kZeroPosition = Feet.of(00);
+    public static final Distance kIntakeDistance = Inches.of(0.5);
+    public static final Distance kFloorIntakeDistance = Inches.of(0.5);
 
     public static final Distance kL1Distance = Feet.of(0.25);
 
     public static final Distance kL2Distance = Meters.of(0.0);
 
-    public static final Distance kL3Distance = Meters.of(0.3015);
+    public static final Distance kL3Distance = Meters.of(0.303);
     public static final Distance kL3DistanceInverse = Feet.of(1.25);
-    public static final Distance kL4Distance = Meters.of(1.110); // 1.124
+    public static final Distance kL4Distance = Meters.of(1.100); // 1.124 , 1.110
     public static final Distance kL4DistanceInverse = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
+    // public static final Distance kFloorIntakeDistance = Feet.of(0.2);
 
     public static final Distance kLowReefAlgaeDistance = Feet.of(0.75);
     public static final Distance kHighReefAlgaeDistance = Feet.of(1.75);
@@ -482,16 +484,17 @@ public final class Constants {
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
     public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(85.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
-    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(8.0);
+    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(6.5);
 
-    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(47.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(10.898);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(6.395);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(0.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(1.879);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(2.8);
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
+    public static final Rotation2d kFloorIntakeRotation = Rotation2d.fromDegrees(50.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(20.0);
@@ -560,6 +563,7 @@ public final class Constants {
       kRollerConfiguration.mode = MotorMode.kFlywheel;
       kRollerConfiguration.withFOC = false;
       kRollerConfiguration.finalDiameterMeters = Units.inchesToMeters(4.0);
+      kRollerConfiguration.currentLimit = 60;
 
       kRollerConfiguration.maxVelocity =
           kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
@@ -573,15 +577,17 @@ public final class Constants {
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(210.0);
-    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(80.0);
+    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(45.0);
 
-    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(210.0);
+    public static final Rotation2d 
+    
+    kClimbRotation = Rotation2d.fromDegrees(210.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(42.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(.986);
-    public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(0.932);
+    public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(1.132);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(200.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-29.05);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-29.5);
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(280.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
@@ -667,6 +673,15 @@ public final class Constants {
             ProngEffectorConstants.kHighReefAlgaeRotation,
             MetersPerSecond.of(3.5),
             false);
+
+    public static final RawIntakeConfiguration kAlgaeFloorIntake = new RawIntakeConfiguration(
+      CascadeConstants.kFloorIntakeRotation,
+      CascadeConstants.kFloorIntakeDistance,
+      ProngEffectorConstants.kFloorIntakePosition,
+      MetersPerSecond.of(3.5),
+      false
+
+    );
 
     public static final Transform3d kRobotScoringTranslation =
         new Transform3d(0, 0.04, 0, Rotation3d.kZero);

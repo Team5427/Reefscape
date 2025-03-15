@@ -51,5 +51,6 @@ public class Intake extends Command {
     prongSubsystem.setRollerVelocity(
         MetersPerSecond.of(Math.copySign(staticSpeeds, config.isCoral() ? -1 : 1)));
     cascadeSubsystem.setPivotSetpoint(CascadeConstants.kStowRotation);
+    cascadeSubsystem.setCascadeSetpoint(CascadeConstants.kStowDistance);
   }
 }

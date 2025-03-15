@@ -14,8 +14,8 @@ import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
 import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Direction;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
 
 public class AllCommands {
 
@@ -42,6 +42,7 @@ public class AllCommands {
       new Intake(RobotConfigConstants.kReefLowAlgaeIntake);
   public static final Command highReefAlgaeIntake =
       new Intake(RobotConfigConstants.kReefHighAlgaeIntake);
+  public static final Command floorAlgaeIntake = new Intake(RobotConfigConstants.kAlgaeFloorIntake);
   public static final Command eject =
       new EjectGamePiece(true)
           .alongWith(
@@ -49,7 +50,7 @@ public class AllCommands {
                   () -> {
                     LightsSubsystem.getInstance().setPattern(BlinkinConstants.kStrobeWhite);
                   }));
-  public static final Command floorIntake = new FloorIntake();
+  // public static final Command floorIntake = new FloorIntake();
   public static final Command ejectAlgae =
       new EjectGamePiece(false)
           .alongWith(
@@ -73,14 +74,19 @@ public class AllCommands {
             LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
           });
 
-  public static final Command switchToDirect =
+  public static final Command nextLevel = 
       new InstantCommand(
           () -> {
-            ProngSubsystem.direction = Direction.FORWARD;
-          });
-  public static final Command switchToInverse =
+            ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW: Level.HIGH;
+            // ProngSubsystem.level = Level.HIGH;
+          }
+      );
+
+  public static final Command prevLevel = 
       new InstantCommand(
           () -> {
-            ProngSubsystem.direction = Direction.BACKWARD;
-          });
+            ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW: Level.FLOOR;
+            // ProngSubsystem.level = Level.LOW;
+          }
+      );
 }

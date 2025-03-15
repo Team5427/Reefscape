@@ -52,6 +52,7 @@ public class VisionIOPhotonSim implements VisionIO {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    visionSystemSim = new VisionSystemSim("Argo Cam " + cameraName);
     visionSystemSim.addAprilTags(VisionConstants.kAprilTagLayout);
     visionSystemSim.addCamera(sim, cameraTransform);
     // photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);

@@ -21,7 +21,7 @@ public class EjectGamePiece extends Command {
   @Override
   public void initialize() {
     ProngSubsystem.task = EETask.EJECTING;
-    prongSubsystem.setRollerVelocity(MetersPerSecond.of(5.0 * (isCoral ? 1 : -1)));
+    prongSubsystem.setRollerVelocity(MetersPerSecond.of(4.0 * (isCoral ? .25 : -1.1)));
   }
 
   @Override

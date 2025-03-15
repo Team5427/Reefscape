@@ -1,5 +1,6 @@
 package team5427.frc.robot.commands.chassis;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -56,7 +57,6 @@ public class ChassisMovement extends Command {
       if (DriverStation.isTeleop()) {
 
         double dampener = joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount;
-
         double vx = 0.0, vy = 0.0, omegaRadians = 0.0;
         vx =
             -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
@@ -69,9 +69,9 @@ public class ChassisMovement extends Command {
                 * Math.PI
                 * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
 
-        vx *= (1 - dampener);
-        vy *= (1 - dampener);
-        omegaRadians *= (1 - dampener);
+        vx *= MathUtil.clamp(1 - dampener, 0, 1);
+        vy *= MathUtil.clamp(1 - dampener, 0, 1);
+        omegaRadians *= MathUtil.clamp(1 - dampener, 0, 1);
 
         ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
         if (joy.getLeftTriggerAxis() >= 0.1) {

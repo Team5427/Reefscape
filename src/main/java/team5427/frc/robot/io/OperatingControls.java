@@ -5,8 +5,8 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.commands.homing.HomeCascade;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Direction;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
+import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
 
 public class OperatingControls {
 
@@ -37,9 +37,14 @@ public class OperatingControls {
             new ConditionalCommand(
                 AllCommands.intake,
                 new ConditionalCommand(
-                    AllCommands.lowReefAlgaeIntake,
                     AllCommands.highReefAlgaeIntake,
-                    () -> ProngSubsystem.direction == Direction.FORWARD),
+                    new ConditionalCommand(
+                        AllCommands.lowReefAlgaeIntake, 
+                        AllCommands.floorAlgaeIntake,
+                        () -> ProngSubsystem.level == Level.LOW),
+                    // AllCommands.lowReefAlgaeIntake,
+                    () -> ProngSubsystem.level == Level.HIGH
+                ),
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
     joy.rightTrigger()
@@ -49,9 +54,9 @@ public class OperatingControls {
                 AllCommands.ejectAlgae,
                 () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
 
-    joy.rightBumper().onTrue(AllCommands.switchToInverse);
+    joy.rightBumper().onTrue(AllCommands.nextLevel);
 
-    joy.leftBumper().onTrue(AllCommands.switchToDirect);
+    joy.leftBumper().onTrue(AllCommands.prevLevel);
 
     joy.povDown().onTrue(AllCommands.resetSubsystems);
 
@@ -61,7 +66,7 @@ public class OperatingControls {
 
     joy.povLeft().onTrue(AllCommands.switchToAlgaeMode);
 
-    joy.leftStick().whileTrue(new HomeCascade());
+    // joy.leftStick().whileTrue(new HomeCascade());
 
     //     Trigger kFirstClimbStage =
     //         new Trigger(

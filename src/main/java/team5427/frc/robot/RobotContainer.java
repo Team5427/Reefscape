@@ -6,7 +6,10 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -57,7 +60,7 @@ public class RobotContainer {
     }
     SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement));
     VisionSubsystem.getInstance(
-        Optional.of(RobotState.getInstance()::addVisionMeasurement),
+        Optional.of(this::addVisionMeasurement),
         Optional.of(RobotState.getInstance()::getEstimatedPose),
         Optional.of(RobotState.getInstance()::getOdometryHeading));
     createNamedCommands();
@@ -80,7 +83,7 @@ public class RobotContainer {
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
             new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(7.0, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(6.5, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -96,6 +99,7 @@ public class RobotContainer {
         SwerveSubsystem.getInstance(
             Optional.empty()) // Reference to this subsystem to set requirements
         );
+
     // VisionSubsystem vision = new
     // VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
     // new InstantCommand(() -> {
@@ -137,12 +141,10 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  //   public void addVisionMeasurement(
-  //     Pose2d visionRobotPoseMeters,
-  //     double timestampSeconds,
-  //     Matrix<N3, N1> visionMeasurementStdDevs) {
-
-  // }
+  public void addVisionMeasurement(
+      Pose2d visionRobotPoseMeters,
+      double timestampSeconds,
+      Matrix<N3, N1> visionMeasurementStdDevs) {}
 
   private void createNamedCommands() {
     NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);

@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,9 +24,10 @@ public class ProngSubsystem extends SubsystemBase {
     ALGAE
   }
 
-  public static enum Direction {
-    FORWARD,
-    BACKWARD
+  public static enum Level {
+    FLOOR,
+    LOW,
+    HIGH
   }
 
   public static enum EETask {
@@ -34,7 +36,7 @@ public class ProngSubsystem extends SubsystemBase {
   }
 
   public static GamePieceMode gamePieceMode = GamePieceMode.CORAL;
-  public static Direction direction = Direction.FORWARD;
+  public static Level level = Level.LOW;
   public static EETask task = EETask.INTAKING;
 
   private ProngIO io;
@@ -117,6 +119,9 @@ public class ProngSubsystem extends SubsystemBase {
 
     Logger.processInputs("ProngEffector/Inputs", inputsAutoLogged);
     Logger.recordOutput("Has Object", hasObject());
+    Logger.recordOutput("Algae Intake Level", level.toString());
+
+    SmartDashboard.putString("Algae Intake Level", level.toString());
   }
 
   private static class Errors {
