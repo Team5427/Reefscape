@@ -360,7 +360,7 @@ public final class Constants {
       kCameraTransforms[1] = kSwerveCamTransform;
     }
 
-    public static final Distance kCameraMaxRange = Distance.ofBaseUnits(4.0, Meters);
+    public static final Distance kCameraMaxRange = Meters.of(4.0);
 
     // Standard deviation baselines, for 1 meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
@@ -373,7 +373,7 @@ public final class Constants {
     public static double[] kCameraStdDevFactors =
         new double[] {
           0.2, // Swerve Cam
-          1.0 // Intake Cam
+          0.2 // Intake Cam
         };
 
     public static double kQuestStdDevBaseline = 0.001;
