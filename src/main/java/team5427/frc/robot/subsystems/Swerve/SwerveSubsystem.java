@@ -2,6 +2,7 @@ package team5427.frc.robot.subsystems.Swerve;
 
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Second;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -136,9 +137,10 @@ public class SwerveSubsystem extends SubsystemBase {
     sysId =
         new SysIdRoutine(
             new SysIdRoutine.Config(
-                Volts.per(Seconds).of(7.0),
-                Volts.of(70),
-                null,
+              Volts.of(10).per(Second), // Use ramp rate of 5 A/s
+              Volts.of(20), // Use dynamic step of 10 A
+              Seconds.of(5), // Use timeout of 5 seconds
+              
                 (state) -> Logger.recordOutput("Drive/SysIdState", state.toString())),
             new SysIdRoutine.Mechanism(
                 (voltage) -> runDriveCharacterization(voltage.in(Volts)), null, this));

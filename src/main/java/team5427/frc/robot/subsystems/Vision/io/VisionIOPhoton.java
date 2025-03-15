@@ -50,6 +50,9 @@ public class VisionIOPhoton implements VisionIO {
     this.cameraOffset = cameraTransform;
     this.getReferencePose = getReferencePose;
     this.getHeadingData = getHeadingData;
+
+    // flush any old results from previous results
+    this.cam.getAllUnreadResults();
   }
 
   @Override
@@ -88,7 +91,7 @@ public class VisionIOPhoton implements VisionIO {
                 totalTagDistance / results.get(i).targets.size(),
                 results.get(i).getBestTarget().getYaw(),
                 results.get(i).getBestTarget().getPitch(),
-                PoseObservationType.PHOTONVISION));
+                PoseObservationType.PHOTONVISION_MULTI_TAG));
         // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
         // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
       } else {
@@ -111,7 +114,7 @@ public class VisionIOPhoton implements VisionIO {
                   target.bestCameraToTarget.getTranslation().getNorm(),
                   results.get(i).getBestTarget().getYaw(),
                   results.get(i).getBestTarget().getPitch(),
-                  PoseObservationType.PHOTONVISION));
+                  PoseObservationType.PHOTONVISION_SINGLE_TAG));
           // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
           // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
         }

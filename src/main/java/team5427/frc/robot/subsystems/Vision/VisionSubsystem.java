@@ -212,7 +212,7 @@ public class VisionSubsystem extends SubsystemBase {
           }
 
           // Calculate standard deviations
-          double stdDevFactor =
+          double stdDevFactor = observation.type().equals(PoseObservationType.PHOTONVISION_SINGLE_TAG) ? Double.MAX_VALUE : 
               Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
           double linearStdDev = VisionConstants.kLinearStdDevBaseline * stdDevFactor;
           double angularStdDev = VisionConstants.kAngularStdDevBaseline * stdDevFactor;
