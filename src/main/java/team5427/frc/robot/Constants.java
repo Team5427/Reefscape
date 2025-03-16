@@ -111,7 +111,7 @@ public final class Constants {
 
     static {
       kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
-      kRotationPIDController.setTolerance(Rotation2d.fromDegrees(1).getRadians());
+      kRotationPIDController.setTolerance(Rotation2d.fromDegrees(3).getRadians());
       kSIMSteerController.enableContinuousInput(-0.5, 0.5);
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(3, "*");
       kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(5, "*");
