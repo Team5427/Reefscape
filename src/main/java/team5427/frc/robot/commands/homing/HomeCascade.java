@@ -3,7 +3,6 @@ package team5427.frc.robot.commands.homing;
 import static edu.wpi.first.units.Units.Volt;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
@@ -14,8 +13,6 @@ public class HomeCascade extends Command {
 
   private CascadeSubsystem cascadeSubsystem;
   private ClimberSubsystem climberSubsystem;
-
-
 
   public HomeCascade() {
     cascadeSubsystem = CascadeSubsystem.getInstance();

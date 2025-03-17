@@ -7,6 +7,8 @@ import static edu.wpi.first.units.Units.Volt;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lombok.Getter;
+import lombok.Setter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.ClimbConstants;
@@ -26,6 +28,15 @@ public class ClimberSubsystem extends SubsystemBase {
   private boolean manualRunning = false;
 
   private Voltage manualRunVoltage = Volt.zero();
+
+  public static enum ClimbStates {
+    kStow,
+    kPrep,
+    kHook,
+    kClimb,
+  }
+
+  @Getter @Setter private static ClimbStates climbState = ClimbStates.kStow;
 
   public static ClimberSubsystem getInstance() {
     if (m_instance == null) {
@@ -56,8 +67,6 @@ public class ClimberSubsystem extends SubsystemBase {
     // }
 
     Logger.processInputs("Climb", inputsAutoLogged);
-
-    super.periodic();
   }
 
   public void setPosition(Rotation2d angle) {
@@ -66,10 +75,8 @@ public class ClimberSubsystem extends SubsystemBase {
 
   public boolean isStalled() {
     return inputsAutoLogged.hookServoCurrent.in(Amp) >= 20
-        && inputsAutoLogged.hookVelocity.in(RotationsPerSecond) <= 0.001;
+        && Math.abs(inputsAutoLogged.hookVelocity.in(RotationsPerSecond)) <= 0.01;
   }
-
-
 
   public void setSetpoint(Rotation2d setpoint) {
     climbHooksSetpoint = setpoint;

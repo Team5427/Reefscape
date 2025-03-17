@@ -8,7 +8,7 @@ import team5427.frc.robot.commands.cascade.Climb;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.EETask;
+// import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.EETask;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
 
 public class ResetSubsystems extends Command {
@@ -41,6 +41,6 @@ public class ResetSubsystems extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    ProngSubsystem.task = EETask.INTAKING;
+    // ProngSubsystem.task = EETask.INTAKING;
   }
 }

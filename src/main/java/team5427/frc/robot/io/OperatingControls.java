@@ -1,8 +1,18 @@
 package team5427.frc.robot.io;
 
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import org.littletonrobotics.junction.Logger;
+import team5427.frc.robot.Constants.BlinkinConstants;
+import team5427.frc.robot.Constants.CascadeConstants;
+import team5427.frc.robot.Constants.ClimbConstants;
+import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.commands.AllCommands;
+import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
+import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
+import team5427.frc.robot.subsystems.Climb.ClimberSubsystem.ClimbStates;
+import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
@@ -19,7 +29,7 @@ public class OperatingControls {
             new ConditionalCommand(
                 AllCommands.scoreL1,
                 AllCommands.scoreProcessor,
-                () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
     joy.x().onTrue(AllCommands.scoreL2);
     joy.b()
         .onTrue(
@@ -29,7 +39,7 @@ public class OperatingControls {
             new ConditionalCommand(
                 new ConditionalCommand(AllCommands.scoreL4, AllCommands.scoreL4Inverse, () -> true),
                 AllCommands.scoreBarge,
-                () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
 
     joy.leftTrigger()
         .whileTrue(
@@ -43,26 +53,108 @@ public class OperatingControls {
                         () -> ProngSubsystem.level == Level.LOW),
                     // AllCommands.lowReefAlgaeIntake,
                     () -> ProngSubsystem.level == Level.HIGH),
-                () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
 
     joy.rightTrigger()
         .whileTrue(
             new ConditionalCommand(
                 AllCommands.eject,
                 AllCommands.ejectAlgae,
-                () -> ProngSubsystem.gamePieceMode == GamePieceMode.CORAL));
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
 
-    joy.rightBumper().onTrue(AllCommands.nextLevel);
+    joy.rightBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
+                  // Level.HIGH;
+                  ProngSubsystem.level = Level.HIGH;
+                }));
 
-    joy.leftBumper().onTrue(AllCommands.prevLevel);
+    joy.leftBumper()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
+                  // Level.HIGH;
+                  ProngSubsystem.level = Level.LOW;
+                }));
 
-    joy.povDown().onTrue(AllCommands.resetSubsystems);
+    joy.povDown()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  CascadeSubsystem.getInstance().setCascadeSetpoint(CascadeConstants.kStowDistance);
+                  CascadeSubsystem.getInstance().setPivotSetpoint(CascadeConstants.kStowRotation);
+                  ProngSubsystem.getInstance()
+                      .setWristSetpoint(ProngEffectorConstants.kStowPosition);
+                  ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kStowPosition);
+                  ClimberSubsystem.setClimbState(ClimbStates.kStow);
+                  ProngSubsystem.level = Level.FLOOR;
+                },
+                CascadeSubsystem.getInstance(),
+                ProngSubsystem.getInstance(),
+                ClimberSubsystem.getInstance()));
 
-    joy.povUp().onTrue(AllCommands.climbStep);
+    joy.povUp()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ClimbStates step = ClimberSubsystem.getClimbState();
+                  Logger.recordOutput("Climber Step", step);
+                  switch (step) {
+                    case kStow:
+                      ClimberSubsystem.setClimbState(ClimbStates.kPrep);
+                      step = ClimberSubsystem.getClimbState();
+                    case kPrep:
+                      CascadeSubsystem.getInstance()
+                          .setCascadeSetpoint(CascadeConstants.kStowDistance);
+                      CascadeSubsystem.getInstance()
+                          .setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
+                      ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kPrepPosition);
+                      LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
 
-    joy.povRight().onTrue(AllCommands.switchToCoralMode);
+                      break;
+                    case kHook:
+                      CascadeSubsystem.getInstance()
+                          .setCascadeSetpoint(CascadeConstants.kStowDistance);
+                      CascadeSubsystem.getInstance()
+                          .setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
+                      ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kActivePosition);
+                      LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
+                      break;
+                    case kClimb:
+                      CascadeSubsystem.getInstance()
+                          .setCascadeSetpoint(CascadeConstants.kZeroPosition);
+                      CascadeSubsystem.getInstance()
+                          .setPivotSetpoint(CascadeConstants.kTempClimbRotation);
+                      ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kActivePosition);
+                      ProngSubsystem.getInstance()
+                          .setWristSetpoint(ProngEffectorConstants.kClimbRotation);
+                      LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
+                      break;
+                    default:
+                      break;
+                  }
+                },
+                ClimberSubsystem.getInstance(),
+                ProngSubsystem.getInstance(),
+                CascadeSubsystem.getInstance(),
+                LightsSubsystem.getInstance()));
 
-    joy.povLeft().onTrue(AllCommands.switchToAlgaeMode);
+    joy.povRight()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ProngSubsystem.setGamePieceMode(GamePieceMode.CORAL);
+                }));
+
+    joy.povLeft()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
+                }));
 
     // joy.leftStick().whileTrue(new HomeCascade());
 

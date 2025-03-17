@@ -30,14 +30,14 @@ public class ProngSubsystem extends SubsystemBase {
     HIGH
   }
 
-  public static enum EETask {
-    INTAKING,
-    EJECTING
-  }
+  // public static enum EETask {
+  //   INTAKING,
+  //   EJECTING
+  // }
 
-  public static GamePieceMode gamePieceMode = GamePieceMode.CORAL;
+  @Getter @Setter private static GamePieceMode gamePieceMode = GamePieceMode.CORAL;
   public static Level level = Level.LOW;
-  public static EETask task = EETask.INTAKING;
+  // public static EETask task = EETask.INTAKING;
 
   private ProngIO io;
   private ProngIOInputsAutoLogged inputsAutoLogged = new ProngIOInputsAutoLogged();

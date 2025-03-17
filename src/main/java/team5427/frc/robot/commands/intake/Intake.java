@@ -8,7 +8,8 @@ import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.RawIntakeConfiguration;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.EETask;
+
+// import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.EETask;
 
 public class Intake extends Command {
 
@@ -28,7 +29,7 @@ public class Intake extends Command {
   @Override
   public void initialize() {
 
-    ProngSubsystem.task = EETask.INTAKING;
+    // ProngSubsystem.task = EETask.INTAKING;
     cascadeSubsystem.setPivotSetpoint(config.getCascadeAngle());
     cascadeSubsystem.setCascadeSetpoint(config.getCascadeHeight());
     prongSubsystem.setWristSetpoint(config.getWristAngle());

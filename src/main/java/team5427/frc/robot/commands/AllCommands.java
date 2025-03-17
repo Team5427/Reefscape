@@ -13,7 +13,6 @@ import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
 import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
 
 public class AllCommands {
@@ -60,18 +59,18 @@ public class AllCommands {
 
   public static final Command resetSubsystems = new ResetSubsystems();
 
-  public static final Command switchToCoralMode =
-      new InstantCommand(
-          () -> {
-            ProngSubsystem.gamePieceMode = GamePieceMode.CORAL;
-            LightsSubsystem.getInstance().setPattern(BlinkinConstants.kWhite);
-          });
-  public static final Command switchToAlgaeMode =
-      new InstantCommand(
-          () -> {
-            ProngSubsystem.gamePieceMode = GamePieceMode.ALGAE;
-            LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
-          });
+  // public static final Command switchToCoralMode =
+  //     new InstantCommand(
+  //         () -> {
+  //           ProngSubsystem.gamePieceMode = GamePieceMode.CORAL;
+  //           LightsSubsystem.getInstance().setPattern(BlinkinConstants.kWhite);
+  //         });
+  // public static final Command switchToAlgaeMode =
+  //     new InstantCommand(
+  //         () -> {
+  //           ProngSubsystem.gamePieceMode = GamePieceMode.ALGAE;
+  //           LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
+  //         });
 
   public static final Command nextLevel =
       new InstantCommand(

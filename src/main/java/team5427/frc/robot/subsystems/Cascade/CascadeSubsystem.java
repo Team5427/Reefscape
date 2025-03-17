@@ -6,7 +6,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,7 +31,7 @@ public class CascadeSubsystem extends SubsystemBase {
 
   private static CascadeSubsystem m_instance;
 
-    // private DigitalInput limitSwitch;
+  // private DigitalInput limitSwitch;
 
   @AutoLogOutput(key = "CascadeOutputs/State")
   public static CascadeStates state;
