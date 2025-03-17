@@ -3,6 +3,7 @@ package team5427.frc.robot.commands.homing;
 import static edu.wpi.first.units.Units.Volt;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
@@ -13,6 +14,8 @@ public class HomeCascade extends Command {
 
   private CascadeSubsystem cascadeSubsystem;
   private ClimberSubsystem climberSubsystem;
+
+
 
   public HomeCascade() {
     cascadeSubsystem = CascadeSubsystem.getInstance();
@@ -26,7 +29,7 @@ public class HomeCascade extends Command {
   @Override
   public void execute() {
     climberSubsystem.manualRunVoltage(true);
-    climberSubsystem.voltageRun(Volt.of(0.5));
+    climberSubsystem.voltageRun(Volt.of(-0.5));
   }
 
   @Override
@@ -37,6 +40,7 @@ public class HomeCascade extends Command {
       climberSubsystem.voltageRun(Volt.zero());
       return true;
     }
+
     return false;
   }
 }
