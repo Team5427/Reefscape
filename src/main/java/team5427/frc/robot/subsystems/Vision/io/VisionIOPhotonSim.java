@@ -98,7 +98,7 @@ public class VisionIOPhotonSim implements VisionIO {
                 totalTagDistance / results.get(i).targets.size(),
                 results.get(i).getBestTarget().getYaw(),
                 results.get(i).getBestTarget().getPitch(),
-                PoseObservationType.PHOTONVISION));
+                PoseObservationType.PHOTONVISION_MULTI_TAG));
         // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
         // inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
       } else {
@@ -117,7 +117,7 @@ public class VisionIOPhotonSim implements VisionIO {
                   target.bestCameraToTarget.getTranslation().getNorm(),
                   results.get(i).getBestTarget().getYaw(),
                   results.get(i).getBestTarget().getPitch(),
-                  PoseObservationType.PHOTONVISION));
+                  PoseObservationType.PHOTONVISION_SINGLE_TAG));
           // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
           // inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
         }

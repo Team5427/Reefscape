@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,6 +32,8 @@ public class CascadeSubsystem extends SubsystemBase {
 
   private static CascadeSubsystem m_instance;
 
+    // private DigitalInput limitSwitch;
+
   @AutoLogOutput(key = "CascadeOutputs/State")
   public static CascadeStates state;
 
@@ -48,6 +51,7 @@ public class CascadeSubsystem extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
         io = new CascadeIOMagicTalon();
+        // limitSwitch = new DigitalInput(0);
         break;
       case REPLAY:
       case SIM:
@@ -119,6 +123,11 @@ public class CascadeSubsystem extends SubsystemBase {
   public boolean cascadeAtGoal() {
     return (Math.abs(inputsAutoLogged.cascadeHeightMeters.minus(cascadeSetpoint).in(Meters))
         < CascadeConstants.kCascadeTolerance.in(Meters));
+  }
+
+  public boolean cascadeAtGoal(Distance withTolerance) {
+    return (Math.abs(inputsAutoLogged.cascadeHeightMeters.minus(cascadeSetpoint).in(Meters))
+        < withTolerance.in(Meters));
   }
 
   public void setPivotSetpoint(Rotation2d setpoint) {

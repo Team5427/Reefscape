@@ -76,14 +76,14 @@ public class AllCommands {
   public static final Command nextLevel =
       new InstantCommand(
           () -> {
-            ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW : Level.HIGH;
-            // ProngSubsystem.level = Level.HIGH;
+            // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW : Level.HIGH;
+            ProngSubsystem.level = Level.HIGH;
           });
 
   public static final Command prevLevel =
       new InstantCommand(
           () -> {
-            ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW : Level.FLOOR;
-            // ProngSubsystem.level = Level.LOW;
+            // ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW : Level.FLOOR;
+            ProngSubsystem.level = Level.LOW;
           });
 }

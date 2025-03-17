@@ -69,6 +69,8 @@ public class ClimberSubsystem extends SubsystemBase {
         && inputsAutoLogged.hookVelocity.in(RotationsPerSecond) <= 0.001;
   }
 
+
+
   public void setSetpoint(Rotation2d setpoint) {
     climbHooksSetpoint = setpoint;
   }

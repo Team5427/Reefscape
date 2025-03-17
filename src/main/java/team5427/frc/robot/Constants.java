@@ -167,7 +167,7 @@ public final class Constants {
       kDriveMotorConfiguration.mode = MotorMode.kFlywheel;
       kDriveMotorConfiguration.withFOC = true;
 
-      kDriveMotorConfiguration.currentLimit = 73;
+      kDriveMotorConfiguration.currentLimit = 80;
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity =
@@ -377,6 +377,8 @@ public final class Constants {
         };
 
     public static double kQuestStdDevBaseline = 0.001;
+
+    public static final String kProngLimelightName = "prong";
   }
 
   public static class CascadeConstants {
@@ -456,6 +458,7 @@ public final class Constants {
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
 
     public static final Distance kCascadeTolerance = Centimeters.of(1.5);
+    public static final Distance kCascadeToleranceAutonomous = Centimeters.of(2.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
     public static final double kPivotCancoderOffset = -.2651;
@@ -469,7 +472,7 @@ public final class Constants {
 
     public static final Distance kL2Distance = Meters.of(0.0);
 
-    public static final Distance kL3Distance = Meters.of(0.303);
+    public static final Distance kL3Distance = Meters.of(0.328);
     public static final Distance kL3DistanceInverse = Feet.of(1.25);
     public static final Distance kL4Distance = Meters.of(1.100); // 1.124 , 1.110
     public static final Distance kL4DistanceInverse = Feet.of(3.8);
@@ -484,7 +487,7 @@ public final class Constants {
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
     public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(85.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
-    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(6.5);
+    public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(6.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(47.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(10.898);
@@ -582,12 +585,12 @@ public final class Constants {
     public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(210.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(42.0);
-    public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(.986);
+    public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(.9);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(1.132);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(200.0);
     public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-29.5);
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(280.0);
-    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(127.5);
+    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(126.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(105.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(65.0);
