@@ -10,10 +10,13 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
+import lombok.Getter;
+
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class RobotState {
@@ -22,6 +25,8 @@ public class RobotState {
 
   private Pose2d estimatedPose = new Pose2d();
   private Pose2d odometryPose = new Pose2d();
+
+  @Getter private Pose2d questPose = new Pose2d();
 
   private static final Matrix<N3, N1> odometryStateStdDevs =
       new Matrix<>(VecBuilder.fill(0.03, 0.03, 0.001));
@@ -79,6 +84,10 @@ public class RobotState {
         visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
   }
 
+  public void addQuestMeasurment(Pose2d questPose){
+    this.questPose = questPose;
+  }
+
   public Pose2d getOdometryPose() {
     this.odometryPose = odometry.getPoseMeters();
     return this.odometryPose;
@@ -95,10 +104,12 @@ public class RobotState {
     // SwerveSubsystem.getInstance(Optional.of(this::addOdometryMeasurement)).resetGyro(resetPose.getRotation());
   }
 
+
   public void resetAllPose(
       Pose2d resetPose, SwerveModulePosition[] modulePositions, Rotation2d gyroAngle) {
     resetOdometryPose(resetPose, modulePositions, gyroAngle);
     resetEstimatedPose(resetPose, modulePositions, gyroAngle);
+    
     SwerveSubsystem.getInstance(Optional.empty()).resetGyro(resetPose.getRotation());
   }
 
@@ -120,6 +131,17 @@ public class RobotState {
     this.poseEstimator.resetPosition(gyroAngle, modulePositions, resetPose);
   }
 
+  public void resetQuestPose(){
+    QuestNav.getInstance().zeroPosition();
+  }
+
+  public Pose2d getAdaptivePose(){
+    if(QuestNav.getInstance().connected() && this.questPose != null){
+      return this.questPose;
+    }
+    return poseEstimator.getEstimatedPosition();
+  }
+
   public void resetHeading(Rotation2d heading) {
     this.odometry.resetRotation(heading);
     this.poseEstimator.resetRotation(heading);
@@ -134,5 +156,6 @@ public class RobotState {
     Logger.recordOutput(
         "Localization/Estimation/Robot", RobotState.getInstance().getEstimatedPose());
     Logger.recordOutput("Localization/Odometry/Robot", RobotState.getInstance().getOdometryPose());
+    Logger.recordOutput("Quest Pose", this.questPose);
   }
 }

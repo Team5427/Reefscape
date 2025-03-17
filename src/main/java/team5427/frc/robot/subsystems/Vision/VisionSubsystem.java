@@ -19,6 +19,7 @@ import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.VisionConstants;
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
@@ -130,6 +131,13 @@ public class VisionSubsystem extends SubsystemBase {
       io[i].updateInputs(inputsAutoLogged[i]);
       Logger.processInputs("Vision/Camera " + Integer.toString(i), inputsAutoLogged[i]);
     }
+    Logger.recordOutput("Quest Connected", QuestNav.getInstance().connected());
+    if(QuestNav.getInstance().connected()){
+      RobotState.getInstance().addQuestMeasurment(QuestNav.getInstance().getPose());
+      Logger.recordOutput("Quest Battery", QuestNav.getInstance().getBatteryPercent());
+      Logger.recordOutput("Quest Quaternion", QuestNav.getInstance().getQuaternion());
+    }
+    
     // Initialize logging values
     // List<Pose3d> allTagPoses = new LinkedList<>();
     // List<Pose3d> allRobotPoses = new LinkedList<>();
@@ -155,82 +163,56 @@ public class VisionSubsystem extends SubsystemBase {
       // Loop over pose observations
       for (PoseObservation observation : inputsAutoLogged[cameraIndex].poseObservations) {
         n++;
-        if (observation.type() == PoseObservationType.QUEST_NAV) {
-          // Check whether to reject pose
-          boolean rejectPose =
-              Math.abs(observation.pose().getZ())
-                      > VisionConstants.kMaxZHeight.in(Meter) // Must have realistic Z coordinate
+        // Check whether to reject pose
+        boolean rejectPose =
+            observation.tagCount() == 0 // Must have at least one tag
+                || (observation.tagCount() == 1
+                    && observation.ambiguity()
+                        > VisionConstants.kMaxAmbiguity) // Cannot be high ambiguity
+                || Math.abs(observation.pose().getZ())
+                    > VisionConstants.kMaxZHeight.in(Meter) // Must have realistic Z coordinate
 
-                  // Must be within the field boundaries
-                  || observation.pose().getX() < 0.0
-                  || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
-                  || observation.pose().getY() < 0.0
-                  || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
-          // Skip if rejected
-          if (rejectPose) {
-            continue;
-          }
-          // Send vision observation
-          visionConsumer.accept(
-              observation.pose().toPose2d(),
-              observation.timestamp(),
-              VecBuilder.fill(
-                  VisionConstants.kQuestStdDevBaseline,
-                  VisionConstants.kQuestStdDevBaseline,
-                  VisionConstants.kQuestStdDevBaseline));
+                // Must be within the field boundaries
+                || observation.pose().getX() < 0.0
+                || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
+                || observation.pose().getY() < 0.0
+                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
+        // Must not be an impossible pose to acheive based on max drivetrain speeds
+        // || observation
+        //         .pose()
+        //         .toPose2d()
+        //         .relativeTo(SwerveSubsystem.getInstance().getPose())
+        //         .getTranslation()
+        //         .getNorm()
+        //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+        //         * (Timer.getTimestamp() - observation.timestamp());
 
-        } else {
-          // Check whether to reject pose
-          boolean rejectPose =
-              observation.tagCount() == 0 // Must have at least one tag
-                  || (observation.tagCount() == 1
-                      && observation.ambiguity()
-                          > VisionConstants.kMaxAmbiguity) // Cannot be high ambiguity
-                  || Math.abs(observation.pose().getZ())
-                      > VisionConstants.kMaxZHeight.in(Meter) // Must have realistic Z coordinate
+        // Add pose to log
 
-                  // Must be within the field boundaries
-                  || observation.pose().getX() < 0.0
-                  || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
-                  || observation.pose().getY() < 0.0
-                  || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
-          // Must not be an impossible pose to acheive based on max drivetrain speeds
-          // || observation
-          //         .pose()
-          //         .toPose2d()
-          //         .relativeTo(SwerveSubsystem.getInstance().getPose())
-          //         .getTranslation()
-          //         .getNorm()
-          //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-          //         * (Timer.getTimestamp() - observation.timestamp());
-
-          // Add pose to log
-
-          // Skip if rejected
-          if (rejectPose) {
-            continue;
-          }
-
-          // Calculate standard deviations
-          double stdDevFactor =
-              observation.type().equals(PoseObservationType.PHOTONVISION_SINGLE_TAG)
-                  ? Double.MAX_VALUE
-                  : Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
-          double linearStdDev = VisionConstants.kLinearStdDevBaseline * stdDevFactor;
-          double angularStdDev = VisionConstants.kAngularStdDevBaseline * stdDevFactor;
-          if (cameraIndex < VisionConstants.kCameraStdDevFactors.length) {
-            linearStdDev *= VisionConstants.kCameraStdDevFactors[cameraIndex];
-            angularStdDev *= VisionConstants.kCameraStdDevFactors[cameraIndex];
-          }
-
-          // Send vision observation
-          visionConsumer.accept(
-              observation.pose().toPose2d(),
-              observation.timestamp(),
-              VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
-          Logger.recordOutput("Vision Pose " + cameraIndex, observation.pose());
-          latestPoseMeasurement = observation.pose();
+        // Skip if rejected
+        if (rejectPose) {
+          continue;
         }
+
+        // Calculate standard deviations
+        double stdDevFactor =
+            observation.type().equals(PoseObservationType.PHOTONVISION_SINGLE_TAG)
+                ? Double.MAX_VALUE
+                : Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
+        double linearStdDev = VisionConstants.kLinearStdDevBaseline * stdDevFactor;
+        double angularStdDev = VisionConstants.kAngularStdDevBaseline * stdDevFactor;
+        if (cameraIndex < VisionConstants.kCameraStdDevFactors.length) {
+          linearStdDev *= VisionConstants.kCameraStdDevFactors[cameraIndex];
+          angularStdDev *= VisionConstants.kCameraStdDevFactors[cameraIndex];
+        }
+
+        // Send vision observation
+        visionConsumer.accept(
+            observation.pose().toPose2d(),
+            observation.timestamp(),
+            VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
+        Logger.recordOutput("Vision Pose " + cameraIndex, observation.pose());
+        latestPoseMeasurement = observation.pose();
       }
 
       // Log camera datadata
