@@ -138,7 +138,7 @@ public class RobotState {
     if (QuestNav.getInstance().connected() && this.questPose != null) {
       return this.questPose;
     }
-    return poseEstimator.getEstimatedPosition();
+    return getEstimatedPose();
   }
 
   public void resetHeading(Rotation2d heading) {

@@ -708,6 +708,28 @@ public final class Constants {
     }
   }
 
+  public static class SupremeEffectorConstants {
+    public static MotorConfiguration kPivotMotorConfiguration;
+    public static MotorConfiguration kCoralMotorConfiguration;
+    public static MotorConfiguration kAlgaeMotorConfiguration;
+
+    public static final Rotation2d kPivotMinimumPosition = Rotation2d.fromDegrees(-45);
+    public static final Rotation2d kPivotMaximumPosition = Rotation2d.fromDegrees(270);
+
+    public static final CANDeviceId kPivotMotorId = new CANDeviceId(0);
+    public static final CANDeviceId kCoralMotorId = new CANDeviceId(0);
+    public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(0);
+
+    static {
+    }
+
+    static {
+    }
+
+    static {
+    }
+  }
+
   public static class EndEffectorConstants {
     //   public static final CANDeviceId kPivotMotorCanID = new CANDeviceId(0);
     //   public static final CANDeviceId kWristMotorCanID = new CANDeviceId(0);

@@ -72,14 +72,14 @@ public class AllCommands {
   //           LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
   //         });
 
-  public static final Command nextLevel =
+  public static final Command switchToHighLevel =
       new InstantCommand(
           () -> {
             // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW : Level.HIGH;
             ProngSubsystem.level = Level.HIGH;
           });
 
-  public static final Command prevLevel =
+  public static final Command switchToLowLevel =
       new InstantCommand(
           () -> {
             // ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW : Level.FLOOR;
