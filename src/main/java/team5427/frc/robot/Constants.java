@@ -720,6 +720,8 @@ public final class Constants {
     public static final CANDeviceId kCoralMotorId = new CANDeviceId(0);
     public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(0);
 
+    public static final CANDeviceId kCanRangeId = new CANDeviceId(0);
+
     static {
     }
 

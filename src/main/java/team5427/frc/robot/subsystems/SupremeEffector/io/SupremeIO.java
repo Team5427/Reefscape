@@ -26,6 +26,7 @@ public interface SupremeIO {
     public boolean pivotMotorConnected = false;
     public boolean coralMotorConnected = false;
     public boolean algaeMotorConnected = false;
+    public boolean canRangeConnected = false;
 
     public Current pivotMotorStatorCurrent = Amps.of(0.0);
     public Current coralMotorStatorCurrent = Amps.of(0.0);
@@ -46,6 +47,9 @@ public interface SupremeIO {
     public AngularAcceleration pivotMotorAngularAcceleration = RotationsPerSecondPerSecond.of(0.0);
     public LinearAcceleration coralMotorLinearAcceleration = MetersPerSecondPerSecond.of(0.0);
     public LinearAcceleration algaeMotorLinearAcceleration = MetersPerSecondPerSecond.of(0.0);
+
+    public Distance canRangeDistance = Meters.of(0.0);
+    public boolean canRangeDetectedObject = false;
   }
 
   public void updateInputs(SupremeIOInputs inputs);
