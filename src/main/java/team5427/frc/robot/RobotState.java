@@ -10,9 +10,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
-import lombok.Getter;
-
 import java.util.Optional;
+import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -84,7 +83,7 @@ public class RobotState {
         visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
   }
 
-  public void addQuestMeasurment(Pose2d questPose){
+  public void addQuestMeasurment(Pose2d questPose) {
     this.questPose = questPose;
   }
 
@@ -101,15 +100,15 @@ public class RobotState {
   public void resetAllPose(Pose2d resetPose) {
     resetOdometryPose(resetPose);
     resetEstimatedPose(resetPose);
+    resetQuestPose();
     // SwerveSubsystem.getInstance(Optional.of(this::addOdometryMeasurement)).resetGyro(resetPose.getRotation());
   }
-
 
   public void resetAllPose(
       Pose2d resetPose, SwerveModulePosition[] modulePositions, Rotation2d gyroAngle) {
     resetOdometryPose(resetPose, modulePositions, gyroAngle);
     resetEstimatedPose(resetPose, modulePositions, gyroAngle);
-    
+    resetQuestPose();
     SwerveSubsystem.getInstance(Optional.empty()).resetGyro(resetPose.getRotation());
   }
 
@@ -131,12 +130,12 @@ public class RobotState {
     this.poseEstimator.resetPosition(gyroAngle, modulePositions, resetPose);
   }
 
-  public void resetQuestPose(){
+  public void resetQuestPose() {
     QuestNav.getInstance().zeroPosition();
   }
 
-  public Pose2d getAdaptivePose(){
-    if(QuestNav.getInstance().connected() && this.questPose != null){
+  public Pose2d getAdaptivePose() {
+    if (QuestNav.getInstance().connected() && this.questPose != null) {
       return this.questPose;
     }
     return poseEstimator.getEstimatedPosition();
