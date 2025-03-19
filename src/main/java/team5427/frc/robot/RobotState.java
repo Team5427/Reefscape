@@ -110,7 +110,7 @@ public class RobotState {
     resetOdometryPose(resetPose, modulePositions, gyroAngle);
     resetEstimatedPose(resetPose, modulePositions, gyroAngle);
     
-    SwerveSubsystem.getInstance(Optional.empty()).resetGyro(resetPose.getRotation());
+    SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
   }
 
   public void resetOdometryPose(Pose2d resetPose) {

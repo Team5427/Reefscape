@@ -5,6 +5,8 @@ import team5427.lib.drivers.ComplexGearRatio;
 
 public class SwerveUtil {
 
+  public static final int kDefaultNumModules = 4;
+
   public static final int kFrontLeftModuleIdx = 0;
   public static final int kFrontRightModuleIdx = 1;
   public static final int kRearLeftModuleIdx = 2;

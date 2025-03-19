@@ -9,7 +9,6 @@ import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
-import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class PilotingControls {
@@ -50,22 +49,22 @@ public class PilotingControls {
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
 
-    SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement))
+    SwerveSubsystem.getInstance()
         .setDefaultCommand(new ChassisMovement(joy));
 
-    joy.leftBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  SwerveSubsystem.getInstance(Optional.empty()).setGyroLock(true);
-                }))
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  SwerveSubsystem.getInstance(Optional.empty()).setGyroLock(false);
-                }));
+    // joy.leftBumper()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               SwerveSubsystem.getInstance().setGyroLock(true);
+    //             }))
+    //     .onFalse(
+    //         new InstantCommand(
+    //             () -> {
+    //               SwerveSubsystem.getInstance().setGyroLock(false);
+    //             }));
 
-    joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
+    // joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
 
     // joy.a()
     //     .onTrue(
@@ -87,7 +86,7 @@ public class PilotingControls {
         .onTrue(
             new InstantCommand(
                 () -> {
-                  SwerveSubsystem.getInstance(Optional.empty()).resetGyro(Rotation2d.kZero);
+                  SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
                   RobotState.getInstance().resetHeading(Rotation2d.kZero);
                 }));
 
