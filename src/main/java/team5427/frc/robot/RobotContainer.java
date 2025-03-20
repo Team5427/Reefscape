@@ -24,7 +24,7 @@ import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
+// import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -61,10 +61,10 @@ public class RobotContainer {
       e.printStackTrace();
     }
     SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement);
-    VisionSubsystem.getInstance(
-        Optional.of(this::addVisionMeasurement),
-        Optional.of(RobotState.getInstance()::getEstimatedPose),
-        Optional.of(RobotState.getInstance()::getOdometryHeading));
+    // VisionSubsystem.getInstance(
+    //     Optional.of(this::addVisionMeasurement),
+    //     Optional.of(RobotState.getInstance()::getEstimatedPose),
+    //     Optional.of(RobotState.getInstance()::getOdometryHeading));
     createNamedCommands();
 
     // Configure AutoBuilder last
@@ -117,7 +117,7 @@ public class RobotContainer {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
-    // autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser();
     // // autoChooser.addOption(
     // //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // // autoChooser.addOption(

@@ -45,9 +45,9 @@ public class ChassisMovement extends Command {
 
   @Override
   public void execute() {
-    double vx = translationJoystick.getRightY();
-    double vy = translationJoystick.getRightX();
-    double omegaRadians = rotationJoystick.getLeftX();
+    double vx = -translationJoystick.getRightY();
+    double vy = -translationJoystick.getRightX();
+    double omegaRadians = -rotationJoystick.getLeftX();
 
     double dampener = joy.getRightTriggerAxis();
     

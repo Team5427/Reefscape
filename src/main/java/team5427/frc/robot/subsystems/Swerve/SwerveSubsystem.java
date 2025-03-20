@@ -23,6 +23,8 @@ import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
+import team5427.frc.robot.RobotState;
+import team5427.frc.robot.Constants.Mode;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -96,6 +98,8 @@ public class SwerveSubsystem extends SubsystemBase {
       odometryConsumer = consumer;
     }
 
+    PhoenixOdometryThread.getInstance().start();
+
     System.out.println("Created New Swerve");
   }
 
@@ -115,7 +119,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Rotation2d getGyroRotation() {
-    return gyroInputsAutoLogged.yawPosition;
+    return gyroInputsAutoLogged.yawPosition.unaryMinus();
   }
 
   public void resetGyro(Rotation2d newYaw) {
@@ -178,6 +182,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
       odometryConsumer.accept(odometrySampleTimestamps[i], newGyroInput, newModulePositions);
     }
+
+    gyroDisconnectAlert.set(!gyroInputsAutoLogged.connected && Constants.currentMode != Mode.SIM);
 
   }
 

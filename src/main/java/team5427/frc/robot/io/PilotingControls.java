@@ -49,8 +49,7 @@ public class PilotingControls {
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
 
-    SwerveSubsystem.getInstance()
-        .setDefaultCommand(new ChassisMovement(joy));
+    joy.leftTrigger().whileFalse(new ChassisMovement(joy));
 
     // joy.leftBumper()
     //     .onTrue(
