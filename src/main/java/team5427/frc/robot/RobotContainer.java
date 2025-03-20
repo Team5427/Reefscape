@@ -68,7 +68,7 @@ public class RobotContainer {
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
-        RobotState.getInstance()::getEstimatedPose, // Robot pose supplier
+        RobotState.getInstance()::getAdaptivePose, // Robot pose supplier
         RobotState.getInstance()
             ::resetAllPose, // Method to reset odometry (will be called if your auto has a
         // starting pose)

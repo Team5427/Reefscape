@@ -6,14 +6,15 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
+import lombok.Getter;
 
 public class RawIntakeConfiguration {
 
-  private final Rotation2d cascadeAngle;
-  private final Distance cascadeHeight;
-  private final Rotation2d wristAngle;
-  private final LinearVelocity rollerSpeeds;
-  private final boolean isCoral;
+  @Getter private final Rotation2d cascadeAngle;
+  @Getter private final Distance cascadeHeight;
+  @Getter private final Rotation2d wristAngle;
+  @Getter private final LinearVelocity rollerSpeeds;
+  @Getter private final boolean isCoral;
 
   public RawIntakeConfiguration() {
     cascadeAngle = wristAngle = Rotation2d.kZero;
@@ -33,25 +34,5 @@ public class RawIntakeConfiguration {
     this.wristAngle = wristAngle;
     this.rollerSpeeds = rollerSpeeds;
     this.isCoral = isCoral;
-  }
-
-  public Rotation2d getCascadeAngle() {
-    return cascadeAngle;
-  }
-
-  public Distance getCascadeHeight() {
-    return cascadeHeight;
-  }
-
-  public Rotation2d getWristAngle() {
-    return wristAngle;
-  }
-
-  public LinearVelocity getRollerSpeeds() {
-    return rollerSpeeds;
-  }
-
-  public boolean isCoral() {
-    return isCoral;
   }
 }

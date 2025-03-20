@@ -6,13 +6,14 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Distance;
 import java.util.Map;
+import lombok.Getter;
 import team5427.frc.robot.Field.ReefLevel;
 
 public class RawScoringConfiguration {
 
-  private final Rotation2d cascadeAngle;
-  private final Distance cascadeHeight;
-  private final Rotation2d wristAngle;
+  @Getter private final Rotation2d cascadeAngle;
+  @Getter private final Distance cascadeHeight;
+  @Getter private final Rotation2d wristAngle;
 
   private Map<ReefLevel, Pose3d> scoringPose;
 
@@ -73,18 +74,6 @@ public class RawScoringConfiguration {
 
   public Pose3d getPose() {
     return scoringPose.get(reefHeight);
-  }
-
-  public Rotation2d getCascadeAngle() {
-    return cascadeAngle;
-  }
-
-  public Distance getCascadeHeight() {
-    return cascadeHeight;
-  }
-
-  public Rotation2d getWristAngle() {
-    return wristAngle;
   }
 
   public Map<ReefLevel, Pose3d> getScoringPose() {

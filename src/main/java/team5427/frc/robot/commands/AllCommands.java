@@ -12,8 +12,6 @@ import team5427.frc.robot.commands.intake.Intake;
 import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
 import team5427.frc.robot.subsystems.LightsSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
 
 public class AllCommands {
 
@@ -72,17 +70,19 @@ public class AllCommands {
   //           LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlue);
   //         });
 
-  public static final Command switchToHighLevel =
-      new InstantCommand(
-          () -> {
-            // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW : Level.HIGH;
-            ProngSubsystem.level = Level.HIGH;
-          });
+  // public static final Command switchToHighLevel =
+  //     new InstantCommand(
+  //         () -> {
+  //           // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
+  // Level.HIGH;
+  //           ProngSubsystem.level = Level.HIGH;
+  //         });
 
-  public static final Command switchToLowLevel =
-      new InstantCommand(
-          () -> {
-            // ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW : Level.FLOOR;
-            ProngSubsystem.level = Level.LOW;
-          });
+  // public static final Command switchToLowLevel =
+  //     new InstantCommand(
+  //         () -> {
+  //           // ProngSubsystem.level = ProngSubsystem.level == Level.HIGH ? Level.LOW :
+  // Level.FLOOR;
+  //           ProngSubsystem.level = Level.LOW;
+  //         });
 }
