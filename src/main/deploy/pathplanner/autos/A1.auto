@@ -7,19 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "We ball.0"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "New Path.0"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "We ball.1"
+            "pathName": "New Path.1"
           }
         }
       ]
