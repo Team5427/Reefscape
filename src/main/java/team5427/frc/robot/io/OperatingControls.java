@@ -16,6 +16,7 @@ import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
+import team5427.frc.robot.commands.cascade.Climb;
 
 public class OperatingControls {
 
@@ -89,58 +90,60 @@ public class OperatingControls {
                   ProngSubsystem.getInstance()
                       .setWristSetpoint(ProngEffectorConstants.kStowPosition);
                   ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kStowPosition);
-                  ClimberSubsystem.setClimbState(ClimbStates.kStow);
+                //   ClimberSubsystem.setClimbState(ClimbStates.kStow);
+                  Climb.step = Climb.kReset;
                   ProngSubsystem.level = Level.FLOOR;
                 },
                 CascadeSubsystem.getInstance(),
                 ProngSubsystem.getInstance(),
                 ClimberSubsystem.getInstance()));
 
-    joy.povUp()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  ClimbStates step = ClimberSubsystem.getClimbState();
-                  Logger.recordOutput("Climber Step", step);
-                  switch (step) {
-                    case kStow:
-                      ClimberSubsystem.setClimbState(ClimbStates.kPrep);
-                      step = ClimberSubsystem.getClimbState();
-                    case kPrep:
-                      CascadeSubsystem.getInstance()
-                          .setCascadeSetpoint(CascadeConstants.kStowDistance);
-                      CascadeSubsystem.getInstance()
-                          .setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
-                      ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kPrepPosition);
-                      LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
+    // joy.povUp()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               ClimbStates step = ClimberSubsystem.getClimbState();
+    //               Logger.recordOutput("Climber Step", step);
+    //               switch (step) {
+    //                 case kStow:
+    //                   ClimberSubsystem.setClimbState(ClimbStates.kPrep);
+    //                   step = ClimberSubsystem.getClimbState();
+    //                 case kPrep:
+    //                   CascadeSubsystem.getInstance()
+    //                       .setCascadeSetpoint(CascadeConstants.kStowDistance);
+    //                   CascadeSubsystem.getInstance()
+    //                       .setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
+    //                   ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kPrepPosition);
+    //                   LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
 
-                      break;
-                    case kHook:
-                      CascadeSubsystem.getInstance()
-                          .setCascadeSetpoint(CascadeConstants.kStowDistance);
-                      CascadeSubsystem.getInstance()
-                          .setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
-                      ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kActivePosition);
-                      LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
-                      break;
-                    case kClimb:
-                      CascadeSubsystem.getInstance()
-                          .setCascadeSetpoint(CascadeConstants.kZeroPosition);
-                      CascadeSubsystem.getInstance()
-                          .setPivotSetpoint(CascadeConstants.kTempClimbRotation);
-                      ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kActivePosition);
-                      ProngSubsystem.getInstance()
-                          .setWristSetpoint(ProngEffectorConstants.kClimbRotation);
-                      LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
-                      break;
-                    default:
-                      break;
-                  }
-                },
-                ClimberSubsystem.getInstance(),
-                ProngSubsystem.getInstance(),
-                CascadeSubsystem.getInstance(),
-                LightsSubsystem.getInstance()));
+    //                   break;
+    //                 case kHook:
+    //                   CascadeSubsystem.getInstance()
+    //                       .setCascadeSetpoint(CascadeConstants.kStowDistance);
+    //                   CascadeSubsystem.getInstance()
+    //                       .setPivotSetpoint(CascadeConstants.kClimbPrepRotation);
+    //                   ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kActivePosition);
+    //                   LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
+    //                   break;
+    //                 case kClimb:
+    //                   CascadeSubsystem.getInstance()
+    //                       .setCascadeSetpoint(CascadeConstants.kZeroPosition);
+    //                   CascadeSubsystem.getInstance()
+    //                       .setPivotSetpoint(CascadeConstants.kTempClimbRotation);
+    //                   ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kActivePosition);
+    //                   ProngSubsystem.getInstance()
+    //                       .setWristSetpoint(ProngEffectorConstants.kClimbRotation);
+    //                   LightsSubsystem.getInstance().setPattern(BlinkinConstants.kBlack);
+    //                   break;
+    //                 default:
+    //                   break;
+    //               }
+    //             },
+    //             ClimberSubsystem.getInstance(),
+    //             ProngSubsystem.getInstance(),
+    //             CascadeSubsystem.getInstance(),
+    //             LightsSubsystem.getInstance()));
+    joy.povUp().onTrue(AllCommands.climbStep);
 
     joy.povRight()
         .onTrue(

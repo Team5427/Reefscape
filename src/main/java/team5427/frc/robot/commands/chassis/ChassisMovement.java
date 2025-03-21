@@ -69,6 +69,10 @@ public class ChassisMovement extends Command {
                 * Math.PI
                 * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
 
+        vx *= (1 - dampener);
+        vy *= (1 - dampener);
+        omegaRadians *= (1 - dampener);
+
         ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
         inputSpeeds.times(MathUtil.clamp(1 - dampener, 0, 1));
         if (joy.getLeftTriggerAxis() >= 0.1) {
