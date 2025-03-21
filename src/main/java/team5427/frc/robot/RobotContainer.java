@@ -1,6 +1,7 @@
 package team5427.frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.AutoBuilderException;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
@@ -68,7 +69,7 @@ public class RobotContainer {
 
     // Configure AutoBuilder last
     AutoBuilder.configure(
-        RobotState.getInstance()::getEstimatedPose, // Robot pose supplier
+        RobotState.getInstance()::getAdaptivePose, // Robot pose supplier
         RobotState.getInstance()
             ::resetAllPose, // Method to reset odometry (will be called if your auto has a
         // starting pose)
@@ -83,8 +84,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(6.5, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(2.6427, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(4.16, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -116,7 +117,11 @@ public class RobotContainer {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
-    autoChooser = AutoBuilder.buildAutoChooser();
+        SendableChooser<Command>  autoChooser;
+        try{ autoChooser = AutoBuilder.buildAutoChooser("Center Auto"); } catch(AutoBuilderException e){
+          System.out.println(e);
+          autoChooser = new SendableChooser<>();
+        }
     // autoChooser.addOption(
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(

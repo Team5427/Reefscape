@@ -20,12 +20,14 @@ import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.RobotState;
+import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
+import team5427.frc.robot.subsystems.Vision.io.VisionIOQuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -87,7 +89,7 @@ public class VisionSubsystem extends SubsystemBase {
                 VisionConstants.kIntakeCamTransform,
                 referencePoseSupplier,
                 referenceHeadingSupplier);
-        // io[1] = new QuestNav(VisionConstants.kQuestCameraTransform);
+        // io[2] = new VisionIOQuestNav(VisionConstants.kQuestCameraTransform);
 
         for (int i = 0; i < inputsAutoLogged.length; i++) {
           inputsAutoLogged[i] = new VisionIOInputsAutoLogged();
@@ -131,9 +133,9 @@ public class VisionSubsystem extends SubsystemBase {
       io[i].updateInputs(inputsAutoLogged[i]);
       Logger.processInputs("Vision/Camera " + Integer.toString(i), inputsAutoLogged[i]);
     }
-    Logger.recordOutput("Quest Connected", QuestNav.getInstance().connected());
-    if (QuestNav.getInstance().connected()) {
-      RobotState.getInstance().addQuestMeasurment(QuestNav.getInstance().getPose());
+    Logger.recordOutput("Quest Connected", QuestNav.getInstance().isConnected());
+    if (QuestNav.getInstance().isConnected()) {
+      RobotState.getInstance().addQuestMeasurment(QuestNav.getInstance().getRobotPose());
       Logger.recordOutput("Quest Battery", QuestNav.getInstance().getBatteryPercent());
       Logger.recordOutput("Quest Quaternion", QuestNav.getInstance().getQuaternion());
     }
@@ -249,6 +251,18 @@ public class VisionSubsystem extends SubsystemBase {
       //     "Vision/Summary/RobotPosesRejected",
       //     allRobotPosesRejected.toArray(new Pose3d[allRobotPosesRejected.size()]));
     }
+  }
+
+  public boolean isQuestConnected() {
+    return inputsAutoLogged[inputsAutoLogged.length - 1].connected;
+  }
+
+  public void resetPoseQuest(Pose3d pose) {
+    ((VisionIOQuestNav) this.io[io.length - 1]).resetPose(pose.toPose2d());
+  }
+
+  public void resetPoseQuest(Pose2d pose) {
+    ((VisionIOQuestNav) this.io[io.length - 1]).resetPose(pose);
   }
 
   @FunctionalInterface

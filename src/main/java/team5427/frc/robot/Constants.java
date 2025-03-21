@@ -351,7 +351,7 @@ public final class Constants {
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
     public static final Transform3d kQuestCameraTransform =
-        new Transform3d(0, 0, 0, Rotation3d.kZero);
+        new Transform3d(0, 0, 0, new Rotation3d(Rotation2d.kCCW_90deg));
 
     public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
 
@@ -715,6 +715,9 @@ public final class Constants {
 
     public static final Rotation2d kPivotMinimumPosition = Rotation2d.fromDegrees(-45);
     public static final Rotation2d kPivotMaximumPosition = Rotation2d.fromDegrees(270);
+
+    public static final Debouncer kAlgaeIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
+    public static final Debouncer kCoralIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
 
     public static final CANDeviceId kPivotMotorId = new CANDeviceId(0);
     public static final CANDeviceId kCoralMotorId = new CANDeviceId(0);

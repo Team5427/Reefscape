@@ -81,22 +81,7 @@ public class OperatingControls {
                   ProngSubsystem.level = Level.LOW;
                 }));
 
-    joy.povDown()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  CascadeSubsystem.getInstance().setCascadeSetpoint(CascadeConstants.kStowDistance);
-                  CascadeSubsystem.getInstance().setPivotSetpoint(CascadeConstants.kStowRotation);
-                  ProngSubsystem.getInstance()
-                      .setWristSetpoint(ProngEffectorConstants.kStowPosition);
-                  ClimberSubsystem.getInstance().setSetpoint(ClimbConstants.kStowPosition);
-                //   ClimberSubsystem.setClimbState(ClimbStates.kStow);
-                  Climb.step = Climb.kReset;
-                  ProngSubsystem.level = Level.FLOOR;
-                },
-                CascadeSubsystem.getInstance(),
-                ProngSubsystem.getInstance(),
-                ClimberSubsystem.getInstance()));
+    joy.povDown().onTrue(AllCommands.resetSubsystems);
 
     // joy.povUp()
     //     .onTrue(

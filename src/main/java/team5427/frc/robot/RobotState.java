@@ -15,7 +15,7 @@ import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.QuestNav;
+import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class RobotState {
@@ -100,7 +100,7 @@ public class RobotState {
   public void resetAllPose(Pose2d resetPose) {
     resetOdometryPose(resetPose);
     resetEstimatedPose(resetPose);
-    resetQuestPose();
+    resetQuestPose(resetPose);
     // SwerveSubsystem.getInstance(Optional.of(this::addOdometryMeasurement)).resetGyro(resetPose.getRotation());
   }
 
@@ -108,7 +108,7 @@ public class RobotState {
       Pose2d resetPose, SwerveModulePosition[] modulePositions, Rotation2d gyroAngle) {
     resetOdometryPose(resetPose, modulePositions, gyroAngle);
     resetEstimatedPose(resetPose, modulePositions, gyroAngle);
-    resetQuestPose();
+    resetQuestPose(resetPose);
     SwerveSubsystem.getInstance(Optional.empty()).resetGyro(resetPose.getRotation());
   }
 
@@ -130,12 +130,18 @@ public class RobotState {
     this.poseEstimator.resetPosition(gyroAngle, modulePositions, resetPose);
   }
 
-  public void resetQuestPose() {
-    QuestNav.getInstance().zeroPosition();
+  public void resetQuestPose(Pose2d resetPose) {
+    // QuestNav.getInstance().resetPose(resetPose.transformBy(QuestNav.getInstance().getPose().minus(resetPose)));
+    // QuestNav.getInstance().setFieldTransform(resetPose);
+    // VisionSubsystem.getInstance().resetPoseQuest(resetPose);
+    QuestNav.getInstance().resetPose(resetPose);
+    // QuestNav.getInstance().zeroPosition();
+    // QuestNav.getInstance().zeroPosition();
+
   }
 
   public Pose2d getAdaptivePose() {
-    if (QuestNav.getInstance().connected() && this.questPose != null) {
+    if (QuestNav.getInstance().isConnected() && this.questPose != null) {
       return this.questPose;
     }
     return getEstimatedPose();

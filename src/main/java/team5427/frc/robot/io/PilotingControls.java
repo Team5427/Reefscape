@@ -1,5 +1,6 @@
 package team5427.frc.robot.io;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -50,6 +51,13 @@ public class PilotingControls {
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
 
+    joy.b()
+        .onTrue(
+            new InstantCommand(
+                    () -> {
+                      RobotState.getInstance().resetAllPose(new Pose2d(5, 4, Rotation2d.kZero));
+                    })
+                .ignoringDisable(true));
     SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement))
         .setDefaultCommand(new ChassisMovement(joy));
 

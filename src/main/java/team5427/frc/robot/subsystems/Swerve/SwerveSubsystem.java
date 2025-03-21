@@ -18,6 +18,7 @@ import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -147,11 +148,11 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void setChassisSpeeds(ChassisSpeeds newSpeeds) {
-    this.inputSpeeds = newSpeeds;
+    if(RobotState.isTeleop()) this.inputSpeeds = newSpeeds;
   }
 
   public void setSpeedsAuton(ChassisSpeeds speeds) {
-    setChassisSpeeds(speeds);
+    if(RobotState.isAutonomous()) this.inputSpeeds = speeds;
   }
 
   // public void setChassisSpeeds(ChassisSpeeds newSpeeds, DriveFeedforwards feedforwards) {
@@ -215,8 +216,13 @@ public class SwerveSubsystem extends SubsystemBase {
     //           );
     //   moduleStates = previousSetpoint.moduleStates();
     // } else {
-    ChassisSpeeds discretizedSpeeds =
+      ChassisSpeeds discretizedSpeeds;
+    if(RobotState.isTeleop()){
+    discretizedSpeeds =
         ChassisSpeeds.discretize(relativeSpeeds, Constants.kLoopSpeed);
+    } else{
+      discretizedSpeeds = relativeSpeeds;
+    }
 
     moduleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(discretizedSpeeds);
     // SwerveDriveKinematics.desaturateWheelSpeeds(
