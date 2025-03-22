@@ -51,7 +51,7 @@ public final class Constants {
   public static final double kLoopSpeed = 0.020;
   public static final String kCanivoreBusName = "brook";
   public static final double kOdometryFrequency =
-      new CANBus(Constants.kCanivoreBusName).isNetworkFD() ? 250.0 : 100.0;
+      new CANBus(Constants.kCanivoreBusName).isNetworkFD() ? 200.0 : 100.0;
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
   public static Mode currentMode = Mode.SIM;
 
@@ -408,14 +408,14 @@ public final class Constants {
 
       kCascadeDriverConfiguration.maxVelocity =
           kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
-      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2.0;
+      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 4.0;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .25;
+      kCascadeDriverConfiguration.kP = .45;
       // kCascadeDriverConfiguration.kI = .08;
       // kCascadeDriverConfiguration.kG = 0.036;
-      kCascadeDriverConfiguration.kD = 0.05;
+      kCascadeDriverConfiguration.kD = 0.01;
       // kCascadeDriverConfiguration.kV = 3.0;
       // kCascadeDriverConfiguration.kV = .50;
       // kCascadeDriverConfiguration.kA = 0.05;
@@ -424,7 +424,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
-      kCascadeDriverConfiguration.altJ = 30.0000000000001;
+      // kCascadeDriverConfiguration.altJ = 30.0000000000001;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -434,7 +434,7 @@ public final class Constants {
 
     static {
       kPivotConfiguration.gearRatio =
-          new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 3.0), (32.0 / 48.0), (9.0 / 44.0));
+          new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 5.0), (32.0 / 48.0), (9.0 / 44.0));
       kPivotConfiguration.currentLimit = 60;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
@@ -444,12 +444,12 @@ public final class Constants {
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity * 1.1;
 
-      kPivotConfiguration.kP = 60.0;
+      kPivotConfiguration.kP = 70.0;
       kPivotConfiguration.kD = 0.1;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
       // kPivotConfiguration.kS = 0.0;
-      kPivotConfiguration.kG = 0.32;
+      // kPivotConfiguration.kG = 3.0;
 
       kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
       kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
@@ -461,7 +461,7 @@ public final class Constants {
     public static final Distance kCascadeToleranceAutonomous = Centimeters.of(2.0);
     public static final Rotation2d kPivotTolerance = Rotation2d.fromDegrees(0.5);
 
-    public static final double kPivotCancoderOffset = -.2651;
+    public static final double kPivotCancoderOffset = -0.26611328125;
 
     public static final Distance kStowDistance = Feet.of(0.25);
     public static final Distance kZeroPosition = Feet.of(00);

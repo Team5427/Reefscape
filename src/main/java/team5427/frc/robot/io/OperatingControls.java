@@ -81,7 +81,7 @@ public class OperatingControls {
                   ProngSubsystem.level = Level.LOW;
                 }));
 
-    joy.povDown().onTrue(AllCommands.resetSubsystems);
+    joy.povDown().whileTrue(AllCommands.resetSubsystems);
 
     // joy.povUp()
     //     .onTrue(

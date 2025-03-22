@@ -116,11 +116,8 @@ public class RobotContainer {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
-        SendableChooser<Command>  autoChooser;
-        try{ autoChooser = AutoBuilder.buildAutoChooser("Center Auto"); } catch(AutoBuilderException e){
-          System.out.println(e);
-          autoChooser = new SendableChooser<>();
-        }
+        autoChooser = AutoBuilder.buildAutoChooser();
+          
     // autoChooser.addOption(
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
