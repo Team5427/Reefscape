@@ -60,7 +60,7 @@ public class RobotContainer {
       System.out.println("Robot Config Failing");
       e.printStackTrace();
     }
-    SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement));
+    SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement);
     VisionSubsystem.getInstance(
         Optional.of(this::addVisionMeasurement),
         Optional.of(RobotState.getInstance()::getEstimatedPose),
@@ -73,9 +73,9 @@ public class RobotContainer {
         RobotState.getInstance()
             ::resetAllPose, // Method to reset odometry (will be called if your auto has a
         // starting pose)
-        SwerveSubsystem.getInstance(Optional.empty())
-            ::getCurrentRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        SwerveSubsystem.getInstance(Optional.empty())::setSpeedsAuton,
+        SwerveSubsystem.getInstance()
+            ::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        SwerveSubsystem.getInstance()::setInputSpeeds,
         // (speeds) ->
         //     SwerveSubsystem.getInstance()
         //         .setChassisSpeeds(speeds), // Method that will drive the robot given ROBOT
@@ -98,8 +98,7 @@ public class RobotContainer {
           }
           return false;
         },
-        SwerveSubsystem.getInstance(
-            Optional.empty()) // Reference to this subsystem to set requirements
+        SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
         );
 
     // VisionSubsystem vision = new
@@ -126,22 +125,22 @@ public class RobotContainer {
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
     //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Forward)",
-        SwerveSubsystem.getInstance(Optional.empty())
-            .sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Quasistatic Reverse)",
-        SwerveSubsystem.getInstance(Optional.empty())
-            .sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Forward)",
-        SwerveSubsystem.getInstance(Optional.empty())
-            .sysIdDynamic(SysIdRoutine.Direction.kForward));
-    autoChooser.addOption(
-        "Drive SysId (Dynamic Reverse)",
-        SwerveSubsystem.getInstance(Optional.empty())
-            .sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    // autoChooser.addOption(
+    //     "Drive SysId (Quasistatic Forward)",
+    //     SwerveSubsystem.getInstance(Optional.empty())
+    //         .sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    // autoChooser.addOption(
+    //     "Drive SysId (Quasistatic Reverse)",
+    //     SwerveSubsystem.getInstance(Optional.empty())
+    //         .sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    // autoChooser.addOption(
+    //     "Drive SysId (Dynamic Forward)",
+    //     SwerveSubsystem.getInstance(Optional.empty())
+    //         .sysIdDynamic(SysIdRoutine.Direction.kForward));
+    // autoChooser.addOption(
+    //     "Drive SysId (Dynamic Reverse)",
+    //     SwerveSubsystem.getInstance(Optional.empty())
+    //         .sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 

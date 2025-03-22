@@ -12,7 +12,7 @@ public class SwerveDriveTest {
 
   public SwerveDriveTest() {
     swerveSubsystem =
-        SwerveSubsystem.getInstance(Optional.of(RobotState.getInstance()::addOdometryMeasurement));
+        SwerveSubsystem.getInstance();
   }
 
   @BeforeEach
