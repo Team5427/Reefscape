@@ -189,6 +189,11 @@ public class SwerveSubsystem extends SubsystemBase {
 
     gyroDisconnectAlert.set(!gyroInputsAutoLogged.connected && Constants.currentMode != Mode.SIM);
 
+    Logger.recordOutput("SwerveOutput/InputSpeeds", inputSpeeds);
+    Logger.recordOutput("SwerveOutput/ModulePositions", getModulePositions());
+    Logger.recordOutput("SwerveOutput/ModuleStates", actualModuleStates);
+    Logger.recordOutput("SwerveOutput/TargetModuleStates", targetModuleStates);
+
   }
 
   @FunctionalInterface
