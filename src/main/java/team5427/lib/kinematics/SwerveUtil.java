@@ -24,15 +24,15 @@ public class SwerveUtil {
       new ComplexGearRatio((14.0 / 50.0), (25.0 / 19.0), (15.0 / 45.0));
   public static final ComplexGearRatio kSDSL2GearRatio =
       new ComplexGearRatio((14.0 / 50.0), (27.0 / 17.0), (15.0 / 45.0));
-  public static final team5427.lib.drivers.ComplexGearRatio kSDSL3GearRatio =
+  public static final ComplexGearRatio kSDSL3GearRatio =
       new ComplexGearRatio((14.0 / 50.0), (28.0 / 16.0), (15.0 / 45.0));
   public static final ComplexGearRatio kSDSL4GearRatio =
       new ComplexGearRatio((16.0 / 48.0), (28.0 / 16.0), (15.0 / 45.0));
 
-  public final CANDeviceId[] kSteerMotorIds = new CANDeviceId[4];
-  public final CANDeviceId[] kDriveMotorIds = new CANDeviceId[4];
-  public final CANDeviceId[] kCancoderIds = new CANDeviceId[4];
-  public final double[] kModuleOffsets = new double[4];
-  public final boolean[] kSteerInversion = new boolean[4];
-  public final boolean[] kDriveInversion = new boolean[4];
+  public final CANDeviceId[] kSteerMotorIds = new CANDeviceId[kDefaultNumModules];
+  public final CANDeviceId[] kDriveMotorIds = new CANDeviceId[kDefaultNumModules];
+  public final CANDeviceId[] kCancoderIds = new CANDeviceId[kDefaultNumModules];
+  public final double[] kModuleOffsets = new double[kDefaultNumModules];
+  public final boolean[] kSteerInversion = new boolean[kDefaultNumModules];
+  public final boolean[] kDriveInversion = new boolean[kDefaultNumModules];
 }

@@ -105,10 +105,14 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public ChassisSpeeds getDriveSpeeds(double xInput, double yInput, double omegaInput, double dampenAmount) {
 
+    xInput *= (1 - dampenAmount);
+    yInput *= (1 - dampenAmount);
+    omegaInput *= (1 - dampenAmount);
+
     ChassisSpeeds rawSpeeds = new ChassisSpeeds(
       xInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity,
       yInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity,
-      omegaInput * Math.PI * 3.0
+      omegaInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity * Math.PI
     );
 
     ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());

@@ -16,7 +16,7 @@ import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.QuestNav;
+// import team5427.frc.robot.subsystems.Vision.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class RobotState {
@@ -131,16 +131,16 @@ public class RobotState {
     this.poseEstimator.resetPosition(gyroAngle, modulePositions, resetPose);
   }
 
-  public void resetQuestPose(){
-    QuestNav.getInstance().zeroPosition();
-  }
+  // public void resetQuestPose(){
+  //   QuestNav.getInstance().zeroPosition();
+  // }
 
-  public Pose2d getAdaptivePose(){
-    if(QuestNav.getInstance().connected() && this.questPose != null){
-      return this.questPose;
-    }
-    return poseEstimator.getEstimatedPosition();
-  }
+  // public Pose2d getAdaptivePose(){
+  //   if(QuestNav.getInstance().connected() && this.questPose != null){
+  //     return this.questPose;
+  //   }
+  //   return poseEstimator.getEstimatedPosition();
+  // }
 
   public void resetHeading(Rotation2d heading) {
     this.odometry.resetRotation(heading);

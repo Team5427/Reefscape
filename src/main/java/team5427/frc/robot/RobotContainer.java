@@ -117,7 +117,7 @@ public class RobotContainer {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
-    autoChooser = AutoBuilder.buildAutoChooser();
+    // autoChooser = AutoBuilder.buildAutoChooser();
     // // autoChooser.addOption(
     // //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // // autoChooser.addOption(
@@ -139,7 +139,7 @@ public class RobotContainer {
     //     SwerveSubsystem.getInstance()
     //         .sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    // SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureButtonBindings();
   }

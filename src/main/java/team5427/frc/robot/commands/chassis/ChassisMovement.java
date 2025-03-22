@@ -47,9 +47,9 @@ public class ChassisMovement extends Command {
   public void execute() {
     double vx = -translationJoystick.getRightY();
     double vy = -translationJoystick.getRightX();
-    double omegaRadians = -rotationJoystick.getLeftX();
+    double omegaRadians = -rotationJoystick.getLeftX() * Math.abs(translationJoystick.getLeftX());
 
-    double dampener = joy.getRightTriggerAxis();
+    double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
     
     ChassisSpeeds driverSpeeds = swerveSubsystem.getDriveSpeeds(vx, vy, omegaRadians, dampener);
     swerveSubsystem.setInputSpeeds(driverSpeeds);
