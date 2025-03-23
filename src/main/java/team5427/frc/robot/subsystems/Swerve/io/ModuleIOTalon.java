@@ -239,6 +239,12 @@ public class ModuleIOTalon implements ModuleIO {
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
     driveMotor.setSetpoint(speed.in(MetersPerSecond));
+
+  }
+
+  @Override
+  public void setDriveFeedForward(Current current){
+    driveMotor.getMotorConfiguration().kFF = current.in(Amps);
   }
 
   @Override

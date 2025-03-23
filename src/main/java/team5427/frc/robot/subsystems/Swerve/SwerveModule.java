@@ -8,6 +8,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.Logger;
+
+import com.pathplanner.lib.util.DriveFeedforwards;
+
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIO;
 import team5427.frc.robot.subsystems.Swerve.io.ModuleIOInputsAutoLogged;
@@ -55,6 +58,27 @@ public class SwerveModule {
       case REAL:
         if (io != null) {
           newState.optimize(inputs.absolutePosition);
+          io.setModuleState(newState);
+        }
+        break;
+      case SIM:
+        if (io != null) {
+          io.setModuleState(newState);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+
+  public void setModuleState(SwerveModuleState state, DriveFeedforwards driveFeedforwards) {
+    SwerveModuleState newState = state;
+    switch (Constants.currentMode) {
+      case REPLAY:
+      case REAL:
+        if (io != null) {
+          newState.optimize(inputs.absolutePosition);
+          io.setDriveFeedForward(driveFeedforwards.torqueCurrents()[index]);
           io.setModuleState(newState);
         }
         break;

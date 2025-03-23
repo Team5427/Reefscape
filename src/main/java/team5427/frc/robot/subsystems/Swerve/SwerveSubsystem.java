@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.checkerframework.checker.units.qual.s;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -50,9 +54,14 @@ public class SwerveSubsystem extends SubsystemBase {
   
   private GyroIO gyroIO;
   private GyroIOInputsAutoLogged gyroInputsAutoLogged;
-  private boolean gyroLock;
 
   @Getter @Setter private ChassisSpeeds inputSpeeds;
+
+  private SwerveSetpointGenerator setpointGenerator;
+
+  private SwerveSetpoint setpoint;
+
+  private DriveFeedforwards driveFeedforwards;
 
   private OdometryConsumer odometryConsumer;
 
@@ -102,14 +111,15 @@ public class SwerveSubsystem extends SubsystemBase {
     }
     gyroInputsAutoLogged = new GyroIOInputsAutoLogged();
 
-    gyroLock = false;
-
     odometryConsumer = null;
     if (consumer == null && odometryConsumer == null) {
       DriverStation.reportWarning("Swerve Subsystem not provided by OdometryConsumer", true);
     } else {
       odometryConsumer = consumer;
     }
+    
+    setpointGenerator = new SwerveSetpointGenerator(Constants.config, RotationsPerSecond.of(3.0));
+    setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates, driveFeedforwards);
 
     PhoenixOdometryThread.getInstance().start();
 
@@ -162,8 +172,8 @@ public class SwerveSubsystem extends SubsystemBase {
     PathPlannerPath targetPath = new PathPlannerPath(
         PathPlannerPath.waypointsFromPoses(
           List.of(
-            RobotState.getInstance().getEstimatedPose(),
-            RobotState.getInstance().getEstimatedPose().nearest(List.of(RobotConfigConstants.kReefPoses))
+            RobotState.getInstance().getAdaptivePose(),
+            RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))
           )), 
         new PathConstraints(
           MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25), 
@@ -205,10 +215,16 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Create New Target Module States from inputSpeeds
+    if(DriverStation.isAutonomous()){
     targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
+    } else{
+      setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
+      targetModuleStates = setpoint.moduleStates();
+      driveFeedforwards = setpoint.feedforwards();
+    }
 
     for (int i = 0; i < swerveModules.length; i++) {
-      swerveModules[i].setModuleState(targetModuleStates[i]); // Set new target module state
+      swerveModules[i].setModuleState(targetModuleStates[i], driveFeedforwards); // Set new target module state
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state
       swerveModules[i].periodic(); // Update Module Inputs
     }
