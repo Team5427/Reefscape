@@ -12,14 +12,17 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Optional;
 import java.util.function.Supplier;
 import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
+import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.RobotState;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
@@ -178,16 +181,16 @@ public class VisionSubsystem extends SubsystemBase {
                 || observation.pose().getX() < 0.0
                 || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
-                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
+                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth()
         // Must not be an impossible pose to acheive based on max drivetrain speeds
-        // || observation
-        //         .pose()
-        //         .toPose2d()
-        //         .relativeTo(SwerveSubsystem.getInstance().getPose())
-        //         .getTranslation()
-        //         .getNorm()
-        //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-        //         * (Timer.getTimestamp() - observation.timestamp());
+        || observation
+                .pose()
+                .toPose2d()
+                .relativeTo(RobotState.getInstance().getAdaptivePose())
+                .getTranslation()
+                .getNorm()
+            > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+                * (Timer.getTimestamp() - observation.timestamp());
 
         // Add pose to log
 
@@ -199,7 +202,7 @@ public class VisionSubsystem extends SubsystemBase {
         // Calculate standard deviations
         double stdDevFactor =
             observation.type().equals(PoseObservationType.PHOTONVISION_SINGLE_TAG)
-                ? Double.MAX_VALUE
+                ? observation.averageTagDistance() * 2.0
                 : Math.pow(observation.averageTagDistance(), 2.0) / observation.tagCount();
         double linearStdDev = VisionConstants.kLinearStdDevBaseline * stdDevFactor;
         double angularStdDev = VisionConstants.kAngularStdDevBaseline * stdDevFactor;

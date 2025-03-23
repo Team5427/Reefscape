@@ -10,12 +10,14 @@ import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
@@ -62,7 +64,7 @@ public class RobotContainer {
     }
     SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement);
     VisionSubsystem.getInstance(
-        Optional.of(this::addVisionMeasurement),
+        Optional.of(RobotState.getInstance()::addVisionMeasurement),
         Optional.of(RobotState.getInstance()::getEstimatedPose),
         Optional.of(RobotState.getInstance()::getOdometryHeading));
     createNamedCommands();
@@ -84,8 +86,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(2.6427, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(4.16, 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(2.8127 , 0.0, 0.0), // Translation PID constants
+            new PIDConstants(4.17  , 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -144,17 +146,13 @@ public class RobotContainer {
     configureButtonBindings();
   }
 
-  public void addVisionMeasurement(
-      Pose2d visionRobotPoseMeters,
-      double timestampSeconds,
-      Matrix<N3, N1> visionMeasurementStdDevs) {}
-
   private void createNamedCommands() {
     NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);
     NamedCommands.registerCommand("Score L4", AllCommands.scoreL4);
     NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
     NamedCommands.registerCommand("Intake Station", AllCommands.intake);
     NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
+    NamedCommands.registerCommand("Stop Chassis", new InstantCommand(()-> {SwerveSubsystem.getInstance().setInputSpeeds(new ChassisSpeeds(0,0,0));}));
   }
 
   public void configureButtonBindings() {

@@ -332,21 +332,21 @@ public final class Constants {
 
     public static final double kMaxAmbiguity = 0.20;
 
-    public static final Distance kMaxZHeight = Meters.of(0.5);
+    public static final Distance kMaxZHeight = Meters.of(0.6);
 
     public static final AprilTagFieldLayout kAprilTagLayout =
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
     public static final Transform3d kIntakeCamTransform =
         new Transform3d(
-            Units.inchesToMeters(-11.048439965),
-            Units.inchesToMeters(8.804096310),
             Units.inchesToMeters(9.375),
+            Units.inchesToMeters(11.048439965),
+            Units.inchesToMeters(8.540489626),
             new Rotation3d(0, Units.degreesToRadians(15), -0.47976945625357));
     public static final Transform3d kSwerveCamTransform =
         new Transform3d(
-            Units.inchesToMeters(11.048439965),
             Units.inchesToMeters(9.375),
+            Units.inchesToMeters(-11.048439965),
             Units.inchesToMeters(8.540489626),
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
@@ -365,15 +365,15 @@ public final class Constants {
     // Standard deviation baselines, for 1 meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
     /** Larger stddev equals more doubt in Meters */
-    public static double kLinearStdDevBaseline = 0.01;
+    public static double kLinearStdDevBaseline = 0.1;
 
     /** Larger stddev equals more doubt in Radians */
-    public static double kAngularStdDevBaseline = 0.2;
+    public static double kAngularStdDevBaseline = 0.5;
 
     public static double[] kCameraStdDevFactors =
         new double[] {
-          0.2, // Swerve Cam
-          0.2 // Intake Cam
+          1.0, // Swerve Cam
+          1.0 // Intake Cam
         };
 
     public static double kQuestStdDevBaseline = 0.001;

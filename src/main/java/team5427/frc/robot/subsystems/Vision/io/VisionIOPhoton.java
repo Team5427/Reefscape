@@ -7,11 +7,16 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+
+import java.lang.StackWalker.Option;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
+
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
@@ -62,15 +67,11 @@ public class VisionIOPhoton implements VisionIO {
     List<PoseObservation> obs = new LinkedList<PoseObservation>();
 
     for (int i = results.size() - 1; i > 0; i--) {
-      photonPoseEstimator.setReferencePose(getReferencePose.get());
+      // photonPoseEstimator.setReferencePose(getReferencePose.get());
       photonPoseEstimator.addHeadingData(getHeadingData.get().r, getHeadingData.get().t);
 
       if (results.get(i).multitagResult.isPresent()) {
-        photonPoseEstimator.update(results.get(i));
-        Pose3d pose =
-            new Pose3d(
-                results.get(i).getMultiTagResult().get().estimatedPose.best.getTranslation(),
-                results.get(i).getMultiTagResult().get().estimatedPose.best.getRotation());
+         Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update(results.get(i));
         double totalTagDistance = 0.0;
         Set<Short> tagIdSet = new HashSet<>();
         for (PhotonTrackedTarget target : results.get(i).targets) {
@@ -84,8 +85,8 @@ public class VisionIOPhoton implements VisionIO {
 
         obs.add(
             new PoseObservation(
-                results.get(i).getTimestampSeconds(),
-                pose,
+                estimatedPose.get().timestampSeconds,
+                estimatedPose.get().estimatedPose,
                 results.get(i).multitagResult.get().estimatedPose.ambiguity,
                 results.get(i).multitagResult.get().fiducialIDsUsed.size(),
                 totalTagDistance / results.get(i).targets.size(),
@@ -95,20 +96,20 @@ public class VisionIOPhoton implements VisionIO {
         // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
         // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
       } else {
-        photonPoseEstimator.update(results.get(i));
+        Optional<EstimatedRobotPose> pose = photonPoseEstimator.update(results.get(i));
         // photonPoseEstimator.addHeadingData(Timer.getTimestamp(),
         // SwerveSubsystem.getInstance().getGyroRotation());
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
-          Pose3d pose =
-              new Pose3d(
-                      target.bestCameraToTarget.getTranslation(),
-                      target.bestCameraToTarget.getRotation())
-                  .transformBy(cameraOffset);
+          // Pose3d pose =
+          //     new Pose3d(
+          //             target.bestCameraToTarget.getTranslation(),
+          //             target.bestCameraToTarget.getRotation())
+          //         .transformBy(cameraOffset);
           obs.add(
               new PoseObservation(
-                  results.get(i).getTimestampSeconds(),
-                  pose,
+                  pose.get().timestampSeconds,
+                  pose.get().estimatedPose,
                   target.getPoseAmbiguity(),
                   1,
                   target.bestCameraToTarget.getTranslation().getNorm(),
