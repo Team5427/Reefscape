@@ -57,14 +57,19 @@ public class LockedChassisMovement extends Command {
     if (DriverStation.isTeleop()) {
 
       Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
-      Rotation2d lockedSetpoint = robotPose.nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation();
+      Rotation2d lockedSetpoint = robotPose.nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation().rotateBy(Rotation2d.k180deg);
 
       double vx = -translationJoystick.getRightY();
       double vy = -translationJoystick.getRightX();
 
       double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-      
       ChassisSpeeds driverSpeeds = swerveSubsystem.getDriveSpeeds(vx, vy, lockedSetpoint, dampener);
+
+      if(joy.getLeftTriggerAxis() > 0.1){
+        driverSpeeds = new ChassisSpeeds(0,0,0);
+      }
+      
+      
       swerveSubsystem.setInputSpeeds(driverSpeeds);
     }
   }

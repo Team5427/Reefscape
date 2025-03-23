@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
+
+import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
@@ -86,8 +88,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(2.8127 , 0.0, 0.0), // Translation PID constants
-            new PIDConstants(4.17  , 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(SwerveConstants.kRotationalKp , 0.0, 0.0), // Translation PID constants
+            new PIDConstants(SwerveConstants.kTranslationalKp  , 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {

@@ -10,6 +10,7 @@ import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
+import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class PilotingControls {
@@ -72,7 +73,7 @@ public class PilotingControls {
     //               SwerveSubsystem.getInstance().setGyroLock(false);
     //             }));
 
-    // joy.leftStick().whileTrue(new LockedChassisMovement(joy, RobotConfigConstants.kReefPoses));
+    joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
 
     // joy.a()
     //     .onTrue(

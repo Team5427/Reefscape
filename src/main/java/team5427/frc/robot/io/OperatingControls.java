@@ -45,7 +45,8 @@ public class OperatingControls {
     joy.leftTrigger()
         .whileTrue(
             new ConditionalCommand(
-                AllCommands.intake,
+                // AllCommands.intake,
+                AllCommands.intakeRSC,
                 new ConditionalCommand(
                     AllCommands.highReefAlgaeIntake,
                     new ConditionalCommand(

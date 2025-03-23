@@ -97,8 +97,12 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
+    public static final double kRotationalKp = 2.8127;
+    public static final double kTranslationalKp = 4.17;
+
     public static ProfiledPIDController kRotationPIDController =
-        new ProfiledPIDController(0.1, 0.0, 0.0, new Constraints(2, 5));
+        new ProfiledPIDController(kRotationalKp, 0.0, 0.0, new Constraints(5, 5));
+
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -466,6 +470,7 @@ public final class Constants {
     public static final Distance kStowDistance = Feet.of(0.25);
     public static final Distance kZeroPosition = Feet.of(00);
     public static final Distance kIntakeDistance = Inches.of(0.5);
+    public static final Distance kRSCIntakeDistance = Inches.of(1.5);
     public static final Distance kFloorIntakeDistance = Inches.of(0.5);
 
     public static final Distance kL1Distance = Feet.of(0.25);
@@ -658,6 +663,15 @@ public final class Constants {
             ProngEffectorConstants.kIntakePosition,
             MetersPerSecond.of(1.0),
             true);
+
+    public static final RawIntakeConfiguration kCoralStationIntakeRSC = 
+        new RawIntakeConfiguration(
+            CascadeConstants.kIntakeRotation,
+            CascadeConstants.kRSCIntakeDistance,
+            ProngEffectorConstants.kIntakePosition,
+            MetersPerSecond.of(1.0),
+            true
+        );
 
     public static final RawIntakeConfiguration kReefLowAlgaeIntake =
         new RawIntakeConfiguration(

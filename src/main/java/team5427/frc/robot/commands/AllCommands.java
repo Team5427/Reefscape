@@ -34,6 +34,7 @@ public class AllCommands {
   public static final Command climbStep = new Climb();
 
   public static final Command intake = new Intake(RobotConfigConstants.kCoralStationIntake);
+  public static final Command intakeRSC = new Intake(RobotConfigConstants.kCoralStationIntakeRSC);
   public static final Command lowReefAlgaeIntake =
       new Intake(RobotConfigConstants.kReefLowAlgaeIntake);
   public static final Command highReefAlgaeIntake =
