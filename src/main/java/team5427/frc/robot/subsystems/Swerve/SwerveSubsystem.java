@@ -1,9 +1,20 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
+
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.littletonrobotics.junction.Logger;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -13,6 +24,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +37,7 @@ import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.Mode;
+import team5427.frc.robot.Constants.RobotConfigConstants;
 
 public class SwerveSubsystem extends SubsystemBase {
 
@@ -143,6 +156,24 @@ public class SwerveSubsystem extends SubsystemBase {
 
     return discretizedSpeeds;
 
+  }
+
+  public Command getTargetPath() {
+    PathPlannerPath targetPath = new PathPlannerPath(
+        PathPlannerPath.waypointsFromPoses(
+          List.of(
+            RobotState.getInstance().getEstimatedPose(),
+            RobotState.getInstance().getEstimatedPose().nearest(List.of(RobotConfigConstants.kReefPoses))
+          )), 
+        new PathConstraints(
+          MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25), 
+          MetersPerSecondPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxAcceleration), 
+          RotationsPerSecond.of(Math.PI * 0.25), 
+          RotationsPerSecondPerSecond.of(Math.PI)),
+        null,
+        new GoalEndState(0.0, RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation()));
+    targetPath.preventFlipping = true;
+    return AutoBuilder.followPath(targetPath);
   }
 
   public Rotation2d getGyroRotation() {

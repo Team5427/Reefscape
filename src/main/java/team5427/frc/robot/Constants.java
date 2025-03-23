@@ -101,7 +101,9 @@ public final class Constants {
     public static final double kTranslationalKp = 4.17;
 
     public static ProfiledPIDController kRotationPIDController =
-        new ProfiledPIDController(kRotationalKp, 0.0, 0.0, new Constraints(5, 5));
+        new ProfiledPIDController(
+          kRotationalKp, 0.0, 0.0, 
+          new Constraints(10 * Math.PI, 15 * Math.PI));
 
 
     public static final SwerveDriveKinematics m_kinematics =
