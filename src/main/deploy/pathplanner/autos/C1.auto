@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "A.0"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "A.1"
+            "pathName": "C"
           }
         }
       ]

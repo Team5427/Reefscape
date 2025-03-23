@@ -52,6 +52,10 @@ public class ChassisMovement extends Command {
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
     
     ChassisSpeeds driverSpeeds = swerveSubsystem.getDriveSpeeds(vx, vy, omegaRadians, dampener);
+
+    if(joy.getLeftTriggerAxis() >= 0.1){
+      driverSpeeds = new ChassisSpeeds(0,0,0);
+    }
     swerveSubsystem.setInputSpeeds(driverSpeeds);
   }
 
