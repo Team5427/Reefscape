@@ -1,174 +1,81 @@
-// package team5427.frc.robot.commands.chassis;
+package team5427.frc.robot.commands.chassis;
 
-// import edu.wpi.first.math.MathUtil;
-// import edu.wpi.first.math.geometry.Pose2d;
-// import edu.wpi.first.math.geometry.Rotation2d;
-// import edu.wpi.first.math.kinematics.ChassisSpeeds;
-// import edu.wpi.first.wpilibj.DriverStation;
-// import edu.wpi.first.wpilibj.DriverStation.Alliance;
-// import edu.wpi.first.wpilibj2.command.Command;
-// import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-// import java.util.List;
-// import java.util.Optional;
-// import org.team4206.battleaid.common.TunedJoystick;
-// import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
-// import team5427.frc.robot.Constants.OperatorConstants;
-// import team5427.frc.robot.Constants.SwerveConstants;
-// import team5427.frc.robot.RobotState;
-// import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
-// public class LockedChassisMovement extends Command {
+import java.util.List;
+import java.util.Optional;
+import org.littletonrobotics.junction.Logger;
+import org.team4206.battleaid.common.TunedJoystick;
+import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
+import team5427.frc.robot.Constants.OperatorConstants;
+import team5427.frc.robot.Constants.RobotConfigConstants;
+import team5427.frc.robot.Constants.SwerveConstants;
+import team5427.frc.robot.Field.Reef;
+import team5427.frc.robot.Field;
+import team5427.frc.robot.RobotState;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
-//   private SwerveSubsystem swerveSubsystem;
-//   private CommandXboxController joy;
-//   private Optional<CommandXboxController> simulatedRotationalJoy;
+public class LockedChassisMovement extends Command {
 
-//   private TunedJoystick tunedJoystickLinear;
-//   private TunedJoystick tunedJoystickQuadratic;
+  private SwerveSubsystem swerveSubsystem;
+  private CommandXboxController joy;
+  private Optional<CommandXboxController> simulatedRotationalJoy;
 
-//   private Rotation2d rotationSetpoint = new Rotation2d();
+  private TunedJoystick translationJoystick;
+  private TunedJoystick rotationJoystick;
 
-//   private Pose2d[] matchingPoses;
+  public LockedChassisMovement(CommandXboxController driverJoystick) {
+    swerveSubsystem = SwerveSubsystem.getInstance();
+    joy = driverJoystick;
+    translationJoystick = new TunedJoystick(joy.getHID());
+    translationJoystick.useResponseCurve(ResponseCurve.LINEAR);
 
-//   private Pose2d robotPose = new Pose2d();
+    rotationJoystick = new TunedJoystick(joy.getHID());
+    rotationJoystick.useResponseCurve(ResponseCurve.LINEAR);
 
-//   public LockedChassisMovement(CommandXboxController driverJoystick, Rotation2d rotationSetpoint) {
-//     swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
-//     joy = driverJoystick;
-//     tunedJoystickLinear = new TunedJoystick(joy.getHID());
-//     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
+    translationJoystick.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
+    rotationJoystick.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
+    addRequirements(swerveSubsystem);
+  }
 
-//     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
-//     tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
+  @Override
+  public void initialize() {
+    // swerveSubsystem.setFieldOp(DriverStation.getAlliance().get().equals(Alliance.Red));
+  }
 
-//     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     this.rotationSetpoint = rotationSetpoint;
+  @Override
+  public void execute() {
 
-//     addRequirements(swerveSubsystem);
-//   }
+    if (DriverStation.isTeleop()) {
 
-//   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d pose) {
-//     swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
-//     joy = driverJoystick;
-//     tunedJoystickLinear = new TunedJoystick(joy.getHID());
-//     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
+      Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
+      Rotation2d lockedSetpoint = robotPose.nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation();
 
-//     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
-//     tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
+      double vx = -translationJoystick.getRightY();
+      double vy = -translationJoystick.getRightX();
 
-//     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     this.rotationSetpoint = pose.getRotation();
-//     this.robotPose = RobotState.getInstance().getEstimatedPose();
+      double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
+      
+      ChassisSpeeds driverSpeeds = swerveSubsystem.getDriveSpeeds(vx, vy, lockedSetpoint, dampener);
+      swerveSubsystem.setInputSpeeds(driverSpeeds);
+    }
+  }
 
-//     addRequirements(swerveSubsystem);
-//   }
+  @Override
+  public boolean isFinished() {
+    return false;
+  }
 
-//   public LockedChassisMovement(
-//       CommandXboxController driverJoystick, Pose2d robotPose, Pose2d[] matchingPoses) {
-//     swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
-//     joy = driverJoystick;
-//     tunedJoystickLinear = new TunedJoystick(joy.getHID());
-//     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
-
-//     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
-//     tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
-
-//     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     this.matchingPoses = matchingPoses;
-//     this.robotPose = robotPose;
-
-//     addRequirements(swerveSubsystem);
-//   }
-
-//   public LockedChassisMovement(
-//       CommandXboxController driverJoystick, Pose2d robotPose, List<Pose2d> matchingPoses) {
-//     swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
-//     joy = driverJoystick;
-//     tunedJoystickLinear = new TunedJoystick(joy.getHID());
-//     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
-
-//     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
-//     tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
-
-//     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     this.matchingPoses = (Pose2d[]) matchingPoses.toArray();
-//     this.robotPose = robotPose;
-
-//     addRequirements(swerveSubsystem);
-//   }
-
-//   public LockedChassisMovement(CommandXboxController driverJoystick, Pose2d[] matchingPoses) {
-//     swerveSubsystem = SwerveSubsystem.getInstance(Optional.empty());
-//     joy = driverJoystick;
-//     tunedJoystickLinear = new TunedJoystick(joy.getHID());
-//     tunedJoystickLinear.useResponseCurve(ResponseCurve.LINEAR);
-
-//     tunedJoystickQuadratic = new TunedJoystick(joy.getHID());
-//     tunedJoystickQuadratic.useResponseCurve(ResponseCurve.LINEAR);
-
-//     tunedJoystickLinear.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     tunedJoystickQuadratic.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
-//     this.matchingPoses = matchingPoses;
-//     this.robotPose = RobotState.getInstance().getEstimatedPose();
-//     updateRotationSetpoint();
-//     addRequirements(swerveSubsystem);
-//   }
-
-//   @Override
-//   public void initialize() {
-//     swerveSubsystem.setFieldOp(DriverStation.getAlliance().get().equals(Alliance.Red));
-//     // SwerveConstants.kRotationPIDController.setConstraints(new Constraints(, 0));
-//   }
-
-//   @Override
-//   public void execute() {
-
-//     if (DriverStation.isTeleop()) {
-
-//       robotPose = RobotState.getInstance().getEstimatedPose();
-//       updateRotationSetpoint();
-//       double dampener = joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount;
-
-//       double vx = 0.0, vy = 0.0;
-//       vx = -tunedJoystickLinear.getRightY() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-//       vy = -tunedJoystickLinear.getRightX() * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
-
-//       double omegaRadians =
-//           SwerveConstants.kRotationPIDController.calculate(
-//               RobotState.getInstance().getEstimatedPose().getRotation().getRadians(),
-//               this.rotationSetpoint.getRadians());
-
-//       vx *= MathUtil.clamp(1 - dampener, 0, 1);
-//       vy *= MathUtil.clamp(1 - dampener, 0, 1);
-//       omegaRadians *= MathUtil.clamp(1 - dampener, 0, 1);
-
-//       ChassisSpeeds inputSpeeds = new ChassisSpeeds(vx, vy, omegaRadians);
-//       if (joy.getLeftTriggerAxis() >= 0.1) {
-//         inputSpeeds = new ChassisSpeeds(0, 0, 0);
-//         swerveSubsystem.setStopped(true);
-//         return;
-//       } else {
-//         swerveSubsystem.setStopped(false);
-//         swerveSubsystem.setChassisSpeeds(inputSpeeds);
-//       }
-//     }
-//   }
-
-//   public void updateRotationSetpoint() {
-//     this.rotationSetpoint =
-//         robotPose.nearest(List.of(matchingPoses)).getRotation().rotateBy(Rotation2d.k180deg);
-//   }
-
-//   public Rotation2d getRotationSetpoint() {
-//     return this.rotationSetpoint;
-//   }
-
-//   @Override
-//   public boolean isFinished() {
-//     return false;
-//   }
-// }
+  @Override
+  public void end(boolean interrupted) {
+    swerveSubsystem.setInputSpeeds(new ChassisSpeeds());
+  }
+}

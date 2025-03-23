@@ -122,6 +122,29 @@ public class SwerveSubsystem extends SubsystemBase {
 
   }
 
+  public ChassisSpeeds getDriveSpeeds(double xInput, double yInput, Rotation2d targetOmega, double dampenAmount) {
+
+    xInput *= (1 - dampenAmount);
+    yInput *= (1 - dampenAmount);
+
+    double calculatedOmega = SwerveConstants.kRotationPIDController.calculate(
+      RobotState.getInstance().getAdaptivePose().getRotation().getRadians(),
+      targetOmega.getRadians()
+    );
+
+    ChassisSpeeds rawSpeeds = new ChassisSpeeds(
+      xInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity,
+      yInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity,
+      calculatedOmega
+    );
+
+    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
+    ChassisSpeeds discretizedSpeeds = ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
+
+    return discretizedSpeeds;
+
+  }
+
   public Rotation2d getGyroRotation() {
     return gyroInputsAutoLogged.yawPosition.unaryMinus();
   }
@@ -178,7 +201,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       Rotation2d newGyroInput = Rotation2d.kZero;
       if (gyroInputsAutoLogged.connected) {
-        newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i];
+        newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].unaryMinus();
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
         newGyroInput = newGyroInput.plus(Rotation2d.fromRadians(gyroTwist.dtheta));
