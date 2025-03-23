@@ -73,21 +73,23 @@ public class AllCommands {
 
   public static final Command resetSubsystems = new ResetSubsystems();
 
-  public static final Command approachScoringPose = AutoBuilder.followPath(
-    new PathPlannerPath(
-      PathPlannerPath.waypointsFromPoses(
-        List.of(
-          RobotState.getInstance().getAdaptivePose(),
-          RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))
-        )), 
-      new PathConstraints(
-        MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25), 
-        MetersPerSecondPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxAcceleration), 
-        RotationsPerSecond.of(Math.PI * 0.25), 
-        RotationsPerSecondPerSecond.of(Math.PI)),
-      null,
-      new GoalEndState(0.0, RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation()))
-  );
+  private static final PathPlannerPath scoringPath = new PathPlannerPath(
+    PathPlannerPath.waypointsFromPoses(
+      List.of(
+        RobotState.getInstance().getAdaptivePose(),
+        RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))
+      )), 
+    new PathConstraints(
+      MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25), 
+      MetersPerSecondPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxAcceleration), 
+      RotationsPerSecond.of(Math.PI * 0.25), 
+      RotationsPerSecondPerSecond.of(Math.PI)),
+    null,
+    new GoalEndState(0.0, RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation()));
+  static {
+    scoringPath.preventFlipping = true;
+  }
+  public static final Command approachScoringPose = AutoBuilder.followPath(scoringPath);
 
   // public static final Command switchToCoralMode =
   //     new InstantCommand(
