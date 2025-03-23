@@ -178,7 +178,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       Rotation2d newGyroInput = Rotation2d.kZero;
       if (gyroInputsAutoLogged.connected) {
-        newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].unaryMinus();
+        newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i];
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
         newGyroInput = newGyroInput.plus(Rotation2d.fromRadians(gyroTwist.dtheta));

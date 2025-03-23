@@ -45,6 +45,7 @@ public class ChassisMovement extends Command {
 
   @Override
   public void execute() {
+    if(DriverStation.isTeleop()){
     double vx = -translationJoystick.getRightY();
     double vy = -translationJoystick.getRightX();
     double omegaRadians = -rotationJoystick.getLeftX() * Math.abs(translationJoystick.getLeftX());
@@ -57,6 +58,10 @@ public class ChassisMovement extends Command {
       driverSpeeds = new ChassisSpeeds(0,0,0);
     }
     swerveSubsystem.setInputSpeeds(driverSpeeds);
+  }
+  else{
+    swerveSubsystem.setInputSpeeds(new ChassisSpeeds(0,0,0));
+  }
   }
 
   @Override
