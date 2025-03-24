@@ -53,7 +53,8 @@ public class PilotingControls {
         .onTrue(
             new InstantCommand(
                     () -> {
-                      RobotState.getInstance().resetAllPose(new Pose2d(5, 4, Rotation2d.kZero));
+                      RobotState.getInstance()
+                          .resetAllPose(new Pose2d(5.76, 4.022, Rotation2d.kZero));
                     })
                 .ignoringDisable(true));
     SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement)
