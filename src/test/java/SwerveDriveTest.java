@@ -1,7 +1,6 @@
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import team5427.frc.robot.RobotState;
@@ -11,8 +10,7 @@ public class SwerveDriveTest {
   SwerveSubsystem swerveSubsystem;
 
   public SwerveDriveTest() {
-    swerveSubsystem =
-        SwerveSubsystem.getInstance();
+    swerveSubsystem = SwerveSubsystem.getInstance();
   }
 
   @BeforeEach

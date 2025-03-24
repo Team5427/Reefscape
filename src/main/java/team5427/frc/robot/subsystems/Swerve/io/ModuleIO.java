@@ -56,8 +56,8 @@ public interface ModuleIO {
   public default void setDriveSpeedSetpoint(Voltage volts) {}
 
   public default void setDriveSpeedSetpoint(Current current) {}
-  
-  public default void setDriveFeedForward(Current current){}
+
+  public default void setDriveFeedForward(Current current) {}
 
   public default void setSteerPositionSetpoint(Rotation2d position) {}
 

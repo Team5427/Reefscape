@@ -3,28 +3,10 @@ package team5427.frc.robot.io;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
-
-import java.util.List;
-import java.util.Optional;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
-
 import team5427.frc.robot.Constants.OperatorConstants;
-import team5427.frc.robot.Constants.RobotConfigConstants;
-import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
-import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
@@ -97,15 +79,17 @@ public class PilotingControls {
     //     PathPlannerPath.waypointsFromPoses(
     //       List.of(
     //         RobotState.getInstance().getAdaptivePose(),
-    //         RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))
-    //       )), 
+    //
+    // RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))
+    //       )),
     //     new PathConstraints(
-    //       MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25), 
-    //       MetersPerSecondPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxAcceleration), 
-    //       RotationsPerSecond.of(Math.PI * 0.25), 
+    //       MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25),
+    //       MetersPerSecondPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxAcceleration),
+    //       RotationsPerSecond.of(Math.PI * 0.25),
     //       RotationsPerSecondPerSecond.of(Math.PI)),
     //     null,
-    //     new GoalEndState(0.0, RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation()))
+    //     new GoalEndState(0.0,
+    // RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses)).getRotation()))
     // ));
 
     // joy.a()

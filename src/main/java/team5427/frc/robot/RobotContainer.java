@@ -1,27 +1,21 @@
 package team5427.frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.AutoBuilderException;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
-
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.io.OperatingControls;
@@ -88,8 +82,8 @@ public class RobotContainer {
         // Also optionally outputs individual module feedforwards
         new PPHolonomicDriveController( // PPHolonomicController is the built in path following
             // controller for holonomic drive trains
-            new PIDConstants(SwerveConstants.kRotationalKp , 0.0, 0.0), // Translation PID constants
-            new PIDConstants(SwerveConstants.kTranslationalKp  , 0.0, 0.0) // Rotation PID constants
+            new PIDConstants(SwerveConstants.kRotationalKp, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(SwerveConstants.kTranslationalKp, 0.0, 0.0) // Rotation PID constants
             ),
         Constants.config, // The robot configuration
         () -> {
@@ -120,8 +114,8 @@ public class RobotContainer {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
-        autoChooser = AutoBuilder.buildAutoChooser();
-          
+    autoChooser = AutoBuilder.buildAutoChooser();
+
     // autoChooser.addOption(
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
@@ -154,7 +148,12 @@ public class RobotContainer {
     NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
     NamedCommands.registerCommand("Intake Station", AllCommands.intake);
     NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
-    NamedCommands.registerCommand("Stop Chassis", new InstantCommand(()-> {SwerveSubsystem.getInstance().setInputSpeeds(new ChassisSpeeds(0,0,0));}));
+    NamedCommands.registerCommand(
+        "Stop Chassis",
+        new InstantCommand(
+            () -> {
+              SwerveSubsystem.getInstance().setInputSpeeds(new ChassisSpeeds(0, 0, 0));
+            }));
   }
 
   public void configureButtonBindings() {

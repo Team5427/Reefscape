@@ -1,14 +1,10 @@
 package team5427.frc.robot.commands.chassis;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.Optional;
-import org.littletonrobotics.junction.Logger;
 import org.team4206.battleaid.common.TunedJoystick;
 import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
 import team5427.frc.robot.Constants.OperatorConstants;
@@ -45,23 +41,22 @@ public class ChassisMovement extends Command {
 
   @Override
   public void execute() {
-    if(DriverStation.isTeleop()){
-    double vx = -translationJoystick.getRightY();
-    double vy = -translationJoystick.getRightX();
-    double omegaRadians = -rotationJoystick.getLeftX() * Math.abs(translationJoystick.getLeftX());
+    if (DriverStation.isTeleop()) {
+      double vx = -translationJoystick.getRightY();
+      double vy = -translationJoystick.getRightX();
+      double omegaRadians = -rotationJoystick.getLeftX() * Math.abs(translationJoystick.getLeftX());
 
-    double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-    
-    ChassisSpeeds driverSpeeds = swerveSubsystem.getDriveSpeeds(vx, vy, omegaRadians, dampener);
+      double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
 
-    if(joy.getLeftTriggerAxis() >= 0.1){
-      driverSpeeds = new ChassisSpeeds(0,0,0);
+      ChassisSpeeds driverSpeeds = swerveSubsystem.getDriveSpeeds(vx, vy, omegaRadians, dampener);
+
+      if (joy.getLeftTriggerAxis() >= 0.1) {
+        driverSpeeds = new ChassisSpeeds(0, 0, 0);
+      }
+      swerveSubsystem.setInputSpeeds(driverSpeeds);
+    } else {
+      swerveSubsystem.setInputSpeeds(new ChassisSpeeds(0, 0, 0));
     }
-    swerveSubsystem.setInputSpeeds(driverSpeeds);
-  }
-  else{
-    swerveSubsystem.setInputSpeeds(new ChassisSpeeds(0,0,0));
-  }
   }
 
   @Override

@@ -3,20 +3,10 @@ package team5427.frc.robot.io;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import org.littletonrobotics.junction.Logger;
-import team5427.frc.robot.Constants.BlinkinConstants;
-import team5427.frc.robot.Constants.CascadeConstants;
-import team5427.frc.robot.Constants.ClimbConstants;
-import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.frc.robot.commands.AllCommands;
-import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
-import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
-import team5427.frc.robot.subsystems.Climb.ClimberSubsystem.ClimbStates;
-import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
-import team5427.frc.robot.commands.cascade.Climb;
 
 public class OperatingControls {
 

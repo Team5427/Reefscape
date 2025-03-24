@@ -2,20 +2,16 @@ package team5427.frc.robot.subsystems.Vision.io;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-
-import java.lang.StackWalker.Option;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -71,7 +67,7 @@ public class VisionIOPhoton implements VisionIO {
       photonPoseEstimator.addHeadingData(getHeadingData.get().r, getHeadingData.get().t);
 
       if (results.get(i).multitagResult.isPresent()) {
-         Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update(results.get(i));
+        Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update(results.get(i));
         double totalTagDistance = 0.0;
         Set<Short> tagIdSet = new HashSet<>();
         for (PhotonTrackedTarget target : results.get(i).targets) {

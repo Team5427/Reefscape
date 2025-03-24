@@ -102,9 +102,7 @@ public final class Constants {
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
-          kRotationalKp, 0.0, 0.0, 
-          new Constraints(10 * Math.PI, 15 * Math.PI));
-
+            kRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 15 * Math.PI));
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -666,14 +664,13 @@ public final class Constants {
             MetersPerSecond.of(1.0),
             true);
 
-    public static final RawIntakeConfiguration kCoralStationIntakeRSC = 
+    public static final RawIntakeConfiguration kCoralStationIntakeRSC =
         new RawIntakeConfiguration(
             CascadeConstants.kIntakeRotation,
             CascadeConstants.kRSCIntakeDistance,
             ProngEffectorConstants.kIntakePosition,
             MetersPerSecond.of(1.0),
-            true
-        );
+            true);
 
     public static final RawIntakeConfiguration kReefLowAlgaeIntake =
         new RawIntakeConfiguration(

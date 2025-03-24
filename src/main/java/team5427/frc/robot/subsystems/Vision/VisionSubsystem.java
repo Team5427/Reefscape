@@ -22,7 +22,6 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.RobotState;
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
@@ -182,15 +181,15 @@ public class VisionSubsystem extends SubsystemBase {
                 || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
                 || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth()
-        // Must not be an impossible pose to acheive based on max drivetrain speeds
-        || observation
-                .pose()
-                .toPose2d()
-                .relativeTo(RobotState.getInstance().getAdaptivePose())
-                .getTranslation()
-                .getNorm()
-            > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-                * (Timer.getTimestamp() - observation.timestamp());
+                // Must not be an impossible pose to acheive based on max drivetrain speeds
+                || observation
+                        .pose()
+                        .toPose2d()
+                        .relativeTo(RobotState.getInstance().getAdaptivePose())
+                        .getTranslation()
+                        .getNorm()
+                    > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+                        * (Timer.getTimestamp() - observation.timestamp());
 
         // Add pose to log
 

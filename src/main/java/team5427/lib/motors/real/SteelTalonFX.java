@@ -347,7 +347,10 @@ public class SteelTalonFX implements IMotorController {
         // maybe its * instead of /
       case kFlywheel:
         this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
-        talonFX.setControl(new VelocityVoltage(this.setpoint).withEnableFOC(withFOC).withFeedForward(configuration.kFF));
+        talonFX.setControl(
+            new VelocityVoltage(this.setpoint)
+                .withEnableFOC(withFOC)
+                .withFeedForward(configuration.kFF));
         break;
       case kServo:
         this.setpoint = setpoint;
