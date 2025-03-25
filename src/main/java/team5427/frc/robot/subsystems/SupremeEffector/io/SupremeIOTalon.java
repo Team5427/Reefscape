@@ -1,6 +1,5 @@
 package team5427.frc.robot.subsystems.SupremeEffector.io;
 
-import static edu.wpi.first.units.Units.Centimeter;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
@@ -59,7 +58,8 @@ public class SupremeIOTalon implements SupremeIO {
     CANrangeConfiguration canrangeConfiguration = new CANrangeConfiguration();
     canrangeConfiguration.FovParams.FOVRangeX = 5.0;
     canrangeConfiguration.FovParams.FOVCenterY = 5.0;
-    canrangeConfiguration.ProximityParams.ProximityThreshold = Centimeter.of(3.0).in(Meters);
+    canrangeConfiguration.ProximityParams.ProximityThreshold =
+        SupremeEffectorConstants.kCanRangeDetectionDistance.in(Meters);
     canrangeConfiguration.ToFParams.UpdateMode = UpdateModeValue.ShortRange100Hz;
     canRange.getConfigurator().apply(canrangeConfiguration);
 

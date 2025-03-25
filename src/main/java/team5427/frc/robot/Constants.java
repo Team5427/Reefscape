@@ -27,6 +27,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
@@ -175,7 +176,7 @@ public final class Constants {
       kDriveMotorConfiguration.finalDiameterMeters = kWheelDiameterMeters;
 
       kDriveMotorConfiguration.maxVelocity =
-          kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
       kDriveMotorConfiguration.kP = 2.54;
@@ -196,7 +197,7 @@ public final class Constants {
       kSteerMotorConfiguration.withFOC = true;
 
       kSteerMotorConfiguration.maxVelocity =
-          kSteerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kSteerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
 
       // Tunable values
@@ -411,7 +412,7 @@ public final class Constants {
       kCascadeDriverConfiguration.withFOC = true;
 
       kCascadeDriverConfiguration.maxVelocity =
-          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 4.0;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
@@ -445,7 +446,7 @@ public final class Constants {
       kPivotConfiguration.isInverted = true;
 
       kPivotConfiguration.maxVelocity =
-          kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity * 1.1;
 
       kPivotConfiguration.kP = 70.0;
@@ -523,7 +524,7 @@ public final class Constants {
       kServoConfiguration.currentLimit = 50;
 
       kServoConfiguration.maxVelocity =
-          kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kServoConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kServoConfiguration.maxAcceleration = kServoConfiguration.maxVelocity * 3.0;
 
       kServoConfiguration.kP = 1.5;
@@ -553,7 +554,7 @@ public final class Constants {
       kWristConfiguration.withFOC = false;
 
       kWristConfiguration.maxVelocity =
-          kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
       kWristConfiguration.kP = 6.0;
@@ -574,7 +575,7 @@ public final class Constants {
       kRollerConfiguration.currentLimit = 60;
 
       kRollerConfiguration.maxVelocity =
-          kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenFOC_MaxRPM);
+          kRollerConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kRollerConfiguration.maxAcceleration = kRollerConfiguration.maxVelocity;
 
       kRollerConfiguration.kP = .1;
@@ -612,89 +613,119 @@ public final class Constants {
         new RawScoringConfiguration(
             CascadeConstants.kL1Rotation,
             CascadeConstants.kL1Distance,
-            ProngEffectorConstants.kL1Rotation);
+            SupremeEffectorConstants.kL1Rotation,
+            SupremeEffectorConstants.kCoralRollerReefScoreVelocity,
+            SupremeEffectorConstants.kAlgaeRollerReefScoreVelocity);
 
     public static final RawScoringConfiguration kScoreL2 =
         new RawScoringConfiguration(
             CascadeConstants.kL2Rotation,
             CascadeConstants.kL2Distance,
-            ProngEffectorConstants.kL2Rotation);
+            SupremeEffectorConstants.kL2Rotation,
+            SupremeEffectorConstants.kCoralRollerReefScoreVelocity,
+            SupremeEffectorConstants.kAlgaeRollerReefScoreVelocity);
 
     public static final RawScoringConfiguration kScoreL3 =
         new RawScoringConfiguration(
             CascadeConstants.kL3Rotation,
             CascadeConstants.kL3Distance,
-            ProngEffectorConstants.kL3Rotation);
+            SupremeEffectorConstants.kL3Rotation,
+            SupremeEffectorConstants.kCoralRollerReefScoreVelocity,
+            SupremeEffectorConstants.kAlgaeRollerReefScoreVelocity);
 
     public static final RawScoringConfiguration kScoreL3Inverse =
         new RawScoringConfiguration(
             CascadeConstants.kL3RotationInverse,
             CascadeConstants.kL3DistanceInverse,
-            ProngEffectorConstants.kL3RotationInverse);
+            SupremeEffectorConstants.kL3RotationInverse,
+            SupremeEffectorConstants.kCoralRollerReefScoreVelocity,
+            SupremeEffectorConstants.kAlgaeRollerReefScoreVelocity);
 
     public static final RawScoringConfiguration kScoreL4 =
         new RawScoringConfiguration(
             CascadeConstants.kL4Rotation,
             CascadeConstants.kL4Distance,
-            ProngEffectorConstants.kL4Rotation);
+            SupremeEffectorConstants.kL4Rotation,
+            SupremeEffectorConstants.kCoralRollerReefScoreVelocity,
+            SupremeEffectorConstants.kAlgaeRollerReefScoreVelocity);
 
     public static final RawScoringConfiguration kScoreL4Inverse =
         new RawScoringConfiguration(
             CascadeConstants.kL4RotationInverse,
             CascadeConstants.kL4DistanceInverse,
-            ProngEffectorConstants.kL4RotationInverse);
+            SupremeEffectorConstants.kL4RotationInverse,
+            SupremeEffectorConstants.kCoralRollerReefScoreVelocity,
+            SupremeEffectorConstants.kAlgaeRollerReefScoreVelocity);
 
     public static final RawScoringConfiguration kScoreBarge =
         new RawScoringConfiguration(
             CascadeConstants.kBargeRotation,
             CascadeConstants.kBargeDistance,
-            ProngEffectorConstants.kBargePosition);
+            SupremeEffectorConstants.kBargePosition,
+            MetersPerSecond.of(0.0),
+            SupremeEffectorConstants.kAlgaeRollerBargeScoreVelocity);
 
     public static final RawScoringConfiguration kScoreProcessor =
         new RawScoringConfiguration(
             CascadeConstants.kProcessorRotation,
             CascadeConstants.kProcessorDistance,
-            ProngEffectorConstants.kProcessorPosition);
+            SupremeEffectorConstants.kProcessorPosition,
+            MetersPerSecond.of(0.0),
+            SupremeEffectorConstants.kAlgaeRollerProcesserScoreVelocity);
 
     public static final RawIntakeConfiguration kCoralStationIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kIntakeRotation,
             CascadeConstants.kIntakeDistance,
-            ProngEffectorConstants.kIntakePosition,
-            MetersPerSecond.of(1.0),
+            SupremeEffectorConstants.kSourceIntakePosition,
+            SupremeEffectorConstants.kCoralRollerSourceIntakeVelocity,
+            SupremeEffectorConstants.kAlgaeRollerSourceIntakeVelocity,
             true);
 
     public static final RawIntakeConfiguration kCoralStationIntakeRSC =
         new RawIntakeConfiguration(
             CascadeConstants.kIntakeRotation,
             CascadeConstants.kRSCIntakeDistance,
-            ProngEffectorConstants.kIntakePosition,
-            MetersPerSecond.of(1.0),
+            SupremeEffectorConstants.kSourceIntakePosition,
+            SupremeEffectorConstants.kCoralRollerSourceIntakeVelocity,
+            SupremeEffectorConstants.kAlgaeRollerSourceIntakeVelocity,
             true);
 
     public static final RawIntakeConfiguration kReefLowAlgaeIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kLowReefAlgaeRotation,
             CascadeConstants.kLowReefAlgaeDistance,
-            ProngEffectorConstants.kLowReefAlgaeRotation,
-            MetersPerSecond.of(3.5),
+            SupremeEffectorConstants.kLowReefAlgaeRotation,
+            MetersPerSecond.of(0.0),
+            SupremeEffectorConstants.kAlgaeRollerReefIntakeVelocity,
             false);
 
     public static final RawIntakeConfiguration kReefHighAlgaeIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kHighReefAlgaeRotation,
             CascadeConstants.kHighReefAlgaeDistance,
-            ProngEffectorConstants.kHighReefAlgaeRotation,
-            MetersPerSecond.of(3.5),
+            SupremeEffectorConstants.kHighReefAlgaeRotation,
+            MetersPerSecond.of(0.0),
+            SupremeEffectorConstants.kAlgaeRollerReefIntakeVelocity,
             false);
 
     public static final RawIntakeConfiguration kAlgaeFloorIntake =
         new RawIntakeConfiguration(
             CascadeConstants.kFloorIntakeRotation,
             CascadeConstants.kFloorIntakeDistance,
-            ProngEffectorConstants.kFloorIntakePosition,
-            MetersPerSecond.of(3.5),
+            SupremeEffectorConstants.kAlgaeFloorIntakePosition,
+            SupremeEffectorConstants.kCoralRollerFloorIntakeVelocity,
+            SupremeEffectorConstants.kAlgaeRollerFloorIntakeVelocity,
             false);
+
+    public static final RawIntakeConfiguration kCoralFloorIntake =
+        new RawIntakeConfiguration(
+            CascadeConstants.kFloorIntakeRotation,
+            CascadeConstants.kFloorIntakeDistance,
+            SupremeEffectorConstants.kCoralFloorIntakePosition,
+            SupremeEffectorConstants.kCoralRollerFloorIntakeVelocity,
+            SupremeEffectorConstants.kAlgaeRollerFloorIntakeVelocity,
+            true);
 
     public static final Transform3d kRobotScoringTranslation =
         new Transform3d(0, 0.04, 0, Rotation3d.kZero);
@@ -702,19 +733,6 @@ public final class Constants {
     public static final Pose2d[] kReefPoses = new Pose2d[12];
 
     static {
-      // kReefPoses[0] =
-      //   new Pose2d(3.15, 4.19, Rotation2d.fromDegrees(0.0));
-      // for(int i = 0; i < 12; i++){
-      //
-      // kScoreL1.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L1);
-      //
-      // kScoreL2.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L2);
-      //
-      // kScoreL3.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L3);
-      //
-      // kScoreL4.setScoringPoses(FieldConstants.Reef.branchPositions.get(i)).setReefHeight(ReefHeight.L4);
-      // }
-
       for (int i = 0; i < 12; i++) {
         kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
       }
@@ -726,8 +744,8 @@ public final class Constants {
     public static MotorConfiguration kCoralMotorConfiguration;
     public static MotorConfiguration kAlgaeMotorConfiguration;
 
-    public static final Rotation2d kPivotMinimumPosition = Rotation2d.fromDegrees(-45);
-    public static final Rotation2d kPivotMaximumPosition = Rotation2d.fromDegrees(270);
+    public static final Rotation2d kPivotMinimumPosition = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kPivotMaximumPosition = Rotation2d.fromDegrees(180);
 
     public static final Debouncer kAlgaeIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
     public static final Debouncer kCoralIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
@@ -737,14 +755,87 @@ public final class Constants {
     public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(0);
 
     public static final CANDeviceId kCanRangeId = new CANDeviceId(0);
+    public static final Distance kCanRangeDetectionDistance = Inches.of(1.0);
+
+    public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(45);
+    public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
+    public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kSourceIntakePosition = Rotation2d.fromDegrees(10.0);
+    public static final Rotation2d kCoralFloorIntakePosition = Rotation2d.fromDegrees(95.0);
+    public static final Rotation2d kAlgaeFloorIntakePosition = Rotation2d.fromDegrees(95.0);
+
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(10.0);
+
+    public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(42.0);
+    public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(50);
+    public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(60);
+    public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(90.0);
+    public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(0.0);
+    public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(25.0);
+    public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(75.0);
+
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(40.0);
+
+    public static final LinearVelocity kCoralRollerStaticVelocity = MetersPerSecond.of(-0.1);
+    public static final LinearVelocity kAlgaeRollerStaticVelocity = MetersPerSecond.of(-0.1);
+
+    public static final LinearVelocity kCoralRollerFloorIntakeVelocity = MetersPerSecond.of(-2.0);
+    public static final LinearVelocity kAlgaeRollerFloorIntakeVelocity = MetersPerSecond.of(-1.5);
+    public static final LinearVelocity kCoralRollerSourceIntakeVelocity = MetersPerSecond.of(-0.5);
+    public static final LinearVelocity kAlgaeRollerSourceIntakeVelocity = MetersPerSecond.of(-0.5);
+    public static final LinearVelocity kAlgaeRollerReefIntakeVelocity = MetersPerSecond.of(-1.5);
+    public static final LinearVelocity kCoralRollerReefScoreVelocity = MetersPerSecond.of(0.75);
+    public static final LinearVelocity kAlgaeRollerReefScoreVelocity = MetersPerSecond.of(0.75);
+    public static final LinearVelocity kAlgaeRollerBargeScoreVelocity = MetersPerSecond.of(1.0);
+    public static final LinearVelocity kAlgaeRollerProcesserScoreVelocity = MetersPerSecond.of(2.0);
+
+    public static final Current kIntakeMaxCurrent = Amp.of(15.0);
+    public static final LinearVelocity kIntakeThresholdVelocity = MetersPerSecond.of(0.1);
 
     static {
+      kPivotMotorConfiguration.gearRatio =
+          new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (17.0 / 24.0));
+      kPivotMotorConfiguration.idleState = IdleState.kBrake;
+      kPivotMotorConfiguration.isInverted = true;
+      kPivotMotorConfiguration.mode = MotorMode.kServo;
+      kPivotMotorConfiguration.withFOC = true;
+
+      kPivotMotorConfiguration.maxVelocity =
+          kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
+      kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity;
+
+      kPivotMotorConfiguration.kP = 6.0;
+
+      kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration / 2.0;
+      kPivotMotorConfiguration.altV = kPivotMotorConfiguration.maxVelocity;
     }
 
     static {
+      kAlgaeMotorConfiguration.gearRatio = new ComplexGearRatio((12.0 / 36.0));
+      kAlgaeMotorConfiguration.idleState = IdleState.kBrake;
+      kAlgaeMotorConfiguration.isInverted = true;
+      kAlgaeMotorConfiguration.mode = MotorMode.kFlywheel;
+      kAlgaeMotorConfiguration.withFOC = true;
+      kAlgaeMotorConfiguration.currentLimit = 40;
+      kAlgaeMotorConfiguration.finalDiameterMeters = Units.inchesToMeters(3.0);
+      kAlgaeMotorConfiguration.maxVelocity =
+          kAlgaeMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX44FOC_MaxRPM);
+      kAlgaeMotorConfiguration.maxAcceleration = kAlgaeMotorConfiguration.maxVelocity * 10.0;
     }
 
     static {
+      kCoralMotorConfiguration.gearRatio = new ComplexGearRatio((12.0 / 36.0)); // FIXME
+      kCoralMotorConfiguration.idleState = IdleState.kBrake;
+      kCoralMotorConfiguration.isInverted = true;
+      kCoralMotorConfiguration.mode = MotorMode.kFlywheel;
+      kCoralMotorConfiguration.withFOC = true;
+      kCoralMotorConfiguration.currentLimit = 40;
+      kCoralMotorConfiguration.finalDiameterMeters = Units.inchesToMeters(3.0);
+      kCoralMotorConfiguration.maxVelocity =
+          kCoralMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX44FOC_MaxRPM);
+      kCoralMotorConfiguration.maxAcceleration = kCoralMotorConfiguration.maxVelocity * 10.0;
     }
   }
 

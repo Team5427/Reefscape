@@ -16,6 +16,9 @@ import team5427.frc.robot.subsystems.SupremeEffector.io.SupremeIOInputsAutoLogge
 import team5427.frc.robot.subsystems.SupremeEffector.io.SupremeIOTalon;
 
 public class SupremeSubsystem extends SubsystemBase {
+
+  private static SupremeSubsystem m_instance;
+
   private SupremeIO io;
   private SupremeIOInputsAutoLogged inputsAutoLogged;
 
@@ -23,7 +26,14 @@ public class SupremeSubsystem extends SubsystemBase {
   @Getter @Setter private LinearVelocity coralRollerSetpoint;
   @Getter @Setter private LinearVelocity algaeRollerSetpoint;
 
-  public SupremeSubsystem() {
+  public static SupremeSubsystem getInstance() {
+    if (m_instance == null) {
+      m_instance = new SupremeSubsystem();
+    }
+    return m_instance;
+  }
+
+  private SupremeSubsystem() {
     switch (Constants.currentMode) {
       case REAL:
         io = new SupremeIOTalon();
@@ -50,8 +60,10 @@ public class SupremeSubsystem extends SubsystemBase {
 
   public boolean isAlgaeIntaked() {
     return SupremeEffectorConstants.kAlgaeIntakeDebouncer.calculate(
-        inputsAutoLogged.algaeMotorStatorCurrent.in(Amps) >= 10.0
-            && inputsAutoLogged.algaeMotorLinearVelocity.in(MetersPerSecond) < 0.1);
+        inputsAutoLogged.algaeMotorStatorCurrent.in(Amps)
+                >= SupremeEffectorConstants.kIntakeMaxCurrent.in(Amps)
+            && inputsAutoLogged.algaeMotorLinearVelocity.in(MetersPerSecond)
+                < SupremeEffectorConstants.kIntakeThresholdVelocity.in(MetersPerSecond));
   }
 
   public boolean isCoralIntaked() {
