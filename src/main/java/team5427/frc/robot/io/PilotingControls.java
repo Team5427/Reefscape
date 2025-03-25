@@ -1,5 +1,6 @@
 package team5427.frc.robot.io;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -51,12 +52,8 @@ public class PilotingControls {
 
     joy.b()
         .onTrue(
-            new InstantCommand(
-                    () -> {
-                      RobotState.getInstance()
-                          .resetAllPose(new Pose2d(5.76, 4.022, Rotation2d.kZero));
-                    })
-                .ignoringDisable(true));
+            AutoBuilder.resetOdom(new Pose2d(5.76, 4.022, Rotation2d.kZero)).ignoringDisable(true));
+
     SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement)
         .setDefaultCommand(new ChassisMovement(joy));
 

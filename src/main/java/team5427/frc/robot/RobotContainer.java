@@ -2,9 +2,11 @@ package team5427.frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +17,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.Optional;
+import java.util.stream.Stream;
+
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.commands.AllCommands;
@@ -73,7 +77,8 @@ public class RobotContainer {
         // starting pose)
         SwerveSubsystem.getInstance()
             ::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        SwerveSubsystem.getInstance()::setInputSpeeds,
+        (speeds, feedforwards) ->
+            SwerveSubsystem.getInstance().setInputSpeeds(speeds, feedforwards),
         // (speeds) ->
         //     SwerveSubsystem.getInstance()
         //         .setChassisSpeeds(speeds), // Method that will drive the robot given ROBOT
@@ -114,8 +119,12 @@ public class RobotContainer {
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
         });
-    autoChooser = AutoBuilder.buildAutoChooser();
-
+        SmartDashboard.putBoolean("Should Flip Paths To Right", false);
+    autoChooser = AutoBuilder.buildAutoChooserWithOptionsModifier(autoStream -> autoStream.map(auto -> {
+      
+      auto = new PathPlannerAuto(auto.getName(), SmartDashboard.getBoolean("Should Flip Paths To Right", false));
+      return auto;
+    }));
     // autoChooser.addOption(
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(

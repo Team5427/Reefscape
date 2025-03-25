@@ -280,6 +280,11 @@ public class SwerveSubsystem extends SubsystemBase {
     Logger.recordOutput("SwerveOutput/TargetModuleStates", targetModuleStates);
   }
 
+  public void setInputSpeeds(ChassisSpeeds speeds, DriveFeedforwards driveFeedforwards) {
+    this.inputSpeeds = speeds;
+    this.driveFeedforwards = driveFeedforwards;
+  }
+
   @FunctionalInterface
   public static interface OdometryConsumer {
     public void accept(
