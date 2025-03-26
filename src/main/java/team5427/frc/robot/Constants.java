@@ -356,7 +356,7 @@ public final class Constants {
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
     public static final Transform3d kQuestCameraTransform =
-        new Transform3d(0, 0, 0, new Rotation3d(Rotation2d.kCCW_90deg));
+        new Transform3d(Units.inchesToMeters(0.296), Units.inchesToMeters(12.487), Units.inchesToMeters(5.098), new Rotation3d(Rotation2d.kCCW_90deg));
 
     public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
 
@@ -740,9 +740,9 @@ public final class Constants {
   }
 
   public static class SupremeEffectorConstants {
-    public static MotorConfiguration kPivotMotorConfiguration;
-    public static MotorConfiguration kCoralMotorConfiguration;
-    public static MotorConfiguration kAlgaeMotorConfiguration;
+    public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
+    public static MotorConfiguration kCoralMotorConfiguration = new MotorConfiguration();
+    public static MotorConfiguration kAlgaeMotorConfiguration = new MotorConfiguration();
 
     public static final Rotation2d kPivotMinimumPosition = Rotation2d.fromDegrees(0);
     public static final Rotation2d kPivotMaximumPosition = Rotation2d.fromDegrees(180);
@@ -750,9 +750,9 @@ public final class Constants {
     public static final Debouncer kAlgaeIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
     public static final Debouncer kCoralIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
 
-    public static final CANDeviceId kPivotMotorId = new CANDeviceId(0);
-    public static final CANDeviceId kCoralMotorId = new CANDeviceId(0);
-    public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(0);
+    public static final CANDeviceId kPivotMotorId = new CANDeviceId(24);
+    public static final CANDeviceId kCoralMotorId = new CANDeviceId(22);
+    public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(23);
 
     public static final CANDeviceId kCanRangeId = new CANDeviceId(0);
     public static final Distance kCanRangeDetectionDistance = Inches.of(1.0);

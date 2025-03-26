@@ -119,9 +119,15 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       odometryConsumer = consumer;
     }
+    inputSpeeds = new ChassisSpeeds(0, 0, 0);
+    actualModuleStates = getActualModuleStates();
 
-    setpointGenerator = new SwerveSetpointGenerator(Constants.config, RotationsPerSecond.of(3.0));
-    setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates, driveFeedforwards);
+    driveFeedforwards = new DriveFeedforwards(new double[4], new double[4], new double[4], new double[4], new double[4]);
+
+    setpointGenerator = new SwerveSetpointGenerator(Constants.config, SwerveConstants.kSteerMotorConfiguration.maxVelocity);
+    // setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates);
+    setpoint = null;
+    
 
     PhoenixOdometryThread.getInstance().start();
 
@@ -168,10 +174,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
 
-    return discretizedSpeeds;
+    return fieldRelativeSpeeds;
   }
 
   public Command getTargetPath() {
@@ -229,15 +233,19 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Create New Target Module States from inputSpeeds
-    if (DriverStation.isAutonomous()) {
+    if (DriverStation.isAutonomous() || true) {
+      inputSpeeds = ChassisSpeeds.discretize(inputSpeeds, Constants.kLoopSpeed);
       targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
+      
     } else {
-      setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
-      targetModuleStates = setpoint.moduleStates();
-      driveFeedforwards = setpoint.feedforwards();
+      
+      this.setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
+      targetModuleStates = this.setpoint.moduleStates();
+      driveFeedforwards = this.setpoint.feedforwards();
     }
 
     for (int i = 0; i < swerveModules.length; i++) {
+      // System.out.println(targetModuleStates);
       swerveModules[i].setModuleState(
           targetModuleStates[i], driveFeedforwards); // Set new target module state
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state
