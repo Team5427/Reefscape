@@ -9,6 +9,7 @@ import team5427.frc.robot.commands.cascade.Climb;
 import team5427.frc.robot.commands.cascade.MoveElevatorTo;
 import team5427.frc.robot.commands.homing.ResetSubsystems;
 import team5427.frc.robot.commands.intake.Intake;
+import team5427.frc.robot.commands.intake.JITB_Intake;
 import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
 import team5427.frc.robot.subsystems.LightsSubsystem;
@@ -57,6 +58,8 @@ public class AllCommands {
                   }));
 
   public static final Command resetSubsystems = new ResetSubsystems();
+
+  public static final Command floorIntakeJITB = new JITB_Intake(RobotConfigConstants.kCoralFloorIntakeJITB);
 
   // public static final Command switchToCoralMode =
   //     new InstantCommand(

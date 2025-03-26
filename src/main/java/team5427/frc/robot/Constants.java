@@ -31,6 +31,9 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
+
+import org.littletonrobotics.junction.Logger;
+
 import team5427.frc.robot.Field.ReefLevel;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
@@ -504,6 +507,8 @@ public final class Constants {
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
     public static final Rotation2d kFloorIntakeRotation = Rotation2d.fromDegrees(50.0);
+    
+    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(20.0);
@@ -718,9 +723,9 @@ public final class Constants {
             SupremeEffectorConstants.kAlgaeRollerFloorIntakeVelocity,
             false);
 
-    public static final RawIntakeConfiguration kCoralFloorIntake =
+    public static final RawIntakeConfiguration kCoralFloorIntakeJITB =
         new RawIntakeConfiguration(
-            CascadeConstants.kFloorIntakeRotation,
+            CascadeConstants.kCoralFloorIntakeRotationJITB,
             CascadeConstants.kFloorIntakeDistance,
             SupremeEffectorConstants.kCoralFloorIntakePosition,
             SupremeEffectorConstants.kCoralRollerFloorIntakeVelocity,
@@ -735,6 +740,19 @@ public final class Constants {
     static {
       for (int i = 0; i < 12; i++) {
         kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
+      }
+    }
+
+    public static final Pose2d[] kAlignPoses = new Pose2d[kReefPoses.length];
+    static {
+      for (int i = 0; i < kAlignPoses.length; i++) {
+        Pose2d alignPose = new Pose2d(
+          kReefPoses[i].getX() + Units.inchesToMeters(6.0) * Math.cos(kReefPoses[i].getRotation().getRadians()),
+          kReefPoses[i].getY() + Units.inchesToMeters(6.0) * Math.sin(kReefPoses[i].getRotation().getRadians()),
+          kReefPoses[i].getRotation()
+        );
+        kAlignPoses[i] = alignPose;
+        Logger.recordOutput("Pose " + i, kAlignPoses[i]);
       }
     }
   }

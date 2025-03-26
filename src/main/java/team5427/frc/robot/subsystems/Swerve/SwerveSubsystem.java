@@ -53,9 +53,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Getter @Setter private ChassisSpeeds inputSpeeds;
 
-  private SwerveSetpointGenerator setpointGenerator;
+  // private SwerveSetpointGenerator setpointGenerator;
 
-  private SwerveSetpoint setpoint;
+  // private SwerveSetpoint setpoint;
 
   private DriveFeedforwards driveFeedforwards;
 
@@ -120,8 +120,8 @@ public class SwerveSubsystem extends SubsystemBase {
       odometryConsumer = consumer;
     }
 
-    setpointGenerator = new SwerveSetpointGenerator(Constants.config, RotationsPerSecond.of(3.0));
-    setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates, driveFeedforwards);
+    // setpointGenerator = new SwerveSetpointGenerator(Constants.config, RotationsPerSecond.of(3.0));
+    // setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates, driveFeedforwards);
 
     PhoenixOdometryThread.getInstance().start();
 
@@ -229,12 +229,12 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Create New Target Module States from inputSpeeds
-    if (DriverStation.isAutonomous()) {
+    if (true || DriverStation.isAutonomous()) {
       targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
     } else {
-      setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
-      targetModuleStates = setpoint.moduleStates();
-      driveFeedforwards = setpoint.feedforwards();
+      // setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
+      // targetModuleStates = setpoint.moduleStates();
+      // driveFeedforwards = setpoint.feedforwards();
     }
 
     for (int i = 0; i < swerveModules.length; i++) {
@@ -263,7 +263,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       Rotation2d newGyroInput = Rotation2d.kZero;
       if (gyroInputsAutoLogged.connected) {
-        newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i];
+        newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].unaryMinus();
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
         newGyroInput = newGyroInput.plus(Rotation2d.fromRadians(gyroTwist.dtheta));
