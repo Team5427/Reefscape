@@ -42,8 +42,6 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    
-
     try {
       Constants.config = RobotConfig.fromGUISettings();
       System.out.println("Robot Config Loaded");

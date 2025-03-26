@@ -10,8 +10,6 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
-import com.pathplanner.lib.util.swerve.SwerveSetpoint;
-import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -26,7 +24,6 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
-import lombok.Setter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
@@ -51,7 +48,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private GyroIO gyroIO;
   private GyroIOInputsAutoLogged gyroInputsAutoLogged;
 
-  @Getter @Setter private ChassisSpeeds inputSpeeds;
+  @Getter private ChassisSpeeds inputSpeeds;
 
   // private SwerveSetpointGenerator setpointGenerator;
 
@@ -120,8 +117,11 @@ public class SwerveSubsystem extends SubsystemBase {
       odometryConsumer = consumer;
     }
 
-    // setpointGenerator = new SwerveSetpointGenerator(Constants.config, RotationsPerSecond.of(3.0));
+    // setpointGenerator = new SwerveSetpointGenerator(Constants.config,
+    // RotationsPerSecond.of(3.0));
     // setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates, driveFeedforwards);
+
+    driveFeedforwards = null;
 
     PhoenixOdometryThread.getInstance().start();
 
@@ -227,19 +227,13 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Create New Target Module States from inputSpeeds
-    if (true || DriverStation.isAutonomous()) {
-      targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
-      
-    } else {
-      // setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
-      // targetModuleStates = setpoint.moduleStates();
-      // driveFeedforwards = setpoint.feedforwards();
-    }
+    targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
 
     for (int i = 0; i < swerveModules.length; i++) {
-      // System.out.println(targetModuleStates);
-      swerveModules[i].setModuleState(
-          targetModuleStates[i], driveFeedforwards); // Set new target module state
+      if (driveFeedforwards != null) {
+        swerveModules[i].setModuleState(
+            targetModuleStates[i], driveFeedforwards); // Set new target module state
+      }
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state
       swerveModules[i].periodic(); // Update Module Inputs
     }
@@ -283,6 +277,11 @@ public class SwerveSubsystem extends SubsystemBase {
   public void setInputSpeeds(ChassisSpeeds speeds, DriveFeedforwards driveFeedforwards) {
     this.inputSpeeds = speeds;
     this.driveFeedforwards = driveFeedforwards;
+  }
+
+  public void setInputSpeeds(ChassisSpeeds speeds) {
+    this.inputSpeeds = speeds;
+    this.driveFeedforwards = null;
   }
 
   @FunctionalInterface

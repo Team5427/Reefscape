@@ -59,7 +59,8 @@ public class AllCommands {
 
   public static final Command resetSubsystems = new ResetSubsystems();
 
-  public static final Command floorIntakeJITB = new JITB_Intake(RobotConfigConstants.kCoralFloorIntakeJITB);
+  public static final Command floorIntakeJITB =
+      new JITB_Intake(RobotConfigConstants.kCoralFloorIntakeJITB);
 
   // public static final Command switchToCoralMode =
   //     new InstantCommand(

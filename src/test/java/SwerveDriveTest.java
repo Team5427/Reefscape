@@ -3,6 +3,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import team5427.frc.robot.Constants.RobotConfigConstants;
+import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -52,5 +54,22 @@ public class SwerveDriveTest {
     System.out.println("After Pose " + afterPose);
     System.out.println("Vision Pose Input " + newVisionPose);
     System.out.println("Odometry Pose " + odometryPose);
+  }
+
+  @Test
+  public void reefAutoAlignPoseTest() {
+    for (int i = 0; i < RobotConfigConstants.kAlignPoses.length; i++) {
+      Pose2d alignPose =
+          new Pose2d(
+              RobotConfigConstants.kReefPoses[i].getX()
+                  + SwerveConstants.kTrackWidth
+                      * Math.cos(RobotConfigConstants.kReefPoses[i].getRotation().getRadians()),
+              RobotConfigConstants.kReefPoses[i].getY()
+                  + SwerveConstants.kTrackWidth
+                      * Math.sin(RobotConfigConstants.kReefPoses[i].getRotation().getRadians()),
+              RobotConfigConstants.kReefPoses[i].getRotation().plus(Rotation2d.k180deg));
+      RobotConfigConstants.kAlignPoses[i] = alignPose;
+      System.out.println("Pose " + i + ": " + RobotConfigConstants.kAlignPoses[i]);
+    }
   }
 }

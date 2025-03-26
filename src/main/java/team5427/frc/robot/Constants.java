@@ -31,12 +31,6 @@ import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import java.util.Optional;
-
-import org.littletonrobotics.junction.Logger;
-
-
-import org.littletonrobotics.junction.Logger;
-
 import team5427.frc.robot.Field.ReefLevel;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
@@ -362,7 +356,11 @@ public final class Constants {
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
     public static final Transform3d kQuestCameraTransform =
-        new Transform3d(Units.inchesToMeters(0.296), Units.inchesToMeters(12.487), Units.inchesToMeters(5.098), new Rotation3d(Rotation2d.kCCW_90deg));
+        new Transform3d(
+            Units.inchesToMeters(0.296),
+            Units.inchesToMeters(12.487),
+            Units.inchesToMeters(5.098),
+            new Rotation3d(Rotation2d.kCCW_90deg));
 
     public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
 
@@ -510,9 +508,7 @@ public final class Constants {
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
     public static final Rotation2d kFloorIntakeRotation = Rotation2d.fromDegrees(50.0);
-    
-    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
-    
+
     public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
@@ -729,9 +725,7 @@ public final class Constants {
             false);
 
     public static final RawIntakeConfiguration kCoralFloorIntakeJITB =
-    public static final RawIntakeConfiguration kCoralFloorIntakeJITB =
         new RawIntakeConfiguration(
-            CascadeConstants.kCoralFloorIntakeRotationJITB,
             CascadeConstants.kCoralFloorIntakeRotationJITB,
             CascadeConstants.kFloorIntakeDistance,
             SupremeEffectorConstants.kCoralFloorIntakePosition,
@@ -751,36 +745,25 @@ public final class Constants {
     }
 
     public static final Pose2d[] kAlignPoses = new Pose2d[kReefPoses.length];
-    static {
-      for (int i = 0; i < kAlignPoses.length; i++) {
-        Pose2d alignPose = new Pose2d(
-          kReefPoses[i].getX() + Units.inchesToMeters(6.0) * Math.cos(kReefPoses[i].getRotation().getRadians()),
-          kReefPoses[i].getY() + Units.inchesToMeters(6.0) * Math.sin(kReefPoses[i].getRotation().getRadians()),
-          kReefPoses[i].getRotation()
-        );
-        kAlignPoses[i] = alignPose;
-        Logger.recordOutput("Pose " + i, kAlignPoses[i]);
-      }
-    }
 
-    public static final Pose2d[] kAlignPoses = new Pose2d[kReefPoses.length];
     static {
-      for (int i = 0; i < kAlignPoses.length; i++) {
-        Pose2d alignPose = new Pose2d(
-          kReefPoses[i].getX() + Units.inchesToMeters(6.0) * Math.cos(kReefPoses[i].getRotation().getRadians()),
-          kReefPoses[i].getY() + Units.inchesToMeters(6.0) * Math.sin(kReefPoses[i].getRotation().getRadians()),
-          kReefPoses[i].getRotation()
-        );
-        kAlignPoses[i] = alignPose;
-        Logger.recordOutput("Pose " + i, kAlignPoses[i]);
+      for (int i = 0; i < RobotConfigConstants.kAlignPoses.length; i++) {
+        Pose2d alignPose =
+            new Pose2d(
+                RobotConfigConstants.kReefPoses[i].getX()
+                    + SwerveConstants.kTrackWidth
+                        * Math.cos(RobotConfigConstants.kReefPoses[i].getRotation().getRadians()),
+                RobotConfigConstants.kReefPoses[i].getY()
+                    + SwerveConstants.kTrackWidth
+                        * Math.sin(RobotConfigConstants.kReefPoses[i].getRotation().getRadians()),
+                RobotConfigConstants.kReefPoses[i].getRotation().plus(Rotation2d.k180deg));
+        RobotConfigConstants.kAlignPoses[i] = alignPose;
+        System.out.println("Pose " + i + ": " + RobotConfigConstants.kAlignPoses[i]);
       }
     }
   }
 
   public static class SupremeEffectorConstants {
-    public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
-    public static MotorConfiguration kCoralMotorConfiguration = new MotorConfiguration();
-    public static MotorConfiguration kAlgaeMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kCoralMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kAlgaeMotorConfiguration = new MotorConfiguration();
