@@ -36,7 +36,8 @@ public class OperatingControls {
         .whileTrue(
             new ConditionalCommand(
                 // AllCommands.intake,
-                AllCommands.intakeRSC,
+                // AllCommands.intakeRSC,
+                AllCommands.floorIntakeJITB,
                 new ConditionalCommand(
                     AllCommands.highReefAlgaeIntake,
                     new ConditionalCommand(

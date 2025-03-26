@@ -14,7 +14,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
 import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
+// import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.lib.drivers.SteelTalonsLogger;
 
@@ -32,7 +32,7 @@ public class Robot extends LoggedRobot {
 
   private SwerveSubsystem m_swerve;
   private CascadeSubsystem m_cascade;
-  private ProngSubsystem m_endEffector;
+  // private ProngSubsystem m_endEffector;
   private ClimberSubsystem m_climber;
 
   // private SteelTalonFX talon0;
