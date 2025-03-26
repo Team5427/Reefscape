@@ -168,10 +168,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
 
-    return discretizedSpeeds;
+    return fieldRelativeSpeeds;
   }
 
   public Command getTargetPath() {
@@ -231,6 +229,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Create New Target Module States from inputSpeeds
     if (true || DriverStation.isAutonomous()) {
       targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
+      
     } else {
       // setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
       // targetModuleStates = setpoint.moduleStates();
@@ -238,6 +237,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     for (int i = 0; i < swerveModules.length; i++) {
+      // System.out.println(targetModuleStates);
       swerveModules[i].setModuleState(
           targetModuleStates[i], driveFeedforwards); // Set new target module state
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state

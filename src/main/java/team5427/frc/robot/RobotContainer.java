@@ -42,7 +42,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    LightsSubsystem.getInstance();
+    
 
     try {
       Constants.config = RobotConfig.fromGUISettings();
@@ -59,6 +59,7 @@ public class RobotContainer {
       System.out.println("Robot Config Failing");
       e.printStackTrace();
     }
+    LightsSubsystem.getInstance();
     SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement);
     VisionSubsystem.getInstance(
         Optional.of(RobotState.getInstance()::addVisionMeasurement),
