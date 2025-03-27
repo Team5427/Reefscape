@@ -1,16 +1,6 @@
 package team5427.frc.robot.subsystems.Swerve;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -20,16 +10,13 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
-import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
@@ -177,16 +164,19 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getDriveSpeeds(Pose2d targetPose) {
 
     Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
-    double calculatedX = SwerveConstants.kTranslationXPIDController.calculate(robotPose.getX(), targetPose.getX());
-    double calculatedY = SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
-    double calculatedOmega = SwerveConstants.kRotationPIDController.calculate(robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
+    double calculatedX =
+        SwerveConstants.kTranslationXPIDController.calculate(robotPose.getX(), targetPose.getX());
+    double calculatedY =
+        SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
+    double calculatedOmega =
+        SwerveConstants.kRotationPIDController.calculate(
+            robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
 
-    ChassisSpeeds rawSpeeds = new ChassisSpeeds(
-      calculatedX, calculatedY, calculatedOmega
-    );
+    ChassisSpeeds rawSpeeds = new ChassisSpeeds(calculatedX, calculatedY, calculatedOmega);
     Logger.recordOutput("Targeting Pose", targetPose);
 
-    // ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
+    // ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
+    // getGyroRotation());
 
     return rawSpeeds;
   }
@@ -252,9 +242,8 @@ public class SwerveSubsystem extends SubsystemBase {
       if (driveFeedforwards != null) {
         swerveModules[i].setModuleState(
             targetModuleStates[i], driveFeedforwards); // Set new target module state
-      } else{
-        swerveModules[i].setModuleState(
-          targetModuleStates[i]); 
+      } else {
+        swerveModules[i].setModuleState(targetModuleStates[i]);
       }
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state
       swerveModules[i].periodic(); // Update Module Inputs

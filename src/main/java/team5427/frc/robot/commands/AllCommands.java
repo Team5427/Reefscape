@@ -2,6 +2,7 @@ package team5427.frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import java.util.Optional;
 import team5427.frc.robot.Constants.BlinkinConstants;
 import team5427.frc.robot.Constants.CascadeConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
@@ -9,7 +10,6 @@ import team5427.frc.robot.commands.cascade.Climb;
 import team5427.frc.robot.commands.cascade.MoveElevatorTo;
 import team5427.frc.robot.commands.homing.ResetSubsystems;
 import team5427.frc.robot.commands.intake.Intake;
-import team5427.frc.robot.commands.intake.JITB_Intake;
 import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.commands.outtake.Score;
 import team5427.frc.robot.subsystems.LightsSubsystem;
@@ -42,7 +42,7 @@ public class AllCommands {
       new Intake(RobotConfigConstants.kReefHighAlgaeIntake);
   public static final Command floorAlgaeIntake = new Intake(RobotConfigConstants.kAlgaeFloorIntake);
   public static final Command eject =
-      new EjectGamePiece(true)
+      new EjectGamePiece(true, Optional.empty())
           .alongWith(
               new InstantCommand(
                   () -> {
@@ -50,7 +50,7 @@ public class AllCommands {
                   }));
   // public static final Command floorIntake = new FloorIntake();
   public static final Command ejectAlgae =
-      new EjectGamePiece(false)
+      new EjectGamePiece(false, Optional.empty())
           .alongWith(
               new InstantCommand(
                   () -> {
@@ -59,8 +59,8 @@ public class AllCommands {
 
   public static final Command resetSubsystems = new ResetSubsystems();
 
-  public static final Command floorIntakeJITB =
-      new JITB_Intake(RobotConfigConstants.kCoralFloorIntakeJITB);
+  //   public static final Command floorIntakeJITB =
+  //       new JITB_Intake(RobotConfigConstants.kCoralFloorIntakeJITB);
 
   // public static final Command switchToCoralMode =
   //     new InstantCommand(
