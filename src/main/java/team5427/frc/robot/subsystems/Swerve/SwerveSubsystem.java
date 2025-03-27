@@ -88,13 +88,13 @@ public class SwerveSubsystem extends SubsystemBase {
     switch (Constants.currentMode) {
       case SIM:
       case REPLAY:
-        gyroIO = new GyroIOSim();
+        // gyroIO = new GyroIOSim();
         break;
       case REAL:
         gyroIO = new GyroIOPigeon();
         break;
       default:
-        gyroIO = new GyroIOSim();
+        // gyroIO = new GyroIOSim();
         break;
     }
     gyroInputsAutoLogged = new GyroIOInputsAutoLogged();
@@ -267,7 +267,7 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       Rotation2d newGyroInput = Rotation2d.kZero;
-      if (gyroInputsAutoLogged.connected) {
+      if (gyroInputsAutoLogged.connected && gyroIO != null) {
         newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].unaryMinus();
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
