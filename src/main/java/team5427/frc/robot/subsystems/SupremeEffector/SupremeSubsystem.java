@@ -22,9 +22,9 @@ public class SupremeSubsystem extends SubsystemBase {
   private SupremeIO io;
   private SupremeIOInputsAutoLogged inputsAutoLogged;
 
-  @Getter @Setter private Rotation2d pivotSetpoint;
-  @Getter @Setter private LinearVelocity coralRollerSetpoint;
-  @Getter @Setter private LinearVelocity algaeRollerSetpoint;
+  @Getter @Setter private Rotation2d pivotSetpoint = new Rotation2d(0);
+  @Getter @Setter private LinearVelocity coralRollerSetpoint = MetersPerSecond.of(0.0);
+  @Getter @Setter private LinearVelocity algaeRollerSetpoint = MetersPerSecond.of(0.0);
 
   public static SupremeSubsystem getInstance() {
     if (m_instance == null) {

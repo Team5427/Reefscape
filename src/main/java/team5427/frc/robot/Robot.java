@@ -30,10 +30,6 @@ public class Robot extends LoggedRobot {
 
   private final RobotContainer m_robotContainer;
 
-  private SwerveSubsystem m_swerve;
-  private CascadeSubsystem m_cascade;
-  // private ProngSubsystem m_endEffector;
-  private ClimberSubsystem m_climber;
 
   // private SteelTalonFX talon0;
   // private SteelTalonFX talonSteer0;
