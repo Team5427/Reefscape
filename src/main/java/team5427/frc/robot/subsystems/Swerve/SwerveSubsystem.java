@@ -10,6 +10,8 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -172,12 +174,14 @@ public class SwerveSubsystem extends SubsystemBase {
     return fieldRelativeSpeeds;
   }
 
-  public Command getTargetPath() {
+  public PathPlannerPath getTargetPath() {
+    Pose2d pose = RobotState.getInstance().getAdaptivePose();
+    pose = new Pose2d(pose.getX(), pose.getY(), Rotation2d.kZero);
     PathPlannerPath targetPath =
         new PathPlannerPath(
             PathPlannerPath.waypointsFromPoses(
                 List.of(
-                    RobotState.getInstance().getAdaptivePose(),
+                    pose,
                     RobotState.getInstance()
                         .getAdaptivePose()
                         .nearest(List.of(RobotConfigConstants.kReefPoses)))),
@@ -195,7 +199,7 @@ public class SwerveSubsystem extends SubsystemBase {
                     .nearest(List.of(RobotConfigConstants.kReefPoses))
                     .getRotation()));
     targetPath.preventFlipping = true;
-    return AutoBuilder.followPath(targetPath);
+    return targetPath;
   }
 
   public Rotation2d getGyroRotation() {
@@ -233,6 +237,9 @@ public class SwerveSubsystem extends SubsystemBase {
       if (driveFeedforwards != null) {
         swerveModules[i].setModuleState(
             targetModuleStates[i], driveFeedforwards); // Set new target module state
+      } else{
+        swerveModules[i].setModuleState(
+          targetModuleStates[i]); 
       }
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state
       swerveModules[i].periodic(); // Update Module Inputs

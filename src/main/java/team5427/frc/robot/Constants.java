@@ -472,11 +472,11 @@ public final class Constants {
 
     public static final double kPivotCancoderOffset = -0.26611328125;
 
-    public static final Distance kStowDistance = Feet.of(0.25);
+    public static final Distance kStowDistance = Feet.of(0.35);
     public static final Distance kZeroPosition = Feet.of(00);
     public static final Distance kIntakeDistance = Inches.of(0.5);
     public static final Distance kRSCIntakeDistance = Inches.of(1.5);
-    public static final Distance kFloorIntakeDistance = Inches.of(0.5);
+    public static final Distance kFloorIntakeDistance = Inches.of(3);
 
     public static final Distance kL1Distance = Feet.of(0.25);
 
@@ -509,7 +509,7 @@ public final class Constants {
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
     public static final Rotation2d kFloorIntakeRotation = Rotation2d.fromDegrees(50.0);
 
-    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
+    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(82.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(20.0);
@@ -778,17 +778,17 @@ public final class Constants {
     public static final CANDeviceId kCoralMotorId = new CANDeviceId(22);
     public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(23);
 
-    public static final CANDeviceId kCanRangeId = new CANDeviceId(0);
+    public static final CANDeviceId kCanRangeId = new CANDeviceId(27);
     public static final Distance kCanRangeDetectionDistance = Inches.of(1.0);
 
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(45);
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
-    public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(210);
+    public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(0);
     public static final Rotation2d kSourceIntakePosition = Rotation2d.fromDegrees(10.0);
-    public static final Rotation2d kCoralFloorIntakePosition = Rotation2d.fromDegrees(95.0);
+    public static final Rotation2d kCoralFloorIntakePosition = Rotation2d.fromDegrees(100.0);
     public static final Rotation2d kAlgaeFloorIntakePosition = Rotation2d.fromDegrees(95.0);
 
-    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(10.0);
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(100.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(42.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(50);
@@ -822,7 +822,7 @@ public final class Constants {
       kPivotMotorConfiguration.gearRatio =
           new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (17.0 / 24.0));
       kPivotMotorConfiguration.idleState = IdleState.kBrake;
-      kPivotMotorConfiguration.isInverted = true;
+      kPivotMotorConfiguration.isInverted = false;
       kPivotMotorConfiguration.mode = MotorMode.kServo;
       kPivotMotorConfiguration.withFOC = true;
 
@@ -830,36 +830,41 @@ public final class Constants {
           kPivotMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kPivotMotorConfiguration.maxAcceleration = kPivotMotorConfiguration.maxVelocity;
 
-      kPivotMotorConfiguration.kP = 6.0;
+      kPivotMotorConfiguration.kP = 16.0;
+      kPivotMotorConfiguration.kA = 0.2;
 
       kPivotMotorConfiguration.altA = kPivotMotorConfiguration.maxAcceleration / 2.0;
       kPivotMotorConfiguration.altV = kPivotMotorConfiguration.maxVelocity;
     }
 
     static {
-      kAlgaeMotorConfiguration.gearRatio = new ComplexGearRatio((12.0 / 36.0));
+      kAlgaeMotorConfiguration.gearRatio = new ComplexGearRatio((14.0 / 32.0), (12.0 / 34.0));
       kAlgaeMotorConfiguration.idleState = IdleState.kBrake;
       kAlgaeMotorConfiguration.isInverted = true;
       kAlgaeMotorConfiguration.mode = MotorMode.kFlywheel;
-      kAlgaeMotorConfiguration.withFOC = true;
-      kAlgaeMotorConfiguration.currentLimit = 40;
+      kAlgaeMotorConfiguration.withFOC = false;
+      kAlgaeMotorConfiguration.currentLimit = 60;
       kAlgaeMotorConfiguration.finalDiameterMeters = Units.inchesToMeters(3.0);
       kAlgaeMotorConfiguration.maxVelocity =
           kAlgaeMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX44FOC_MaxRPM);
       kAlgaeMotorConfiguration.maxAcceleration = kAlgaeMotorConfiguration.maxVelocity * 10.0;
+      kAlgaeMotorConfiguration.kP = 0.5;
+      kAlgaeMotorConfiguration.kV  = 0.2;
     }
 
     static {
-      kCoralMotorConfiguration.gearRatio = new ComplexGearRatio((12.0 / 36.0)); // FIXME
+      kCoralMotorConfiguration.gearRatio = new ComplexGearRatio((8.0 / 32.0));
       kCoralMotorConfiguration.idleState = IdleState.kBrake;
       kCoralMotorConfiguration.isInverted = true;
       kCoralMotorConfiguration.mode = MotorMode.kFlywheel;
-      kCoralMotorConfiguration.withFOC = true;
-      kCoralMotorConfiguration.currentLimit = 40;
+      kCoralMotorConfiguration.withFOC = false;
+      kCoralMotorConfiguration.currentLimit = 60;
       kCoralMotorConfiguration.finalDiameterMeters = Units.inchesToMeters(3.0);
       kCoralMotorConfiguration.maxVelocity =
           kCoralMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX44FOC_MaxRPM);
       kCoralMotorConfiguration.maxAcceleration = kCoralMotorConfiguration.maxVelocity * 10.0;
+      kCoralMotorConfiguration.kP = 0.5;
+      kCoralMotorConfiguration.kV  = 0.2;
     }
   }
 

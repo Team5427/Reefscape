@@ -54,7 +54,7 @@ public class PilotingControls {
         .onTrue(
             AutoBuilder.resetOdom(new Pose2d(5.76, 4.022, Rotation2d.kZero)).ignoringDisable(true));
 
-    SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement)
+    SwerveSubsystem.getInstance()
         .setDefaultCommand(new ChassisMovement(joy));
 
     // joy.leftBumper()
@@ -70,7 +70,9 @@ public class PilotingControls {
     //             }));
 
     joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
-    joy.a().whileTrue(SwerveSubsystem.getInstance().getTargetPath());
+    // joy.a().whileTrue(
+    //   AutoBuilder.followPath(SwerveSubsystem.getInstance().getTargetPath())
+    // );
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(
