@@ -124,13 +124,13 @@ public final class Constants {
 
       kSteerMotorConfiguration.maxVelocity =
           kSteerMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
-      kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 1000.0;
+      kSteerMotorConfiguration.maxAcceleration = kSteerMotorConfiguration.maxVelocity * 100.0;
 
       // Tunable values
       kSteerMotorConfiguration.kP = 4.613; // 7.0
       kSteerMotorConfiguration.kD = 0.0004;
       kSteerMotorConfiguration.kS = 0.5;
-      kSteerMotorConfiguration.kA = 0.3;
+      kSteerMotorConfiguration.kA = 0.2;
       // kSteerMotorConfiguration.kA = 8.0;
       kSteerMotorConfiguration.altV = kSteerMotorConfiguration.maxVelocity;
       kSteerMotorConfiguration.altA = kSteerMotorConfiguration.maxAcceleration;
@@ -484,7 +484,7 @@ public final class Constants {
     public static final Distance kZeroPosition = Feet.of(00);
     public static final Distance kIntakeDistance = Inches.of(0.5);
     public static final Distance kRSCIntakeDistance = Inches.of(1.5);
-    public static final Distance kFloorIntakeDistance = Inches.of(3);
+    public static final Distance kFloorIntakeDistance = Feet.of(0.6);
 
     public static final Distance kL1Distance = Feet.of(0.25);
 
@@ -517,7 +517,7 @@ public final class Constants {
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
     public static final Rotation2d kFloorIntakeRotation = Rotation2d.fromDegrees(50.0);
 
-    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(82.0);
+    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(20.0);
@@ -793,7 +793,7 @@ public final class Constants {
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(0);
     public static final Rotation2d kSourceIntakePosition = Rotation2d.fromDegrees(10.0);
-    public static final Rotation2d kCoralFloorIntakePosition = Rotation2d.fromDegrees(100.0);
+    public static final Rotation2d kCoralFloorIntakePosition = Rotation2d.fromDegrees(80.0);
     public static final Rotation2d kAlgaeFloorIntakePosition = Rotation2d.fromDegrees(95.0);
 
     public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(100.0);
@@ -848,7 +848,7 @@ public final class Constants {
     static {
       kAlgaeMotorConfiguration.gearRatio = new ComplexGearRatio((14.0 / 32.0), (12.0 / 34.0));
       kAlgaeMotorConfiguration.idleState = IdleState.kBrake;
-      kAlgaeMotorConfiguration.isInverted = true;
+      kAlgaeMotorConfiguration.isInverted = false;
       kAlgaeMotorConfiguration.mode = MotorMode.kFlywheel;
       kAlgaeMotorConfiguration.withFOC = false;
       kAlgaeMotorConfiguration.currentLimit = 60;
@@ -863,7 +863,7 @@ public final class Constants {
     static {
       kCoralMotorConfiguration.gearRatio = new ComplexGearRatio((8.0 / 32.0));
       kCoralMotorConfiguration.idleState = IdleState.kBrake;
-      kCoralMotorConfiguration.isInverted = true;
+      kCoralMotorConfiguration.isInverted = false;
       kCoralMotorConfiguration.mode = MotorMode.kFlywheel;
       kCoralMotorConfiguration.withFOC = false;
       kCoralMotorConfiguration.currentLimit = 60;

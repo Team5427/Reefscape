@@ -181,11 +181,14 @@ public class SwerveSubsystem extends SubsystemBase {
     double calculatedY = SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
     double calculatedOmega = SwerveConstants.kRotationPIDController.calculate(robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
 
-    ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(
+    ChassisSpeeds rawSpeeds = new ChassisSpeeds(
       calculatedX, calculatedY, calculatedOmega
     );
+    Logger.recordOutput("Targeting Pose", targetPose);
 
-    return fieldRelativeSpeeds;
+    // ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
+
+    return rawSpeeds;
   }
 
   // public Command getTargetPath() {
