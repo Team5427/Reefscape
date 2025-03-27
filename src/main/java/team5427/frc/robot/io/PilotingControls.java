@@ -10,6 +10,7 @@ import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
+import team5427.frc.robot.commands.chassis.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class PilotingControls {
@@ -70,9 +71,9 @@ public class PilotingControls {
     //             }));
 
     joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
-    // joy.a().whileTrue(
-    //   AutoBuilder.followPath(SwerveSubsystem.getInstance().getTargetPath())
-    // );
+    joy.a().whileTrue(
+      new MoveChassisToPose()
+    );
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(

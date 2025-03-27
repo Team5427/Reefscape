@@ -188,31 +188,31 @@ public class SwerveSubsystem extends SubsystemBase {
     return fieldRelativeSpeeds;
   }
 
-  public Command getTargetPath() {
-    PathPlannerPath targetPath =
-        new PathPlannerPath(
-            PathPlannerPath.waypointsFromPoses(
-                List.of(
-                    pose,
-                    RobotState.getInstance()
-                        .getAdaptivePose()
-                        .nearest(List.of(RobotConfigConstants.kReefPoses)))),
-            new PathConstraints(
-                MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25),
-                MetersPerSecondPerSecond.of(
-                    SwerveConstants.kDriveMotorConfiguration.maxAcceleration),
-                RotationsPerSecond.of(Math.PI * 0.25),
-                RotationsPerSecondPerSecond.of(Math.PI)),
-            null,
-            new GoalEndState(
-                0.0,
-                RobotState.getInstance()
-                    .getAdaptivePose()
-                    .nearest(List.of(RobotConfigConstants.kReefPoses))
-                    .getRotation()));
-    targetPath.preventFlipping = true;
-    return targetPath;
-  }
+  // public Command getTargetPath() {
+  //   PathPlannerPath targetPath =
+  //       new PathPlannerPath(
+  //           PathPlannerPath.waypointsFromPoses(
+  //               List.of(
+  //                   pose,
+  //                   RobotState.getInstance()
+  //                       .getAdaptivePose()
+  //                       .nearest(List.of(RobotConfigConstants.kReefPoses)))),
+  //           new PathConstraints(
+  //               MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25),
+  //               MetersPerSecondPerSecond.of(
+  //                   SwerveConstants.kDriveMotorConfiguration.maxAcceleration),
+  //               RotationsPerSecond.of(Math.PI * 0.25),
+  //               RotationsPerSecondPerSecond.of(Math.PI)),
+  //           null,
+  //           new GoalEndState(
+  //               0.0,
+  //               RobotState.getInstance()
+  //                   .getAdaptivePose()
+  //                   .nearest(List.of(RobotConfigConstants.kReefPoses))
+  //                   .getRotation()));
+  //   targetPath.preventFlipping = true;
+  //   return targetPath;
+  // }
 
   public Rotation2d getGyroRotation() {
     return gyroInputsAutoLogged.yawPosition.unaryMinus();
