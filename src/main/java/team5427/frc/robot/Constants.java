@@ -90,80 +90,6 @@ public final class Constants {
     public static final double kTrackWidth = Units.inchesToMeters(22.75);
     public static final double kWheelBase = Units.inchesToMeters(22.75);
 
-    public static final PIDController kSIMSteerController = new PIDController(0.5, 0, 0.);
-    public static final SimpleMotorFeedforward kSIMSteerFeedforward =
-        new SimpleMotorFeedforward(0, 0.01, 0);
-
-    public static final PIDController kSIMDriveController = new PIDController(4, 0, 0.6);
-    public static final SimpleMotorFeedforward kSIMDriveFeedforward =
-        new SimpleMotorFeedforward(0., 2.08, 0.17);
-
-    public static final double kRotationalKp = 2.8127;
-    public static final double kTranslationalKp = 4.17;
-
-    public static ProfiledPIDController kRotationPIDController =
-        new ProfiledPIDController(
-            kRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 15 * Math.PI));
-
-    public static final SwerveDriveKinematics m_kinematics =
-        new SwerveDriveKinematics(
-            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
-            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
-
-    public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
-
-    static {
-      kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
-      kRotationPIDController.setTolerance(Rotation2d.fromDegrees(2).getRadians());
-      kSIMSteerController.enableContinuousInput(-0.5, 0.5);
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(3, "*");
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(5, "*");
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(7, "*");
-      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(9, "*");
-
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(4, "*");
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(6, "*");
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(8, "*");
-      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(10, "*");
-
-      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(12, "*");
-      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(13, "*");
-      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(14, "*");
-      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(15, "*");
-
-      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kFrontLeftModuleIdx] = true;
-      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kFrontRightModuleIdx] = true;
-      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kRearLeftModuleIdx] = true;
-      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kRearRightModuleIdx] = true;
-
-      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kFrontLeftModuleIdx] = false;
-      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kFrontRightModuleIdx] = false;
-      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearLeftModuleIdx] = false;
-      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearRightModuleIdx] = false;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.20752;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = -0.407;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = -0.2105;
-
-      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.1358;
-
-      //  kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.;
-
-      // kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = -0.;
-
-      // kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = -0.;
-
-      // kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.;
-    }
-
-    public static final double kRotLockP = 0.0;
-    public static final double kRotLockI = 0.0;
-    public static final double kRotLockD = 0.0;
-
     public static MotorConfiguration kDriveMotorConfiguration = new MotorConfiguration();
 
     static {
@@ -223,6 +149,88 @@ public final class Constants {
       public static final double drivekS = 0.0;
       public static final double drivekV = 45.0;
     }
+
+    public static final PIDController kSIMSteerController = new PIDController(0.5, 0, 0.);
+    public static final SimpleMotorFeedforward kSIMSteerFeedforward =
+        new SimpleMotorFeedforward(0, 0.01, 0);
+
+    public static final PIDController kSIMDriveController = new PIDController(4, 0, 0.6);
+    public static final SimpleMotorFeedforward kSIMDriveFeedforward =
+        new SimpleMotorFeedforward(0., 2.08, 0.17);
+
+    public static final double kRotationalKp = 2.8127;
+    public static final double kTranslationalKp = 4.17;
+
+    public static ProfiledPIDController kRotationPIDController =
+        new ProfiledPIDController(
+            kRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 15 * Math.PI));
+
+    public static ProfiledPIDController kTranslationXPIDController = 
+        new ProfiledPIDController(
+            kTranslationalKp, 0.0, 0.0, new Constraints(kDriveMotorConfiguration.maxVelocity * 0.5, kDriveMotorConfiguration.maxVelocity));
+
+    public static ProfiledPIDController kTranslationYPIDController = 
+        new ProfiledPIDController(
+            kTranslationalKp, 0.0, 0.0, new Constraints(kDriveMotorConfiguration.maxVelocity * 0.5, kDriveMotorConfiguration.maxVelocity));
+
+    public static final SwerveDriveKinematics m_kinematics =
+        new SwerveDriveKinematics(
+            new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, kTrackWidth / 2),
+            new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
+
+    public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
+
+    static {
+      kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+      kRotationPIDController.setTolerance(Rotation2d.fromDegrees(2).getRadians());
+      kSIMSteerController.enableContinuousInput(-0.5, 0.5);
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(3, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(5, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(7, "*");
+      kSwerveUtilInstance.kDriveMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(9, "*");
+
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(4, "*");
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(6, "*");
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(8, "*");
+      kSwerveUtilInstance.kSteerMotorIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(10, "*");
+
+      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kFrontLeftModuleIdx] = new CANDeviceId(12, "*");
+      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kFrontRightModuleIdx] = new CANDeviceId(13, "*");
+      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kRearLeftModuleIdx] = new CANDeviceId(14, "*");
+      kSwerveUtilInstance.kCancoderIds[SwerveUtil.kRearRightModuleIdx] = new CANDeviceId(15, "*");
+
+      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kFrontLeftModuleIdx] = true;
+      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kFrontRightModuleIdx] = true;
+      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kRearLeftModuleIdx] = true;
+      kSwerveUtilInstance.kDriveInversion[SwerveUtil.kRearRightModuleIdx] = true;
+
+      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kFrontLeftModuleIdx] = false;
+      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kFrontRightModuleIdx] = false;
+      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearLeftModuleIdx] = false;
+      kSwerveUtilInstance.kSteerInversion[SwerveUtil.kRearRightModuleIdx] = false;
+
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.20752;
+
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = -0.407;
+
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = -0.2105;
+
+      kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.1358;
+
+      //  kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontLeftModuleIdx] = 0.;
+
+      // kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kFrontRightModuleIdx] = -0.;
+
+      // kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearRightModuleIdx] = -0.;
+
+      // kSwerveUtilInstance.kModuleOffsets[SwerveUtil.kRearLeftModuleIdx] = -0.;
+    }
+
+    public static final double kRotLockP = 0.0;
+    public static final double kRotLockI = 0.0;
+    public static final double kRotLockD = 0.0;
 
     public static final double kDampenerDampeningAmount = 0.95;
   }

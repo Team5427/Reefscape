@@ -10,6 +10,8 @@ import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -168,6 +170,20 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
+
+    return fieldRelativeSpeeds;
+  }
+
+  public ChassisSpeeds getDriveSpeeds(Pose2d targetPose) {
+
+    Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
+    double calculatedX = SwerveConstants.kTranslationXPIDController.calculate(robotPose.getX(), targetPose.getX());
+    double calculatedY = SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
+    double calculatedOmega = SwerveConstants.kRotationPIDController.calculate(robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
+
+    ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(
+      calculatedX, calculatedY, calculatedOmega
+    );
 
     return fieldRelativeSpeeds;
   }
