@@ -174,9 +174,21 @@ public class SwerveSubsystem extends SubsystemBase {
     return fieldRelativeSpeeds;
   }
 
-  public PathPlannerPath getTargetPath() {
-    Pose2d pose = RobotState.getInstance().getAdaptivePose();
-    pose = new Pose2d(pose.getX(), pose.getY(), Rotation2d.kZero);
+  public ChassisSpeeds getDriveSpeeds(Pose2d targetPose) {
+
+    Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
+    double calculatedX = SwerveConstants.kTranslationXPIDController.calculate(robotPose.getX(), targetPose.getX());
+    double calculatedY = SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
+    double calculatedOmega = SwerveConstants.kRotationPIDController.calculate(robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
+
+    ChassisSpeeds fieldRelativeSpeeds = new ChassisSpeeds(
+      calculatedX, calculatedY, calculatedOmega
+    );
+
+    return fieldRelativeSpeeds;
+  }
+
+  public Command getTargetPath() {
     PathPlannerPath targetPath =
         new PathPlannerPath(
             PathPlannerPath.waypointsFromPoses(
