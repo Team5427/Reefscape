@@ -512,8 +512,6 @@ public final class Constants {
     public static final Rotation2d kFloorIntakeRotation = Rotation2d.fromDegrees(50.0);
     
     public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
-    
-    public static final Rotation2d kCoralFloorIntakeRotationJITB = Rotation2d.fromDegrees(75.0);
 
     public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(20.0);
@@ -729,9 +727,7 @@ public final class Constants {
             false);
 
     public static final RawIntakeConfiguration kCoralFloorIntakeJITB =
-    public static final RawIntakeConfiguration kCoralFloorIntakeJITB =
         new RawIntakeConfiguration(
-            CascadeConstants.kCoralFloorIntakeRotationJITB,
             CascadeConstants.kCoralFloorIntakeRotationJITB,
             CascadeConstants.kFloorIntakeDistance,
             SupremeEffectorConstants.kCoralFloorIntakePosition,
@@ -762,25 +758,9 @@ public final class Constants {
         Logger.recordOutput("Pose " + i, kAlignPoses[i]);
       }
     }
-
-    public static final Pose2d[] kAlignPoses = new Pose2d[kReefPoses.length];
-    static {
-      for (int i = 0; i < kAlignPoses.length; i++) {
-        Pose2d alignPose = new Pose2d(
-          kReefPoses[i].getX() + Units.inchesToMeters(6.0) * Math.cos(kReefPoses[i].getRotation().getRadians()),
-          kReefPoses[i].getY() + Units.inchesToMeters(6.0) * Math.sin(kReefPoses[i].getRotation().getRadians()),
-          kReefPoses[i].getRotation()
-        );
-        kAlignPoses[i] = alignPose;
-        Logger.recordOutput("Pose " + i, kAlignPoses[i]);
-      }
-    }
   }
 
   public static class SupremeEffectorConstants {
-    public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
-    public static MotorConfiguration kCoralMotorConfiguration = new MotorConfiguration();
-    public static MotorConfiguration kAlgaeMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kPivotMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kCoralMotorConfiguration = new MotorConfiguration();
     public static MotorConfiguration kAlgaeMotorConfiguration = new MotorConfiguration();
@@ -800,7 +780,7 @@ public final class Constants {
 
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(45);
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
-    public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(0);
+    public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(210);
     public static final Rotation2d kSourceIntakePosition = Rotation2d.fromDegrees(10.0);
     public static final Rotation2d kCoralFloorIntakePosition = Rotation2d.fromDegrees(95.0);
     public static final Rotation2d kAlgaeFloorIntakePosition = Rotation2d.fromDegrees(95.0);

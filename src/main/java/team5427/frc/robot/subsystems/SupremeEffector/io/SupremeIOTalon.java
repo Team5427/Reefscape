@@ -111,6 +111,8 @@ public class SupremeIOTalon implements SupremeIO {
         algaeMotorVoltage,
         canRangeDistance,
         canRangeDetectedObject);
+
+    pivotMotor.setEncoderPosition(SupremeEffectorConstants.kZeroPosition);
   }
 
   @Override
