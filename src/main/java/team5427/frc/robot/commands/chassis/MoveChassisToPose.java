@@ -68,6 +68,10 @@ public class MoveChassisToPose extends Command {
     // ChassisSpeeds(speedsX, speedsY, calculatedOmega), swerveSubsystem.getGyroRotation()));
   }
 
+  public void abetterway(){
+
+  }
+
   public void stupidway() {
     Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
 

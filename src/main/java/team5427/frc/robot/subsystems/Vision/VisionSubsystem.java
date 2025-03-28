@@ -29,7 +29,6 @@ import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
-import team5427.frc.robot.subsystems.Vision.io.VisionIOQuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -264,14 +263,6 @@ public class VisionSubsystem extends SubsystemBase {
 
   public boolean isQuestConnected() {
     return inputsAutoLogged[inputsAutoLogged.length - 1].connected;
-  }
-
-  public void resetPoseQuest(Pose3d pose) {
-    ((VisionIOQuestNav) this.io[io.length - 1]).resetPose(pose.toPose2d());
-  }
-
-  public void resetPoseQuest(Pose2d pose) {
-    ((VisionIOQuestNav) this.io[io.length - 1]).resetPose(pose);
   }
 
   @FunctionalInterface
