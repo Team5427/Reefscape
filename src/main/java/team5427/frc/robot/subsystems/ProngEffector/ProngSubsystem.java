@@ -15,6 +15,7 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.SuperStructureEnum.ProngEffectorStates;
 import team5427.frc.robot.subsystems.ProngEffector.io.ProngIO;
 import team5427.frc.robot.subsystems.ProngEffector.io.ProngIOInputsAutoLogged;
+import team5427.frc.robot.subsystems.ProngEffector.io.ProngIOSim;
 import team5427.frc.robot.subsystems.ProngEffector.io.ProngIOTalon;
 
 public class ProngSubsystem extends SubsystemBase {
@@ -61,7 +62,9 @@ public class ProngSubsystem extends SubsystemBase {
       case REAL:
         io = new ProngIOTalon();
         break;
-
+      case SIM:
+        io = new ProngIOSim();
+        break;
       default:
         break;
     }

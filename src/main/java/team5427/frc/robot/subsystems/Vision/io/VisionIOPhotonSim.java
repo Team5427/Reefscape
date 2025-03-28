@@ -3,24 +3,27 @@ package team5427.frc.robot.subsystems.Vision.io;
 import static edu.wpi.first.units.Units.Meter;
 
 import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Supplier;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
-import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import team5427.frc.robot.Constants.VisionConstants;
+import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionIOPhotonSim implements VisionIO {
 
@@ -30,69 +33,65 @@ public class VisionIOPhotonSim implements VisionIO {
 
   private VisionSystemSim visionSystemSim;
 
+  private PhotonPoseEstimator photonPoseEstimator;
   public Matrix<N3, N1> stddev;
+  Supplier<Pose2d> getReferencePose;
+
+  Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
 
   // PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(
   //         AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape),
   // PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
   //         VisionConstants.swerveCamTransform);
 
-  public VisionIOPhotonSim(String cameraName, Transform3d cameraTransform) {
+  public VisionIOPhotonSim(
+      String cameraName,
+      Transform3d cameraTransform,
+      Supplier<Pose2d> getReferencePose,
+      Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData) {
     cam = new PhotonCamera(cameraName);
-    try {
-      sim =
-          new PhotonCameraSim(
-              cam,
-              new SimCameraProperties(
-                  "photon_calibration_5d60e347-e2ab-4265-a457-f89d3c0d9b3c_1280x720.json",
-                  1280,
-                  720),
-              VisionConstants.kAprilTagLayout);
-      sim.setMaxSightRange(VisionConstants.kCameraMaxRange.in(Meter));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    sim = new PhotonCameraSim(cam);
+    sim.setMaxSightRange(VisionConstants.kCameraMaxRange.in(Meter));
     visionSystemSim = new VisionSystemSim("Argo Cam " + cameraName);
     visionSystemSim.addAprilTags(VisionConstants.kAprilTagLayout);
     visionSystemSim.addCamera(sim, cameraTransform);
-    // photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CLOSEST_TO_REFERENCE_POSE);
+    this.getHeadingData = getHeadingData;
+    this.getReferencePose = getReferencePose;
+    this.photonPoseEstimator =
+        new PhotonPoseEstimator(
+            VisionConstants.kAprilTagLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            cameraTransform);
+    photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
   }
 
   @Override
   public void updateInputs(VisionIOInputs inputs) {
-    List<PhotonPipelineResult> results = cam.getAllUnreadResults();
     inputs.connected = cam.isConnected();
-    ArrayList<PoseObservation> obs = new ArrayList<>();
+    List<PhotonPipelineResult> results = cam.getAllUnreadResults();
+    List<PoseObservation> obs = new LinkedList<PoseObservation>();
 
     for (int i = results.size() - 1; i > 0; i--) {
+      // photonPoseEstimator.setReferencePose(getReferencePose.get());
+      photonPoseEstimator.addHeadingData(getHeadingData.get().r, getHeadingData.get().t);
 
       if (results.get(i).multitagResult.isPresent()) {
-
-        Pose3d pose =
-            new Pose3d(
-                results.get(i).getMultiTagResult().get().estimatedPose.best.getTranslation(),
-                results.get(i).getMultiTagResult().get().estimatedPose.best.getRotation());
-        List<VisionTargetSim> visionTargetSims = new ArrayList<>();
+        Optional<EstimatedRobotPose> estimatedPose = photonPoseEstimator.update(results.get(i));
         double totalTagDistance = 0.0;
-        for (PhotonTrackedTarget target : results.get(i).targets) {
-          totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
-        }
-        visionSystemSim.update(pose);
-        // sim.process(results.get(i).metadata.getLatencyMillis(), pose, new VisionTar);
-
         Set<Short> tagIdSet = new HashSet<>();
         for (PhotonTrackedTarget target : results.get(i).targets) {
+          totalTagDistance += target.bestCameraToTarget.getTranslation().getNorm();
           tagIdSet.add((short) target.fiducialId);
         }
         inputs.tagIds = new int[tagIdSet.size()];
         for (int j = 0; j < tagIdSet.size(); j++) {
-          inputs.tagIds[j] = (Integer) tagIdSet.toArray()[j];
+          inputs.tagIds[j] = (Short) tagIdSet.toArray()[j];
         }
 
         obs.add(
             new PoseObservation(
-                results.get(i).getTimestampSeconds(),
-                pose,
+                estimatedPose.get().timestampSeconds,
+                estimatedPose.get().estimatedPose,
                 results.get(i).multitagResult.get().estimatedPose.ambiguity,
                 results.get(i).multitagResult.get().fiducialIDsUsed.size(),
                 totalTagDistance / results.get(i).targets.size(),
@@ -100,18 +99,22 @@ public class VisionIOPhotonSim implements VisionIO {
                 results.get(i).getBestTarget().getPitch(),
                 PoseObservationType.PHOTONVISION_MULTI_TAG));
         // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-        // inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
+        // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
       } else {
+        Optional<EstimatedRobotPose> pose = photonPoseEstimator.update(results.get(i));
+        // photonPoseEstimator.addHeadingData(Timer.getTimestamp(),
+        // SwerveSubsystem.getInstance().getGyroRotation());
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
-          Pose3d pose =
-              new Pose3d(
-                  target.bestCameraToTarget.getTranslation(),
-                  target.bestCameraToTarget.getRotation());
+          // Pose3d pose =
+          //     new Pose3d(
+          //             target.bestCameraToTarget.getTranslation(),
+          //             target.bestCameraToTarget.getRotation())
+          //         .transformBy(cameraOffset);
           obs.add(
               new PoseObservation(
-                  results.get(i).getTimestampSeconds(),
-                  pose,
+                  pose.get().timestampSeconds,
+                  pose.get().estimatedPose,
                   target.getPoseAmbiguity(),
                   1,
                   target.bestCameraToTarget.getTranslation().getNorm(),
@@ -119,12 +122,18 @@ public class VisionIOPhotonSim implements VisionIO {
                   results.get(i).getBestTarget().getPitch(),
                   PoseObservationType.PHOTONVISION_SINGLE_TAG));
           // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-          // inputs.timestamps[inputs.timestamps.length] = results.get(i).getTimestampSeconds();
+          // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
         }
       }
-      List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);
-      temp.addAll(obs);
-      inputs.poseObservations = (PoseObservation[]) temp.toArray();
+      // List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);
+      // temp = new LinkedList<PoseObservation>(temp);
+      // temp.addAll(obs);
+
+      inputs.poseObservations = new PoseObservation[obs.size()];
+
+      for (int b = 0; b <= obs.size() - 1; b++) {
+        inputs.poseObservations[b] = obs.get(b);
+      }
     }
   }
 

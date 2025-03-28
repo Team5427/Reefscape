@@ -5,6 +5,20 @@
  "variables":{
   "expressions":{},
   "poses":{
+   "CenterStartPose":{
+    "x":{
+     "exp":"7.62 m",
+     "val":7.62
+    },
+    "y":{
+     "exp":"4 m",
+     "val":4.0
+    },
+    "heading":{
+     "exp":"180 deg",
+     "val":3.141592653589793
+    }
+   },
    "CoralIntakeLeftSide":{
     "x":{
      "exp":"1.36 m",
@@ -17,6 +31,20 @@
     "heading":{
      "exp":"127.5 deg + 180 deg",
      "val":5.366887449882563
+    }
+   },
+   "HCoralScore":{
+    "x":{
+     "exp":"5.8 m",
+     "val":5.8
+    },
+    "y":{
+     "exp":"4.2 m",
+     "val":4.2
+    },
+    "heading":{
+     "exp":"180 deg",
+     "val":3.141592653589793
     }
    },
    "JCoralScore":{
@@ -99,8 +127,8 @@
    }
   },
   "mass":{
-   "exp":"115 lbs",
-   "val":52.16312255
+   "exp":"125 lbs",
+   "val":56.69904625
   },
   "inertia":{
    "exp":"(5.49435460267 + 1) kg m ^ 2",
@@ -115,12 +143,12 @@
    "val":0.04927599999999999
   },
   "vmax":{
-   "exp":"5800 * 0.9 RPM",
-   "val":546.637121724624
+   "exp":"5800 * 0.8 RPM",
+   "val":485.8996637552213
   },
   "tmax":{
-   "exp":"1.2 * 0.9 N * m",
-   "val":1.08
+   "exp":"1.2 * 0.7 N * m",
+   "val":0.84
   },
   "cof":{
    "exp":"1.542 * 0.7",

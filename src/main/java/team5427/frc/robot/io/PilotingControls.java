@@ -6,10 +6,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
+import team5427.frc.robot.commands.chassis.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class PilotingControls {
@@ -54,8 +56,7 @@ public class PilotingControls {
         .onTrue(
             AutoBuilder.resetOdom(new Pose2d(5.76, 4.022, Rotation2d.kZero)).ignoringDisable(true));
 
-    SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement)
-        .setDefaultCommand(new ChassisMovement(joy));
+    SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
     // joy.leftBumper()
     //     .onTrue(
@@ -70,7 +71,7 @@ public class PilotingControls {
     //             }));
 
     joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
-    joy.a().whileTrue(SwerveSubsystem.getInstance().getTargetPath());
+    joy.a().whileTrue(new MoveChassisToPose());
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(

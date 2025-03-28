@@ -14,6 +14,7 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.ClimbConstants;
 import team5427.frc.robot.subsystems.Climb.io.ClimbIO;
 import team5427.frc.robot.subsystems.Climb.io.ClimbIOInputsAutoLogged;
+import team5427.frc.robot.subsystems.Climb.io.ClimbIOSim;
 import team5427.frc.robot.subsystems.Climb.io.ClimbIOTalon;
 
 public class ClimberSubsystem extends SubsystemBase {
@@ -49,6 +50,9 @@ public class ClimberSubsystem extends SubsystemBase {
     switch (Constants.currentMode) {
       case REAL:
         io = new ClimbIOTalon();
+        break;
+      case SIM:
+        io = new ClimbIOSim();
         break;
       default:
         break;

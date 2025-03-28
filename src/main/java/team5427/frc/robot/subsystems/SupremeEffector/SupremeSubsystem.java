@@ -48,7 +48,8 @@ public class SupremeSubsystem extends SubsystemBase {
     }
     inputsAutoLogged = new SupremeIOInputsAutoLogged();
 
-    pivotSetpoint = SupremeEffectorConstants.kAlgaeStowPosition;
+    // pivotSetpoint = SupremeEffectorConstants.kAlgaeStowPosition;
+    pivotSetpoint = SupremeEffectorConstants.kCoralFloorIntakePosition;
   }
 
   @Override

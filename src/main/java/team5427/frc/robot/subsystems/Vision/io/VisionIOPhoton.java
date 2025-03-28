@@ -27,13 +27,13 @@ public class VisionIOPhoton implements VisionIO {
 
   public Matrix<N3, N1> stddev;
 
-  PhotonPoseEstimator photonPoseEstimator;
+  private PhotonPoseEstimator photonPoseEstimator;
 
-  Transform3d cameraOffset;
+  private Transform3d cameraOffset;
 
-  Supplier<Pose2d> getReferencePose;
+  private Supplier<Pose2d> getReferencePose;
 
-  Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
+  private Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
 
   public VisionIOPhoton(
       String cameraName,

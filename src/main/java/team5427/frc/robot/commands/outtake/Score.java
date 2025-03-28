@@ -33,11 +33,6 @@ public class Score extends Command {
 
   @Override
   public boolean isFinished() {
-    // this commented code below is a bandaid, will be changing PID values in the future to not need
-    // this
-    // if(RobotState.isAutonomous()){
-    //   return cascadeSubsystem.cascadeAtGoal(CascadeConstants.kCascadeToleranceAutonomous);
-    // }
     return cascadeSubsystem.cascadeAtGoal();
   }
 

@@ -47,6 +47,19 @@ public class RawScoringConfiguration {
   }
 
   public RawScoringConfiguration(
+      Rotation2d cascadeAngle,
+      Distance cascadeHeight,
+      Rotation2d wristAngle,
+      LinearVelocity coralRollerVelocity) {
+    this.cascadeAngle = cascadeAngle;
+    this.cascadeHeight = cascadeHeight;
+    this.wristAngle = wristAngle;
+    this.scoringPose = Map.of();
+    this.kCoralRollerVelocity = coralRollerVelocity;
+    this.kAlgaeRollerVelocity = MetersPerSecond.of(0.0);
+  }
+
+  public RawScoringConfiguration(
       Rotation2d cascadeAngle, Distance cascadeHeight, Rotation2d wristAngle) {
     this.cascadeAngle = cascadeAngle;
     this.cascadeHeight = cascadeHeight;

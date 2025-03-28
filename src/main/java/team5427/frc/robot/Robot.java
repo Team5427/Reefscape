@@ -12,10 +12,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
-import team5427.frc.robot.subsystems.Climb.ClimberSubsystem;
 // import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.lib.drivers.SteelTalonsLogger;
 
 // import frc.robot.BuildConstants;
@@ -29,7 +26,6 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
-
 
   // private SteelTalonFX talon0;
   // private SteelTalonFX talonSteer0;

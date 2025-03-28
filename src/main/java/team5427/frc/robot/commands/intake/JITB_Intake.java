@@ -36,7 +36,8 @@ public class JITB_Intake extends Command {
 
   @Override
   public boolean isFinished() {
-    return jitbIntake.isAlgaeIntaked() || jitbIntake.isCoralIntaked();
+    // return jitbIntake.isAlgaeIntaked() || jitbIntake.isCoralIntaked();
+    return false;
   }
 
   @Override

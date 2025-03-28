@@ -105,28 +105,49 @@ public class RobotContainer {
     // new InstantCommand(() -> {
 
     // });
-    Pathfinding.setPathfinder(new LocalADStarAK());
-    PathPlannerLogging.setLogActivePathCallback(
-        (activePath) -> {
-          Logger.recordOutput(
-              "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-        });
-    PathPlannerLogging.setLogTargetPoseCallback(
-        (targetPose) -> {
-          Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
-        });
-    SmartDashboard.putBoolean("Should Flip Paths To Right", false);
-    autoChooser =
-        AutoBuilder.buildAutoChooserWithOptionsModifier(
-            autoStream ->
-                autoStream.map(
-                    auto -> {
-                      auto =
-                          new PathPlannerAuto(
-                              auto.getName(),
-                              SmartDashboard.getBoolean("Should Flip Paths To Right", false));
-                      return auto;
-                    }));
+
+    // Pathfinding.setPathfinder(new LocalADStarAK());
+    // PathPlannerLogging.setLogActivePathCallback(
+    //     (activePath) -> {
+    //       Logger.recordOutput(
+    //           "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+    //     });
+    // PathPlannerLogging.setLogTargetPoseCallback(
+    //     (targetPose) -> {
+    //       Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
+    //     });
+    //     SendableChooser<Boolean> chooser = new SendableChooser<>();
+    //     chooser.setDefaultOption("Not Flipped", false);
+    //     chooser.addOption("Flipped", true);
+    //     SmartDashboard.putData(chooser);
+    //     chooser.onChange((Boolean flip) -> {
+    //       autoChooser =
+    //     AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //         autoStream ->
+    //             autoStream.map(
+    //                 auto -> {
+    //                   auto =
+    //                       new PathPlannerAuto(
+    //                           auto.getName(),
+    //                           flip);
+    //                           System.out.println(auto.getName());
+    //                   return auto;
+    //                 }));
+    //                 SmartDashboard.putData("Auto Chooser", autoChooser);});
+    // autoChooser =
+    //     AutoBuilder.buildAutoChooserWithOptionsModifier(
+    //         autoStream ->
+    //             autoStream.map(
+    //                 auto -> {
+    //                   auto =
+    //                       new PathPlannerAuto(
+    //                           auto.getName(),
+    //                           chooser.getSelected());
+    //                           System.out.println(auto.getName());
+    //                   return auto;
+    //                 }));
+    autoChooser();
+
     // autoChooser.addOption(
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
@@ -181,5 +202,45 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     return autoChooser.getSelected();
+  }
+
+  public void autoChooser() {
+    Pathfinding.setPathfinder(new LocalADStarAK());
+    PathPlannerLogging.setLogActivePathCallback(
+        (activePath) -> {
+          Logger.recordOutput(
+              "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+        });
+    PathPlannerLogging.setLogTargetPoseCallback(
+        (targetPose) -> {
+          Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
+        });
+
+    SendableChooser<Boolean> chooser = new SendableChooser<>();
+    chooser.setDefaultOption("Not Flipped", false);
+    chooser.addOption("Flipped", true);
+
+    SmartDashboard.putData(chooser);
+    chooser.onChange(
+        (Boolean flip) -> {
+          autoChooser =
+              AutoBuilder.buildAutoChooserWithOptionsModifier(
+                  autoStream ->
+                      autoStream.map(
+                          auto -> {
+                            auto = new PathPlannerAuto(auto.getName(), flip);
+                            return auto;
+                          }));
+          SmartDashboard.putData("Auto Chooser", autoChooser);
+        });
+
+    autoChooser =
+        AutoBuilder.buildAutoChooserWithOptionsModifier(
+            autoStream ->
+                autoStream.map(
+                    auto -> {
+                      auto = new PathPlannerAuto(auto.getName(), chooser.getSelected());
+                      return auto;
+                    }));
   }
 }

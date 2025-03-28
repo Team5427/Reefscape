@@ -69,6 +69,8 @@ public class SupremeIOTalon implements SupremeIO {
     pivotMotor = new SteelTalonFX(SupremeEffectorConstants.kPivotMotorId);
     pivotMotor.apply(SupremeEffectorConstants.kPivotMotorConfiguration);
     pivotMotor.useTorqueCurrentFOC(true);
+    pivotMotor.talonConfig.ClosedLoopGeneral.ContinuousWrap = false;
+    pivotMotor.getTalonFX().getConfigurator().apply(pivotMotor.talonConfig);
     pivotMotorAngularAcceleration = pivotMotor.getTalonFX().getAcceleration();
     pivotMotorAngularVelocity = pivotMotor.getTalonFX().getVelocity();
     pivotMotorCurrent = pivotMotor.getTalonFX().getStatorCurrent();

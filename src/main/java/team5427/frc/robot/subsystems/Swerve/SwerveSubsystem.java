@@ -1,17 +1,6 @@
 package team5427.frc.robot.subsystems.Swerve;
 
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecond;
-import static edu.wpi.first.units.Units.RotationsPerSecondPerSecond;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.path.GoalEndState;
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
-
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,22 +9,18 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.Mode;
-import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
-import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -101,13 +86,13 @@ public class SwerveSubsystem extends SubsystemBase {
     switch (Constants.currentMode) {
       case SIM:
       case REPLAY:
-        gyroIO = new GyroIOSim();
+        // gyroIO = new GyroIOSim();
         break;
       case REAL:
         gyroIO = new GyroIOPigeon();
         break;
       default:
-        gyroIO = new GyroIOSim();
+        // gyroIO = new GyroIOSim();
         break;
     }
     gyroInputsAutoLogged = new GyroIOInputsAutoLogged();
@@ -174,47 +159,31 @@ public class SwerveSubsystem extends SubsystemBase {
     return fieldRelativeSpeeds;
   }
 
-  public ChassisSpeeds getDriveSpeeds(Pose2d targetPose) {
-
-    Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
-    double calculatedX = SwerveConstants.kTranslationXPIDController.calculate(robotPose.getX(), targetPose.getX());
-    double calculatedY = SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
-    double calculatedOmega = SwerveConstants.kRotationPIDController.calculate(robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
-
-    ChassisSpeeds rawSpeeds = new ChassisSpeeds(
-      calculatedX, calculatedY, calculatedOmega
-    );
-
-    ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
-
-    return fieldRelativeSpeeds;
-  }
-
-  public Command getTargetPath() {
-    PathPlannerPath targetPath =
-        new PathPlannerPath(
-            PathPlannerPath.waypointsFromPoses(
-                List.of(
-                    RobotState.getInstance().getAdaptivePose(),
-                    RobotState.getInstance()
-                        .getAdaptivePose()
-                        .nearest(List.of(RobotConfigConstants.kReefPoses)))),
-            new PathConstraints(
-                MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25),
-                MetersPerSecondPerSecond.of(
-                    SwerveConstants.kDriveMotorConfiguration.maxAcceleration),
-                RotationsPerSecond.of(Math.PI * 0.25),
-                RotationsPerSecondPerSecond.of(Math.PI)),
-            null,
-            new GoalEndState(
-                0.0,
-                RobotState.getInstance()
-                    .getAdaptivePose()
-                    .nearest(List.of(RobotConfigConstants.kReefPoses))
-                    .getRotation()));
-    targetPath.preventFlipping = true;
-    return AutoBuilder.followPath(targetPath);
-  }
+  // public Command getTargetPath() {
+  //   PathPlannerPath targetPath =
+  //       new PathPlannerPath(
+  //           PathPlannerPath.waypointsFromPoses(
+  //               List.of(
+  //                   pose,
+  //                   RobotState.getInstance()
+  //                       .getAdaptivePose()
+  //                       .nearest(List.of(RobotConfigConstants.kReefPoses)))),
+  //           new PathConstraints(
+  //               MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25),
+  //               MetersPerSecondPerSecond.of(
+  //                   SwerveConstants.kDriveMotorConfiguration.maxAcceleration),
+  //               RotationsPerSecond.of(Math.PI * 0.25),
+  //               RotationsPerSecondPerSecond.of(Math.PI)),
+  //           null,
+  //           new GoalEndState(
+  //               0.0,
+  //               RobotState.getInstance()
+  //                   .getAdaptivePose()
+  //                   .nearest(List.of(RobotConfigConstants.kReefPoses))
+  //                   .getRotation()));
+  //   targetPath.preventFlipping = true;
+  //   return targetPath;
+  // }
 
   public Rotation2d getGyroRotation() {
     return gyroInputsAutoLogged.yawPosition.unaryMinus();
@@ -251,6 +220,8 @@ public class SwerveSubsystem extends SubsystemBase {
       if (driveFeedforwards != null) {
         swerveModules[i].setModuleState(
             targetModuleStates[i], driveFeedforwards); // Set new target module state
+      } else {
+        swerveModules[i].setModuleState(targetModuleStates[i]);
       }
       actualModuleStates[i] = swerveModules[i].getModuleState(); // Read actual module state
       swerveModules[i].periodic(); // Update Module Inputs
@@ -274,7 +245,7 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       Rotation2d newGyroInput = Rotation2d.kZero;
-      if (gyroInputsAutoLogged.connected) {
+      if (gyroInputsAutoLogged.connected && gyroIO != null) {
         newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].unaryMinus();
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
