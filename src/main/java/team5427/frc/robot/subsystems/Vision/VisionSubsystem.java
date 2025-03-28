@@ -101,11 +101,16 @@ public class VisionSubsystem extends SubsystemBase {
       case SIM:
         io[0] =
             new VisionIOPhotonSim(
-                VisionConstants.kSwerveCamName, VisionConstants.kSwerveCamTransform, referencePoseSupplier,
+                VisionConstants.kSwerveCamName,
+                VisionConstants.kSwerveCamTransform,
+                referencePoseSupplier,
                 referenceHeadingSupplier);
-        io[1] = new VisionIOPhoton(VisionConstants.kIntakeCamName,
-        VisionConstants.kIntakeCamTransform, referencePoseSupplier,
-        referenceHeadingSupplier);
+        io[1] =
+            new VisionIOPhoton(
+                VisionConstants.kIntakeCamName,
+                VisionConstants.kIntakeCamTransform,
+                referencePoseSupplier,
+                referenceHeadingSupplier);
         for (int i = 0; i < inputsAutoLogged.length; i++) {
           inputsAutoLogged[i] = new VisionIOInputsAutoLogged();
         }

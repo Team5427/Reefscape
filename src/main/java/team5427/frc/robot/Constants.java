@@ -158,28 +158,56 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
-    public static final double kRotationalKp = 2.8127;
+    public static final double kRotationalKp = 1.8127;
     public static final double kTranslationalKp = 4.17;
+
+    public static final double kAutoAlignTranslationKp = 0.3;
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
             kRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 15 * Math.PI));
 
+    static {
+      kRotationPIDController.setTolerance(Units.degreesToRadians(2));
+      kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
+    }
+
     public static ProfiledPIDController kTranslationXPIDController =
         new ProfiledPIDController(
-            kTranslationalKp,
+            kAutoAlignTranslationKp,
             0.0,
             0.0,
             new Constraints(
-                kDriveMotorConfiguration.maxVelocity * 0.5, kDriveMotorConfiguration.maxVelocity));
+                kDriveMotorConfiguration.maxVelocity * 0.05,
+                kDriveMotorConfiguration.maxAcceleration),
+            Constants.kLoopSpeed);
+
+    static {
+      kTranslationXPIDController.setTolerance(0.05);
+    }
 
     public static ProfiledPIDController kTranslationYPIDController =
         new ProfiledPIDController(
-            kTranslationalKp,
+            kAutoAlignTranslationKp,
             0.0,
             0.0,
             new Constraints(
-                kDriveMotorConfiguration.maxVelocity * 0.5, kDriveMotorConfiguration.maxVelocity));
+                kDriveMotorConfiguration.maxVelocity * 0.05,
+                kDriveMotorConfiguration.maxAcceleration));
+
+    public static ProfiledPIDController kTranslationPIDController =
+        new ProfiledPIDController(
+            1.0,
+            0.0,
+            0.0,
+            new Constraints(
+                kDriveMotorConfiguration.maxVelocity * Math.PI,
+                kDriveMotorConfiguration.maxAcceleration),
+            Constants.kLoopSpeed);
+
+    static {
+      kTranslationPIDController.setTolerance(0.05);
+    }
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -571,7 +599,7 @@ public final class Constants {
       kWristConfiguration.gearRatio =
           new ComplexGearRatio((14.0 / 70.0), (18.0 / 72.0), (17.0 / 18.0));
       kWristConfiguration.idleState = IdleState.kBrake;
-      kWristConfiguration.isInverted = true;
+      kWristConfiguration.isInverted = false;
       kWristConfiguration.mode = MotorMode.kServo;
       kWristConfiguration.withFOC = true;
 
@@ -579,7 +607,7 @@ public final class Constants {
           kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
-      kWristConfiguration.kP = 6.0;
+      kWristConfiguration.kP = 5.0;
 
       kWristConfiguration.altA = kWristConfiguration.maxAcceleration / 2.0;
       kWristConfiguration.altV = kWristConfiguration.maxVelocity;
@@ -787,9 +815,9 @@ public final class Constants {
     public static final Debouncer kAlgaeIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
     public static final Debouncer kCoralIntakeDebouncer = new Debouncer(0.02, DebounceType.kBoth);
 
-    public static final CANDeviceId kPivotMotorId = new CANDeviceId(24);
-    public static final CANDeviceId kCoralMotorId = new CANDeviceId(22);
-    public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(23);
+    public static final CANDeviceId kPivotMotorId = new CANDeviceId(48); // 24
+    public static final CANDeviceId kCoralMotorId = new CANDeviceId(49); // 22
+    public static final CANDeviceId kAlgaeMotorId = new CANDeviceId(50); // 23
 
     public static final CANDeviceId kCanRangeId = new CANDeviceId(27);
     public static final Distance kCanRangeDetectionDistance = Inches.of(1.0);

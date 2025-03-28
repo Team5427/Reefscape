@@ -4,31 +4,22 @@ import static edu.wpi.first.units.Units.Meter;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
-
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.simulation.PhotonCameraSim;
-import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionSystemSim;
-import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import team5427.frc.robot.Constants.VisionConstants;
@@ -42,30 +33,35 @@ public class VisionIOPhotonSim implements VisionIO {
 
   private VisionSystemSim visionSystemSim;
 
-  private   PhotonPoseEstimator photonPoseEstimator;
+  private PhotonPoseEstimator photonPoseEstimator;
   public Matrix<N3, N1> stddev;
   Supplier<Pose2d> getReferencePose;
 
-    Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
+  Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData;
 
   // PhotonPoseEstimator photonPoseEstimator = new PhotonPoseEstimator(
   //         AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape),
   // PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
   //         VisionConstants.swerveCamTransform);
 
-  public VisionIOPhotonSim(String cameraName, Transform3d cameraTransform, Supplier<Pose2d> getReferencePose,
+  public VisionIOPhotonSim(
+      String cameraName,
+      Transform3d cameraTransform,
+      Supplier<Pose2d> getReferencePose,
       Supplier<Tuple2Plus<Double, Rotation2d>> getHeadingData) {
     cam = new PhotonCamera(cameraName);
-      sim =
-          new PhotonCameraSim(
-              cam);
-      sim.setMaxSightRange(VisionConstants.kCameraMaxRange.in(Meter));
+    sim = new PhotonCameraSim(cam);
+    sim.setMaxSightRange(VisionConstants.kCameraMaxRange.in(Meter));
     visionSystemSim = new VisionSystemSim("Argo Cam " + cameraName);
     visionSystemSim.addAprilTags(VisionConstants.kAprilTagLayout);
     visionSystemSim.addCamera(sim, cameraTransform);
     this.getHeadingData = getHeadingData;
     this.getReferencePose = getReferencePose;
-    this.photonPoseEstimator = new PhotonPoseEstimator(VisionConstants.kAprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, cameraTransform);
+    this.photonPoseEstimator =
+        new PhotonPoseEstimator(
+            VisionConstants.kAprilTagLayout,
+            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+            cameraTransform);
     photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
   }
 

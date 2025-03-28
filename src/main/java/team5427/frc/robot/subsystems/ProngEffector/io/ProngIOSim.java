@@ -1,18 +1,10 @@
 package team5427.frc.robot.subsystems.ProngEffector.io;
 
-import static edu.wpi.first.units.Units.Amps;
-import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Rotation;
-import static edu.wpi.first.units.Units.Volts;
-
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import team5427.frc.robot.Constants;
-import team5427.frc.robot.Constants.EndEffectorConstants;
 import team5427.frc.robot.Constants.ProngEffectorConstants;
 
 public class ProngIOSim implements ProngIO {
@@ -38,8 +30,7 @@ public class ProngIOSim implements ProngIO {
                     ? DCMotor.getKrakenX60Foc(1)
                     : DCMotor.getKrakenX60(1),
                 pivotMotorInertia,
-
-ProngEffectorConstants.kWristConfiguration.gearRatio.getMathematicalGearRatio()),
+                ProngEffectorConstants.kWristConfiguration.gearRatio.getMathematicalGearRatio()),
             ProngEffectorConstants.kWristConfiguration.withFOC
                 ? DCMotor.getKrakenX60Foc(1)
                 : DCMotor.getKrakenX60(1));
@@ -51,41 +42,40 @@ ProngEffectorConstants.kWristConfiguration.gearRatio.getMathematicalGearRatio())
                     ? DCMotor.getKrakenX60Foc(1)
                     : DCMotor.getKrakenX60(1),
                 coralRollerMotorInertia,
-                ProngEffectorConstants.kRollerConfiguration.gearRatio
-                    .getMathematicalGearRatio()),
-                    ProngEffectorConstants.kRollerConfiguration.withFOC
+                ProngEffectorConstants.kRollerConfiguration.gearRatio.getMathematicalGearRatio()),
+            ProngEffectorConstants.kRollerConfiguration.withFOC
                 ? DCMotor.getKrakenX60Foc(1)
                 : DCMotor.getKrakenX60(1));
   }
 
-@Override
-public void updateInputs(ProngIOInputs inputs) {
+  @Override
+  public void updateInputs(ProngIOInputs inputs) {
     // TODO Auto-generated method stub
     // throw new UnsupportedOperationException("Unimplemented method 'updateInputs'");
-}
+  }
 
-@Override
-public void setWristSetpoint(Rotation2d setpoint) {
+  @Override
+  public void setWristSetpoint(Rotation2d setpoint) {
     // TODO Auto-generated method stub
     // throw new UnsupportedOperationException("Unimplemented method 'setWristSetpoint'");
-}
+  }
 
-@Override
-public void setRollerSpeeds(LinearVelocity velocity) {
+  @Override
+  public void setRollerSpeeds(LinearVelocity velocity) {
     // TODO Auto-generated method stub
     // throw new UnsupportedOperationException("Unimplemented method 'setRollerSpeeds'");
-}
+  }
 
-@Override
-public void stopRollers() {
+  @Override
+  public void stopRollers() {
     // TODO Auto-generated method stub
     // throw new UnsupportedOperationException("Unimplemented method 'stopRollers'");
-}
+  }
 
-@Override
-public boolean hasResistance() {
+  @Override
+  public boolean hasResistance() {
     // TODO Auto-generated method stub
     // throw new UnsupportedOperationException("Unimplemented method 'hasResistance'");
     return false;
-}
+  }
 }

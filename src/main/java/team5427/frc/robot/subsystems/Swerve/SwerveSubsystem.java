@@ -1,7 +1,6 @@
 package team5427.frc.robot.subsystems.Swerve;
 
 import com.pathplanner.lib.util.DriveFeedforwards;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -22,7 +21,6 @@ import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
-import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -159,26 +157,6 @@ public class SwerveSubsystem extends SubsystemBase {
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
 
     return fieldRelativeSpeeds;
-  }
-
-  public ChassisSpeeds getDriveSpeeds(Pose2d targetPose) {
-
-    Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
-    double calculatedX =
-        SwerveConstants.kTranslationXPIDController.calculate(robotPose.getX(), targetPose.getX());
-    double calculatedY =
-        SwerveConstants.kTranslationYPIDController.calculate(robotPose.getY(), targetPose.getY());
-    double calculatedOmega =
-        SwerveConstants.kRotationPIDController.calculate(
-            robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
-
-    ChassisSpeeds rawSpeeds = new ChassisSpeeds(calculatedX, calculatedY, calculatedOmega);
-    Logger.recordOutput("Targeting Pose", targetPose);
-
-    // ChassisSpeeds fieldRelativeSpeeds = ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
-    // getGyroRotation());
-
-    return rawSpeeds;
   }
 
   // public Command getTargetPath() {
