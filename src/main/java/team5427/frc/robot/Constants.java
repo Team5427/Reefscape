@@ -172,42 +172,32 @@ public final class Constants {
       kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
-    public static ProfiledPIDController kTranslationXPIDController =
-        new ProfiledPIDController(
+    public static PIDController kTranslationXPIDController =
+        new PIDController(
             kAutoAlignTranslationKp,
             0.0,
+            0.0);
+
+    public static PIDController kTranslationYPIDController =
+        new PIDController(
+            kAutoAlignTranslationKp,
             0.0,
-            new Constraints(
-                kDriveMotorConfiguration.maxVelocity * 0.05,
-                kDriveMotorConfiguration.maxAcceleration),
-            Constants.kLoopSpeed);
+            0.0);
 
     static {
-      kTranslationXPIDController.setTolerance(0.05);
+      kTranslationXPIDController.setTolerance(Units.inchesToMeters(.5));
+      kTranslationXPIDController.setTolerance(Units.inchesToMeters(.5));
     }
-
-    public static ProfiledPIDController kTranslationYPIDController =
-        new ProfiledPIDController(
-            kAutoAlignTranslationKp,
-            0.0,
-            0.0,
-            new Constraints(
-                kDriveMotorConfiguration.maxVelocity * 0.05,
-                kDriveMotorConfiguration.maxAcceleration));
 
     public static ProfiledPIDController kTranslationPIDController =
         new ProfiledPIDController(
-            1.0,
+            kAutoAlignTranslationKp,
             0.0,
             0.0,
             new Constraints(
-                kDriveMotorConfiguration.maxVelocity * Math.PI,
+                kDriveMotorConfiguration.maxVelocity, //  * Math.PI,
                 kDriveMotorConfiguration.maxAcceleration),
             Constants.kLoopSpeed);
-
-    static {
-      kTranslationPIDController.setTolerance(0.05);
-    }
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -618,7 +608,7 @@ public final class Constants {
     static {
       kRollerConfiguration.gearRatio = new ComplexGearRatio(24.0 / 36.0);
       kRollerConfiguration.idleState = IdleState.kCoast;
-      kRollerConfiguration.isInverted = false;
+      kRollerConfiguration.isInverted = true;
       kRollerConfiguration.mode = MotorMode.kFlywheel;
       kRollerConfiguration.withFOC = true;
       kRollerConfiguration.finalDiameterMeters = Units.inchesToMeters(4.0);
@@ -635,7 +625,7 @@ public final class Constants {
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(210.0);
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(152.0); //200.0
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(45.0);
 
     public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(210.0);

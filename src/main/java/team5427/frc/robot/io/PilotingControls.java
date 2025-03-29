@@ -71,7 +71,8 @@ public class PilotingControls {
     //             }));
 
     joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
-    joy.a().whileTrue(new MoveChassisToPose());
+    joy.a().whileTrue(new MoveChassisToPose(true));
+    joy.b().whileTrue(new MoveChassisToPose(false));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(

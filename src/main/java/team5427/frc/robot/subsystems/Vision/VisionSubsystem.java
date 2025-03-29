@@ -186,16 +186,16 @@ public class VisionSubsystem extends SubsystemBase {
                 || observation.pose().getX() < 0.0
                 || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
-                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth()
+                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
                 // Must not be an impossible pose to acheive based on max drivetrain speeds
-                || observation
-                        .pose()
-                        .toPose2d()
-                        .relativeTo(RobotState.getInstance().getAdaptivePose())
-                        .getTranslation()
-                        .getNorm()
-                    > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-                        * (Timer.getTimestamp() - observation.timestamp());
+                // || observation
+                //         .pose()
+                //         .toPose2d()
+                //         .relativeTo(RobotState.getInstance().getAdaptivePose())
+                //         .getTranslation()
+                //         .getNorm()
+                //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+                //         * (Timer.getTimestamp() - observation.timestamp());
 
         // Add pose to log
 

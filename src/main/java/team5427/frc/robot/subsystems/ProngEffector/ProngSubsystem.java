@@ -69,7 +69,7 @@ public class ProngSubsystem extends SubsystemBase {
         break;
     }
     rollerVelocity = MetersPerSecond.of(-0.5);
-    wristSetpoint = Rotation2d.kZero;
+    wristSetpoint = Rotation2d.fromDegrees(0.0);
     state = ProngEffectorStates.IDLE;
   }
 

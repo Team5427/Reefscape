@@ -1,6 +1,15 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.config.PIDConstants;
+import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.GoalEndState;
+import com.pathplanner.lib.path.PathConstraints;
+import com.pathplanner.lib.path.PathPlannerPath;
+import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.DriveFeedforwards;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -9,7 +18,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import lombok.Getter;
@@ -159,31 +172,37 @@ public class SwerveSubsystem extends SubsystemBase {
     return fieldRelativeSpeeds;
   }
 
-  // public Command getTargetPath() {
-  //   PathPlannerPath targetPath =
-  //       new PathPlannerPath(
-  //           PathPlannerPath.waypointsFromPoses(
-  //               List.of(
-  //                   pose,
-  //                   RobotState.getInstance()
-  //                       .getAdaptivePose()
-  //                       .nearest(List.of(RobotConfigConstants.kReefPoses)))),
-  //           new PathConstraints(
-  //               MetersPerSecond.of(SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.25),
-  //               MetersPerSecondPerSecond.of(
-  //                   SwerveConstants.kDriveMotorConfiguration.maxAcceleration),
-  //               RotationsPerSecond.of(Math.PI * 0.25),
-  //               RotationsPerSecondPerSecond.of(Math.PI)),
-  //           null,
-  //           new GoalEndState(
-  //               0.0,
-  //               RobotState.getInstance()
-  //                   .getAdaptivePose()
-  //                   .nearest(List.of(RobotConfigConstants.kReefPoses))
-  //                   .getRotation()));
-  //   targetPath.preventFlipping = true;
-  //   return targetPath;
-  // }
+  public Command followPathCommand(Pose2d targetPose) { // UNTESTED
+
+    Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
+    List<Waypoint> desiredWaypoints = PathPlannerPath.waypointsFromPoses(
+      new Pose2d(robotPose.getX(), robotPose.getY(), Rotation2d.kZero),
+      new Pose2d(targetPose.getX(), targetPose.getY(), Rotation2d.kZero)
+    );
+
+    PathPlannerPath generatedPath = new PathPlannerPath(
+      desiredWaypoints, 
+      new PathConstraints(
+        SwerveConstants.kDriveMotorConfiguration.maxVelocity, 
+        SwerveConstants.kDriveMotorConfiguration.maxAcceleration, 
+        2.0 * Math.PI, 
+        2.0 * Math.PI),
+      null, 
+      new GoalEndState(0.0, targetPose.getRotation()));
+
+    return new FollowPathCommand(
+      generatedPath, 
+      RobotState.getInstance()::getAdaptivePose, 
+      this::getChassisSpeeds, 
+      this::setInputSpeeds, 
+      new PPHolonomicDriveController(
+        new PIDConstants(SwerveConstants.kAutoAlignTranslationKp, 0.0, 0.0), 
+        new PIDConstants(SwerveConstants.kRotationalKp, 0.0, 0.0)), 
+      Constants.config, 
+      () -> false, 
+      this
+    );
+  }
 
   public Rotation2d getGyroRotation() {
     return gyroInputsAutoLogged.yawPosition.unaryMinus();
