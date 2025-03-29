@@ -3,6 +3,7 @@ package team5427.frc.robot.commands.chassis;
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,15 +36,17 @@ public class MoveChassisToPose extends Command {
             .getAdaptivePose()
             .nearest(List.of(RobotConfigConstants.kAlignPoses));
 
-    SwerveConstants.kTranslationPIDController.reset(
-      RobotState.getInstance().getAdaptivePose().getTranslation().getDistance(targetPose.getTranslation())
-    );
+    // SwerveConstants.kTranslationPIDController.reset(
+    //   RobotState.getInstance().getAdaptivePose().getTranslation().getDistance(targetPose.getTranslation())
+    // );
 
     driveController = new HolonomicDriveController(
       SwerveConstants.kTranslationXPIDController, 
       SwerveConstants.kTranslationYPIDController, 
       SwerveConstants.kRotationPIDController
     );
+    // driveController.setTolerance(targetPose.plus(new Transform2d(0.05, 0.05, Rotation2d.fromDegrees(1))));
+    driveController.setTolerance(new Pose2d(0.05, 0.05, Rotation2d.fromDegrees(2)));
   }
 
   @Override
