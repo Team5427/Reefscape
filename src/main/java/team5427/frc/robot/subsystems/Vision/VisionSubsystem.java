@@ -143,9 +143,12 @@ public class VisionSubsystem extends SubsystemBase {
     }
     Logger.recordOutput("Quest Connected", QuestNav.getInstance().isConnected());
     if (QuestNav.getInstance().isConnected()) {
+      QuestNav.getInstance().processHeartbeat();
       RobotState.getInstance().addQuestMeasurment(QuestNav.getInstance().getRobotPose());
-      Logger.recordOutput("Quest Battery", QuestNav.getInstance().getBatteryPercent());
-      Logger.recordOutput("Quest Quaternion", QuestNav.getInstance().getQuaternion());
+      Logger.recordOutput("/Quest/PoseTrackingStatus", QuestNav.getInstance().getTrackingStatus());
+      Logger.recordOutput("/Quest/Frames", QuestNav.getInstance().getFrameCount());
+      Logger.recordOutput("/Quest/Battery", QuestNav.getInstance().getBatteryPercent());
+      Logger.recordOutput("/Quest/Quaternion", QuestNav.getInstance().getQuaternion());
     }
 
     // Initialize logging values
