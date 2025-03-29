@@ -161,7 +161,7 @@ public final class Constants {
     public static final double kRotationalKp = 1.3127;
     public static final double kTranslationalKp = 4.0;
 
-    public static final double kAutoAlignTranslationKp = 0.3;
+    public static final double kAutoAlignTranslationKp = 10.0;
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
