@@ -1,5 +1,6 @@
 package team5427.frc.robot.io;
 
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -169,5 +170,12 @@ public class OperatingControls {
     //             () -> {
     //               LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatWhite);
     //             }));
+
+    PilotingControls.rumble.onTrue(new InstantCommand(() -> {
+      joy.setRumble(RumbleType.kBothRumble, 0.1);
+    }));
+    PilotingControls.rumble.onFalse(new InstantCommand(() -> {
+      joy.setRumble(RumbleType.kBothRumble, 0);
+    }));
   }
 }

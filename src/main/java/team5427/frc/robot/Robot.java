@@ -1,6 +1,8 @@
 package team5427.frc.robot;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -12,6 +14,8 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 // import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.lib.drivers.SteelTalonsLogger;
 
@@ -81,6 +85,7 @@ public class Robot extends LoggedRobot {
 
     Logger.start();
     SteelTalonsLogger.logJoystickData();
+    Constants.kAlliance = DriverStation.getAlliance();
     // steerMotor.apply(SwerveConstants.kSteerMotorConfiguration);
     m_robotContainer = new RobotContainer();
 
@@ -120,6 +125,7 @@ public class Robot extends LoggedRobot {
     // the Command-based framework to work.
 
     CommandScheduler.getInstance().run();
+    //  QuestNav.getInstance().processHeartbeat();
     RobotState.getInstance().log();
 
     // Return to normal thread priority
