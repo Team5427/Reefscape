@@ -16,7 +16,7 @@ import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.io.QuestNav;
+import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class RobotState {
@@ -135,7 +135,7 @@ public class RobotState {
     // QuestNav.getInstance().resetPose(resetPose.transformBy(QuestNav.getInstance().getPose().minus(resetPose)));
     // QuestNav.getInstance().setFieldTransform(resetPose);
     // VisionSubsystem.getInstance().resetPoseQuest(resetPose);
-    QuestNav.getInstance().resetPose(resetPose);
+    QuestNav.resetPose(resetPose);
     // QuestNav.getInstance().zeroPosition();
     // QuestNav.getInstance().zeroPosition();
 

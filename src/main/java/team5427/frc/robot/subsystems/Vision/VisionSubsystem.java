@@ -22,13 +22,13 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.RobotState;
-import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
 import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
+import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionSubsystem extends SubsystemBase {

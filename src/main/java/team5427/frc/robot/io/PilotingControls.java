@@ -114,7 +114,7 @@ public class PilotingControls {
                 () -> {
                   SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
                   RobotState.getInstance().resetHeading(Rotation2d.kZero);
-                }));
+                }).ignoringDisable(true));
 
     // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }
