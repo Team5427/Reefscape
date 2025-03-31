@@ -25,7 +25,7 @@ public class EjectGamePiece extends Command {
   }
 
   @Override
-  public void initialize() {
+  public void execute() {
     // ProngSubsystem.task = EETask.EJECTING;
     if (scoringConfiguration.isPresent()) {
       prongSubsystem.setRollerVelocity(scoringConfiguration.get().getKCoralRollerVelocity());

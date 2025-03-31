@@ -3,7 +3,9 @@ package team5427.frc.robot.commands.chassis;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import java.util.List;
@@ -67,6 +69,12 @@ public class LockedChassisMovement extends Command {
       }
 
       swerveSubsystem.setInputSpeeds(driverSpeeds);
+
+      // if (robotPose.getTranslation().getDistance(robotPose.nearest(List.of(RobotConfigConstants.kAlignPoses)).getTranslation()) < Units.inchesToMeters(1.0)) {
+      //   joy.setRumble(RumbleType.kBothRumble, 0.1);
+      // } else {
+      //   joy.setRumble(RumbleType.kBothRumble, 0);
+      // }
     }
   }
 

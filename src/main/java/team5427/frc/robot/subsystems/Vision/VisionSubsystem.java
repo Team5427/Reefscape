@@ -143,7 +143,7 @@ public class VisionSubsystem extends SubsystemBase {
     }
     Logger.recordOutput("Quest Connected", QuestNav.getInstance().isConnected());
     if (QuestNav.getInstance().isConnected()) {
-      QuestNav.getInstance().processHeartbeat();
+     
       RobotState.getInstance().addQuestMeasurment(QuestNav.getInstance().getRobotPose());
       Logger.recordOutput("/Quest/PoseTrackingStatus", QuestNav.getInstance().getTrackingStatus());
       Logger.recordOutput("/Quest/Frames", QuestNav.getInstance().getFrameCount());
@@ -189,18 +189,19 @@ public class VisionSubsystem extends SubsystemBase {
                 || observation.pose().getX() < 0.0
                 || observation.pose().getX() > VisionConstants.kAprilTagLayout.getFieldLength()
                 || observation.pose().getY() < 0.0
-                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth();
+                || observation.pose().getY() > VisionConstants.kAprilTagLayout.getFieldWidth()
                 // Must not be an impossible pose to acheive based on max drivetrain speeds
-                // || observation
-                //         .pose()
-                //         .toPose2d()
-                //         .relativeTo(RobotState.getInstance().getAdaptivePose())
-                //         .getTranslation()
-                //         .getNorm()
-                //     > SwerveConstants.kDriveMotorConfiguration.maxVelocity
-                //         * (Timer.getTimestamp() - observation.timestamp());
+                || observation
+                        .pose()
+                        .toPose2d()
+                        .relativeTo(RobotState.getInstance().getAdaptivePose())
+                        .getTranslation()
+                        .getNorm()
+                    > SwerveConstants.kDriveMotorConfiguration.maxVelocity * 3.5
+                        * (Timer.getTimestamp() - observation.timestamp());
 
         // Add pose to log
+        Logger.recordOutput("Vision Pose " + cameraIndex, observation.pose());
 
         // Skip if rejected
         if (rejectPose) {
@@ -224,7 +225,7 @@ public class VisionSubsystem extends SubsystemBase {
             observation.pose().toPose2d(),
             observation.timestamp(),
             VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
-        Logger.recordOutput("Vision Pose " + cameraIndex, observation.pose());
+       
         latestPoseMeasurement = observation.pose();
       }
 

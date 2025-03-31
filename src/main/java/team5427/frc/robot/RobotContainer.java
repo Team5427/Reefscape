@@ -61,7 +61,7 @@ public class RobotContainer {
     SwerveSubsystem.getInstance(RobotState.getInstance()::addOdometryMeasurement);
     VisionSubsystem.getInstance(
         Optional.of(RobotState.getInstance()::addVisionMeasurement),
-        Optional.of(RobotState.getInstance()::getEstimatedPose),
+        Optional.of(RobotState.getInstance()::getAdaptivePose),
         Optional.of(RobotState.getInstance()::getOdometryHeading));
     createNamedCommands();
 
@@ -73,8 +73,8 @@ public class RobotContainer {
         // starting pose)
         SwerveSubsystem.getInstance()
             ::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        (speeds, feedforwards) ->
-            SwerveSubsystem.getInstance().setInputSpeeds(speeds, feedforwards),
+        (speeds) ->
+            SwerveSubsystem.getInstance().setInputSpeeds(speeds),
         // (speeds) ->
         //     SwerveSubsystem.getInstance()
         //         .setChassisSpeeds(speeds), // Method that will drive the robot given ROBOT

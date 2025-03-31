@@ -86,6 +86,7 @@ public class RobotState {
 
   public void addQuestMeasurment(Pose2d questPose) {
     this.questPose = questPose;
+    poseEstimator.addVisionMeasurement(questPose, 0, VecBuilder.fill(0.0001, 0.0001, 0.1));
   }
 
   public Pose2d getOdometryPose() {
@@ -142,9 +143,9 @@ public class RobotState {
   }
 
   public Pose2d getAdaptivePose() {
-    if (QuestNav.getInstance().isConnected() && this.questPose != null) {
-      return this.questPose;
-    }
+    // if (QuestNav.getInstance().isConnected() && this.questPose != null) {
+    //   return this.questPose;
+    // }
     return getEstimatedPose();
   }
 
