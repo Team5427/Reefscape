@@ -9,8 +9,6 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -162,31 +160,25 @@ public final class Constants {
 
     public static final double kRotationalKp = 1.5927;
 
-    public static final double kAutoAlignRotationalKp = 0.7;
+    public static final double kAutoAlignRotationalKp = 2.0;
     public static final double kTranslationalKp = 5.80;
 
-    public static final double kAutoAlignTranslationKp = 1.0;
+    public static final double kAutoAlignTranslationKp = 5;
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
-            kAutoAlignRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 5 * Math.PI));
+            kAutoAlignRotationalKp, 0.0, 0.1, new Constraints(20 * Math.PI, 10 * Math.PI));
 
     static {
-      kRotationPIDController.setTolerance(Units.degreesToRadians(5));
+      kRotationPIDController.setTolerance(Units.degreesToRadians(1));
       kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
     public static PIDController kTranslationXPIDController =
-        new PIDController(
-            kAutoAlignTranslationKp,
-            0.0,
-            0.0);
+        new PIDController(kAutoAlignTranslationKp, 0.0, 0.1);
 
     public static PIDController kTranslationYPIDController =
-        new PIDController(
-            kAutoAlignTranslationKp,
-            0.0,
-            0.0);
+        new PIDController(kAutoAlignTranslationKp, 0.0, 0.0);
 
     static {
       kTranslationXPIDController.setTolerance(Units.inchesToMeters(.5));
@@ -399,7 +391,6 @@ public final class Constants {
             Units.inchesToMeters(12.487),
             Units.inchesToMeters(5.098),
             new Rotation3d(Rotation2d.kCCW_90deg));
-            
 
     public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
 
@@ -630,7 +621,7 @@ public final class Constants {
     public static final Rotation2d kStowPosition = Rotation2d.fromDegrees(10);
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
-    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(157.0); //200.0
+    public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(157.0); // 200.0
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(45.0);
 
     public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(210.0);

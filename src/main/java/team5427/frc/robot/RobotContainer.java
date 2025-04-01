@@ -25,7 +25,6 @@ import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
-import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -76,8 +75,7 @@ public class RobotContainer {
         // starting pose)
         SwerveSubsystem.getInstance()
             ::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        (speeds) ->
-            SwerveSubsystem.getInstance().setInputSpeeds(speeds),
+        (speeds) -> SwerveSubsystem.getInstance().setInputSpeeds(speeds),
         // (speeds) ->
         //     SwerveSubsystem.getInstance()
         //         .setChassisSpeeds(speeds), // Method that will drive the robot given ROBOT

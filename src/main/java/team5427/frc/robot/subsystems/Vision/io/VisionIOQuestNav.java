@@ -45,7 +45,8 @@
 //       nt4Table
 //           .getIntegerTopic("mosi")
 //           .publish(PubSubOption.keepDuplicates(true), PubSubOption.sendAll(true));
-//   private DoubleArrayPublisher resetPublisher = nt4Table.getDoubleArrayTopic("resetpose").publish();
+//   private DoubleArrayPublisher resetPublisher =
+// nt4Table.getDoubleArrayTopic("resetpose").publish();
 
 //   // Subscribe to the Network Tables questnav data topics
 //   private DoubleSubscriber questTimestamp = nt4Table.getDoubleTopic("timestamp").subscribe(0.0f);
@@ -89,7 +90,8 @@
 //     delay++;
 
 //     inputs.connected = connected();
-//     // inputs.latestTargetObservation = new TargetObservation(new Rotation2d(), new Rotation2d());
+//     // inputs.latestTargetObservation = new TargetObservation(new Rotation2d(), new
+// Rotation2d());
 //     inputs.poseObservations = new PoseObservation[questNavData.length];
 
 //     if (questNavData.length > 0) {

@@ -1,21 +1,15 @@
 package team5427.frc.robot.subsystems.Vision.io.Quest;
 
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import team5427.frc.robot.RobotState;
-import team5427.frc.robot.Constants;
-import team5427.frc.robot.Constants.VisionConstants;
-import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.lib.drivers.VirtualSubsystem;
-
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+import team5427.frc.robot.Constants;
+import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.lib.drivers.VirtualSubsystem;
 
 public class Quest extends VirtualSubsystem {
   private final QuestIO io;
@@ -31,16 +25,16 @@ public class Quest extends VirtualSubsystem {
 
   private static Quest questInstance;
 
-  public static Quest getInstance(){
-    if(questInstance == null){
-        questInstance = new Quest();
+  public static Quest getInstance() {
+    if (questInstance == null) {
+      questInstance = new Quest();
     }
     return questInstance;
   }
 
-  public Quest getInstance(QuestIO io){
-    if(questInstance == null){
-        questInstance = new Quest(io);
+  public Quest getInstance(QuestIO io) {
+    if (questInstance == null) {
+      questInstance = new Quest(io);
     }
     return questInstance;
   }
@@ -68,12 +62,16 @@ public class Quest extends VirtualSubsystem {
 
     // Only enable this when we know we're ready
     if (DriverStation.isEnabled() && Constants.currentMode == Constants.Mode.REAL) {
-    //   RobotState.getInstance().addVisionMeasurment(fieldToRobot, inputs.timestamp, VecBuilder.fill(VisionConstants.kQuestStdDevBaseline, VisionConstants.kQuestStdDevBaseline));
+      //   RobotState.getInstance().addVisionMeasurment(fieldToRobot, inputs.timestamp,
+      // VecBuilder.fill(VisionConstants.kQuestStdDevBaseline,
+      // VisionConstants.kQuestStdDevBaseline));
     }
 
     // Do this always for now just to confirm our transforms are correct.
     // Or, you may want to always track rotation. Do science.
-    RobotState.getInstance().addQuestMeasurment(fieldToRobot);
+    if (inputs.connected) {
+      // RobotState.getInstance().addQuestMeasurment(fieldToRobot);
+    }
   }
 
   /**

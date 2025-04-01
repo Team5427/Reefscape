@@ -1,27 +1,20 @@
 package team5427.frc.robot.io;
 
-import java.util.List;
-
-import org.littletonrobotics.junction.Logger;
-
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.FlippingUtil;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.event.EventLoop;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import java.util.List;
+import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
-import team5427.frc.robot.Constants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
@@ -32,9 +25,18 @@ public class PilotingControls {
 
   private CommandXboxController joy;
 
-  public static final Trigger rumble = new Trigger(
-    () -> RobotState.getInstance().getAdaptivePose().getTranslation().getDistance(RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kAlignPoses)).getTranslation()) < Units.inchesToMeters(1.5 )
-  );
+  public static final Trigger rumble =
+      new Trigger(
+          () ->
+              RobotState.getInstance()
+                      .getAdaptivePose()
+                      .getTranslation()
+                      .getDistance(
+                          RobotState.getInstance()
+                              .getAdaptivePose()
+                              .nearest(List.of(RobotConfigConstants.kAlignPoses))
+                              .getTranslation())
+                  < Units.inchesToMeters(1.5));
 
   public PilotingControls() {
 
@@ -77,8 +79,18 @@ public class PilotingControls {
 
     joy.b()
         .onTrue(
-          new InstantCommand(() -> {RobotState.getInstance().resetAllPose(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose: blueResetPose, SwerveSubsystem.getInstance().getModulePositions(), SwerveSubsystem.getInstance().getGyroRotation());}));
-            // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose: blueResetPose).ignoringDisable(true));
+            new InstantCommand(
+                () -> {
+                  RobotState.getInstance()
+                      .resetAllPose(
+                          DriverStation.getAlliance().get() == Alliance.Red
+                              ? redResetPose
+                              : blueResetPose,
+                          SwerveSubsystem.getInstance().getModulePositions(),
+                          SwerveSubsystem.getInstance().getGyroRotation());
+                }));
+    // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose:
+    // blueResetPose).ignoringDisable(true));
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
@@ -95,7 +107,11 @@ public class PilotingControls {
     //             }));
 
     joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
-    joy.a().whileTrue(new MoveChassisToPose(true));
+    joy.a()
+        .onTrue(
+            SwerveSubsystem.getInstance()
+                .followPosePathFinding(RobotState.getInstance().getClosestReefPose()));
+    // joy.a().whileTrue(new MoveChassisToPose(true));
     joy.x().whileTrue(new MoveChassisToPose(false));
 
     // joy.a().onTrue(AutoBuilder.followPath(
@@ -135,17 +151,22 @@ public class PilotingControls {
         .and(() -> RobotBase.isReal())
         .onTrue(
             new InstantCommand(
-                () -> {
-                  SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
-                  RobotState.getInstance().resetHeading(Rotation2d.kZero);
-                }).ignoringDisable(true));
+                    () -> {
+                      SwerveSubsystem.getInstance().resetGyro(Rotation2d.kZero);
+                      RobotState.getInstance().resetHeading(Rotation2d.kZero);
+                    })
+                .ignoringDisable(true));
 
-    rumble.onTrue(new InstantCommand(() -> {
-      joy.setRumble(RumbleType.kBothRumble, 0.1);
-    }));
-    rumble.onFalse(new InstantCommand(() -> {
-      joy.setRumble(RumbleType.kBothRumble, 0);
-    }));
+    rumble.onTrue(
+        new InstantCommand(
+            () -> {
+              joy.setRumble(RumbleType.kBothRumble, 0.1);
+            }));
+    rumble.onFalse(
+        new InstantCommand(
+            () -> {
+              joy.setRumble(RumbleType.kBothRumble, 0);
+            }));
 
     // SwerveSubsystem.getInstance().setPose(VisionSubsystem.getInstance().getLatestPose().toPose2d());
   }

@@ -36,8 +36,8 @@ public class OperatingControls {
     joy.leftTrigger()
         .whileTrue(
             new ConditionalCommand(
-                AllCommands.intake,
-                // AllCommands.intakeRSC,
+                // AllCommands.intake,
+                AllCommands.intakeRSC,
                 // AllCommands.floorIntakeJITB,
                 new ConditionalCommand(
                     AllCommands.highReefAlgaeIntake,
@@ -173,11 +173,15 @@ public class OperatingControls {
     //               LightsSubsystem.getInstance().setPattern(BlinkinConstants.kHeartbeatWhite);
     //             }));
 
-    PilotingControls.rumble.onTrue(new InstantCommand(() -> {
-      joy.setRumble(RumbleType.kBothRumble, 0.1);
-    }));
-    PilotingControls.rumble.onFalse(new InstantCommand(() -> {
-      joy.setRumble(RumbleType.kBothRumble, 0);
-    }));
+    PilotingControls.rumble.onTrue(
+        new InstantCommand(
+            () -> {
+              joy.setRumble(RumbleType.kBothRumble, 0.1);
+            }));
+    PilotingControls.rumble.onFalse(
+        new InstantCommand(
+            () -> {
+              joy.setRumble(RumbleType.kBothRumble, 0);
+            }));
   }
 }

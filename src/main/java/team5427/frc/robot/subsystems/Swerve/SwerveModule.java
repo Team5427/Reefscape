@@ -75,7 +75,9 @@ public class SwerveModule {
       case REAL:
         if (io != null) {
           newState.optimize(inputs.absolutePosition);
-          io.setDriveFeedForward(driveFeedforwards.torqueCurrents()[index]);
+          io.setDriveFeedForward(
+              driveFeedforwards.robotRelativeForcesX()[index],
+              driveFeedforwards.robotRelativeForcesY()[index]);
           io.setModuleState(newState);
         }
         break;

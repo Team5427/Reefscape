@@ -3,6 +3,8 @@ package team5427.frc.robot.subsystems.Swerve.io;
 import static edu.wpi.first.units.Units.Amp;
 import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Newton;
+import static edu.wpi.first.units.Units.NewtonMeter;
 import static edu.wpi.first.units.Units.Radian;
 import static edu.wpi.first.units.Units.Rotations;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -15,14 +17,18 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Force;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Torque;
 import edu.wpi.first.units.measure.Voltage;
 import java.util.Queue;
 import team5427.frc.robot.Constants;
@@ -229,6 +235,23 @@ public class ModuleIOTalon implements ModuleIO {
   public void resetMotorSetpoint(Rotation2d steerPosition) {
     steerMotor.setEncoderPosition(steerPosition);
     driveMotor.setEncoderPosition(0.0);
+  }
+
+  @Override
+  public void setDriveFeedForward(Force xForce, Force yForce) {
+    edu.wpi.first.math.Vector<N2> driveForces =
+        VecBuilder.fill(xForce.in(Newton), yForce.in(Newton));
+    edu.wpi.first.math.Vector<N2> wheelDirection =
+        VecBuilder.fill(
+            Rotation2d.fromRadians(steerMotorPosition.getValue().in(Radian)).getCos(),
+            Rotation2d.fromRadians(steerMotorPosition.getValue().in(Radian)).getSin());
+    Torque wheelTorque =
+        NewtonMeter.of(
+            driveForces.dot(wheelDirection) * SwerveConstants.kWheelDiameterMeters / 2.0);
+
+    driveMotor.velocityTorqueCurrentFOCRequest.withFeedForward(
+        Amps.of(
+            driveMotor.getTalonFX().getMotorKT().getValueAsDouble() * wheelTorque.in(NewtonMeter)));
   }
 
   /**

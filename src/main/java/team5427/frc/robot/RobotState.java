@@ -1,5 +1,6 @@
 package team5427.frc.robot;
 
+import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -9,17 +10,16 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.List;
-import java.util.Optional;
-
 import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
-import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class RobotState {
@@ -111,8 +111,8 @@ public class RobotState {
 
   public void resetAllPose(
       Pose2d resetPose, SwerveModulePosition[] modulePositions, Rotation2d gyroAngle) {
-    resetOdometryPose(resetPose, modulePositions, gyroAngle);
-    resetEstimatedPose(resetPose, modulePositions, gyroAngle);
+    resetOdometryPose(resetPose, modulePositions, gyroAngle.plus(Rotation2d.k180deg));
+    resetEstimatedPose(resetPose, modulePositions, gyroAngle.plus(Rotation2d.k180deg));
     resetQuestPose(resetPose);
     SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
   }
@@ -152,8 +152,12 @@ public class RobotState {
     return getEstimatedPose();
   }
 
+  /** Gets Reef Pose Closest to it with alliance flipping */
   public Pose2d getClosestReefPose() {
-    return getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses));
+    Pose2d pose = getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses));
+
+    if (DriverStation.getAlliance().get() == Alliance.Red) return FlippingUtil.flipFieldPose(pose);
+    return pose;
   }
 
   public void resetHeading(Rotation2d heading) {

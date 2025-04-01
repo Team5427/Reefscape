@@ -1,21 +1,13 @@
 package team5427.frc.robot.commands.chassis;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-
-import java.util.List;
 import java.util.Optional;
 import org.team4206.battleaid.common.TunedJoystick;
 import org.team4206.battleaid.common.TunedJoystick.ResponseCurve;
-
-import team5427.frc.robot.RobotState;
 import team5427.frc.robot.Constants.OperatorConstants;
-import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -64,7 +56,8 @@ public class ChassisMovement extends Command {
       swerveSubsystem.setInputSpeeds(driverSpeeds);
 
       // Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
-      // if (robotPose.getTranslation().getDistance(robotPose.nearest(List.of(RobotConfigConstants.kAlignPoses)).getTranslation()) < Units.inchesToMeters(100.0)) {
+      // if
+      // (robotPose.getTranslation().getDistance(robotPose.nearest(List.of(RobotConfigConstants.kAlignPoses)).getTranslation()) < Units.inchesToMeters(100.0)) {
       //   joy.setRumble(RumbleType.kBothRumble, 0.5);
       //   System.out.println("Near Goal");
       //   // altJoy.setRumble(RumbleType.kBothRumble, 0.1);

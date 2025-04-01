@@ -10,6 +10,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
+import edu.wpi.first.units.measure.Force;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
@@ -58,6 +59,8 @@ public interface ModuleIO {
   public default void setDriveSpeedSetpoint(Current current) {}
 
   public default void setDriveFeedForward(Current current) {}
+
+  public default void setDriveFeedForward(Force xForce, Force yForce) {}
 
   public default void setSteerPositionSetpoint(Rotation2d position) {}
 

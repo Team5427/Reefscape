@@ -6,6 +6,7 @@
 // the root directory of this project.
 package team5427.frc.robot;
 
+import com.pathplanner.lib.util.FlippingUtil;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -15,10 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-
-import com.pathplanner.lib.util.FlippingUtil;
-
 import lombok.Getter;
 
 /**
@@ -155,7 +152,8 @@ public class Field {
           Pose2d rightBranchPose2d = rightBranchPose.toPose2d();
           Pose2d leftBranchPose2d = leftBranchPose.toPose2d();
 
-          if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red) {
+          if (DriverStation.getAlliance().isPresent()
+              && DriverStation.getAlliance().get() == Alliance.Red) {
             rightBranchPose2d = FlippingUtil.flipFieldPose(rightBranchPose2d);
             leftBranchPose2d = FlippingUtil.flipFieldPose(leftBranchPose2d);
           }

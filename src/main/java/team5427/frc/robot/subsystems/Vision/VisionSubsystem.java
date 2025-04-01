@@ -28,7 +28,6 @@ import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhoton;
 import team5427.frc.robot.subsystems.Vision.io.VisionIOPhotonSim;
-import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionSubsystem extends SubsystemBase {
@@ -188,7 +187,8 @@ public class VisionSubsystem extends SubsystemBase {
                         .relativeTo(RobotState.getInstance().getAdaptivePose())
                         .getTranslation()
                         .getNorm()
-                    > SwerveConstants.kDriveMotorConfiguration.maxVelocity * 3.5
+                    > SwerveConstants.kDriveMotorConfiguration.maxVelocity
+                        * 3.5
                         * (Timer.getTimestamp() - observation.timestamp());
 
         // Add pose to log
@@ -216,7 +216,7 @@ public class VisionSubsystem extends SubsystemBase {
             observation.pose().toPose2d(),
             observation.timestamp(),
             VecBuilder.fill(linearStdDev, linearStdDev, angularStdDev));
-       
+
         latestPoseMeasurement = observation.pose();
       }
 

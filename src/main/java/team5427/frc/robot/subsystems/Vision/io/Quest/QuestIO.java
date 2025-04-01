@@ -11,8 +11,10 @@ public interface QuestIO extends AutoCloseable {
 
     /** Current QuestNav pose */
     public Pose2d uncorrectedPose = Pose2d.kZero;
+
     /** QuestNav pose when robot code started */
     public Pose2d uncorrectedResetPose = Pose2d.kZero;
+
     /** Transform between QuestNav current and starting pose */
     public Transform2d uncorrectedResetToQuest = Transform2d.kZero;
 

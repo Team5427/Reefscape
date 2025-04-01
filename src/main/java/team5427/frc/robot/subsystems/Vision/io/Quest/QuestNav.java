@@ -34,9 +34,11 @@ public class QuestNav {
   /** Subscriber for heartbeat requests */
   private final DoubleSubscriber heartbeatRequestSub =
       nt4Table.getDoubleTopic("heartbeat/quest_to_robot").subscribe(0.0);
+
   /** Publisher for heartbeat responses */
   private final DoublePublisher heartbeatResponsePub =
       nt4Table.getDoubleTopic("heartbeat/robot_to_quest").publish();
+
   /** Last processed heartbeat request ID */
   private double lastProcessedHeartbeatId = 0;
 
