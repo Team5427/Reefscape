@@ -54,7 +54,7 @@ public final class Constants {
   public static final double kLoopSpeed = 0.020;
   public static final String kCanivoreBusName = "brook";
   public static final double kOdometryFrequency =
-      new CANBus(Constants.kCanivoreBusName).isNetworkFD() ? 200.0 : 100.0;
+      new CANBus(Constants.kCanivoreBusName).isNetworkFD() ? 250.0 : 100.0;
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
   public static Mode currentMode = Mode.SIM;
 

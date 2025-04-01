@@ -31,7 +31,7 @@ public class Quest extends VirtualSubsystem {
 
   private static Quest questInstance;
 
-  public Quest getInstance(){
+  public static Quest getInstance(){
     if(questInstance == null){
         questInstance = new Quest();
     }
@@ -57,6 +57,7 @@ public class Quest extends VirtualSubsystem {
 
   @Override
   public void periodic() {
+
     io.updateInputs(inputs);
     Logger.processInputs("Oculus", inputs);
 
@@ -67,16 +68,13 @@ public class Quest extends VirtualSubsystem {
 
     // Only enable this when we know we're ready
     if (DriverStation.isEnabled() && Constants.currentMode == Constants.Mode.REAL) {
-      RobotState.getInstance().addVisionMeasurment(fieldToRobot, inputs.timestamp, VecBuilder.fill(VisionConstants.kQuestStdDevBaseline, VisionConstants.kQuestStdDevBaseline));
+    //   RobotState.getInstance().addVisionMeasurment(fieldToRobot, inputs.timestamp, VecBuilder.fill(VisionConstants.kQuestStdDevBaseline, VisionConstants.kQuestStdDevBaseline));
     }
 
     // Do this always for now just to confirm our transforms are correct.
     // Or, you may want to always track rotation. Do science.
     RobotState.getInstance().addQuestMeasurment(fieldToRobot);
   }
-
-  @Override
-  public void simulationPeriodic() {}
 
   /**
    * The Oculus tracks relative to where it started, so we need to tell the Quest where the robot

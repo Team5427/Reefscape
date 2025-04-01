@@ -16,8 +16,6 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-
-import team5427.frc.robot.subsystems.Vision.io.QuestNav;
 // import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.lib.drivers.SteelTalonsLogger;
 import team5427.lib.drivers.VirtualSubsystem;
