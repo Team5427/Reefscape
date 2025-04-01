@@ -107,10 +107,10 @@ public final class Constants {
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 2.54;
+      kDriveMotorConfiguration.kP = 2.64;
       // kDriveMotorConfiguration.kV = 2.08;
-      kDriveMotorConfiguration.kA = 1.2;
-      kDriveMotorConfiguration.kS = 0.8;
+      // kDriveMotorConfiguration.kA = 1.2;
+      kDriveMotorConfiguration.kS = 0.1;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }
@@ -160,17 +160,19 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
-    public static final double kRotationalKp = 1.5127;
-    public static final double kTranslationalKp = 5.20;
+    public static final double kRotationalKp = 1.5927;
+
+    public static final double kAutoAlignRotationalKp = 0.7;
+    public static final double kTranslationalKp = 5.80;
 
     public static final double kAutoAlignTranslationKp = 1.0;
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
-            kRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 15 * Math.PI));
+            kAutoAlignRotationalKp, 0.0, 0.0, new Constraints(10 * Math.PI, 5 * Math.PI));
 
     static {
-      kRotationPIDController.setTolerance(Units.degreesToRadians(2));
+      kRotationPIDController.setTolerance(Units.degreesToRadians(5));
       kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);
     }
 
@@ -480,7 +482,7 @@ public final class Constants {
     static {
       kPivotConfiguration.gearRatio =
           new ComplexGearRatio((1.0 / 5.0), (1.0 / 3.0), (1.0 / 5.0), (32.0 / 48.0), (9.0 / 44.0));
-      kPivotConfiguration.currentLimit = 60;
+      kPivotConfiguration.currentLimit = 80;
       kPivotConfiguration.idleState = IdleState.kBrake;
       kPivotConfiguration.mode = MotorMode.kServo;
       kPivotConfiguration.isInverted = true;
@@ -489,7 +491,7 @@ public final class Constants {
           kPivotConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kPivotConfiguration.maxAcceleration = kPivotConfiguration.maxVelocity * 1.1;
 
-      kPivotConfiguration.kP = 70.0;
+      kPivotConfiguration.kP = 80.0;
       kPivotConfiguration.kD = 0.1;
       // kPivotConfiguration.kV = 22.76;
       // kPivotConfiguration.kA = 0.19;
@@ -520,7 +522,7 @@ public final class Constants {
 
     public static final Distance kL3Distance = Meters.of(0.328);
     public static final Distance kL3DistanceInverse = Feet.of(1.25);
-    public static final Distance kL4Distance = Meters.of(1.130); // 1.124 , 1.110
+    public static final Distance kL4Distance = Meters.of(1.175); // 1.124 , 1.110
     public static final Distance kL4DistanceInverse = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
@@ -539,7 +541,7 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(10.898);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(6.395);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(0.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(4.3);
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(5.0); // 4.3
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kBargeRotation = Rotation2d.fromDegrees(0.0);
     public static final Rotation2d kProcessorRotation = Rotation2d.fromDegrees(50.0);
@@ -636,13 +638,13 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(-10.132);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(200.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-32.5); // -34.0
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-35.0); // 32.5
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(280.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(92.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(85.0);
 
-    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(50.0);
-    public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kLowReefAlgaeRotation = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kHighReefAlgaeRotation = Rotation2d.fromDegrees(40.0);
 
     public static final LinearVelocity kAlgaeFloorIntakeVelocity = MetersPerSecond.of(4.0);
     public static final LinearVelocity kAlgaeReefIntakeVelocity = MetersPerSecond.of(4.0);
@@ -773,7 +775,8 @@ public final class Constants {
 
     static {
       for (int i = 0; i < 12; i++) {
-        kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
+        // kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
+        kReefPoses[i] = Field.Reef.branchPositions2d.get(i).get(ReefLevel.L4);
       }
     }
 

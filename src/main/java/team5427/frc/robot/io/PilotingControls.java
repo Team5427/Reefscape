@@ -2,6 +2,8 @@ package team5427.frc.robot.io;
 
 import java.util.List;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.FlippingUtil;
 
@@ -9,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -30,7 +33,7 @@ public class PilotingControls {
   private CommandXboxController joy;
 
   public static final Trigger rumble = new Trigger(
-    () -> RobotState.getInstance().getAdaptivePose().getTranslation().getDistance(RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kAlignPoses)).getTranslation()) < Units.inchesToMeters(1.0)
+    () -> RobotState.getInstance().getAdaptivePose().getTranslation().getDistance(RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kAlignPoses)).getTranslation()) < Units.inchesToMeters(1.5 )
   );
 
   public PilotingControls() {
@@ -69,9 +72,13 @@ public class PilotingControls {
     Pose2d blueResetPose = new Pose2d(5.76, 4.022, Rotation2d.kZero);
     Pose2d redResetPose = FlippingUtil.flipFieldPose(blueResetPose);
 
+    Logger.recordOutput("Red Pose", redResetPose);
+    Logger.recordOutput("Blue Pose", blueResetPose);
+
     joy.b()
         .onTrue(
-            AutoBuilder.resetOdom(blueResetPose ).ignoringDisable(true));
+          new InstantCommand(() -> {RobotState.getInstance().resetAllPose(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose: blueResetPose, SwerveSubsystem.getInstance().getModulePositions(), SwerveSubsystem.getInstance().getGyroRotation());}));
+            // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose: blueResetPose).ignoringDisable(true));
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
 
