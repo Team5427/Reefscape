@@ -24,6 +24,8 @@ import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.LightsSubsystem;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
+import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
+import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -63,6 +65,7 @@ public class RobotContainer {
         Optional.of(RobotState.getInstance()::addVisionMeasurement),
         Optional.of(RobotState.getInstance()::getAdaptivePose),
         Optional.of(RobotState.getInstance()::getOdometryHeading));
+    Quest.getInstance();
     createNamedCommands();
 
     // Configure AutoBuilder last

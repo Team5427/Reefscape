@@ -11,11 +11,14 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.List;
+import java.util.Optional;
+
 import lombok.Getter;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
 import team5427.frc.robot.subsystems.Vision.io.Quest.QuestNav;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
@@ -103,7 +106,7 @@ public class RobotState {
     resetOdometryPose(resetPose);
     resetEstimatedPose(resetPose);
     resetQuestPose(resetPose);
-    // SwerveSubsystem.getInstance(Optional.of(this::addOdometryMeasurement)).resetGyro(resetPose.getRotation());
+    SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
   }
 
   public void resetAllPose(
@@ -136,7 +139,7 @@ public class RobotState {
     // QuestNav.getInstance().resetPose(resetPose.transformBy(QuestNav.getInstance().getPose().minus(resetPose)));
     // QuestNav.getInstance().setFieldTransform(resetPose);
     // VisionSubsystem.getInstance().resetPoseQuest(resetPose);
-    QuestNav.resetPose(resetPose);
+    Quest.getInstance().resetRobotPose(resetPose);
     // QuestNav.getInstance().zeroPosition();
     // QuestNav.getInstance().zeroPosition();
 
