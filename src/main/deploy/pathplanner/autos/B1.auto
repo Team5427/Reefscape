@@ -17,35 +17,15 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Score L4"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Eject Coral"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "Score L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
           }
         },
         {
@@ -104,35 +84,15 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Score L4"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Eject Coral"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "Score L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
           }
         },
         {
@@ -185,35 +145,15 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "sequential",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Score L4"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Eject Coral"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "Score L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
           }
         }
       ]

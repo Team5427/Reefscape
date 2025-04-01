@@ -49,12 +49,12 @@
    },
    "JCoralScore":{
     "x":{
-     "exp":"5.029 m",
-     "val":5.029
+     "exp":"5.01 m",
+     "val":5.01
     },
     "y":{
-     "exp":"5.3 m",
-     "val":5.3
+     "exp":"5.2 m",
+     "val":5.2
     },
     "heading":{
      "exp":"-120 deg",

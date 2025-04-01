@@ -46,7 +46,7 @@ public class MoveChassisToPose extends Command {
       SwerveConstants.kRotationPIDController
     );
     // driveController.setTolerance(targetPose.plus(new Transform2d(0.05, 0.05, Rotation2d.fromDegrees(1))));
-    driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(3)));
+    driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(2)));
   }
 
   @Override
@@ -69,15 +69,23 @@ public class MoveChassisToPose extends Command {
 
     } else {
 
-      ChassisSpeeds adjustmentSpeeds = driveController.calculate(Pose2d.kZero, targetPose.relativeTo(robotPose), SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.01, targetPose.getRotation().minus(robotPose.getRotation()));
+      ChassisSpeeds adjustmentSpeeds = driveController.calculate(Pose2d.kZero, targetPose.relativeTo(robotPose), SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.1, targetPose.getRotation().minus(robotPose.getRotation()));
+
+      if(driveController.atReference()){
+        swerveSubsystem.setInputSpeeds(new ChassisSpeeds(0,0,0));
+        // return true;
+      } else{
       swerveSubsystem.setInputSpeeds(adjustmentSpeeds);
+      }
 
     }
   }
 
   @Override
   public boolean isFinished() {
-    return driveController.atReference();
+
+    return false;
+
   }
 
   @Override

@@ -1,5 +1,7 @@
 package team5427.frc.robot.commands.outtake;
 
+import static edu.wpi.first.units.Units.Centimeters;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import team5427.frc.robot.RawScoringConfiguration;
 import team5427.frc.robot.subsystems.Cascade.CascadeSubsystem;
@@ -33,7 +35,7 @@ public class Score extends Command {
 
   @Override
   public boolean isFinished() {
-    return cascadeSubsystem.cascadeAtGoal();
+    return cascadeSubsystem.cascadeAtGoal(Centimeters.of(3.25));
   }
 
   @Override

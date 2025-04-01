@@ -63,6 +63,7 @@ public class OperatingControls {
                   // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
                   // Level.HIGH;
                   ProngSubsystem.level = Level.HIGH;
+                  ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
                 }));
 
     joy.leftBumper()
@@ -72,6 +73,7 @@ public class OperatingControls {
                   // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
                   // Level.HIGH;
                   ProngSubsystem.level = Level.LOW;
+                  ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
                 }));
 
     joy.povDown().whileTrue(AllCommands.resetSubsystems);
