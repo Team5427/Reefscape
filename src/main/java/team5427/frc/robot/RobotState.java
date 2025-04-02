@@ -6,6 +6,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
@@ -32,7 +33,7 @@ public class RobotState {
   @Getter private Pose2d questPose = new Pose2d();
 
   private static final Matrix<N3, N1> odometryStateStdDevs =
-      new Matrix<>(VecBuilder.fill(0.008, 0.008, 0.001));
+      new Matrix<>(VecBuilder.fill(0.008, 0.008, 0.01));
 
   private static RobotState instance;
 
@@ -87,9 +88,9 @@ public class RobotState {
         visionRobotPoseMeters, timestampSeconds, visionMeasurementStdDevs);
   }
 
-  public void addQuestMeasurment(Pose2d questPose) {
+  public void addQuestMeasurment(Pose2d questPose, double timestamp) {
     this.questPose = questPose;
-    poseEstimator.addVisionMeasurement(questPose, 0, VecBuilder.fill(0.0001, 0.0001, 0.1));
+    // poseEstimator.addVisionMeasurement(questPose, timestamp, VecBuilder.fill(0.001, 0.001, 0.01));
   }
 
   public Pose2d getOdometryPose() {
@@ -103,16 +104,18 @@ public class RobotState {
   }
 
   public void resetAllPose(Pose2d resetPose) {
+    // resetPose = resetPose.plus(new Transform2d(0, 0, Rotation2d.k180deg));
     resetOdometryPose(resetPose);
     resetEstimatedPose(resetPose);
+    // SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
     resetQuestPose(resetPose);
-    SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
+    
   }
 
   public void resetAllPose(
       Pose2d resetPose, SwerveModulePosition[] modulePositions, Rotation2d gyroAngle) {
-    resetOdometryPose(resetPose, modulePositions, gyroAngle.plus(Rotation2d.k180deg));
-    resetEstimatedPose(resetPose, modulePositions, gyroAngle.plus(Rotation2d.k180deg));
+    resetOdometryPose(resetPose, modulePositions, gyroAngle);
+    resetEstimatedPose(resetPose, modulePositions, gyroAngle);
     resetQuestPose(resetPose);
     SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
   }
@@ -149,11 +152,12 @@ public class RobotState {
     // if (QuestNav.getInstance().isConnected() && this.questPose != null) {
     //   return this.questPose;
     // }
+    // return getOdometryPose();
     return getEstimatedPose();
   }
 
   /** Gets Reef Pose Closest to it with alliance flipping */
-  public Pose2d getClosestReefPose() {
+  public Pose2d getClosestReefPose() { // FIX ME
     Pose2d pose = getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses));
 
     if (DriverStation.getAlliance().get() == Alliance.Red) return FlippingUtil.flipFieldPose(pose);

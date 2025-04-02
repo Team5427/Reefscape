@@ -3,12 +3,16 @@ package team5427.frc.robot.subsystems.Swerve.gyro;
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
+import com.ctre.phoenix6.configs.MountPoseConfigs;
 import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
+
+import static edu.wpi.first.units.Units.Degree;
+
 import java.util.Queue;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;
@@ -27,6 +31,7 @@ public class GyroIOPigeon implements GyroIO {
             Constants.SwerveConstants.kPigeonCANId.getBus());
     gyro.reset();
     Pigeon2Configuration config = new Pigeon2Configuration();
+    config.MountPose = new MountPoseConfigs().withMountPoseYaw(Degree.of(180));
     config.FutureProofConfigs = true;
     gyro.getConfigurator().apply(config);
     gyro.getConfigurator().setYaw(0.0);

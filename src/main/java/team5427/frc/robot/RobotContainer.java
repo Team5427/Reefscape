@@ -6,6 +6,7 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
+import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -17,8 +18,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
+
+import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.commands.AllCommands;
+import team5427.frc.robot.commands.chassis.MoveChassisToPose;
+import team5427.frc.robot.commands.intake.Intake;
+import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.io.OperatingControls;
 import team5427.frc.robot.io.PilotingControls;
 import team5427.frc.robot.subsystems.LightsSubsystem;
@@ -101,52 +107,6 @@ public class RobotContainer {
         SwerveSubsystem.getInstance() // Reference to this subsystem to set requirements
         );
 
-    // VisionSubsystem vision = new
-    // VisionSubsystem(SwerveSubsystem.getInstance()::addVisionMeasurement);
-    // new InstantCommand(() -> {
-
-    // });
-
-    // Pathfinding.setPathfinder(new LocalADStarAK());
-    // PathPlannerLogging.setLogActivePathCallback(
-    //     (activePath) -> {
-    //       Logger.recordOutput(
-    //           "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-    //     });
-    // PathPlannerLogging.setLogTargetPoseCallback(
-    //     (targetPose) -> {
-    //       Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
-    //     });
-    //     SendableChooser<Boolean> chooser = new SendableChooser<>();
-    //     chooser.setDefaultOption("Not Flipped", false);
-    //     chooser.addOption("Flipped", true);
-    //     SmartDashboard.putData(chooser);
-    //     chooser.onChange((Boolean flip) -> {
-    //       autoChooser =
-    //     AutoBuilder.buildAutoChooserWithOptionsModifier(
-    //         autoStream ->
-    //             autoStream.map(
-    //                 auto -> {
-    //                   auto =
-    //                       new PathPlannerAuto(
-    //                           auto.getName(),
-    //                           flip);
-    //                           System.out.println(auto.getName());
-    //                   return auto;
-    //                 }));
-    //                 SmartDashboard.putData("Auto Chooser", autoChooser);});
-    // autoChooser =
-    //     AutoBuilder.buildAutoChooserWithOptionsModifier(
-    //         autoStream ->
-    //             autoStream.map(
-    //                 auto -> {
-    //                   auto =
-    //                       new PathPlannerAuto(
-    //                           auto.getName(),
-    //                           chooser.getSelected());
-    //                           System.out.println(auto.getName());
-    //                   return auto;
-    //                 }));
     autoChooser();
 
     // autoChooser.addOption(
@@ -178,8 +138,8 @@ public class RobotContainer {
   private void createNamedCommands() {
     NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);
     NamedCommands.registerCommand("Score L4", AllCommands.scoreL4);
-    NamedCommands.registerCommand("Eject Coral", AllCommands.eject);
-    NamedCommands.registerCommand("Intake Station", AllCommands.intake);
+    NamedCommands.registerCommand("Eject Coral", new EjectGamePiece(true, Optional.empty()).withTimeout(0.5));
+    NamedCommands.registerCommand("Intake Station", new Intake(RobotConfigConstants.kCoralStationIntake).withTimeout(2.0));
     NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
     NamedCommands.registerCommand(
         "Stop Chassis",
@@ -187,6 +147,7 @@ public class RobotContainer {
             () -> {
               SwerveSubsystem.getInstance().setInputSpeeds(new ChassisSpeeds(0, 0, 0));
             }));
+    NamedCommands.registerCommand("Auto Align", new MoveChassisToPose(false).withTimeout(1.5));
   }
 
   public void configureButtonBindings() {
@@ -211,10 +172,12 @@ public class RobotContainer {
         (activePath) -> {
           Logger.recordOutput(
               "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+              
         });
     PathPlannerLogging.setLogTargetPoseCallback(
         (targetPose) -> {
           Logger.recordOutput("Odometry/TrajectorySetpoint", targetPose);
+          MoveChassisToPose.setTargetPose(targetPose);
         });
 
     SendableChooser<Boolean> chooser = new SendableChooser<>();

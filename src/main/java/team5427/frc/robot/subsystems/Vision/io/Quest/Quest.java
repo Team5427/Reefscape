@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
+import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.lib.drivers.VirtualSubsystem;
 
@@ -70,7 +71,7 @@ public class Quest extends VirtualSubsystem {
     // Do this always for now just to confirm our transforms are correct.
     // Or, you may want to always track rotation. Do science.
     if (inputs.connected) {
-      // RobotState.getInstance().addQuestMeasurment(fieldToRobot);
+      RobotState.getInstance().addQuestMeasurment(fieldToRobot, inputs.timestamp);
     }
   }
 
