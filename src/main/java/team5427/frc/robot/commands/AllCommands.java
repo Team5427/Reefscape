@@ -41,7 +41,7 @@ public class AllCommands {
   public static final Command highReefAlgaeIntake =
       new Intake(RobotConfigConstants.kReefHighAlgaeIntake);
   public static final Command floorAlgaeIntake = new Intake(RobotConfigConstants.kAlgaeFloorIntake);
-  public static final Command eject =
+  public static final Command ejectCoral =
       new EjectGamePiece(true, Optional.empty())
           .alongWith(
               new InstantCommand(

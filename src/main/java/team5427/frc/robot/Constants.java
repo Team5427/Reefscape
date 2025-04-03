@@ -34,6 +34,7 @@ import java.util.Optional;
 import team5427.frc.robot.Field.ReefLevel;
 import team5427.lib.drivers.CANDeviceId;
 import team5427.lib.drivers.ComplexGearRatio;
+import team5427.lib.drivers.LoggedTunableNumber;
 import team5427.lib.kinematics.SwerveUtil;
 import team5427.lib.motors.MotorUtil;
 import team5427.lib.motors.real.MotorConfiguration;
@@ -158,10 +159,15 @@ public final class Constants {
     public static final SimpleMotorFeedforward kSIMDriveFeedforward =
         new SimpleMotorFeedforward(0., 2.08, 0.17);
 
-    public static final double kRotationalKp = 1.5927;
+    public static final double kRotationalKp = 1.4927;
 
     public static final double kAutoAlignRotationalKp = 2.0;
-    public static final double kTranslationalKp = 5.80;
+    public static  double kTranslationalKp = 6.50;
+
+    public static LoggedTunableNumber kTranslationalKpTunable = new LoggedTunableNumber("AUton Trasnlational Kp", 5.8);
+    static {
+
+    }
 
     public static final double kAutoAlignTranslationKp = 5;
 
@@ -385,18 +391,18 @@ public final class Constants {
             Units.inchesToMeters(8.540489626),
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
-    public static final Transform3d kQuestCameraTransform =
-        new Transform3d(
-            Units.inchesToMeters(0.296),
-            Units.inchesToMeters(12.487),
-            Units.inchesToMeters(5.098),
-            new Rotation3d(Rotation2d.kCCW_90deg));
+    public static final Transform3d kQuestCameraTransform = new Transform3d(0.192, 0.358, Units.inchesToMeters(8.098), new Rotation3d(Rotation2d.kCCW_90deg));
+        // new Transform3d(
+        //     Units.inchesToMeters(0.296),
+        //     Units.inchesToMeters(12.5),
+        //     Units.inchesToMeters(8.098),
+        //     new Rotation3d(Rotation2d.kCCW_90deg));
 
     public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
 
     static {
-      kCameraTransforms[0] = kIntakeCamTransform;
-      kCameraTransforms[1] = kSwerveCamTransform;
+      kCameraTransforms[1] = kIntakeCamTransform;
+      kCameraTransforms[0] = kSwerveCamTransform;
     }
 
     public static final Distance kCameraMaxRange = Meters.of(4.0);
@@ -520,12 +526,12 @@ public final class Constants {
     public static final Distance kProcessorDistance = Feet.of(0.1);
     // public static final Distance kFloorIntakeDistance = Feet.of(0.2);
 
-    public static final Distance kLowReefAlgaeDistance = Feet.of(0.75);
+    public static final Distance kLowReefAlgaeDistance = Feet.of(0.60);
     public static final Distance kHighReefAlgaeDistance = Feet.of(1.75);
 
     public static final Rotation2d kStowRotation = Rotation2d.kZero;
     public static final Rotation2d kAlgaeIntakeRotation = Rotation2d.fromDegrees(60.0);
-    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(85.0);
+    public static final Rotation2d kTempClimbRotation = Rotation2d.fromDegrees(75.0);
     public static final Rotation2d kClimbPrepRotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kIntakeRotation = Rotation2d.fromDegrees(6.0);
 
@@ -593,9 +599,9 @@ public final class Constants {
           kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
-      kWristConfiguration.kP = 5.0;
+      kWristConfiguration.kP = 4.5; // 5.0
 
-      kWristConfiguration.altA = kWristConfiguration.maxAcceleration / 2.0;
+      kWristConfiguration.altA = kWristConfiguration.maxAcceleration;
       kWristConfiguration.altV = kWristConfiguration.maxVelocity;
     }
 
@@ -624,7 +630,7 @@ public final class Constants {
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(157.0); // 200.0
     public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(45.0);
 
-    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(210.0);
+    public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(5.0);
 
     public static final Rotation2d kL1Rotation = Rotation2d.fromDegrees(42.0);
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(-10.0);

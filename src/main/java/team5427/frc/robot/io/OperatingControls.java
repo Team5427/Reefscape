@@ -52,7 +52,7 @@ public class OperatingControls {
     joy.rightTrigger()
         .whileTrue(
             new ConditionalCommand(
-                AllCommands.eject,
+                AllCommands.ejectCoral,
                 AllCommands.ejectAlgae,
                 () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
 

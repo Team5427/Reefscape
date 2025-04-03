@@ -1,0 +1,157 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B.0"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Chassis"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset All"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B.1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Chassis"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B.2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Chassis"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset All"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B.3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Chassis"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake Station"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "B.4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Stop Chassis"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Auto Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject Coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Reset All"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": true
+}

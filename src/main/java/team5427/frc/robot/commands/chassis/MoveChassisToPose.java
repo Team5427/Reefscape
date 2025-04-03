@@ -4,9 +4,11 @@ import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
+
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
@@ -17,21 +19,38 @@ public class MoveChassisToPose extends Command {
   private SwerveSubsystem swerveSubsystem;
   private HolonomicDriveController driveController;
 
-  private Pose2d targetPose;
+  private static Pose2d targetPose;
   private boolean lazyControl;
 
   public MoveChassisToPose(boolean lazyControl) {
     swerveSubsystem = SwerveSubsystem.getInstance();
     addRequirements(swerveSubsystem);
-  }
-
-  @Override
-  public void initialize() {
-
+    
     targetPose =
         RobotState.getInstance()
             .getAdaptivePose()
             .nearest(List.of(RobotConfigConstants.kAlignPoses));
+  }
+
+  public static void setTargetPose(Pose2d pose2d){
+    targetPose = pose2d;
+  }
+
+  public MoveChassisToPose(boolean lazyControl, Pose2d targetPose) {
+    swerveSubsystem = SwerveSubsystem.getInstance();
+    addRequirements(swerveSubsystem);
+    
+    MoveChassisToPose.targetPose = targetPose;
+  }
+
+  @Override
+  public void initialize() {
+  if(DriverStation.isTeleop()){
+    targetPose =
+        RobotState.getInstance()
+            .getAdaptivePose()
+            .nearest(List.of(RobotConfigConstants.kAlignPoses));
+  }
 
     // SwerveConstants.kTranslationPIDController.reset(
     //
@@ -77,7 +96,7 @@ public class MoveChassisToPose extends Command {
           driveController.calculate(
               Pose2d.kZero,
               targetPose.relativeTo(robotPose),
-              SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.1,
+              SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.07,
               targetPose.getRotation().minus(robotPose.getRotation()));
 
       if (driveController.atReference()) {

@@ -13,8 +13,11 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import team5427.frc.robot.Constants.SwerveConstants;
 // import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.lib.drivers.SteelTalonsLogger;
+import team5427.lib.drivers.VirtualSubsystem;
 
 // import frc.robot.BuildConstants;
 
@@ -120,9 +123,12 @@ public class Robot extends LoggedRobot {
     // finished or interrupted commands, and running subsystem periodic() methods.
     // This must be called from the robot's periodic block in order for anything in
     // the Command-based framework to work.
+    if(SwerveConstants.kTranslationalKpTunable.hasChanged(SwerveConstants.kTranslationalKpTunable.hashCode())){
+      SwerveConstants. kTranslationalKp = SwerveConstants.kTranslationalKpTunable.get();
+            }
 
     CommandScheduler.getInstance().run();
-    // VirtualSubsystem.periodicAll();
+    VirtualSubsystem.periodicAll();
     //  QuestNav.getInstance().processHeartbeat();
     RobotState.getInstance().log();
 

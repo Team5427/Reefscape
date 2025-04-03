@@ -142,6 +142,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
+    // ChassisSpeeds fieldRelativeSpeeds = 
+    //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, RobotState.getInstance().getAdaptivePose().getRotation());
+
     ChassisSpeeds discretizedSpeeds =
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
 
@@ -167,6 +170,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
+    // ChassisSpeeds fieldRelativeSpeeds = 
+    //       ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, RobotState.getInstance().getAdaptivePose().getRotation());
 
     return fieldRelativeSpeeds;
   }
@@ -216,7 +221,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public void resetGyro(Rotation2d newYaw) {
-    gyroIO.resetGyroYawAngle(newYaw.plus(Rotation2d.k180deg));
+    gyroIO.resetGyroYawAngle(newYaw.unaryMinus());
   }
 
   public ChassisSpeeds getChassisSpeeds() {

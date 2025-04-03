@@ -77,13 +77,13 @@ public class VisionSubsystem extends SubsystemBase {
     super();
     switch (Constants.currentMode) {
       case REAL:
-        io[1] =
+        io[0] =
             new VisionIOPhoton(
                 VisionConstants.kSwerveCamName,
                 VisionConstants.kSwerveCamTransform,
                 referencePoseSupplier,
                 referenceHeadingSupplier);
-        io[0] =
+        io[1] =
             new VisionIOPhoton(
                 VisionConstants.kIntakeCamName,
                 VisionConstants.kIntakeCamTransform,
@@ -256,9 +256,9 @@ public class VisionSubsystem extends SubsystemBase {
     }
   }
 
-  public boolean isQuestConnected() {
-    return inputsAutoLogged[inputsAutoLogged.length - 1].connected;
-  }
+  // public boolean isQuestConnected() {
+  //   return inputsAutoLogged[inputsAutoLogged.length - 1].connected;
+  // }
 
   @FunctionalInterface
   public static interface VisionConsumer {

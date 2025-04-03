@@ -20,6 +20,7 @@ import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.commands.chassis.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.io.Quest.QuestCalibration;
 
 public class PilotingControls {
 
@@ -71,7 +72,8 @@ public class PilotingControls {
     //                   .setCascadeSetpoint(Distance.ofRelativeUnits(.5, Meters));
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
-    Pose2d blueResetPose = new Pose2d(5.76, 4.022, Rotation2d.kZero);
+    // Pose2d blueResetPose = new Pose2d(5.76, 4.022, Rotation2d.kZero);
+    Pose2d blueResetPose = new Pose2d(3.2, 4.03, Rotation2d.kZero);
     Pose2d redResetPose = FlippingUtil.flipFieldPose(blueResetPose);
 
     Logger.recordOutput("Red Pose", redResetPose);
@@ -88,11 +90,12 @@ public class PilotingControls {
                               : blueResetPose,
                           SwerveSubsystem.getInstance().getModulePositions(),
                           SwerveSubsystem.getInstance().getGyroRotation());
-                }));
+                }).ignoringDisable(true));
     // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose:
     // blueResetPose).ignoringDisable(true));
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
+    joy.povDown().whileTrue(new QuestCalibration().determineOffsetToRobotCenter(SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
 
     // joy.leftBumper()
     //     .onTrue(
@@ -112,7 +115,7 @@ public class PilotingControls {
             SwerveSubsystem.getInstance()
                 .followPosePathFinding(RobotState.getInstance().getClosestReefPose()));
     // joy.a().whileTrue(new MoveChassisToPose(true));
-    joy.x().whileTrue(new MoveChassisToPose(false));
+    joy.rightBumper().whileTrue(new MoveChassisToPose(false));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(
