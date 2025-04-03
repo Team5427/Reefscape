@@ -156,7 +156,7 @@ public class RobotState {
   public Pose2d getClosestReefPose() {
     Pose2d pose = getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses));
 
-    if (DriverStation.getAlliance().get() == Alliance.Red) return FlippingUtil.flipFieldPose(pose);
+    if (Constants.kAlliance.isPresent() && Constants.kAlliance.get() == Alliance.Red) return FlippingUtil.flipFieldPose(pose);
     return pose;
   }
 

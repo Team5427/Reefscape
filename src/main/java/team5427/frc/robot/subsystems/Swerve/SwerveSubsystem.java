@@ -204,7 +204,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public Command followPosePathFinding(Pose2d pose) {
-    if (Constants.kAlliance.get() == Alliance.Red) {
+    if (Constants.kAlliance.isPresent() && Constants.kAlliance.get() == Alliance.Red) {
       return AutoBuilder.pathfindToPoseFlipped(pose, new PathConstraints(0.1, 1, 1, 2), 0);
     } else {
       return AutoBuilder.pathfindToPose(pose, new PathConstraints(0.1, 1, 1, 2), 0);
@@ -291,6 +291,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   public void setInputSpeeds(ChassisSpeeds speeds, DriveFeedforwards driveFeedforwards) {
     this.inputSpeeds = speeds;
+    System.out.println(driveFeedforwards.robotRelativeForcesXNewtons());
     this.driveFeedforwards = driveFeedforwards;
   }
 
