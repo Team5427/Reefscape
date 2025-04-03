@@ -72,7 +72,8 @@ public class PilotingControls {
     //                   .setCascadeSetpoint(Distance.ofRelativeUnits(.5, Meters));
     //               CascadeSubsystem.getInstance().setPivotSetpoint(Rotation2d.fromDegrees(0.1));
     //             }));
-    Pose2d blueResetPose = new Pose2d(5.76, 4.022, Rotation2d.kZero);
+    // Pose2d blueResetPose = new Pose2d(5.76, 4.022, Rotation2d.kZero);
+    Pose2d blueResetPose = new Pose2d(3.2, 4.03, Rotation2d.kZero);
     Pose2d redResetPose = FlippingUtil.flipFieldPose(blueResetPose);
 
     Logger.recordOutput("Red Pose", redResetPose);
@@ -89,7 +90,7 @@ public class PilotingControls {
                               : blueResetPose,
                           SwerveSubsystem.getInstance().getModulePositions(),
                           SwerveSubsystem.getInstance().getGyroRotation());
-                }));
+                }).ignoringDisable(true));
     // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose:
     // blueResetPose).ignoringDisable(true));
 
