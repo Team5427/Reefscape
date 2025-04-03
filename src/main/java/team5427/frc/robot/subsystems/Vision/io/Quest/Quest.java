@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
@@ -21,12 +24,17 @@ public class Quest extends VirtualSubsystem {
   private final Alert disconnectedAlert = new Alert("Quest Disconnected!", AlertType.kWarning);
   private final Alert lowBatteryAlert =
       new Alert("Quest Battery is Low! (<25%)", AlertType.kWarning);
+  private final Alert questDisabledAlert = new Alert("Quest is Disabled \n No Quest Poses will be used!", AlertType.kWarning);
 
   private final QuestCalibration calibration = new QuestCalibration();
 
   private Pose2d fieldToRobotOrigin = Pose2d.kZero;
 
   private static Quest questInstance;
+
+  @Getter
+  @Setter
+  private static boolean disableQuest;
 
   public static Quest getInstance() {
     if (questInstance == null) {
@@ -60,6 +68,7 @@ public class Quest extends VirtualSubsystem {
 
     disconnectedAlert.set(!inputs.connected);
     lowBatteryAlert.set(inputs.connected && inputs.batteryLevel < 25);
+    questDisabledAlert.set(disableQuest);
 
     Pose2d fieldToRobot = getFieldToRobot();
 
@@ -72,7 +81,7 @@ public class Quest extends VirtualSubsystem {
 
     // Do this always for now just to confirm our transforms are correct.
     // Or, you may want to always track rotation. Do science.
-    if (inputs.connected) {
+    if (inputs.connected && !disableQuest) {
       RobotState.getInstance().addQuestMeasurment(fieldToRobot, inputs.timestamp);
     }
   }

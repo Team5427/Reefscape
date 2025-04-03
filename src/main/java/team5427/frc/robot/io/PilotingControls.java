@@ -15,11 +15,13 @@ import java.util.List;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
 import team5427.frc.robot.commands.chassis.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
 import team5427.frc.robot.subsystems.Vision.io.Quest.QuestCalibration;
 
 public class PilotingControls {
@@ -94,8 +96,12 @@ public class PilotingControls {
     // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose:
     // blueResetPose).ignoringDisable(true));
 
+
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
-    joy.povDown().whileTrue(new QuestCalibration().determineOffsetToRobotCenter(SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
+    joy.povDown().and(() -> Constants.kIsTuningMode).whileTrue(new QuestCalibration().determineOffsetToRobotCenter(SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
+    joy.povDown().and(() -> !Constants.kIsTuningMode).toggleOnTrue(new InstantCommand(() -> {
+      Quest.setDisableQuest(!Quest.isDisableQuest());
+    }));
 
     // joy.leftBumper()
     //     .onTrue(

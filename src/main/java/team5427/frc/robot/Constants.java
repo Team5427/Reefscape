@@ -57,7 +57,7 @@ public final class Constants {
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
   public static Mode currentMode = Mode.SIM;
 
-  public static final boolean kIsTuningMode = true;
+  public static final boolean kIsTuningMode = false;
 
   public static Optional<Alliance> kAlliance;
 
