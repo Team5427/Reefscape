@@ -186,6 +186,14 @@ public final class Constants {
     public static final double kAutoAlignTranslationalMaxSpeed =
         SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.2;
 
+    public static final double kDrivetrainRadius = Math.max(
+      Math.max(
+          Math.hypot(kWheelBase / 2, kTrackWidth / 2),
+          Math.hypot(kWheelBase / 2, -kTrackWidth / 2)),
+      Math.max(
+          Math.hypot(-kWheelBase / 2, kTrackWidth / 2),
+          Math.hypot(-kWheelBase / 2, -kTrackWidth / 2)));
+
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -268,106 +276,6 @@ public final class Constants {
     public static final double kDampenerDampeningAmount = 0.95;
   }
 
-  public static class BlinkinConstants {
-    public static final int kBlinkinChannel = 1;
-
-    public static final double kShotRed = -0.85;
-    public static final double kShotBlue = -0.83;
-    public static final double kShotWhite = -0.81;
-    public static final double kLarsonScannerRed = -0.35;
-    public static final double kLarsonScannerGray = -0.33;
-    public static final double kLightChaseRed = -0.31;
-    public static final double kLightChaseBlue = -0.29;
-    public static final double kLightChaseGray = -0.27;
-    public static final double kHeartbeatRed = -0.25;
-    public static final double kHeartbeatBlue = -0.23;
-    public static final double kHeartbeatWhite = -0.21;
-    public static final double kHeartbeatGray = -0.19;
-    public static final double kBreathRed = -0.17;
-    public static final double kBreathBlue = -0.15;
-    public static final double kBreathGray = -0.13;
-    public static final double kStrobeRed = -0.11;
-    public static final double kStrobeBlue = -0.09;
-    public static final double kStrobeGold = -0.07;
-    public static final double kStrobeWhite = -0.05;
-    public static final double kCp1EndToEndBlendToBlack = -0.03;
-    public static final double kCp1LarsonScanner = -0.01;
-    public static final double kCp1LightChase = 0.01;
-    public static final double kCp1HeartbeatSlow = 0.03;
-    public static final double kCp1HeartbeatMedium = 0.05;
-    public static final double kCp1HeartbeatFast = 0.07;
-    public static final double kCp1BreathSlow = 0.09;
-    public static final double kCp1BreathFast = 0.11;
-    public static final double kCp1Shot = 0.13;
-    public static final double kCp1Strobe = 0.15;
-    public static final double kCp2EndToEndBlendToBlack = 0.17;
-    public static final double kCp2LarsonScanner = 0.19;
-    public static final double kCp2LightChase = 0.21;
-    public static final double kCp2HeartbeatSlow = 0.23;
-    public static final double kCp2HeartbeatMedium = 0.25;
-    public static final double kCp2HeartbeatFast = 0.27;
-    public static final double kCp2BreathSlow = 0.29;
-    public static final double kCp2BreathFast = 0.31;
-    public static final double kCp2Shot = 0.33;
-    public static final double kCp2Strobe = 0.35;
-    public static final double kCp1_2Sparkle1On2 = 0.37;
-    public static final double kCp1_2Sparkle2On1 = 0.39;
-    public static final double kCp1_2ColorGradient = 0.41;
-    public static final double kCp1_2BeatsPerMinute = 0.43;
-    public static final double kCp1_2EndToEndBlend1To2 = 0.45;
-    public static final double kCp1_2EndToEndBlend = 0.47;
-    public static final double kCp1_2NoBlending = 0.49;
-    public static final double kCp1_2Twinkles = 0.51;
-    public static final double kCp1_2ColorWaves = 0.53;
-    public static final double kCp1_2Sinelon = 0.55;
-    public static final double kHotPink = 0.57;
-    public static final double kDarkRed = 0.59;
-    public static final double kRed = 0.61;
-    public static final double kRedOrange = 0.63;
-    public static final double kOrange = 0.65;
-    public static final double kGold = 0.67;
-    public static final double kYellow = 0.69;
-    public static final double kLawnGreen = 0.71;
-    public static final double kLime = 0.73;
-    public static final double kDarkGreen = 0.75;
-    public static final double kGreen = 0.77;
-    public static final double kBlueGreen = 0.79;
-    public static final double kAqua = 0.81;
-    public static final double kSkyBlue = 0.83;
-    public static final double kDarkBlue = 0.85;
-    public static final double kBlue = 0.87;
-    public static final double kBlueViolet = 0.89;
-    public static final double kViolet = 0.91;
-    public static final double kWhite = 0.93;
-    public static final double kGray = 0.95;
-    public static final double kDarkGray = 0.97;
-    public static final double kBlack = 0.99;
-
-    public static double kShot;
-    public static double kSolid;
-    public static double kBreath;
-    public static double kStrobe;
-    public static double kLightChase;
-    public static double kLarsonScanner;
-
-    static {
-      if (kAlliance.get() == Alliance.Red) {
-        kShot = kShotRed;
-        kSolid = kRed;
-        kBreath = kBreathRed;
-        kStrobe = kStrobeRed;
-        kLightChase = kLightChaseRed;
-        kLarsonScanner = kLarsonScannerRed;
-      } else {
-        kShot = kShotBlue;
-        kSolid = kBlue;
-        kBreath = kBreathBlue;
-        kStrobe = kStrobeBlue;
-        kLightChase = kLightChaseBlue;
-        kLarsonScanner = kLarsonScannerGray;
-      }
-    }
-  }
 
   public static class VisionConstants {
     public static final String kSwerveCamName = "swerveCam";
@@ -460,7 +368,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.maxVelocity =
           kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
-      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2.0;
+      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 1.5;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
@@ -476,7 +384,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity * 0.3;
-      // kCascadeDriverConfiguration.altJ = 30.0000000000001;
+      kCascadeDriverConfiguration.altJ = 300000.000000001;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -527,7 +435,7 @@ public final class Constants {
 
     public static final Distance kL3Distance = Meters.of(0.338);
     public static final Distance kL3DistanceInverse = Feet.of(1.25);
-    public static final Distance kL4Distance = Meters.of(1.165); // 1.124 , 1.110 , 1.175
+    public static final Distance kL4Distance = Meters.of(1.145); // 1.124 , 1.110 , 1.175
     public static final Distance kL4DistanceInverse = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
@@ -912,6 +820,106 @@ public final class Constants {
       kCoralMotorConfiguration.maxAcceleration = kCoralMotorConfiguration.maxVelocity * 10.0;
       kCoralMotorConfiguration.kP = 0.5;
       kCoralMotorConfiguration.kV = 0.2;
+    }
+  }
+  public static class BlinkinConstants {
+    public static final int kBlinkinChannel = 1;
+
+    public static final double kShotRed = -0.85;
+    public static final double kShotBlue = -0.83;
+    public static final double kShotWhite = -0.81;
+    public static final double kLarsonScannerRed = -0.35;
+    public static final double kLarsonScannerGray = -0.33;
+    public static final double kLightChaseRed = -0.31;
+    public static final double kLightChaseBlue = -0.29;
+    public static final double kLightChaseGray = -0.27;
+    public static final double kHeartbeatRed = -0.25;
+    public static final double kHeartbeatBlue = -0.23;
+    public static final double kHeartbeatWhite = -0.21;
+    public static final double kHeartbeatGray = -0.19;
+    public static final double kBreathRed = -0.17;
+    public static final double kBreathBlue = -0.15;
+    public static final double kBreathGray = -0.13;
+    public static final double kStrobeRed = -0.11;
+    public static final double kStrobeBlue = -0.09;
+    public static final double kStrobeGold = -0.07;
+    public static final double kStrobeWhite = -0.05;
+    public static final double kCp1EndToEndBlendToBlack = -0.03;
+    public static final double kCp1LarsonScanner = -0.01;
+    public static final double kCp1LightChase = 0.01;
+    public static final double kCp1HeartbeatSlow = 0.03;
+    public static final double kCp1HeartbeatMedium = 0.05;
+    public static final double kCp1HeartbeatFast = 0.07;
+    public static final double kCp1BreathSlow = 0.09;
+    public static final double kCp1BreathFast = 0.11;
+    public static final double kCp1Shot = 0.13;
+    public static final double kCp1Strobe = 0.15;
+    public static final double kCp2EndToEndBlendToBlack = 0.17;
+    public static final double kCp2LarsonScanner = 0.19;
+    public static final double kCp2LightChase = 0.21;
+    public static final double kCp2HeartbeatSlow = 0.23;
+    public static final double kCp2HeartbeatMedium = 0.25;
+    public static final double kCp2HeartbeatFast = 0.27;
+    public static final double kCp2BreathSlow = 0.29;
+    public static final double kCp2BreathFast = 0.31;
+    public static final double kCp2Shot = 0.33;
+    public static final double kCp2Strobe = 0.35;
+    public static final double kCp1_2Sparkle1On2 = 0.37;
+    public static final double kCp1_2Sparkle2On1 = 0.39;
+    public static final double kCp1_2ColorGradient = 0.41;
+    public static final double kCp1_2BeatsPerMinute = 0.43;
+    public static final double kCp1_2EndToEndBlend1To2 = 0.45;
+    public static final double kCp1_2EndToEndBlend = 0.47;
+    public static final double kCp1_2NoBlending = 0.49;
+    public static final double kCp1_2Twinkles = 0.51;
+    public static final double kCp1_2ColorWaves = 0.53;
+    public static final double kCp1_2Sinelon = 0.55;
+    public static final double kHotPink = 0.57;
+    public static final double kDarkRed = 0.59;
+    public static final double kRed = 0.61;
+    public static final double kRedOrange = 0.63;
+    public static final double kOrange = 0.65;
+    public static final double kGold = 0.67;
+    public static final double kYellow = 0.69;
+    public static final double kLawnGreen = 0.71;
+    public static final double kLime = 0.73;
+    public static final double kDarkGreen = 0.75;
+    public static final double kGreen = 0.77;
+    public static final double kBlueGreen = 0.79;
+    public static final double kAqua = 0.81;
+    public static final double kSkyBlue = 0.83;
+    public static final double kDarkBlue = 0.85;
+    public static final double kBlue = 0.87;
+    public static final double kBlueViolet = 0.89;
+    public static final double kViolet = 0.91;
+    public static final double kWhite = 0.93;
+    public static final double kGray = 0.95;
+    public static final double kDarkGray = 0.97;
+    public static final double kBlack = 0.99;
+
+    public static double kShot;
+    public static double kSolid;
+    public static double kBreath;
+    public static double kStrobe;
+    public static double kLightChase;
+    public static double kLarsonScanner;
+
+    static {
+      if (kAlliance.get() == Alliance.Red) {
+        kShot = kShotRed;
+        kSolid = kRed;
+        kBreath = kBreathRed;
+        kStrobe = kStrobeRed;
+        kLightChase = kLightChaseRed;
+        kLarsonScanner = kLarsonScannerRed;
+      } else {
+        kShot = kShotBlue;
+        kSolid = kBlue;
+        kBreath = kBreathBlue;
+        kStrobe = kStrobeBlue;
+        kLightChase = kLightChaseBlue;
+        kLarsonScanner = kLarsonScannerGray;
+      }
     }
   }
 

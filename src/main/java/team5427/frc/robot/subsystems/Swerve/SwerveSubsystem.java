@@ -59,7 +59,7 @@ public class SwerveSubsystem extends SubsystemBase {
   private OdometryConsumer odometryConsumer;
 
   private final Alert gyroDisconnectAlert =
-      new Alert("Disconnected Gyro :(. Now using Kinematics", AlertType.kError);
+      new Alert("Disconnected Gyro :( Now using Kinematics", AlertType.kError);
 
   private static SwerveSubsystem m_instance;
 
@@ -345,6 +345,16 @@ public class SwerveSubsystem extends SubsystemBase {
     this.inputSpeeds = speeds;
     this.driveFeedforwards = null;
   }
+
+    /** Returns the position of each module in radians. */
+    public double[] getWheelRadiusCharacterizationPositions() {
+      double[] values = new double[4];
+      for (int i = 0; i < 4; i++) {
+        values[i] = swerveModules[i].getWheelRadiusCharacterizationPosition().getRadians();
+      }
+      return values;
+    }
+  
 
   @FunctionalInterface
   public static interface OdometryConsumer {
