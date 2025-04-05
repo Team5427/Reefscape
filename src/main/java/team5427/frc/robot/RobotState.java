@@ -90,7 +90,11 @@ public class RobotState {
 
   public void addQuestMeasurment(Pose2d questPose, double timestamp) {
     this.questPose = questPose;
-    // poseEstimator.addVisionMeasurement(questPose, timestamp, VecBuilder.fill(0.001, 0.001, 0.01));
+    poseEstimator.addVisionMeasurement(questPose, timestamp, VecBuilder.fill(0.001, 0.001, 0.01));
+  }
+
+  public void addQuestMeasurmentOnlyLog(Pose2d questPose){
+    this.questPose  = questPose;
   }
 
   public Pose2d getOdometryPose() {

@@ -6,9 +6,12 @@ import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.Radians;
 
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.config.RobotConfig;
+import com.pathplanner.lib.util.FlippingUtil;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -106,10 +109,10 @@ public final class Constants {
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 2.64;
-      // kDriveMotorConfiguration.kV = 2.08;
-      // kDriveMotorConfiguration.kA = 1.2;
-      kDriveMotorConfiguration.kS = 0.1;
+      kDriveMotorConfiguration.kP = 2.00; // 2.64
+      kDriveMotorConfiguration.kV = 0.75;
+      kDriveMotorConfiguration.kA = 0.1;
+      kDriveMotorConfiguration.kS = 0.05; 
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }
@@ -161,15 +164,15 @@ public final class Constants {
 
     public static final double kRotationalKp = 1.4927;
 
-    public static final double kAutoAlignRotationalKp = 2.0;
-    public static  double kTranslationalKp = 6.50;
+    public static final double kAutoAlignRotationalKp = 3.1;
+    public static  double kTranslationalKp = 3.40;
 
     public static LoggedTunableNumber kTranslationalKpTunable = new LoggedTunableNumber("AUton Trasnlational Kp", 5.8);
     static {
 
     }
 
-    public static final double kAutoAlignTranslationKp = 5;
+    public static final double kAutoAlignTranslationKp = 4.2;
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
@@ -410,10 +413,10 @@ public final class Constants {
     // Standard deviation baselines, for 1 meter distance and 1 tag
     // (Adjusted automatically based on distance and # of tags)
     /** Larger stddev equals more doubt in Meters */
-    public static double kLinearStdDevBaseline = 0.1;
+    public static double kLinearStdDevBaseline = Units.inchesToMeters(5);
 
     /** Larger stddev equals more doubt in Radians */
-    public static double kAngularStdDevBaseline = 0.5;
+    public static double kAngularStdDevBaseline = Units.degreesToRadians(15);
 
     public static double[] kCameraStdDevFactors =
         new double[] {
@@ -468,7 +471,7 @@ public final class Constants {
       // kCascadeDriverConfiguration.kFF = 0.0125;
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
-      kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity * 0.5;
+      kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity * 0.3;
       // kCascadeDriverConfiguration.altJ = 30.0000000000001;
     }
 
@@ -512,15 +515,15 @@ public final class Constants {
     public static final Distance kZeroPosition = Feet.of(00);
     public static final Distance kIntakeDistance = Inches.of(0.5);
     public static final Distance kRSCIntakeDistance = Inches.of(1.5);
-    public static final Distance kFloorIntakeDistance = Feet.of(0.6);
+    public static final Distance kFloorIntakeDistance = Inches.of(0.25);
 
     public static final Distance kL1Distance = Feet.of(0.25);
 
     public static final Distance kL2Distance = Meters.of(0.0);
 
-    public static final Distance kL3Distance = Meters.of(0.328);
+    public static final Distance kL3Distance = Meters.of(0.338);
     public static final Distance kL3DistanceInverse = Feet.of(1.25);
-    public static final Distance kL4Distance = Meters.of(1.175); // 1.124 , 1.110
+    public static final Distance kL4Distance = Meters.of(1.165); // 1.124 , 1.110 , 1.175
     public static final Distance kL4DistanceInverse = Feet.of(3.8);
     public static final Distance kBargeDistance = Feet.of(3.65);
     public static final Distance kProcessorDistance = Feet.of(0.1);
@@ -599,7 +602,8 @@ public final class Constants {
           kWristConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kWristConfiguration.maxAcceleration = kWristConfiguration.maxVelocity;
 
-      kWristConfiguration.kP = 4.5; // 5.0
+      kWristConfiguration.kP = 3.0; // 5.0, 4.5
+      kWristConfiguration.kD = 0.2;
 
       kWristConfiguration.altA = kWristConfiguration.maxAcceleration;
       kWristConfiguration.altV = kWristConfiguration.maxVelocity;
@@ -628,7 +632,7 @@ public final class Constants {
     public static final Rotation2d kAlgaeStowPosition = Rotation2d.fromDegrees(25.0);
     public static final Rotation2d kZeroPosition = Rotation2d.fromDegrees(-45.0);
     public static final Rotation2d kIntakePosition = Rotation2d.fromDegrees(157.0); // 200.0
-    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(45.0);
+    public static final Rotation2d kFloorIntakePosition = Rotation2d.fromDegrees(15.0);
 
     public static final Rotation2d kClimbRotation = Rotation2d.fromDegrees(5.0);
 
@@ -636,7 +640,7 @@ public final class Constants {
     public static final Rotation2d kL2Rotation = Rotation2d.fromDegrees(-10.0);
     public static final Rotation2d kL3Rotation = Rotation2d.fromDegrees(-10.132);
     public static final Rotation2d kL3RotationInverse = Rotation2d.fromDegrees(200.0);
-    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-35.0); // 32.5
+    public static final Rotation2d kL4Rotation = Rotation2d.fromDegrees(-35.5); // 32.5
     public static final Rotation2d kL4RotationInverse = Rotation2d.fromDegrees(280.0);
     public static final Rotation2d kBargePosition = Rotation2d.fromDegrees(92.5);
     public static final Rotation2d kProcessorPosition = Rotation2d.fromDegrees(85.0);
@@ -778,10 +782,11 @@ public final class Constants {
       }
     }
 
-    public static final Pose2d[] kAlignPoses = new Pose2d[kReefPoses.length];
+    public static final Pose2d[] kAlignPosesBlue = new Pose2d[kReefPoses.length];
+    public static final Pose2d[] kAlignPosesRed = new Pose2d[kReefPoses.length];
 
     static {
-      for (int i = 0; i < RobotConfigConstants.kAlignPoses.length; i++) {
+      for (int i = 0; i < RobotConfigConstants.kAlignPosesBlue.length; i++) {
         Pose2d alignPose =
             new Pose2d(
                 RobotConfigConstants.kReefPoses[i].getX()
@@ -791,8 +796,12 @@ public final class Constants {
                     + SwerveConstants.kTrackWidth
                         * Math.sin(RobotConfigConstants.kReefPoses[i].getRotation().getRadians()),
                 RobotConfigConstants.kReefPoses[i].getRotation().plus(Rotation2d.k180deg));
-        RobotConfigConstants.kAlignPoses[i] = alignPose;
-        System.out.println("Pose " + i + ": " + RobotConfigConstants.kAlignPoses[i]);
+        RobotConfigConstants.kAlignPosesBlue[i] = alignPose;
+        System.out.println("Blue Pose " + i + ": " + RobotConfigConstants.kAlignPosesBlue[i]);
+      }
+      for(int i = 0; i <  RobotConfigConstants.kAlignPosesRed.length; i++){
+        kAlignPosesRed[i] = FlippingUtil.flipFieldPose(kAlignPosesBlue[i]);
+        System.out.println("Red Pose " + i + ": " + RobotConfigConstants.kAlignPosesRed[i]);
       }
     }
   }

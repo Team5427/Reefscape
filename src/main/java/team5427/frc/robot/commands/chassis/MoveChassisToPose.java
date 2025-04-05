@@ -5,12 +5,16 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.util.FlippingUtil;
+
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -26,10 +30,20 @@ public class MoveChassisToPose extends Command {
     swerveSubsystem = SwerveSubsystem.getInstance();
     addRequirements(swerveSubsystem);
     
-    targetPose =
-        RobotState.getInstance()
-            .getAdaptivePose()
-            .nearest(List.of(RobotConfigConstants.kAlignPoses));
+    if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red){
+
+      targetPose =
+          RobotState.getInstance()
+              .getAdaptivePose()
+              .nearest(List.of(RobotConfigConstants.kAlignPosesRed));
+
+   
+    } else if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue){
+      targetPose =
+      RobotState.getInstance()
+          .getAdaptivePose()
+          .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
+    }
   }
 
   public static void setTargetPose(Pose2d pose2d){
@@ -45,12 +59,23 @@ public class MoveChassisToPose extends Command {
 
   @Override
   public void initialize() {
-  if(DriverStation.isTeleop()){
-    targetPose =
+      if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red){
+
+        targetPose =
+            RobotState.getInstance()
+                .getAdaptivePose()
+                .nearest(List.of(RobotConfigConstants.kAlignPosesRed));
+
+     
+      } else if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue){
+        targetPose =
         RobotState.getInstance()
             .getAdaptivePose()
-            .nearest(List.of(RobotConfigConstants.kAlignPoses));
-  }
+            .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
+      }
+
+      // targetPose = Constants.kAlliance.get() == Alliance.Red ? FlippingUtil.flipFieldPose(targetPose): targetPose;
+        
 
     // SwerveConstants.kTranslationPIDController.reset(
     //
@@ -64,7 +89,7 @@ public class MoveChassisToPose extends Command {
             SwerveConstants.kRotationPIDController);
     // driveController.setTolerance(targetPose.plus(new Transform2d(0.05, 0.05,
     // Rotation2d.fromDegrees(1))));
-    driveController.setTolerance(new Pose2d(0.01, 0.01, Rotation2d.fromDegrees(1)));
+    driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(2)));
   }
 
   @Override
@@ -96,7 +121,7 @@ public class MoveChassisToPose extends Command {
           driveController.calculate(
               Pose2d.kZero,
               targetPose.relativeTo(robotPose),
-              SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.07,
+              SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.2,
               targetPose.getRotation().minus(robotPose.getRotation()));
 
       if (driveController.atReference()) {

@@ -37,7 +37,7 @@ public class PilotingControls {
                       .getDistance(
                           RobotState.getInstance()
                               .getAdaptivePose()
-                              .nearest(List.of(RobotConfigConstants.kAlignPoses))
+                              .nearest(Constants.kAlliance.get() == Alliance.Red ?  List.of(RobotConfigConstants.kAlignPosesRed) : List.of(RobotConfigConstants.kAlignPosesBlue))
                               .getTranslation())
                   < Units.inchesToMeters(1.5));
 
@@ -101,7 +101,7 @@ public class PilotingControls {
     joy.povDown().and(() -> Constants.kIsTuningMode).whileTrue(new QuestCalibration().determineOffsetToRobotCenter(SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
     joy.povDown().and(() -> !Constants.kIsTuningMode).toggleOnTrue(new InstantCommand(() -> {
       Quest.setDisableQuest(!Quest.isDisableQuest());
-    }));
+    }).ignoringDisable(true));
 
     // joy.leftBumper()
     //     .onTrue(
@@ -116,17 +116,23 @@ public class PilotingControls {
     //             }));
 
     joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
-    joy.a()
-        .onTrue(
-            SwerveSubsystem.getInstance()
-                .followPosePathFinding(RobotState.getInstance().getClosestReefPose()));
+    // joy.a()
+    //     .onTrue(
+    //         SwerveSubsystem.getInstance()
+    //             .followPosePathFinding(RobotState.getInstance().getClosestReefPose()));
     // joy.a().whileTrue(new MoveChassisToPose(true));
+
+    joy.a().onTrue(new InstantCommand(() -> {
+      SwerveSubsystem.getInstance().resetGyro(SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
+      RobotState.getInstance().resetHeading(SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
+    }));
     joy.rightBumper().whileTrue(new MoveChassisToPose(false));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(
     //     PathPlannerPath.waypointsFromPoses(
     //       List.of(
+    
     //         RobotState.getInstance().getAdaptivePose(),
     //
     // RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))

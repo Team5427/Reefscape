@@ -152,11 +152,11 @@ public class Field {
           Pose2d rightBranchPose2d = rightBranchPose.toPose2d();
           Pose2d leftBranchPose2d = leftBranchPose.toPose2d();
 
-          if (DriverStation.getAlliance().isPresent()
-              && DriverStation.getAlliance().get() == Alliance.Red) {
-            rightBranchPose2d = FlippingUtil.flipFieldPose(rightBranchPose2d);
-            leftBranchPose2d = FlippingUtil.flipFieldPose(leftBranchPose2d);
-          }
+          // if (DriverStation.getAlliance().isPresent()
+          //     && DriverStation.getAlliance().get() == Alliance.Red) {
+          //   rightBranchPose2d = FlippingUtil.flipFieldPose(rightBranchPose2d);
+          //   leftBranchPose2d = FlippingUtil.flipFieldPose(leftBranchPose2d);
+          // }
 
           fillRight.put(level, rightBranchPose);
           fillLeft.put(level, leftBranchPose);

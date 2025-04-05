@@ -81,8 +81,11 @@ public class Quest extends VirtualSubsystem {
 
     // Do this always for now just to confirm our transforms are correct.
     // Or, you may want to always track rotation. Do science.
-    if (inputs.connected && !disableQuest) {
-      RobotState.getInstance().addQuestMeasurment(fieldToRobot, inputs.timestamp);
+    if (inputs.connected ) {
+       if(!disableQuest) RobotState.getInstance().addQuestMeasurment(fieldToRobot, inputs.timestamp);
+        else{
+          RobotState.getInstance().addQuestMeasurmentOnlyLog(fieldToRobot);
+        }
     }
   }
 

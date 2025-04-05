@@ -13,13 +13,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Score L4"
+            "name": "Stop Chassis"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Auto Align"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L4"
           }
         },
         {
@@ -32,6 +38,31 @@
           "type": "named",
           "data": {
             "name": "Reset All"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "C.1"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake Low Algae"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "C.2"
+                }
+              }
+            ]
           }
         }
       ]
