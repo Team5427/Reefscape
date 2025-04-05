@@ -1,5 +1,7 @@
 package team5427.frc.robot.subsystems.Swerve.gyro;
 
+import static edu.wpi.first.units.Units.Degree;
+
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.StatusSignal;
@@ -10,9 +12,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularVelocity;
-
-import static edu.wpi.first.units.Units.Degree;
-
 import java.util.Queue;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.subsystems.Swerve.PhoenixOdometryThread;

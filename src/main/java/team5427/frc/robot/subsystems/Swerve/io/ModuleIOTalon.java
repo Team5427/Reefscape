@@ -251,7 +251,8 @@ public class ModuleIOTalon implements ModuleIO {
 
     driveMotor.velocityTorqueCurrentFOCRequest.withFeedForward(
         Amps.of(
-          (wheelTorque.in(NewtonMeter) / driveMotor.getTalonFX().getMotorKT().getValueAsDouble()) * (driveMotor.getMotorConfiguration().gearRatio.getSensorToMechanismRatio()) ));
+            (wheelTorque.in(NewtonMeter) / driveMotor.getTalonFX().getMotorKT().getValueAsDouble())
+                * (driveMotor.getMotorConfiguration().gearRatio.getSensorToMechanismRatio())));
   }
 
   /**

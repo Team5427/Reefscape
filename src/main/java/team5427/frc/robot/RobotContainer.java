@@ -6,7 +6,6 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.PathPlannerLogging;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,7 +17,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
-
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.commands.AllCommands;
@@ -138,9 +136,12 @@ public class RobotContainer {
   private void createNamedCommands() {
     NamedCommands.registerCommand("Score L3", AllCommands.scoreL3);
     NamedCommands.registerCommand("Score L4", AllCommands.scoreL4);
-    NamedCommands.registerCommand("Eject Coral", new EjectGamePiece(true, Optional.empty()).withTimeout(0.25));
-    NamedCommands.registerCommand("Intake Station", new Intake(RobotConfigConstants.kCoralStationIntake).withTimeout(2.0));
-    NamedCommands.registerCommand("Intake Low Algae", new Intake(RobotConfigConstants.kReefLowAlgaeIntake).withTimeout(3.0));
+    NamedCommands.registerCommand(
+        "Eject Coral", new EjectGamePiece(true, Optional.empty()).withTimeout(0.25));
+    NamedCommands.registerCommand(
+        "Intake Station", new Intake(RobotConfigConstants.kCoralStationIntake).withTimeout(2.0));
+    NamedCommands.registerCommand(
+        "Intake Low Algae", new Intake(RobotConfigConstants.kReefLowAlgaeIntake).withTimeout(3.0));
     NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
     NamedCommands.registerCommand(
         "Stop Chassis",
@@ -173,7 +174,6 @@ public class RobotContainer {
         (activePath) -> {
           Logger.recordOutput(
               "Odometry/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-              
         });
     PathPlannerLogging.setLogTargetPoseCallback(
         (targetPose) -> {

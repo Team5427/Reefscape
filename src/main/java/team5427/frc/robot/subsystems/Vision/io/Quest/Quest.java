@@ -1,19 +1,16 @@
 package team5427.frc.robot.subsystems.Vision.io.Quest;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants;
 import team5427.frc.robot.RobotState;
-import team5427.frc.robot.Constants.VisionConstants;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.lib.drivers.VirtualSubsystem;
 
@@ -24,7 +21,8 @@ public class Quest extends VirtualSubsystem {
   private final Alert disconnectedAlert = new Alert("Quest Disconnected!", AlertType.kWarning);
   private final Alert lowBatteryAlert =
       new Alert("Quest Battery is Low! (<25%)", AlertType.kWarning);
-  private final Alert questDisabledAlert = new Alert("Quest is Disabled \n No Quest Poses will be used!", AlertType.kWarning);
+  private final Alert questDisabledAlert =
+      new Alert("Quest is Disabled \n No Quest Poses will be used!", AlertType.kWarning);
 
   private final QuestCalibration calibration = new QuestCalibration();
 
@@ -32,9 +30,7 @@ public class Quest extends VirtualSubsystem {
 
   private static Quest questInstance;
 
-  @Getter
-  @Setter
-  private static boolean disableQuest;
+  @Getter @Setter private static boolean disableQuest;
 
   public static Quest getInstance() {
     if (questInstance == null) {
@@ -81,11 +77,12 @@ public class Quest extends VirtualSubsystem {
 
     // Do this always for now just to confirm our transforms are correct.
     // Or, you may want to always track rotation. Do science.
-    if (inputs.connected ) {
-       if(!disableQuest) RobotState.getInstance().addQuestMeasurment(fieldToRobot, inputs.timestamp);
-        else{
-          RobotState.getInstance().addQuestMeasurmentOnlyLog(fieldToRobot);
-        }
+    if (inputs.connected) {
+      if (!disableQuest)
+        RobotState.getInstance().addQuestMeasurment(fieldToRobot, inputs.timestamp);
+      else {
+        RobotState.getInstance().addQuestMeasurmentOnlyLog(fieldToRobot);
+      }
     }
   }
 
@@ -111,7 +108,9 @@ public class Quest extends VirtualSubsystem {
   public Pose2d getFieldToQuest() {
     return fieldToRobotOrigin
         .transformBy(QuestConstants.robotToQuestTransform)
-        // .transformBy(new Transform2d(VisionConstants.kQuestCameraTransform.inverse().getX(), VisionConstants.kQuestCameraTransform.inverse().getY(), VisionConstants.kQuestCameraTransform.inverse().getRotation().toRotation2d()))
+        // .transformBy(new Transform2d(VisionConstants.kQuestCameraTransform.inverse().getX(),
+        // VisionConstants.kQuestCameraTransform.inverse().getY(),
+        // VisionConstants.kQuestCameraTransform.inverse().getRotation().toRotation2d()))
         .transformBy(inputs.uncorrectedResetToQuest);
   }
 

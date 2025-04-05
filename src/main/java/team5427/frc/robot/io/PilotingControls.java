@@ -13,9 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
-import team5427.frc.robot.Constants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
@@ -37,7 +37,10 @@ public class PilotingControls {
                       .getDistance(
                           RobotState.getInstance()
                               .getAdaptivePose()
-                              .nearest(Constants.kAlliance.get() == Alliance.Red ?  List.of(RobotConfigConstants.kAlignPosesRed) : List.of(RobotConfigConstants.kAlignPosesBlue))
+                              .nearest(
+                                  Constants.kAlliance.get() == Alliance.Red
+                                      ? List.of(RobotConfigConstants.kAlignPosesRed)
+                                      : List.of(RobotConfigConstants.kAlignPosesBlue))
                               .getTranslation())
                   < Units.inchesToMeters(1.5));
 
@@ -84,24 +87,34 @@ public class PilotingControls {
     joy.b()
         .onTrue(
             new InstantCommand(
-                () -> {
-                  RobotState.getInstance()
-                      .resetAllPose(
-                          DriverStation.getAlliance().get() == Alliance.Red
-                              ? redResetPose
-                              : blueResetPose,
-                          SwerveSubsystem.getInstance().getModulePositions(),
-                          SwerveSubsystem.getInstance().getGyroRotation());
-                }).ignoringDisable(true));
+                    () -> {
+                      RobotState.getInstance()
+                          .resetAllPose(
+                              DriverStation.getAlliance().get() == Alliance.Red
+                                  ? redResetPose
+                                  : blueResetPose,
+                              SwerveSubsystem.getInstance().getModulePositions(),
+                              SwerveSubsystem.getInstance().getGyroRotation());
+                    })
+                .ignoringDisable(true));
     // AutoBuilder.resetOdom(DriverStation.getAlliance().get() == Alliance.Red ? redResetPose:
     // blueResetPose).ignoringDisable(true));
 
-
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
-    joy.povDown().and(() -> Constants.kIsTuningMode).whileTrue(new QuestCalibration().determineOffsetToRobotCenter(SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
-    joy.povDown().and(() -> !Constants.kIsTuningMode).toggleOnTrue(new InstantCommand(() -> {
-      Quest.setDisableQuest(!Quest.isDisableQuest());
-    }).ignoringDisable(true));
+    joy.povDown()
+        .and(() -> Constants.kIsTuningMode)
+        .whileTrue(
+            new QuestCalibration()
+                .determineOffsetToRobotCenter(
+                    SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
+    joy.povDown()
+        .and(() -> !Constants.kIsTuningMode)
+        .toggleOnTrue(
+            new InstantCommand(
+                    () -> {
+                      Quest.setDisableQuest(!Quest.isDisableQuest());
+                    })
+                .ignoringDisable(true));
 
     // joy.leftBumper()
     //     .onTrue(
@@ -122,17 +135,24 @@ public class PilotingControls {
     //             .followPosePathFinding(RobotState.getInstance().getClosestReefPose()));
     // joy.a().whileTrue(new MoveChassisToPose(true));
 
-    joy.a().onTrue(new InstantCommand(() -> {
-      SwerveSubsystem.getInstance().resetGyro(SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
-      RobotState.getInstance().resetHeading(SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
-    }));
+    joy.a()
+        .onTrue(
+            new InstantCommand(
+                () -> {
+                  SwerveSubsystem.getInstance()
+                      .resetGyro(
+                          SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
+                  RobotState.getInstance()
+                      .resetHeading(
+                          SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
+                }));
     joy.rightBumper().whileTrue(new MoveChassisToPose(false));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(
     //     PathPlannerPath.waypointsFromPoses(
     //       List.of(
-    
+
     //         RobotState.getInstance().getAdaptivePose(),
     //
     // RobotState.getInstance().getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses))

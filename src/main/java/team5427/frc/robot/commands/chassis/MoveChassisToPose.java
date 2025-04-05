@@ -9,12 +9,9 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import java.util.List;
 import org.littletonrobotics.junction.Logger;
-
-import com.pathplanner.lib.util.FlippingUtil;
-
+import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
-import team5427.frc.robot.Constants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
@@ -29,53 +26,51 @@ public class MoveChassisToPose extends Command {
   public MoveChassisToPose(boolean lazyControl) {
     swerveSubsystem = SwerveSubsystem.getInstance();
     addRequirements(swerveSubsystem);
-    
-    if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red){
+
+    if (DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red) {
 
       targetPose =
           RobotState.getInstance()
               .getAdaptivePose()
               .nearest(List.of(RobotConfigConstants.kAlignPosesRed));
 
-   
-    } else if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue){
+    } else if (DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue) {
       targetPose =
-      RobotState.getInstance()
-          .getAdaptivePose()
-          .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
+          RobotState.getInstance()
+              .getAdaptivePose()
+              .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
     }
   }
 
-  public static void setTargetPose(Pose2d pose2d){
+  public static void setTargetPose(Pose2d pose2d) {
     targetPose = pose2d;
   }
 
   public MoveChassisToPose(boolean lazyControl, Pose2d targetPose) {
     swerveSubsystem = SwerveSubsystem.getInstance();
     addRequirements(swerveSubsystem);
-    
+
     MoveChassisToPose.targetPose = targetPose;
   }
 
   @Override
   public void initialize() {
-      if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red){
+    if (DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red) {
 
-        targetPose =
-            RobotState.getInstance()
-                .getAdaptivePose()
-                .nearest(List.of(RobotConfigConstants.kAlignPosesRed));
+      targetPose =
+          RobotState.getInstance()
+              .getAdaptivePose()
+              .nearest(List.of(RobotConfigConstants.kAlignPosesRed));
 
-     
-      } else if(DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue){
-        targetPose =
-        RobotState.getInstance()
-            .getAdaptivePose()
-            .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
-      }
+    } else if (DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue) {
+      targetPose =
+          RobotState.getInstance()
+              .getAdaptivePose()
+              .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
+    }
 
-      // targetPose = Constants.kAlliance.get() == Alliance.Red ? FlippingUtil.flipFieldPose(targetPose): targetPose;
-        
+    // targetPose = Constants.kAlliance.get() == Alliance.Red ?
+    // FlippingUtil.flipFieldPose(targetPose): targetPose;
 
     // SwerveConstants.kTranslationPIDController.reset(
     //

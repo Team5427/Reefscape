@@ -6,12 +6,10 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.List;
@@ -93,8 +91,8 @@ public class RobotState {
     poseEstimator.addVisionMeasurement(questPose, timestamp, VecBuilder.fill(0.001, 0.001, 0.01));
   }
 
-  public void addQuestMeasurmentOnlyLog(Pose2d questPose){
-    this.questPose  = questPose;
+  public void addQuestMeasurmentOnlyLog(Pose2d questPose) {
+    this.questPose = questPose;
   }
 
   public Pose2d getOdometryPose() {
@@ -113,7 +111,6 @@ public class RobotState {
     resetEstimatedPose(resetPose);
     // SwerveSubsystem.getInstance().resetGyro(resetPose.getRotation());
     resetQuestPose(resetPose);
-    
   }
 
   public void resetAllPose(
@@ -164,7 +161,8 @@ public class RobotState {
   public Pose2d getClosestReefPose() { // FIX ME
     Pose2d pose = getAdaptivePose().nearest(List.of(RobotConfigConstants.kReefPoses));
 
-    if (Constants.kAlliance.isPresent() && Constants.kAlliance.get() == Alliance.Red) return FlippingUtil.flipFieldPose(pose);
+    if (Constants.kAlliance.isPresent() && Constants.kAlliance.get() == Alliance.Red)
+      return FlippingUtil.flipFieldPose(pose);
     return pose;
   }
 

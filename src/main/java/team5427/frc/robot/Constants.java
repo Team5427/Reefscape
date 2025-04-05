@@ -6,12 +6,10 @@ import static edu.wpi.first.units.Units.Feet;
 import static edu.wpi.first.units.Units.Inches;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
-import static edu.wpi.first.units.Units.Radians;
 
 import com.ctre.phoenix6.CANBus;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.util.FlippingUtil;
-
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
@@ -112,7 +110,7 @@ public final class Constants {
       kDriveMotorConfiguration.kP = 2.00; // 2.64
       kDriveMotorConfiguration.kV = 0.75;
       kDriveMotorConfiguration.kA = 0.1;
-      kDriveMotorConfiguration.kS = 0.05; 
+      kDriveMotorConfiguration.kS = 0.05;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }
@@ -165,11 +163,12 @@ public final class Constants {
     public static final double kRotationalKp = 1.4927;
 
     public static final double kAutoAlignRotationalKp = 3.1;
-    public static  double kTranslationalKp = 3.40;
+    public static double kTranslationalKp = 3.40;
 
-    public static LoggedTunableNumber kTranslationalKpTunable = new LoggedTunableNumber("AUton Trasnlational Kp", 5.8);
+    public static LoggedTunableNumber kTranslationalKpTunable =
+        new LoggedTunableNumber("AUton Trasnlational Kp", 5.8);
+
     static {
-
     }
 
     public static final double kAutoAlignTranslationKp = 4.2;
@@ -394,12 +393,14 @@ public final class Constants {
             Units.inchesToMeters(8.540489626),
             new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
 
-    public static final Transform3d kQuestCameraTransform = new Transform3d(0.192, 0.358, Units.inchesToMeters(8.098), new Rotation3d(Rotation2d.kCCW_90deg));
-        // new Transform3d(
-        //     Units.inchesToMeters(0.296),
-        //     Units.inchesToMeters(12.5),
-        //     Units.inchesToMeters(8.098),
-        //     new Rotation3d(Rotation2d.kCCW_90deg));
+    public static final Transform3d kQuestCameraTransform =
+        new Transform3d(
+            0.192, 0.358, Units.inchesToMeters(8.098), new Rotation3d(Rotation2d.kCCW_90deg));
+    // new Transform3d(
+    //     Units.inchesToMeters(0.296),
+    //     Units.inchesToMeters(12.5),
+    //     Units.inchesToMeters(8.098),
+    //     new Rotation3d(Rotation2d.kCCW_90deg));
 
     public static Transform3d[] kCameraTransforms = new Transform3d[kCameraCount];
 
@@ -799,7 +800,7 @@ public final class Constants {
         RobotConfigConstants.kAlignPosesBlue[i] = alignPose;
         System.out.println("Blue Pose " + i + ": " + RobotConfigConstants.kAlignPosesBlue[i]);
       }
-      for(int i = 0; i <  RobotConfigConstants.kAlignPosesRed.length; i++){
+      for (int i = 0; i < RobotConfigConstants.kAlignPosesRed.length; i++) {
         kAlignPosesRed[i] = FlippingUtil.flipFieldPose(kAlignPosesBlue[i]);
         System.out.println("Red Pose " + i + ": " + RobotConfigConstants.kAlignPosesRed[i]);
       }
