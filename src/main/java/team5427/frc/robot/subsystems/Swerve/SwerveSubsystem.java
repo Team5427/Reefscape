@@ -33,6 +33,7 @@ import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIO;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOInputsAutoLogged;
 import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOPigeon;
+import team5427.frc.robot.subsystems.Swerve.gyro.GyroIOSim;
 import team5427.lib.kinematics.SwerveUtil;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -98,7 +99,7 @@ public class SwerveSubsystem extends SubsystemBase {
     switch (Constants.currentMode) {
       case SIM:
       case REPLAY:
-        // gyroIO = new GyroIOSim();
+        gyroIO = new GyroIOSim();
         break;
       case REAL:
         gyroIO = new GyroIOPigeon();
@@ -130,15 +131,15 @@ public class SwerveSubsystem extends SubsystemBase {
   public ChassisSpeeds getDriveSpeeds(
       double xInput, double yInput, double omegaInput, double dampenAmount) {
 
-    xInput *= (1 - dampenAmount);
-    yInput *= (1 - dampenAmount);
-    omegaInput *= (1 - dampenAmount);
+    // xInput *= (1 - dampenAmount);
+    // yInput *= (1 - dampenAmount);
+    // omegaInput *= (1 - dampenAmount);
 
     ChassisSpeeds rawSpeeds =
         new ChassisSpeeds(
-            xInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity,
-            yInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity,
-            omegaInput * SwerveConstants.kDriveMotorConfiguration.maxVelocity * Math.PI);
+            scaleDriveComponents(xInput, dampenAmount),
+            scaleDriveComponents(yInput, dampenAmount),
+            scaleDriveComponents(omegaInput, dampenAmount) * Math.PI);
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, getGyroRotation());
@@ -150,6 +151,44 @@ public class SwerveSubsystem extends SubsystemBase {
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
 
     return discretizedSpeeds;
+  }
+
+  /** Allows for specified rotation for field orientation on a different, temporary angle */
+  public ChassisSpeeds getDriveSpeeds(
+      double xInput,
+      double yInput,
+      double omegaInput,
+      double dampenAmount,
+      Rotation2d fieldOrientedRotation) {
+
+    // xInput *= (1 - dampenAmount);
+    // yInput *= (1 - dampenAmount);
+    // omegaInput *= (1 - dampenAmount);
+
+    ChassisSpeeds rawSpeeds =
+        new ChassisSpeeds(
+            scaleDriveComponents(xInput, dampenAmount),
+            scaleDriveComponents(yInput, dampenAmount),
+            scaleDriveComponents(omegaInput, dampenAmount) * Math.PI);
+
+    ChassisSpeeds fieldRelativeSpeeds =
+        ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, fieldOrientedRotation);
+    // ChassisSpeeds fieldRelativeSpeeds =
+    //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
+    // RobotState.getInstance().getAdaptivePose().getRotation());
+
+    ChassisSpeeds discretizedSpeeds =
+        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
+
+    return discretizedSpeeds;
+  }
+
+  public double scaleDriveComponents(double velocity) {
+    return velocity * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
+  }
+
+  public double scaleDriveComponents(double velocity, double dampeningAmount) {
+    return velocity * (1 - dampeningAmount) * SwerveConstants.kDriveMotorConfiguration.maxVelocity;
   }
 
   public ChassisSpeeds getDriveSpeeds(

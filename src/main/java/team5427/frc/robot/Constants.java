@@ -140,26 +140,6 @@ public final class Constants {
 
     public static final CANDeviceId kPigeonCANId = new CANDeviceId(11, "*");
 
-    public static class SimulationConstants {
-      public static final double steerkP = 30.0;
-      public static final double steerkI = 0.0;
-      public static final double steerkD = 2.0;
-
-      public static final double drivekP = 20.0;
-      public static final double drivekI = 0.0;
-      public static final double drivekD = 0.0;
-      public static final double drivekS = 0.0;
-      public static final double drivekV = 45.0;
-    }
-
-    public static final PIDController kSIMSteerController = new PIDController(0.5, 0, 0.);
-    public static final SimpleMotorFeedforward kSIMSteerFeedforward =
-        new SimpleMotorFeedforward(0, 0.01, 0);
-
-    public static final PIDController kSIMDriveController = new PIDController(4, 0, 0.6);
-    public static final SimpleMotorFeedforward kSIMDriveFeedforward =
-        new SimpleMotorFeedforward(0., 2.08, 0.17);
-
     public static final double kRotationalKp = 1.4927;
 
     public static final double kAutoAlignRotationalKp = 3.1;
@@ -203,6 +183,9 @@ public final class Constants {
                 kDriveMotorConfiguration.maxAcceleration),
             Constants.kLoopSpeed);
 
+    public static final double kAutoAlignTranslationalMaxSpeed =
+        SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.2;
+
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
             new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -211,6 +194,26 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));
 
     public static final SwerveUtil kSwerveUtilInstance = new SwerveUtil();
+
+    public static class SimulationConstants {
+      public static final double steerkP = 30.0;
+      public static final double steerkI = 0.0;
+      public static final double steerkD = 2.0;
+
+      public static final double drivekP = 20.0;
+      public static final double drivekI = 0.0;
+      public static final double drivekD = 0.0;
+      public static final double drivekS = 0.0;
+      public static final double drivekV = 45.0;
+    }
+
+    public static final PIDController kSIMSteerController = new PIDController(0.5, 0, 0.);
+    public static final SimpleMotorFeedforward kSIMSteerFeedforward =
+        new SimpleMotorFeedforward(0, 0.01, 0);
+
+    public static final PIDController kSIMDriveController = new PIDController(4, 0, 0.6);
+    public static final SimpleMotorFeedforward kSIMDriveFeedforward =
+        new SimpleMotorFeedforward(0., 2.08, 0.17);
 
     static {
       kRotationPIDController.enableContinuousInput(-Math.PI, Math.PI);

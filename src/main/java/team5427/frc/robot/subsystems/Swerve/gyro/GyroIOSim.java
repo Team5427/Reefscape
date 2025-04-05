@@ -50,4 +50,10 @@ public class GyroIOSim implements GyroIO {
     yawTimestampQueue.clear();
     yawPositionQueue.clear();
   }
+
+  @Override
+  public void resetGyroYawAngle(Rotation2d angle) {
+    this.gyro.setYaw(angle.getDegrees());
+    this.gyroSimState.setRawYaw(angle.getDegrees());
+  }
 }

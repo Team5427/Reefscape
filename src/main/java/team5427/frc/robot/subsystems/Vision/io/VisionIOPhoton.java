@@ -48,6 +48,7 @@ public class VisionIOPhoton implements VisionIO {
             PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
             cameraTransform);
     photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
+    // photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CONSTRAINED_SOLVEPNP);
     this.cameraOffset = cameraTransform;
     this.getReferencePose = getReferencePose;
     this.getHeadingData = getHeadingData;

@@ -149,7 +149,7 @@ public class RobotContainer {
             () -> {
               SwerveSubsystem.getInstance().setInputSpeeds(new ChassisSpeeds(0, 0, 0));
             }));
-    NamedCommands.registerCommand("Auto Align", new MoveChassisToPose(false).withTimeout(1.5));
+    NamedCommands.registerCommand("Auto Align", new MoveChassisToPose().withTimeout(1.5));
   }
 
   public void configureButtonBindings() {

@@ -17,9 +17,9 @@ import team5427.frc.robot.Constants;
 import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.RobotState;
+import team5427.frc.robot.commands.chassis.AlignChassisToPoseY;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
-import team5427.frc.robot.commands.chassis.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
 import team5427.frc.robot.subsystems.Vision.io.Quest.QuestCalibration;
@@ -146,7 +146,8 @@ public class PilotingControls {
                       .resetHeading(
                           SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
                 }));
-    joy.rightBumper().whileTrue(new MoveChassisToPose(false));
+    // joy.rightBumper().whileTrue(new MoveChassisToPose());
+    joy.rightBumper().whileTrue(new AlignChassisToPoseY(joy));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(
