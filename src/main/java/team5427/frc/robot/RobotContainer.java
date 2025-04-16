@@ -141,7 +141,7 @@ public class RobotContainer {
     NamedCommands.registerCommand(
         "Intake Station", new Intake(RobotConfigConstants.kCoralStationIntake).withTimeout(2.0));
     NamedCommands.registerCommand(
-        "Intake Low Algae", new Intake(RobotConfigConstants.kReefLowAlgaeIntake).withTimeout(3.0));
+        "Intake Low Algae", new Intake(RobotConfigConstants.kReefLowAlgaeIntake).withTimeout(2.8));
     NamedCommands.registerCommand("Reset All", AllCommands.resetSubsystems);
     NamedCommands.registerCommand(
         "Stop Chassis",
