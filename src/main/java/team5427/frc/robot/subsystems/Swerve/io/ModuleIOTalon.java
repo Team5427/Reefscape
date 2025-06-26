@@ -18,7 +18,6 @@ import com.ctre.phoenix6.hardware.ParentDevice;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -60,8 +59,6 @@ public class ModuleIOTalon implements ModuleIO {
 
   private Queue<Double> drivePositionQueue;
   private Queue<Double> steerPositionQueue;
-
-  private ProfiledPIDController rotationController;
 
   private final Queue<Double> timestampQueue;
 
@@ -262,7 +259,12 @@ public class ModuleIOTalon implements ModuleIO {
    */
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
+    if(speed.in(MetersPerSecond) == 0.0){
+      driveMotor.getTalonFX().stopMotor();
+    } else{
     driveMotor.setSetpoint(speed.in(MetersPerSecond));
+    }
+
   }
 
   @Override

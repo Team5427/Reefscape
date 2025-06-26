@@ -24,12 +24,12 @@
  },
  "params":{
   "waypoints":[
-    {"x":{"exp":"LeftSideStart.x", "val":7.6}, "y":{"exp":"LeftSideStart.y", "val":6.15}, "heading":{"exp":"LeftSideStart.heading", "val":3.141592653589793}, "intervals":69, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"CoralIntakeLeftSide.x", "val":1.365}, "y":{"exp":"CoralIntakeLeftSide.y", "val":7.25}, "heading":{"exp":"CoralIntakeLeftSide.heading", "val":5.366887449882563}, "intervals":37, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"LeftSideStart.x", "val":7.5}, "y":{"exp":"LeftSideStart.y", "val":6.15}, "heading":{"exp":"LeftSideStart.heading", "val":3.141592653589793}, "intervals":69, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"CoralIntakeLeftSide.x", "val":1.36}, "y":{"exp":"CoralIntakeLeftSide.y", "val":7.1}, "heading":{"exp":"CoralIntakeLeftSide.heading", "val":5.366887449882563}, "intervals":37, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"KCoralScore.x", "val":3.98}, "y":{"exp":"KCoralScore.y", "val":5.25}, "heading":{"exp":"KCoralScore.heading", "val":5.235987755982988}, "intervals":37, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"CoralIntakeLeftSide.x", "val":1.365}, "y":{"exp":"CoralIntakeLeftSide.y", "val":7.25}, "heading":{"exp":"CoralIntakeLeftSide.heading", "val":5.366887449882563}, "intervals":36, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"CoralIntakeLeftSide.x", "val":1.36}, "y":{"exp":"CoralIntakeLeftSide.y", "val":7.1}, "heading":{"exp":"CoralIntakeLeftSide.heading", "val":5.366887449882563}, "intervals":36, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"LCoralScore.x", "val":3.69}, "y":{"exp":"LCoralScore.y", "val":5.08}, "heading":{"exp":"LCoralScore.heading", "val":5.235987755982988}, "intervals":36, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"CoralIntakeLeftSide.x", "val":1.365}, "y":{"exp":"CoralIntakeLeftSide.y", "val":7.25}, "heading":{"exp":"CoralIntakeLeftSide.heading", "val":5.366887449882563}, "intervals":51, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
+    {"x":{"exp":"CoralIntakeLeftSide.x", "val":1.36}, "y":{"exp":"CoralIntakeLeftSide.y", "val":7.1}, "heading":{"exp":"CoralIntakeLeftSide.heading", "val":5.366887449882563}, "intervals":51, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"JCoralScore.x", "val":4.95}, "y":{"exp":"JCoralScore.y", "val":5.25}, "heading":{"exp":"JCoralScore.heading", "val":-2.0943951023931953}, "intervals":43, "split":false, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},

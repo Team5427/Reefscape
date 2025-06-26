@@ -15,12 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.Optional;
 import org.littletonrobotics.junction.Logger;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.commands.AllCommands;
-import team5427.frc.robot.commands.chassis.MoveChassisToPose;
+import team5427.frc.robot.commands.chassis.assistance.MoveChassisToPose;
 import team5427.frc.robot.commands.intake.Intake;
 import team5427.frc.robot.commands.outtake.EjectGamePiece;
 import team5427.frc.robot.io.OperatingControls;
@@ -111,22 +112,18 @@ public class RobotContainer {
     //     "Drive Wheel Radius Characterization", DriveCommands.wheelRadiusCharacterization(drive));
     // autoChooser.addOption(
     //     "Drive Simple FF Characterization", DriveCommands.feedforwardCharacterization(drive));
-    // autoChooser.addOption(
-    //     "Drive SysId (Quasistatic Forward)",
-    //     SwerveSubsystem.getInstance(Optional.empty())
-    //         .sysIdQuasistatic(SysIdRoutine.Direction.kForward));
-    // autoChooser.addOption(
-    //     "Drive SysId (Quasistatic Reverse)",
-    //     SwerveSubsystem.getInstance(Optional.empty())
-    //         .sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
-    // autoChooser.addOption(
-    //     "Drive SysId (Dynamic Forward)",
-    //     SwerveSubsystem.getInstance(Optional.empty())
-    //         .sysIdDynamic(SysIdRoutine.Direction.kForward));
-    // autoChooser.addOption(
-    //     "Drive SysId (Dynamic Reverse)",
-    //     SwerveSubsystem.getInstance(Optional.empty())
-    //         .sysIdDynamic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Forward)",
+        SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Reverse)",
+        SwerveSubsystem.getInstance().sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Forward)",
+        SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Reverse)",
+        SwerveSubsystem.getInstance().sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 

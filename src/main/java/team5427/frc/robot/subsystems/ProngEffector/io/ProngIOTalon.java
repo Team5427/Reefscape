@@ -13,6 +13,7 @@ import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
 import team5427.frc.robot.Constants.ProngEffectorConstants;
 import team5427.lib.motors.real.MagicSteelTalonFX;
@@ -37,6 +38,8 @@ public class ProngIOTalon implements ProngIO {
   private StatusSignal<Current> rollerCurrent;
   private StatusSignal<Voltage> rollerVoltage;
 
+  private StatusSignal<Temperature> rollerTemperature;
+
   public ProngIOTalon() {
     wristServo = new MagicSteelTalonFX(ProngEffectorConstants.kWristServoId);
     wristServo.apply(ProngEffectorConstants.kWristConfiguration);
@@ -60,6 +63,11 @@ public class ProngIOTalon implements ProngIO {
 
     rollerCurrent = rollerTalon.getTalonFX().getStatorCurrent();
     rollerVoltage = rollerTalon.getTalonFX().getMotorVoltage();
+    
+    rollerTemperature = rollerTalon.getTalonFX().getDeviceTemp();
+
+    BaseStatusSignal.setUpdateFrequencyForAll(10, rollerTemperature);
+
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,
@@ -119,6 +127,7 @@ public class ProngIOTalon implements ProngIO {
 
     inputs.rollerCurrent = rollerCurrent.getValue();
     inputs.rollerVoltage = rollerVoltage.getValue();
+    inputs.rollerTemperature = rollerTemperature.getValue();
   }
 
   @Override

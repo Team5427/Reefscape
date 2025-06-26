@@ -1,6 +1,6 @@
-package team5427.frc.robot.commands.chassis;
+package team5427.frc.robot.commands.chassis.assistance;
 
-import edu.wpi.first.math.controller.HolonomicDriveController;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -18,6 +18,7 @@ import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
+import team5427.frc.robot.subsystems.Vision.VisionSubsystem;
 
 /**
  * Aligns the Chassis to a Pose in the
@@ -30,17 +31,20 @@ import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
  *
  * with a virtual heading zero of the pose's theta
  */
-public class AlignChassisToPoseY extends Command {
+public class ServoChassisToPoseLeft extends Command {
   private SwerveSubsystem swerveSubsystem;
-  private HolonomicDriveController driveController;
+  private VisionSubsystem visionSubsystem;
 
   private CommandXboxController joy;
   private TunedJoystick translationJoystick;
 
+  private MedianFilter xTargetFilter = new MedianFilter(5);
+
   private static Pose2d targetPose;
 
-  public AlignChassisToPoseY(CommandXboxController driverJoystick) {
+  public ServoChassisToPoseLeft(CommandXboxController driverJoystick) {
     swerveSubsystem = SwerveSubsystem.getInstance();
+    visionSubsystem = VisionSubsystem.getInstance();
 
     joy = driverJoystick;
     translationJoystick = new TunedJoystick(joy.getHID());
@@ -68,8 +72,10 @@ public class AlignChassisToPoseY extends Command {
     targetPose = pose2d;
   }
 
-  public AlignChassisToPoseY(CommandXboxController driverJoystick, Pose2d targetPose) {
+  public ServoChassisToPoseLeft(CommandXboxController driverJoystick, Pose2d targetPose) {
     swerveSubsystem = SwerveSubsystem.getInstance();
+    visionSubsystem = VisionSubsystem.getInstance();
+
     joy = driverJoystick;
     translationJoystick = new TunedJoystick(joy.getHID());
     translationJoystick.useResponseCurve(ResponseCurve.LINEAR);
@@ -77,7 +83,7 @@ public class AlignChassisToPoseY extends Command {
     translationJoystick.setDeadzone(OperatorConstants.kDriverControllerJoystickDeadzone);
     addRequirements(swerveSubsystem);
 
-    AlignChassisToPoseY.targetPose = targetPose;
+    ServoChassisToPoseLeft.targetPose = targetPose;
   }
 
   @Override
@@ -96,24 +102,7 @@ public class AlignChassisToPoseY extends Command {
               .nearest(List.of(RobotConfigConstants.kAlignPosesBlue));
     }
 
-    driveController =
-        new HolonomicDriveController(
-            SwerveConstants.kTranslationXPIDController,
-            SwerveConstants.kTranslationYPIDController,
-            SwerveConstants.kRotationPIDController);
-    driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(2)));
-
-    // targetPose = Constants.kAlliance.get() == Alliance.Red ?
-    // FlippingUtil.flipFieldPose(targetPose): targetPose;
-
-    // SwerveConstants.kTranslationPIDController.reset(
-    //
-    // RobotState.getInstance().getAdaptivePose().getTranslation().getDistance(targetPose.getTranslation())
-    // );
-
-    // driveController.setTolerance(targetPose.plus(new Transform2d(0.05, 0.05,
-    // Rotation2d.fromDegrees(1))));
-
+    xTargetFilter.reset();
   }
 
   @Override
@@ -123,21 +112,15 @@ public class AlignChassisToPoseY extends Command {
     Logger.recordOutput("Target Pose", targetPose);
 
     ChassisSpeeds adjustmentSpeeds =
-        driveController.calculate(
-            Pose2d.kZero,
-            targetPose.relativeTo(robotPose),
-            SwerveConstants.kAutoAlignTranslationalMaxSpeed,
-            targetPose.getRotation().minus(robotPose.getRotation()));
+        new ChassisSpeeds(
+            0,
+            SwerveConstants.kAutoAlignServoController.calculate(
+                xTargetFilter.calculate(visionSubsystem.getTargetX(0).getDegrees()),
+                SwerveConstants.kServoAprilTagTargetLeft.getDegrees()),
+            SwerveConstants.kRotationPIDController.calculate(
+                0.0, targetPose.getRotation().minus(robotPose.getRotation()).getRadians()));
 
-    if (driveController.atReference()) {
-      adjustmentSpeeds = new ChassisSpeeds(0, 0, 0);
-      return;
-    }
-
-    // removes HolonomicPIDController input in the x direction
-    adjustmentSpeeds.vxMetersPerSecond = 0.0;
-
-    double vx = -translationJoystick.getRightY();
+    double vx = translationJoystick.getRightY();
 
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
 

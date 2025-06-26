@@ -1,4 +1,4 @@
-package team5427.frc.robot.commands.chassis;
+package team5427.frc.robot.commands.chassis.assistance;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -129,15 +129,15 @@ public class AlignChassisToPoseX extends Command {
             SwerveConstants.kAutoAlignTranslationalMaxSpeed,
             targetPose.getRotation().minus(robotPose.getRotation()));
 
-    if (driveController.atReference()) {
+    if (driveController.getThetaController().atSetpoint()
+        || driveController.getXController().atSetpoint()) {
       adjustmentSpeeds = new ChassisSpeeds(0, 0, 0);
-      return;
     }
 
     // removes HolonomicPIDController input in the x direction
     adjustmentSpeeds.vyMetersPerSecond = 0.0;
 
-    double vy = -translationJoystick.getRightX();
+    double vy = translationJoystick.getRightX();
 
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
 

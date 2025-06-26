@@ -1,6 +1,7 @@
 package team5427.frc.robot.subsystems.ProngEffector.io;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Celsius;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.MetersPerSecondPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
@@ -13,6 +14,7 @@ import edu.wpi.first.units.measure.AngularVelocity;
 import edu.wpi.first.units.measure.Current;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
+import edu.wpi.first.units.measure.Temperature;
 import edu.wpi.first.units.measure.Voltage;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -34,6 +36,8 @@ public interface ProngIO {
 
     public Current rollerCurrent = Amps.of(0.0);
     public Voltage rollerVoltage = Volts.of(0.0);
+
+    public Temperature rollerTemperature = Celsius.of(0.0);
   }
 
   public void updateInputs(ProngIOInputs inputs);

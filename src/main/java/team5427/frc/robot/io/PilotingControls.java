@@ -1,7 +1,6 @@
 package team5427.frc.robot.io;
 
 import com.pathplanner.lib.util.FlippingUtil;
-
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
@@ -26,9 +24,12 @@ import team5427.frc.robot.Constants.OperatorConstants;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
-import team5427.frc.robot.commands.chassis.AlignChassisToPoseY;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.LockedChassisMovement;
+import team5427.frc.robot.commands.chassis.assistance.AlignChassisToCenter;
+import team5427.frc.robot.commands.chassis.assistance.AlignChassisToPoseY;
+import team5427.frc.robot.commands.chassis.assistance.AlignChassisToSide;
+import team5427.frc.robot.commands.chassis.assistance.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
 import team5427.frc.robot.subsystems.Vision.io.Quest.QuestCalibration;
@@ -110,20 +111,20 @@ public class PilotingControls {
     // blueResetPose).ignoringDisable(true));
 
     SwerveSubsystem.getInstance().setDefaultCommand(new ChassisMovement(joy));
-    joy.povDown()
-        .and(() -> Constants.kIsTuningMode)
-        .whileTrue(
-            new QuestCalibration()
-                .determineOffsetToRobotCenter(
-                    SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
-    joy.povDown()
-        .and(() -> !Constants.kIsTuningMode)
-        .toggleOnTrue(
-            new InstantCommand(
-                    () -> {
-                      Quest.setDisableQuest(!Quest.isDisableQuest());
-                    })
-                .ignoringDisable(true));
+    // joy.povDown()
+    //     .and(() -> Constants.kIsTuningMode)
+    //     .whileTrue(
+    //         new QuestCalibration()
+    //             .determineOffsetToRobotCenter(
+    //                 SwerveSubsystem.getInstance(), RobotState.getInstance()::getQuestPose));
+    // joy.povDown()
+    //     .and(() -> !Constants.kIsTuningMode)
+    //     .toggleOnTrue(
+    //         new InstantCommand(
+    //                 () -> {
+    //                   Quest.setDisableQuest(!Quest.isDisableQuest());
+    //                 })
+    //             .ignoringDisable(true));
 
     // joy.leftBumper()
     //     .onTrue(
@@ -137,7 +138,7 @@ public class PilotingControls {
     //               SwerveSubsystem.getInstance().setGyroLock(false);
     //             }));
 
-    joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
+    // joy.leftBumper().whileTrue(new LockedChassisMovement(joy));
     // joy.a()
     //     .onTrue(
     //         SwerveSubsystem.getInstance()
@@ -155,8 +156,11 @@ public class PilotingControls {
                       .resetHeading(
                           SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
                 }));
-    // joy.rightBumper().whileTrue(new MoveChassisToPose());
-    joy.rightBumper().whileTrue(new AlignChassisToPoseY(joy));
+    // joy.rightBumper().whileTrue(new AlignChassisToPoseY(joy));
+    
+    joy.povDown().whileTrue(new AlignChassisToCenter(joy));
+    joy.leftBumper().whileTrue(new AlignChassisToSide(joy, false));
+    joy.rightBumper().whileTrue(new AlignChassisToSide(joy, true));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(
@@ -202,7 +206,9 @@ public class PilotingControls {
                     })
                 .ignoringDisable(true));
 
-    joy.povLeft().and(() -> Constants.kIsTuningMode).whileTrue(wheelRadiusCharacterization(SwerveSubsystem.getInstance()));
+    joy.povLeft()
+        .and(() -> Constants.kIsTuningMode)
+        .whileTrue(wheelRadiusCharacterization(SwerveSubsystem.getInstance()));
 
     rumble.onTrue(
         new InstantCommand(
@@ -269,7 +275,8 @@ public class PilotingControls {
                       for (int i = 0; i < 4; i++) {
                         wheelDelta += Math.abs(positions[i] - state.positions[i]) / 4.0;
                       }
-                      double wheelRadius = (state.gyroDelta * SwerveConstants.kDrivetrainRadius) / wheelDelta;
+                      double wheelRadius =
+                          (state.gyroDelta * SwerveConstants.kDrivetrainRadius) / wheelDelta;
 
                       NumberFormat formatter = new DecimalFormat("#0.000");
                       System.out.println(

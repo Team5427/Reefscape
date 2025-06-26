@@ -1,5 +1,9 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.RotationsPerSecond;
+import static edu.wpi.first.units.Units.Second;
+import static edu.wpi.first.units.Units.Volts;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathCommand;
 import com.pathplanner.lib.config.PIDConstants;
@@ -9,6 +13,8 @@ import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.path.Waypoint;
 import com.pathplanner.lib.util.DriveFeedforwards;
+import com.pathplanner.lib.util.swerve.SwerveSetpoint;
+import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
@@ -18,9 +24,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -50,11 +58,13 @@ public class SwerveSubsystem extends SubsystemBase {
 
   @Getter private ChassisSpeeds inputSpeeds;
 
-  // private SwerveSetpointGenerator setpointGenerator;
+  private SwerveSetpointGenerator setpointGenerator;
 
-  // private SwerveSetpoint setpoint;
+  private SwerveSetpoint setpoint;
 
   private DriveFeedforwards driveFeedforwards;
+
+  private final SysIdRoutine sysId;
 
   private OdometryConsumer odometryConsumer;
 
@@ -116,16 +126,39 @@ public class SwerveSubsystem extends SubsystemBase {
     } else {
       odometryConsumer = consumer;
     }
-
-    // setpointGenerator = new SwerveSetpointGenerator(Constants.config,
-    // RotationsPerSecond.of(3.0));
-    // setpoint = new SwerveSetpoint(inputSpeeds, actualModuleStates, driveFeedforwards);
+    setpointGenerator = new SwerveSetpointGenerator(Constants.config, RotationsPerSecond.of(2.0));
+    setpoint =
+        new SwerveSetpoint(
+            new ChassisSpeeds(0, 0, 0),
+            new SwerveModuleState[] {
+              new SwerveModuleState(0.0, Rotation2d.kZero),
+              new SwerveModuleState(0.0, Rotation2d.kZero),
+              new SwerveModuleState(0.0, Rotation2d.kZero),
+              new SwerveModuleState(0.0, Rotation2d.kZero)
+            },
+            DriveFeedforwards.zeros(4));
 
     driveFeedforwards = null;
+
+    sysId =
+        new SysIdRoutine(
+            new SysIdRoutine.Config(
+                Volts.of(10).per(Second),
+                Volts.of(20),
+                null,
+                (state) -> Logger.recordOutput("SysId/SwerveSysIdState", state.toString())),
+            new SysIdRoutine.Mechanism(
+                (voltage) -> runDriveCharacterization(voltage.in(Volts)), null, this));
 
     PhoenixOdometryThread.getInstance().start();
 
     System.out.println("Created New Swerve");
+  }
+
+  public void runDriveCharacterization(double output) {
+    for (SwerveModule module : swerveModules) {
+      module.runDriveCharacterization(output);
+    }
   }
 
   public ChassisSpeeds getDriveSpeeds(
@@ -151,6 +184,14 @@ public class SwerveSubsystem extends SubsystemBase {
         ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
 
     return discretizedSpeeds;
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysId.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysId.dynamic(direction);
   }
 
   /** Allows for specified rotation for field orientation on a different, temporary angle */
@@ -286,12 +327,16 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     // Create New Target Module States from inputSpeeds
-    targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
+    // targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
+    // setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,Constants.kLoopSpeed);
+    setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,new PathConstraints(1.0, 1.0, 1.0, RobotController.getBatteryVoltage()),Constants.kLoopSpeed);
+    targetModuleStates = setpoint.moduleStates();
 
     for (int i = 0; i < swerveModules.length; i++) {
       if (driveFeedforwards != null) {
         swerveModules[i].setModuleState(
             targetModuleStates[i], driveFeedforwards); // Set new target module state
+            // targetModuleStates[i]); // Set new target module state
       } else {
         swerveModules[i].setModuleState(targetModuleStates[i]);
       }
@@ -346,15 +391,14 @@ public class SwerveSubsystem extends SubsystemBase {
     this.driveFeedforwards = null;
   }
 
-    /** Returns the position of each module in radians. */
-    public double[] getWheelRadiusCharacterizationPositions() {
-      double[] values = new double[4];
-      for (int i = 0; i < 4; i++) {
-        values[i] = swerveModules[i].getWheelRadiusCharacterizationPosition().getRadians();
-      }
-      return values;
+  /** Returns the position of each module in radians. */
+  public double[] getWheelRadiusCharacterizationPositions() {
+    double[] values = new double[4];
+    for (int i = 0; i < 4; i++) {
+      values[i] = swerveModules[i].getWheelRadiusCharacterizationPosition().getRadians();
     }
-  
+    return values;
+  }
 
   @FunctionalInterface
   public static interface OdometryConsumer {

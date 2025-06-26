@@ -23,7 +23,7 @@
     {"x":{"exp":"HCoralScore.x", "val":5.79}, "y":{"exp":"HCoralScore.y", "val":4.2}, "heading":{"exp":"HCoralScore.heading", "val":3.141592653589793}, "intervals":19, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"7 m", "val":7.0}, "y":{"exp":"CenterStartPose.y", "val":4.0}, "heading":{"exp":"180 deg", "val":3.141592653589793}, "intervals":19, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
     {"x":{"exp":"5.85 m", "val":5.85}, "y":{"exp":"CenterStartPose.y", "val":4.0}, "heading":{"exp":"180 deg", "val":3.141592653589793}, "intervals":46, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false},
-    {"x":{"exp":"LeftSideStart.x - 0.25 m", "val":7.35}, "y":{"exp":"LeftSideStart.y - 1 m", "val":5.15}, "heading":{"exp":"LeftSideStart.heading + 180 deg", "val":6.283185307179586}, "intervals":40, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
+    {"x":{"exp":"LeftSideStart.x - 0.25 m", "val":7.25}, "y":{"exp":"LeftSideStart.y - 1 m", "val":5.15}, "heading":{"exp":"LeftSideStart.heading + 180 deg", "val":6.283185307179586}, "intervals":40, "split":true, "fixTranslation":true, "fixHeading":true, "overrideIntervals":false}],
   "constraints":[
     {"from":"first", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},
     {"from":"last", "to":null, "data":{"type":"StopPoint", "props":{}}, "enabled":true},

@@ -19,6 +19,8 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 import team5427.frc.robot.Constants.VisionConstants;
+import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservation;
+import team5427.frc.robot.subsystems.Vision.io.VisionIO.PoseObservationType;
 import team5427.lib.detection.tuples.Tuple2Plus;
 
 public class VisionIOPhoton implements VisionIO {
@@ -44,9 +46,7 @@ public class VisionIOPhoton implements VisionIO {
 
     photonPoseEstimator =
         new PhotonPoseEstimator(
-            VisionConstants.kAprilTagLayout,
-            PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-            cameraTransform);
+            VisionConstants.kAprilTagLayout, PoseStrategy.CONSTRAINED_SOLVEPNP, cameraTransform);
     photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.PNP_DISTANCE_TRIG_SOLVE);
     // photonPoseEstimator.setMultiTagFallbackStrategy(PoseStrategy.CONSTRAINED_SOLVEPNP);
     this.cameraOffset = cameraTransform;
@@ -98,23 +98,32 @@ public class VisionIOPhoton implements VisionIO {
         // SwerveSubsystem.getInstance().getGyroRotation());
         List<PhotonTrackedTarget> targets = results.get(i).getTargets();
         for (PhotonTrackedTarget target : targets) {
-          // Pose3d pose =
-          //     new Pose3d(
-          //             target.bestCameraToTarget.getTranslation(),
-          //             target.bestCameraToTarget.getRotation())
-          //         .transformBy(cameraOffset);
-          obs.add(
-              new PoseObservation(
-                  pose.get().timestampSeconds,
-                  pose.get().estimatedPose,
-                  target.getPoseAmbiguity(),
-                  1,
-                  target.bestCameraToTarget.getTranslation().getNorm(),
-                  results.get(i).getBestTarget().getYaw(),
-                  results.get(i).getBestTarget().getPitch(),
-                  PoseObservationType.PHOTONVISION_SINGLE_TAG));
-          // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
-          // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
+          if (VisionConstants.ReefFidicualIds.contains(target.getFiducialId())) {
+            // Pose3d pose =
+            //     new Pose3d(
+            //             target.bestCameraToTarget.getTranslation(),
+            //             target.bestCameraToTarget.getRotation())
+            //         .transformBy(cameraOffset);
+            Transform3d cameraToRobotTransform =
+                photonPoseEstimator.getRobotToCameraTransform().inverse();
+
+            obs.add(
+                new PoseObservation(
+                    pose.get().timestampSeconds,
+                    VisionConstants.kAprilTagLayout
+                        .getTagPose(target.getFiducialId())
+                        .get()
+                        .transformBy(target.getBestCameraToTarget().inverse())
+                        .transformBy(cameraToRobotTransform),
+                    target.getPoseAmbiguity(),
+                    1,
+                    target.bestCameraToTarget.getTranslation().getNorm(),
+                    results.get(i).getBestTarget().getYaw(),
+                    results.get(i).getBestTarget().getPitch(),
+                    PoseObservationType.PHOTONVISION_SINGLE_TAG));
+            // inputs.timestamps = Arrays.copyOf(inputs.timestamps, inputs.timestamps.length + 1);
+            // inputs.timestamps[inputs.timestamps.length-1] = results.get(i).getTimestampSeconds();
+          }
         }
       }
       // List<PoseObservation> temp = Arrays.asList(inputs.poseObservations);

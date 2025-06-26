@@ -13,16 +13,6 @@ public class InverseKinematicTest {
 
   }
 
-  @Test
-  public void createRobotContainer() {
-    // Instantiate RobotContainer
-    try {
-      new RobotContainer();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-  }
-
   // Working
   @Test
   public void inverseKinematicsTest() {

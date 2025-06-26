@@ -1,5 +1,6 @@
 package team5427.frc.robot.subsystems.Swerve;
 
+import static edu.wpi.first.units.Units.Amps;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 import static edu.wpi.first.units.Units.Volts;
@@ -145,8 +146,8 @@ public class SwerveModule {
 
   /** Runs the module with the specified output while controlling to zero degrees. */
   public void runDriveCharacterization(double output) {
-    io.setDriveSpeedSetpoint(Volts.of(output));
-    io.setSteerPositionSetpoint(new Rotation2d(0));
+    io.setDriveSpeedSetpoint(Amps.of(output));
+    io.setSteerPositionSetpoint(Rotation2d.kZero);
   }
 
   /** Runs the module with the specified output while moving at zero speed. */

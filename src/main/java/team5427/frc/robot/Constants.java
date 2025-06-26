@@ -31,6 +31,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import java.util.List;
 import java.util.Optional;
 import team5427.frc.robot.Field.ReefLevel;
 import team5427.lib.drivers.CANDeviceId;
@@ -58,7 +59,7 @@ public final class Constants {
   // public static final double kOdometryFrequency = 100; // hz - so every 10 ms
   public static Mode currentMode = Mode.SIM;
 
-  public static final boolean kIsTuningMode = false;
+  public static final boolean kIsTuningMode = true;
 
   public static Optional<Alliance> kAlliance;
 
@@ -84,11 +85,11 @@ public final class Constants {
 
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
-    public static final double kDriverControllerJoystickDeadzone = 0.0;
+    public static final double kDriverControllerJoystickDeadzone = 0.1;
   }
 
   public static class SwerveConstants {
-    public static final double kWheelDiameterMeters = Units.inchesToMeters(3.98);
+    public static final double kWheelDiameterMeters = Units.inchesToMeters(2.195 * 2.0);
     public static final double kTrackWidth = Units.inchesToMeters(22.75);
     public static final double kWheelBase = Units.inchesToMeters(22.75);
 
@@ -107,10 +108,10 @@ public final class Constants {
           kDriveMotorConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
       kDriveMotorConfiguration.maxAcceleration = kDriveMotorConfiguration.maxVelocity * 2.0;
 
-      kDriveMotorConfiguration.kP = 2.00; // 2.64
-      kDriveMotorConfiguration.kV = 0.75;
-      kDriveMotorConfiguration.kA = 0.1;
-      kDriveMotorConfiguration.kS = 0.05;
+      kDriveMotorConfiguration.kP = 70.789; // 2.64 , 30.64
+      // kDriveMotorConfiguration.kV = 0.75;
+      kDriveMotorConfiguration.kA = 6.0;
+      kDriveMotorConfiguration.kS = 0.5;
       kDriveMotorConfiguration.altV = kDriveMotorConfiguration.maxVelocity;
       kDriveMotorConfiguration.altA = kDriveMotorConfiguration.maxAcceleration;
     }
@@ -142,7 +143,6 @@ public final class Constants {
 
     public static final double kRotationalKp = 1.4927;
 
-    public static final double kAutoAlignRotationalKp = 3.1;
     public static double kTranslationalKp = 3.40;
 
     public static LoggedTunableNumber kTranslationalKpTunable =
@@ -151,11 +151,17 @@ public final class Constants {
     static {
     }
 
-    public static final double kAutoAlignTranslationKp = 4.2;
+    public static final double kAutoAlignRotationalKp = 0.3;
+    public static final double kAutoAlignTranslationKp = 1.0;
+    public static final double kAutoAlignTranslationKd = 0.2;
+    public static final double kAutoAlignServoTranslationalKp = 1.0;
+
+    public static final Rotation2d kServoAprilTagTargetLeft = Rotation2d.fromDegrees(50);
+    public static final Rotation2d kServoAprilTagTargetRight = Rotation2d.fromDegrees(-50);
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
-            kAutoAlignRotationalKp, 0.0, 0.1, new Constraints(20 * Math.PI, 10 * Math.PI));
+            kAutoAlignRotationalKp, 0.0, 0.1, new Constraints(2 * Math.PI, 2 * Math.PI));
 
     static {
       kRotationPIDController.setTolerance(Units.degreesToRadians(1));
@@ -163,10 +169,10 @@ public final class Constants {
     }
 
     public static PIDController kTranslationXPIDController =
-        new PIDController(kAutoAlignTranslationKp, 0.0, 0.1);
+        new PIDController(kAutoAlignTranslationKp, 0.0, kAutoAlignTranslationKd);
 
     public static PIDController kTranslationYPIDController =
-        new PIDController(kAutoAlignTranslationKp, 0.0, 0.0);
+        new PIDController(kAutoAlignTranslationKp, 0.0, kAutoAlignTranslationKd);
 
     static {
       kTranslationXPIDController.setTolerance(Units.inchesToMeters(.5));
@@ -179,20 +185,28 @@ public final class Constants {
             0.0,
             0.0,
             new Constraints(
-                kDriveMotorConfiguration.maxVelocity, //  * Math.PI,
-                kDriveMotorConfiguration.maxAcceleration),
+                kDriveMotorConfiguration.maxVelocity/2, //  * Math.PI,
+                kDriveMotorConfiguration.maxAcceleration/2),
             Constants.kLoopSpeed);
 
     public static final double kAutoAlignTranslationalMaxSpeed =
-        SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.2;
+        SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.1;
 
-    public static final double kDrivetrainRadius = Math.max(
-      Math.max(
-          Math.hypot(kWheelBase / 2, kTrackWidth / 2),
-          Math.hypot(kWheelBase / 2, -kTrackWidth / 2)),
-      Math.max(
-          Math.hypot(-kWheelBase / 2, kTrackWidth / 2),
-          Math.hypot(-kWheelBase / 2, -kTrackWidth / 2)));
+    public static final ProfiledPIDController kAutoAlignServoController =
+        new ProfiledPIDController(
+            kAutoAlignServoTranslationalKp,
+            0.0,
+            kAutoAlignTranslationKd,
+            new Constraints(kAutoAlignTranslationalMaxSpeed, kAutoAlignTranslationalMaxSpeed));
+
+    public static final double kDrivetrainRadius =
+        Math.max(
+            Math.max(
+                Math.hypot(kWheelBase / 2, kTrackWidth / 2),
+                Math.hypot(kWheelBase / 2, -kTrackWidth / 2)),
+            Math.max(
+                Math.hypot(-kWheelBase / 2, kTrackWidth / 2),
+                Math.hypot(-kWheelBase / 2, -kTrackWidth / 2)));
 
     public static final SwerveDriveKinematics m_kinematics =
         new SwerveDriveKinematics(
@@ -276,7 +290,6 @@ public final class Constants {
     public static final double kDampenerDampeningAmount = 0.95;
   }
 
-
   public static class VisionConstants {
     public static final String kSwerveCamName = "swerveCam";
     public static final String kIntakeCamName = "intakeCam";
@@ -291,18 +304,23 @@ public final class Constants {
     public static final AprilTagFieldLayout kAprilTagLayout =
         AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
+    // Left side of bot
+    // Robot to camera
     public static final Transform3d kIntakeCamTransform =
         new Transform3d(
-            Units.inchesToMeters(9.375),
-            Units.inchesToMeters(11.048439965),
+            Units.inchesToMeters(9.375), // 9.375
+            Units.inchesToMeters(11.048439965), // 11.048439965
             Units.inchesToMeters(8.540489626),
-            new Rotation3d(0, Units.degreesToRadians(15), -0.47976945625357));
+            new Rotation3d(0, Units.degreesToRadians(-15), -0.45)); // 0.47976945625357
+
+    // Right side of bot
+    // Robot to camera
     public static final Transform3d kSwerveCamTransform =
         new Transform3d(
-            Units.inchesToMeters(9.375),
-            Units.inchesToMeters(-11.048439965),
+            Units.inchesToMeters(9.375), // 9.375
+            Units.inchesToMeters(-11.048439965), // -11.048439965
             Units.inchesToMeters(8.540489626),
-            new Rotation3d(0, Units.degreesToRadians(15), 0.47976945625357));
+            new Rotation3d(0, Units.degreesToRadians(-15), 0.45));
 
     public static final Transform3d kQuestCameraTransform =
         new Transform3d(
@@ -328,7 +346,7 @@ public final class Constants {
     public static double kLinearStdDevBaseline = Units.inchesToMeters(5);
 
     /** Larger stddev equals more doubt in Radians */
-    public static double kAngularStdDevBaseline = Units.degreesToRadians(15);
+    public static double kAngularStdDevBaseline = Units.degreesToRadians(30);
 
     public static double[] kCameraStdDevFactors =
         new double[] {
@@ -337,6 +355,9 @@ public final class Constants {
         };
 
     public static double kQuestStdDevBaseline = 0.001;
+
+    public static List<Integer> ReefFidicualIds =
+        List.of(18, 19, 17, 22, 21, 20, 7, 8, 9, 10, 11, 6);
 
     public static final String kProngLimelightName = "prong";
   }
@@ -384,7 +405,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity * 0.3;
-      kCascadeDriverConfiguration.altJ = 300000.000000001;
+      kCascadeDriverConfiguration.altJ = 30000.000000001;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -411,8 +432,8 @@ public final class Constants {
       // kPivotConfiguration.kS = 0.0;
       // kPivotConfiguration.kG = 3.0;
 
-      kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
-      kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
+      kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration / 2.0;
+      kPivotConfiguration.altV = kPivotConfiguration.maxVelocity / 2.0;
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
@@ -687,11 +708,15 @@ public final class Constants {
 
     public static final Pose2d[] kReefPoses = new Pose2d[12];
 
+    public static Pose2d[] kReefCenters = new Pose2d[12];
+
     static {
       for (int i = 0; i < 12; i++) {
-        // kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
-        kReefPoses[i] = Field.Reef.branchPositions2d.get(i).get(ReefLevel.L4);
+        kReefPoses[i] = Field.Reef.branchPositions.get(i).get(ReefLevel.L4).toPose2d();
+        // kReefPoses[i] = Field.Reef.branchPositions2d.get(i).;
       }
+
+      kReefCenters = Field.Reef.getCenterFaces();
     }
 
     public static final Pose2d[] kAlignPosesBlue = new Pose2d[kReefPoses.length];
@@ -822,6 +847,7 @@ public final class Constants {
       kCoralMotorConfiguration.kV = 0.2;
     }
   }
+
   public static class BlinkinConstants {
     public static final int kBlinkinChannel = 1;
 
