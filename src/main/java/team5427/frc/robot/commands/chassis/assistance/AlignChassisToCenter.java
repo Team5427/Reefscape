@@ -66,25 +66,35 @@ public class AlignChassisToCenter extends Command {
 
     @Override
     public void initialize() {
-        if (DriverStation.isTeleop()) {
-            targetPose = RobotState.getInstance().getAdaptivePose().nearest(
-                List.of(RobotConfigConstants.kReefCenters)
-            );
-        }
+
         driveController =
             new HolonomicDriveController(
                 SwerveConstants.kTranslationXPIDController,
                 SwerveConstants.kTranslationYPIDController,
                 SwerveConstants.kRotationPIDController);
         driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(2)));
+
     }
 
     @Override
     public void execute() {
-
-        Logger.recordOutput("Target Pose", targetPose);
+ 
+        if (DriverStation.isTeleop()) {
+            targetPose = RobotState.getInstance().getAdaptivePose().nearest(
+                List.of(RobotConfigConstants.kReefCenters)
+            );
+        }
+        
+        
         Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
+        Logger.recordOutput("Target Pose", targetPose.relativeTo(robotPose));
         ChassisSpeeds speeds =
+            // driveController.calculate(
+            //     Pose2d.kZero,
+            //     targetPose.relativeTo(robotPose),
+            //     SwerveConstants.kAutoAlignTranslationalMaxSpeed,
+            //     targetPose.getRotation().minus(robotPose.getRotation())
+            // );
             driveController.calculate(
                 Pose2d.kZero,
                 targetPose.relativeTo(robotPose),
@@ -114,7 +124,10 @@ public class AlignChassisToCenter extends Command {
         if (joy.getLeftTriggerAxis() >= 0.1) {
             driverSpeeds = new ChassisSpeeds(0, 0, 0);
         }
+        
         swerve.setInputSpeeds(driverSpeeds);
+        
+
     }
 
     @Override

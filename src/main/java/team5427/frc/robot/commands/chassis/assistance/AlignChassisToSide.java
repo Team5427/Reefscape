@@ -78,6 +78,7 @@ public class AlignChassisToSide extends Command {
     public void execute() {
         Logger.recordOutput("Target Pose", targetPose);
         Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
+        Logger.recordOutput("Relative Target Pose", targetPose.relativeTo(robotPose));
         ChassisSpeeds speeds =
             driveController.calculate(
                 Pose2d.kZero,
@@ -85,6 +86,10 @@ public class AlignChassisToSide extends Command {
                 SwerveConstants.kAutoAlignTranslationalMaxSpeed,
                 targetPose.relativeTo(robotPose).getRotation()
             );
+        if(Math.abs(robotPose.getRotation().getDegrees())<90){
+            speeds.vyMetersPerSecond *= -1;
+
+        }
         if (driveController.getThetaController().atSetpoint() && 
             driveController.getYController().atSetpoint())
                 speeds = new ChassisSpeeds(0, 0, 0);
@@ -101,11 +106,12 @@ public class AlignChassisToSide extends Command {
         // establishes an aligned field relative speed for the x
         driverSpeeds.vxMetersPerSecond =
             swerve.getDriveSpeeds(
-                    vx, 0.0, 0.0, dampener, targetPose.getRotation().plus(Rotation2d.k180deg))
+                    vx, 0.0, 0.0, dampener, targetPose.getRotation())
                 .vxMetersPerSecond;
                 if (joy.getLeftTriggerAxis() >= 0.1) {
                     driverSpeeds = new ChassisSpeeds(0, 0, 0);
                   }
+        
         swerve.setInputSpeeds(driverSpeeds);
     }
 

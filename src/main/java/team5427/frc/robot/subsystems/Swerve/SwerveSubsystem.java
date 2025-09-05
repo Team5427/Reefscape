@@ -329,7 +329,7 @@ public class SwerveSubsystem extends SubsystemBase {
     // Create New Target Module States from inputSpeeds
     // targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
     // setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,Constants.kLoopSpeed);
-    setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,new PathConstraints(1.0, 1.0, 1.0, RobotController.getBatteryVoltage()),Constants.kLoopSpeed);
+    setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,Constants.kLoopSpeed);
     targetModuleStates = setpoint.moduleStates();
 
     for (int i = 0; i < swerveModules.length; i++) {
