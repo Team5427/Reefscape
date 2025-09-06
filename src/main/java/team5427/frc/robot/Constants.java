@@ -389,7 +389,7 @@ public final class Constants {
 
       kCascadeDriverConfiguration.maxVelocity =
           kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
-      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 1.5;
+      kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
@@ -403,9 +403,9 @@ public final class Constants {
       // kCascadeDriverConfiguration.kS = 0.1;
       // kCascadeDriverConfiguration.kFF = 0.0125;
 
-      kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
+      kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration * 0.1;
       kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity * 0.3;
-      kCascadeDriverConfiguration.altJ = 30000.000000001;
+      kCascadeDriverConfiguration.altJ = 300.0;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
