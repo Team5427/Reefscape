@@ -151,9 +151,10 @@ public final class Constants {
     static {
     }
 
-    public static final double kAutoAlignRotationalKp = 0.3;
-    public static final double kAutoAlignTranslationKp = 5.0;
-    public static final double kAutoAlignTranslationKd = 0.9;
+    public static final double kAutoAlignRotationalKp = 0.09; // 0.09
+    public static final double kAutoAlignRotationalKd = 0.02; // 0.02
+    public static final double kAutoAlignTranslationKp = 2.7; // 5.0
+    public static final double kAutoAlignTranslationKd = 0.4; // 0.9
     public static final double kAutoAlignServoTranslationalKp = 1.0;
 
     public static final Rotation2d kServoAprilTagTargetLeft = Rotation2d.fromDegrees(50);
@@ -161,7 +162,7 @@ public final class Constants {
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
-            kAutoAlignRotationalKp, 0.0, 0.1, new Constraints(2 * Math.PI, 2 * Math.PI));
+            kAutoAlignRotationalKp, 0.0, kAutoAlignRotationalKd, new Constraints(1 * Math.PI, 1 * Math.PI));
 
     static {
       kRotationPIDController.setTolerance(Units.degreesToRadians(1));
@@ -388,7 +389,7 @@ public final class Constants {
       kCascadeDriverConfiguration.withFOC = true;
 
       kCascadeDriverConfiguration.maxVelocity =
-          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM);
+          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM) * 0.1;
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
