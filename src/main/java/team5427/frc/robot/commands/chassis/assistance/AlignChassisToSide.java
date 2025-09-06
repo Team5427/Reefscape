@@ -90,6 +90,9 @@ public class AlignChassisToSide extends Command {
             speeds.vyMetersPerSecond *= -1;
 
         }
+        if(DriverStation.getAlliance().get()==Alliance.Blue){
+            speeds.vyMetersPerSecond*=-1;
+        }
         if (driveController.getThetaController().atSetpoint() && 
             driveController.getYController().atSetpoint())
                 speeds = new ChassisSpeeds(0, 0, 0);

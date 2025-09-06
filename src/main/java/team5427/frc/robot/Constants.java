@@ -151,7 +151,7 @@ public final class Constants {
     static {
     }
 
-    public static final double kAutoAlignRotationalKp = 0.5;
+    public static final double kAutoAlignRotationalKp = 0.3;
     public static final double kAutoAlignTranslationKp = 5.0;
     public static final double kAutoAlignTranslationKd = 0.9;
     public static final double kAutoAlignServoTranslationalKp = 1.0;
