@@ -151,10 +151,10 @@ public final class Constants {
     static {
     }
 
-    public static final double kAutoAlignRotationalKp = 0.09; // 0.09
+    public static final double kAutoAlignRotationalKp = 2.0; // 0.09
     public static final double kAutoAlignRotationalKd = 0.02; // 0.02
-    public static final double kAutoAlignTranslationKp = 2.7; // 5.0
-    public static final double kAutoAlignTranslationKd = 0.4; // 0.9
+    public static final double kAutoAlignTranslationKp = 2.0; // 5.0 , 2.7
+    public static final double kAutoAlignTranslationKd = 0.2; // 0.9
     public static final double kAutoAlignServoTranslationalKp = 1.0;
 
     public static final Rotation2d kServoAprilTagTargetLeft = Rotation2d.fromDegrees(50);

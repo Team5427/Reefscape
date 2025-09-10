@@ -39,6 +39,7 @@ public class AlignChassisToSide extends Command {
             SwerveConstants.kTranslationYPIDController, 
             SwerveConstants.kRotationPIDController
         );
+        driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(1)));
 
         joy = driverJoystick;
         translationJoystick = new TunedJoystick(joy.getHID());
@@ -48,6 +49,21 @@ public class AlignChassisToSide extends Command {
         addRequirements(swerve);
 
         this.isRight = isRight;
+
+        if (DriverStation.isTeleop()) {
+            List<Pose2d> actualPoses;
+            List<Pose2d> targetPoses = new ArrayList<>();
+            if (DriverStation.getAlliance().get() == Alliance.Blue) {
+                actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesBlue));
+            } else {
+                actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesRed));
+            }
+            for (int i = isRight ? 0 : 1; i<actualPoses.size()-1; i+=2) {
+                targetPoses.add(actualPoses.get(i));
+                System.out.println(actualPoses.get(i));
+            }
+            targetPose = RobotState.getInstance().getAdaptivePose().nearest(targetPoses);
+        }
     }
 
     @Override
@@ -66,12 +82,7 @@ public class AlignChassisToSide extends Command {
             }
             targetPose = RobotState.getInstance().getAdaptivePose().nearest(targetPoses);
         }
-        driveController =
-            new HolonomicDriveController(
-                SwerveConstants.kTranslationXPIDController,
-                SwerveConstants.kTranslationYPIDController,
-                SwerveConstants.kRotationPIDController);
-        driveController.setTolerance(new Pose2d(0.02, 0.02, Rotation2d.fromDegrees(2)));
+       
     }
 
     @Override
