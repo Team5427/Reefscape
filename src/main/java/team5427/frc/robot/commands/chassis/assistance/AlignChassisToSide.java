@@ -118,13 +118,16 @@ public class AlignChassisToSide extends Command {
             dampener);
     
         // establishes an aligned field relative speed for the x
-        driverSpeeds.vxMetersPerSecond =
-            swerve.getDriveSpeeds(
-                    vx, 0.0, 0.0, dampener, targetPose.getRotation())
-                .vxMetersPerSecond;
-                if (joy.getLeftTriggerAxis() >= 0.1) {
-                    driverSpeeds = new ChassisSpeeds(0, 0, 0);
-                  }
+        // driverSpeeds.vxMetersPerSecond =
+        //     swerve.getDriveSpeeds(
+        //             vx, 0.0, 0.0, dampener, targetPose.getRotation())
+        //         .vxMetersPerSecond;
+        //         if (joy.getLeftTriggerAxis() >= 0.1) {
+        //             driverSpeeds = new ChassisSpeeds(0, 0, 0);
+        //           }
+
+        driverSpeeds.vxMetersPerSecond = swerve.getDriveSpeeds(-vx, 0.0, 0.0, dampener, targetPose.getRotation()).vxMetersPerSecond;
+
         
         swerve.setInputSpeeds(driverSpeeds);
     }

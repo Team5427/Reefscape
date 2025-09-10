@@ -233,7 +233,8 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public ChassisSpeeds getDriveSpeeds(
-      double xInput, double yInput, Rotation2d targetOmega, double dampenAmount) {
+      double xInput, double yInput, 
+      Rotation2d targetOmega, double dampenAmount) {
 
     xInput *= (1 - dampenAmount);
     yInput *= (1 - dampenAmount);
