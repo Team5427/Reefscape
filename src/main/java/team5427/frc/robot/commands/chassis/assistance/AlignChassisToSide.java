@@ -58,7 +58,7 @@ public class AlignChassisToSide extends Command {
             } else {
                 actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesRed));
             }
-            for (int i = isRight ? 0 : 1; i<actualPoses.size()-1; i+=2) {
+            for (int i = isRight ? 0 : 1; i<actualPoses.size(); i+=2) {
                 targetPoses.add(actualPoses.get(i));
                 System.out.println(actualPoses.get(i));
             }
@@ -76,7 +76,7 @@ public class AlignChassisToSide extends Command {
             } else {
                 actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesRed));
             }
-            for (int i = isRight ? 0 : 1; i<actualPoses.size()-1; i+=2) {
+            for (int i = isRight ? 0 : 1; i<actualPoses.size(); i+=2) {
                 targetPoses.add(actualPoses.get(i));
                 System.out.println(actualPoses.get(i));
             }

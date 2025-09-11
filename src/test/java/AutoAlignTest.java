@@ -7,8 +7,12 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
+import team5427.frc.robot.commands.chassis.assistance.AlignChassisToSide;
 import team5427.frc.robot.RobotState;
 
 public class AutoAlignTest {
@@ -33,5 +37,22 @@ public class AutoAlignTest {
         System.out.println("Target Pose: "+targetPose);
         System.out.println(robotPose.relativeTo(targetPose));
         System.out.println("break");
+    }
+
+    @Test 
+    public void autoAlignCommandTest(){
+        // replace that dead code conditionals with different ones to mock different behaviors
+       List<Pose2d> actualPoses;
+            List<Pose2d> targetPoses = new ArrayList<>();
+            if (false) {
+                actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesBlue));
+            } else {
+                actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesRed));
+            }
+            for (int i = false ? 0 : 1; i<actualPoses.size(); i+=2) {
+                targetPoses.add(actualPoses.get(i));
+                System.out.println(actualPoses.get(i));
+            }
+            System.out.println("Target Pose: " + new Pose2d(13.88, 5.12, Rotation2d.kZero).nearest(targetPoses).toString());
     }
 }
