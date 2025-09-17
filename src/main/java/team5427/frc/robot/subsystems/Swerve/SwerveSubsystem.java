@@ -233,7 +233,8 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public ChassisSpeeds getDriveSpeeds(
-      double xInput, double yInput, Rotation2d targetOmega, double dampenAmount) {
+      double xInput, double yInput, 
+      Rotation2d targetOmega, double dampenAmount) {
 
     xInput *= (1 - dampenAmount);
     yInput *= (1 - dampenAmount);
@@ -363,6 +364,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
       Rotation2d newGyroInput = Rotation2d.kZero;
       if (gyroInputsAutoLogged.connected && gyroIO != null) {
+        
         newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].plus(Rotation2d.k180deg);
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);

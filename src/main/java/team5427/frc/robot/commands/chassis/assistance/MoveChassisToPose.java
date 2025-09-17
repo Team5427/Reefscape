@@ -27,7 +27,7 @@ public class MoveChassisToPose extends Command {
     swerveSubsystem = SwerveSubsystem.getInstance();
     addRequirements(swerveSubsystem);
 
-    if (DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Red) {
+    if (DriverStation.isTeleop() && DriverStation.getAlliance().get() == Alliance.Red) {
 
       targetPose =
           RobotState.getInstance()

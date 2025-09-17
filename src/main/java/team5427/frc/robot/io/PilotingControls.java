@@ -48,7 +48,7 @@ public class PilotingControls {
                           RobotState.getInstance()
                               .getAdaptivePose()
                               .nearest(
-                                  Constants.kAlliance.get() == Alliance.Red
+                                  DriverStation.getAlliance().get() == Alliance.Red
                                       ? List.of(RobotConfigConstants.kAlignPosesRed)
                                       : List.of(RobotConfigConstants.kAlignPosesBlue))
                               .getTranslation())
