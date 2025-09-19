@@ -336,11 +336,19 @@ public class MagicSteelTalonFX implements IMotorController {
         // maybe its * instead of /
       case kFlywheel:
         this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
-        talonFX.setControl(new VelocityVoltage(this.setpoint).withEnableFOC(withFOC));
+        if(isUsingTorqueCurrentFOC()){
+          talonFX.setControl(velocityTorqueCurrentFOCRequest.withVelocity(this.setpoint).withEnableFOC(withFOC));
+        }else{
+          talonFX.setControl(velocityVoltageRequest.withVelocity(this.setpoint).withEnableFOC(withFOC));
+        }
         break;
       case kServo:
         this.setpoint = setpoint;
-        talonFX.setControl(new PositionVoltage(setpoint).withEnableFOC(withFOC));
+        if(isUsingTorqueCurrentFOC() && withFOC){
+          talonFX.setControl(positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
+        } else{
+          talonFX.setControl(positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
+        }
         DriverStation.reportWarning(
             "Warning: TalonFX motor with the id "
                 + talonFX.getDeviceID()
@@ -348,11 +356,16 @@ public class MagicSteelTalonFX implements IMotorController {
             false);
       case kLinear:
         this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
-        talonFX.setControl(new PositionDutyCycle(this.setpoint).withEnableFOC(withFOC));
+        if(isUsingTorqueCurrentFOC() && withFOC){
+          talonFX.setControl( positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
+
+        } else{
+          talonFX.setControl(positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
+        }
         break;
       default:
         this.setpoint = setpoint;
-        talonFX.setControl(new VelocityVoltage(setpoint).withEnableFOC(withFOC));
+        talonFX.setControl(velocityVoltageRequest.withVelocity(setpoint).withEnableFOC(withFOC));
         break;
     }
   }

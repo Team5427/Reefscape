@@ -19,12 +19,6 @@
         {
           "type": "named",
           "data": {
-            "name": "Auto Align"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "Eject Coral"
           }
         },

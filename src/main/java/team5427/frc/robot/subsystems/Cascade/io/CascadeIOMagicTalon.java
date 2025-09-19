@@ -58,6 +58,10 @@ public class CascadeIOMagicTalon implements CascadeIO {
   public CascadeIOMagicTalon() {
     cascadeMotorMaster = new MagicSteelTalonFX(CascadeConstants.kCascadeMasterId);
     cascadeMotorSlave = new MagicSteelTalonFX(CascadeConstants.kCascadeSlaveId);
+
+    cascadeMotorMaster.useTorqueCurrentFOC(false);
+    cascadeMotorSlave.useTorqueCurrentFOC(false);
+    
     cascadeMotorMaster.apply(CascadeConstants.kCascadeDriverConfiguration);
     MotorConfiguration cascadeSlaveConfig =
         new MotorConfiguration(CascadeConstants.kCascadeDriverConfiguration);
@@ -92,8 +96,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     pivotCANcoder.getConfigurator().apply(pivotEncoderConfig);
 
-    cascadeMotorMaster.useTorqueCurrentFOC(true);
-    cascadeMotorSlave.useTorqueCurrentFOC(true);
+    
 
     pivotMotorMaster.useTorqueCurrentFOC(false);
     pivotMotorSlave.useTorqueCurrentFOC(false);

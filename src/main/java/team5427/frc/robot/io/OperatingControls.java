@@ -22,10 +22,15 @@ public class OperatingControls {
                 AllCommands.scoreL1,
                 AllCommands.scoreProcessor,
                 () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
-    joy.x().onTrue(AllCommands.scoreL2);
+    joy.x()
+        .onTrue(new ConditionalCommand(
+            AllCommands.scoreL2, 
+            AllCommands.lowReefAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
     joy.b()
         .onTrue(
-            new ConditionalCommand(AllCommands.scoreL3, AllCommands.scoreL3Inverse, () -> true));
+            new ConditionalCommand(
+                AllCommands.scoreL3, 
+                AllCommands.highReefAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
     joy.y()
         .onTrue(
             new ConditionalCommand(
@@ -33,21 +38,26 @@ public class OperatingControls {
                 AllCommands.scoreBarge,
                 () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
 
-    joy.leftTrigger()
-        .whileTrue(
-            new ConditionalCommand(
-                // AllCommands.intake,
-                AllCommands.intakeRSC,
-                // AllCommands.floorIntakeJITB,
-                new ConditionalCommand(
-                    AllCommands.highReefAlgaeIntake,
-                    new ConditionalCommand(
-                        AllCommands.lowReefAlgaeIntake,
-                        AllCommands.floorAlgaeIntake,
-                        () -> ProngSubsystem.level == Level.LOW),
-                    // AllCommands.lowReefAlgaeIntake,
-                    () -> ProngSubsystem.level == Level.HIGH),
-                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+    // joy.leftTrigger()
+    //     .whileTrue(
+    //         new ConditionalCommand(
+    //             AllCommands.intake,
+    //             // AllCommands.intakeRSC,
+    //             // AllCommands.floorIntakeJITB,
+    //             new ConditionalCommand(
+    //                 AllCommands.highReefAlgaeIntake,
+    //                 new ConditionalCommand(
+    //                     AllCommands.lowReefAlgaeIntake,
+    //                     AllCommands.floorAlgaeIntake,
+    //                     () -> ProngSubsystem.level == Level.LOW),
+    //                 // AllCommands.lowReefAlgaeIntake,
+    //                 () -> ProngSubsystem.level == Level.HIGH),
+    //             () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+    
+    joy.leftTrigger().whileTrue(
+        new ConditionalCommand(
+            AllCommands.intake, AllCommands.floorAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+        // AllCommands.intake
 
     joy.rightTrigger()
         .whileTrue(
@@ -56,25 +66,25 @@ public class OperatingControls {
                 AllCommands.ejectAlgae,
                 () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
 
-    joy.rightBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
-                  // Level.HIGH;
-                  ProngSubsystem.level = Level.HIGH;
-                  ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
-                }));
+    // joy.rightBumper()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
+    //               // Level.HIGH;
+    //               ProngSubsystem.level = Level.HIGH;
+    //               ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
+    //             }));
 
-    joy.leftBumper()
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
-                  // Level.HIGH;
-                  ProngSubsystem.level = Level.LOW;
-                  ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
-                }));
+    // joy.leftBumper()
+    //     .onTrue(
+    //         new InstantCommand(
+    //             () -> {
+    //               // ProngSubsystem.level = ProngSubsystem.level == Level.FLOOR ? Level.LOW :
+    //               // Level.HIGH;
+    //               ProngSubsystem.level = Level.LOW;
+    //               ProngSubsystem.setGamePieceMode(GamePieceMode.ALGAE);
+    //             }));
 
     joy.povDown().whileTrue(AllCommands.resetSubsystems);
 
@@ -124,6 +134,7 @@ public class OperatingControls {
     //             CascadeSubsystem.getInstance(),
     //             LightsSubsystem.getInstance()));
     joy.povUp().onTrue(AllCommands.climbStep);
+
 
     joy.povRight()
         .onTrue(

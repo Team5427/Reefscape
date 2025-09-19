@@ -191,7 +191,7 @@ public final class Constants {
             Constants.kLoopSpeed);
 
     public static final double kAutoAlignTranslationalMaxSpeed =
-        SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.1 * 0.7;
+        SwerveConstants.kDriveMotorConfiguration.maxVelocity * 0.1 * 0.3;
 
     public static final ProfiledPIDController kAutoAlignServoController =
         new ProfiledPIDController(
@@ -389,12 +389,12 @@ public final class Constants {
       kCascadeDriverConfiguration.withFOC = true;
 
       kCascadeDriverConfiguration.maxVelocity =
-          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM) * 0.1;
+          kCascadeDriverConfiguration.getStandardMaxVelocity(MotorUtil.kKrakenX60FOC_MaxRPM) * 0.5;
       kCascadeDriverConfiguration.maxAcceleration = kCascadeDriverConfiguration.maxVelocity * 2;
 
       kCascadeDriverConfiguration.finalDiameterMeters = Units.inchesToMeters(1.4875);
 
-      kCascadeDriverConfiguration.kP = .35;
+      kCascadeDriverConfiguration.kP = 0.35;
       // kCascadeDriverConfiguration.kI = .08;
       // kCascadeDriverConfiguration.kG = 0.036;
       kCascadeDriverConfiguration.kD = 0.01;
@@ -404,9 +404,9 @@ public final class Constants {
       // kCascadeDriverConfiguration.kS = 0.1;
       // kCascadeDriverConfiguration.kFF = 0.0125;
 
-      kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration * 0.1;
-      kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity * 0.3;
-      kCascadeDriverConfiguration.altJ = 300.0;
+      kCascadeDriverConfiguration.altA = kCascadeDriverConfiguration.maxAcceleration;
+      kCascadeDriverConfiguration.altV = kCascadeDriverConfiguration.maxVelocity;
+      // kCascadeDriverConfiguration.altJ = 0.0;
     }
 
     public static final CANDeviceId kPivotMasterId = new CANDeviceId(16, "*");
@@ -433,8 +433,8 @@ public final class Constants {
       // kPivotConfiguration.kS = 0.0;
       // kPivotConfiguration.kG = 3.0;
 
-      kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration / 2.0;
-      kPivotConfiguration.altV = kPivotConfiguration.maxVelocity / 2.0;
+      kPivotConfiguration.altA = kPivotConfiguration.maxAcceleration;
+      kPivotConfiguration.altV = kPivotConfiguration.maxVelocity;
     }
 
     public static final CANDeviceId kPivotCANcoderId = new CANDeviceId(18, "*");
