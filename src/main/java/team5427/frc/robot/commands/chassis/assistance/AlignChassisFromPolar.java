@@ -36,4 +36,5 @@ public class AlignChassisFromPolar extends Command{
         joy = driverJoystick;
         translationalJoystick = new TunedJoystick(joy.getHID());
 
+    }
 }
