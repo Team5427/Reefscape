@@ -56,7 +56,7 @@ public class OperatingControls {
     
     joy.leftTrigger().whileTrue(
         new ConditionalCommand(
-            AllCommands.intake, AllCommands.floorAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+            AllCommands.intakeRSC, AllCommands.floorAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
         // AllCommands.intake
 
     joy.rightTrigger()
