@@ -162,7 +162,10 @@ public final class Constants {
 
     public static ProfiledPIDController kRotationPIDController =
         new ProfiledPIDController(
-            kAutoAlignRotationalKp, 0.0, kAutoAlignRotationalKd, new Constraints(1 * Math.PI, 1 * Math.PI));
+            kAutoAlignRotationalKp,
+            0.0,
+            kAutoAlignRotationalKd,
+            new Constraints(1 * Math.PI, 1 * Math.PI));
 
     static {
       kRotationPIDController.setTolerance(Units.degreesToRadians(1));
@@ -186,8 +189,8 @@ public final class Constants {
             0.0,
             0.0,
             new Constraints(
-                kDriveMotorConfiguration.maxVelocity/2, //  * Math.PI,
-                kDriveMotorConfiguration.maxAcceleration/2),
+                kDriveMotorConfiguration.maxVelocity / 2, //  * Math.PI,
+                kDriveMotorConfiguration.maxAcceleration / 2),
             Constants.kLoopSpeed);
 
     public static final double kAutoAlignTranslationalMaxSpeed =

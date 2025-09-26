@@ -12,10 +12,7 @@ import com.ctre.phoenix6.controls.MotionMagicTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicVelocityDutyCycle;
 import com.ctre.phoenix6.controls.MotionMagicVelocityTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.MotionMagicVelocityVoltage;
-import com.ctre.phoenix6.controls.PositionDutyCycle;
-import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.TorqueCurrentFOC;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -336,17 +333,19 @@ public class MagicSteelTalonFX implements IMotorController {
         // maybe its * instead of /
       case kFlywheel:
         this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
-        if(isUsingTorqueCurrentFOC()){
-          talonFX.setControl(velocityTorqueCurrentFOCRequest.withVelocity(this.setpoint).withEnableFOC(withFOC));
-        }else{
-          talonFX.setControl(velocityVoltageRequest.withVelocity(this.setpoint).withEnableFOC(withFOC));
+        if (isUsingTorqueCurrentFOC()) {
+          talonFX.setControl(
+              velocityTorqueCurrentFOCRequest.withVelocity(this.setpoint).withEnableFOC(withFOC));
+        } else {
+          talonFX.setControl(
+              velocityVoltageRequest.withVelocity(this.setpoint).withEnableFOC(withFOC));
         }
         break;
       case kServo:
         this.setpoint = setpoint;
-        if(isUsingTorqueCurrentFOC() && withFOC){
+        if (isUsingTorqueCurrentFOC() && withFOC) {
           talonFX.setControl(positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
-        } else{
+        } else {
           talonFX.setControl(positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
         }
         DriverStation.reportWarning(
@@ -356,11 +355,12 @@ public class MagicSteelTalonFX implements IMotorController {
             false);
       case kLinear:
         this.setpoint = setpoint / (Math.PI * configuration.finalDiameterMeters);
-        if(isUsingTorqueCurrentFOC() && withFOC){
-          talonFX.setControl( positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
+        if (isUsingTorqueCurrentFOC() && withFOC) {
+          talonFX.setControl(positionTorqueCurrentFOCRequest.withPosition(this.setpoint));
 
-        } else{
-          talonFX.setControl(positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
+        } else {
+          talonFX.setControl(
+              positionDutyCycleRequest.withPosition(this.setpoint).withEnableFOC(withFOC));
         }
         break;
       default:
