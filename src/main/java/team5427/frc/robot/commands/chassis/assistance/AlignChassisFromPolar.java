@@ -32,6 +32,7 @@ public class AlignChassisFromPolar extends Command {
 
   public AlignChassisFromPolar(CommandXboxController driverJoystick, boolean isRight) {
     swerve = SwerveSubsystem.getInstance();
+    this.joy = driverJoystick;
 
     distanceController = SwerveConstants.kAutoAlignServoController;
     distanceController.setTolerance(0.02);
@@ -91,6 +92,7 @@ public class AlignChassisFromPolar extends Command {
     Translation2d relativeVector = targetPose.getTranslation().minus(robotPose.getTranslation());
     double distance = relativeVector.getNorm();
     Rotation2d targetAngle = relativeVector.getAngle();
+    Logger.recordOutput("Vector Angle", targetAngle);
     double radialVelocity = distanceController.calculate(distance, 0);
     double angularVelocity =
         angleController.calculate(robotPose.getRotation().getRadians(), targetAngle.getRadians());
@@ -99,12 +101,17 @@ public class AlignChassisFromPolar extends Command {
     ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, angularVelocity);
     swerve.setInputSpeeds(speeds);
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-
-    ChassisSpeeds driverSpeeds =
-        ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotPose.getRotation());
-    driverSpeeds.vxMetersPerSecond =
+    if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
+        speeds.vyMetersPerSecond *= -1;
+      }
+      if (DriverStation.getAlliance().get() == Alliance.Blue) {
+        speeds.vyMetersPerSecond *= -1;
+      }
+    // ChassisSpeeds driverSpeeds =
+    //     ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotPose.getRotation());
+    speeds.vxMetersPerSecond =
         swerve.getDriveSpeeds(-vx, 0.0, 0.0, dampener, targetPose.getRotation()).vxMetersPerSecond;
-    swerve.setInputSpeeds(driverSpeeds);
+    swerve.setInputSpeeds(speeds);
   }
 
   @Override
