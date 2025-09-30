@@ -98,7 +98,7 @@ public class AlignChassisFromPolar extends Command {
         angleController.calculate(robotPose.getRotation().getRadians(), targetAngle.getRadians());
     double vx = radialVelocity * targetAngle.getCos();
     double vy = radialVelocity * targetAngle.getSin();
-    ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, angularVelocity);
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, angularVelocity, robotPose.getRotation());
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
     // if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
     //     speeds.vyMetersPerSecond *= -1;
