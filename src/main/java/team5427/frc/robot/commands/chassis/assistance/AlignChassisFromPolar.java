@@ -88,23 +88,22 @@ public class AlignChassisFromPolar extends Command {
     Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
     Logger.recordOutput("Relative Target Pose", targetPose.relativeTo(robotPose));
     double angularVelocity =
-        angleController.calculate(
-            robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
-    double vx = -distanceController.calculate(robotPose.getX(), targetPose.getX());
-    double vy = -distanceController.calculate(robotPose.getY(), targetPose.getY());
-    ChassisSpeeds autoAlignSpeeds = new ChassisSpeeds(vx, vy, angularVelocity);
+        angleController.calculate(robotPose.getRotation().getRadians(), targetAngle.getRadians());
+    double vx = radialVelocity * targetAngle.getCos();
+    double vy = radialVelocity * targetAngle.getSin();
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, angularVelocity, robotPose.getRotation());
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-    autoAlignSpeeds =
-        swerve.getDriveSpeedsWithoutAdjustment(
-            autoAlignSpeeds.vxMetersPerSecond,
-            autoAlignSpeeds.vyMetersPerSecond,
-            autoAlignSpeeds.omegaRadiansPerSecond,
-            dampener);
-    if (joy.getLeftTriggerAxis() >= 0.1) {
-      autoAlignSpeeds = new ChassisSpeeds(0, 0, 0);
-    }
-
-    swerve.setInputSpeeds(autoAlignSpeeds);
+    // if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
+    //     speeds.vyMetersPerSecond *= -1;
+    //   }
+    //   if (DriverStation.getAlliance().get() == Alliance.Blue) {
+    //     speeds.vyMetersPerSecond *= -1;
+    //   }
+    // ChassisSpeeds driverSpeeds =
+    //     ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotPose.getRotation());
+    speeds.vxMetersPerSecond =
+        swerve.getDriveSpeeds(-vx, 0.0, 0.0, dampener, targetPose.getRotation()).vxMetersPerSecond;
+    swerve.setInputSpeeds(speeds);
   }
 
   @Override
