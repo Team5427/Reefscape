@@ -2,8 +2,6 @@ package team5427.frc.robot.commands.chassis.assistance;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -34,7 +32,7 @@ public class AlignChassisFromPolar extends Command {
     swerve = SwerveSubsystem.getInstance();
     this.joy = driverJoystick;
 
-    distanceController = SwerveConstants.kAutoAlignServoController;
+    distanceController = SwerveConstants.kTranslationPIDController;
     distanceController.setTolerance(0.02);
 
     angleController = SwerveConstants.kRotationPIDController;
@@ -89,34 +87,29 @@ public class AlignChassisFromPolar extends Command {
     Logger.recordOutput("Target Pose", targetPose);
     Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
     Logger.recordOutput("Relative Target Pose", targetPose.relativeTo(robotPose));
-    Translation2d relativeVector = targetPose.getTranslation().minus(robotPose.getTranslation());
-    double distance = relativeVector.getNorm();
-    Rotation2d targetAngle = relativeVector.getAngle();
-    Logger.recordOutput("Vector Angle", targetAngle);
-    double radialVelocity = distanceController.calculate(distance, 0);
     double angularVelocity =
-        angleController.calculate(robotPose.getRotation().getRadians(), targetAngle.getRadians());
-    double vx = radialVelocity * targetAngle.getCos();
-    double vy = radialVelocity * targetAngle.getSin();
-    ChassisSpeeds speeds = new ChassisSpeeds(vx, vy, angularVelocity);
-    swerve.setInputSpeeds(speeds);
+        angleController.calculate(
+            robotPose.getRotation().getRadians(), targetPose.getRotation().getRadians());
+    double vx = -distanceController.calculate(robotPose.getX(), targetPose.getX());
+    double vy = -distanceController.calculate(robotPose.getY(), targetPose.getY());
+    ChassisSpeeds autoAlignSpeeds = new ChassisSpeeds(vx, vy, angularVelocity);
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-    if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
-        speeds.vyMetersPerSecond *= -1;
-      }
-      if (DriverStation.getAlliance().get() == Alliance.Blue) {
-        speeds.vyMetersPerSecond *= -1;
-      }
-    // ChassisSpeeds driverSpeeds =
-    //     ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotPose.getRotation());
-    speeds.vxMetersPerSecond =
-        swerve.getDriveSpeeds(-vx, 0.0, 0.0, dampener, targetPose.getRotation()).vxMetersPerSecond;
-    swerve.setInputSpeeds(speeds);
+    autoAlignSpeeds =
+        swerve.getDriveSpeedsWithoutAdjustment(
+            autoAlignSpeeds.vxMetersPerSecond,
+            autoAlignSpeeds.vyMetersPerSecond,
+            autoAlignSpeeds.omegaRadiansPerSecond,
+            dampener);
+    if (joy.getLeftTriggerAxis() >= 0.1) {
+      autoAlignSpeeds = new ChassisSpeeds(0, 0, 0);
+    }
+
+    swerve.setInputSpeeds(autoAlignSpeeds);
   }
 
   @Override
   public boolean isFinished() {
-    return distanceController.atSetpoint() && angleController.atSetpoint();
+    return targetPose.getTranslation().minus(RobotState.getInstance().getAdaptivePose().getTranslation()).getNorm() < 0.02 && angleController.atGoal();
   }
 
   @Override

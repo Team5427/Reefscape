@@ -179,10 +179,19 @@ public class SwerveSubsystem extends SubsystemBase {
     //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
     // RobotState.getInstance().getAdaptivePose().getRotation());
 
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
+    return fieldRelativeSpeeds;
+  }
 
-    return discretizedSpeeds;
+  public ChassisSpeeds getDriveSpeedsWithoutAdjustment(
+      double xInput, double yInput, double omegaInput, double dampenAmount) {
+
+    ChassisSpeeds rawSpeeds =
+        new ChassisSpeeds(
+            scaleDriveComponents(xInput, dampenAmount),
+            scaleDriveComponents(yInput, dampenAmount),
+            scaleDriveComponents(omegaInput, dampenAmount) * Math.PI);
+
+    return rawSpeeds;
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -217,10 +226,7 @@ public class SwerveSubsystem extends SubsystemBase {
     //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
     // RobotState.getInstance().getAdaptivePose().getRotation());
 
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
-
-    return discretizedSpeeds;
+    return fieldRelativeSpeeds;
   }
 
   public double scaleDriveComponents(double velocity) {
