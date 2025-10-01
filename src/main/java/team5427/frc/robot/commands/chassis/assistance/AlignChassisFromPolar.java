@@ -70,7 +70,7 @@ public class AlignChassisFromPolar extends Command {
     distanceController.reset(0);
     distanceController.setTolerance(0.05);
     angleController.reset(0);
-    angleController.setTolerance(Units.degreesToRadians(3));
+    angleController.setTolerance(Units.degreesToRadians(7));
     if (DriverStation.isTeleop()) {
       List<Pose2d> actualPoses;
       List<Pose2d> targetPoses = new ArrayList<>();
@@ -103,7 +103,7 @@ public class AlignChassisFromPolar extends Command {
     double vx = radialVelocity * targetAngle.getCos();
     double vy = radialVelocity * targetAngle.getSin();
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-    ChassisSpeeds speeds = swerve.getDriveSpeeds(-vx, vy, targetAngle, dampener);
+    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, angularVelocity, robotPose.getRotation());
     // if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
     //     speeds.vyMetersPerSecond *= -1;
     //   }
