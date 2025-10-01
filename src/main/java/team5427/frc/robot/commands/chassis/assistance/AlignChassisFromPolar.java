@@ -34,7 +34,7 @@ public class AlignChassisFromPolar extends Command {
     swerve = SwerveSubsystem.getInstance();
     this.joy = driverJoystick;
 
-    distanceController = SwerveConstants.kAutoAlignServoController;
+    distanceController = SwerveConstants.kTranslationPIDController;
     distanceController.setTolerance(0.02);
 
     angleController = SwerveConstants.kRotationPIDController;
@@ -115,7 +115,7 @@ public class AlignChassisFromPolar extends Command {
 
   @Override
   public boolean isFinished() {
-    return distanceController.atSetpoint() && angleController.atSetpoint();
+    return targetPose.getTranslation().minus(RobotState.getInstance().getAdaptivePose().getTranslation()).getNorm() < 0.02 && angleController.atGoal();
   }
 
   @Override
