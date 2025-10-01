@@ -27,14 +27,14 @@ public class MoveChassisToPose extends Command {
     swerveSubsystem = SwerveSubsystem.getInstance();
     addRequirements(swerveSubsystem);
 
-    if (DriverStation.isTeleop() && DriverStation.getAlliance().get() == Alliance.Red) {
+    if (DriverStation.isTeleop() && DriverStation.getAlliance().isPresent() &&DriverStation.getAlliance().get() == Alliance.Red) {
 
       targetPose =
           RobotState.getInstance()
               .getAdaptivePose()
               .nearest(List.of(RobotConfigConstants.kAlignPosesRed));
 
-    } else if (DriverStation.isTeleop() && Constants.kAlliance.get() == Alliance.Blue) {
+    } else if (DriverStation.isTeleop()&& DriverStation.getAlliance().isPresent() && Constants.kAlliance.get() == Alliance.Blue) {
       targetPose =
           RobotState.getInstance()
               .getAdaptivePose()

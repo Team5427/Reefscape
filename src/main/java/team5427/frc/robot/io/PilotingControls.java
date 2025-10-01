@@ -32,7 +32,7 @@ import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 public class PilotingControls {
 
   private CommandXboxController joy;
-
+  
   public static final Trigger rumble =
       new Trigger(
           () ->
@@ -43,7 +43,8 @@ public class PilotingControls {
                           RobotState.getInstance()
                               .getAdaptivePose()
                               .nearest(
-                                  DriverStation.getAlliance().get() == Alliance.Red
+                                  (DriverStation.getAlliance().isPresent()&&
+                                  DriverStation.getAlliance().get() == Alliance.Red)
                                       ? List.of(RobotConfigConstants.kAlignPosesRed)
                                       : List.of(RobotConfigConstants.kAlignPosesBlue))
                               .getTranslation())

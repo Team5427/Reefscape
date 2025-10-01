@@ -361,7 +361,7 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       Rotation2d newGyroInput = Rotation2d.kZero;
-      if (gyroInputsAutoLogged.connected && gyroIO != null) {
+      if (gyroInputsAutoLogged.connected && gyroIO != null && gyroInputsAutoLogged.odometryYawPositions.length > 0 ) {
 
         newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].plus(Rotation2d.k180deg);
       } else {

@@ -51,7 +51,7 @@ public class AlignChassisFromPolar extends Command {
     if (DriverStation.isTeleop()) {
       List<Pose2d> actualPoses;
       List<Pose2d> targetPoses = new ArrayList<>();
-      if (DriverStation.getAlliance().get() == Alliance.Blue) {
+      if (DriverStation.getAlliance().isPresent()&&DriverStation.getAlliance().get() == Alliance.Blue) {
         actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesBlue));
       } else {
         actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesRed));
@@ -91,7 +91,8 @@ public class AlignChassisFromPolar extends Command {
     Logger.recordOutput("Relative Target Pose", targetPose.relativeTo(robotPose));
     Translation2d relativeVector = targetPose.getTranslation().minus(robotPose.getTranslation());
     double distance = relativeVector.getNorm();
-    Rotation2d targetAngle = relativeVector.getAngle();
+    Rotation2d buffer = Rotation2d.k180deg;
+    Rotation2d targetAngle = relativeVector.getAngle().plus(Rotation2d.fromRadians(Math.PI));
     Logger.recordOutput("Vector Angle", targetAngle);
     double radialVelocity = distanceController.calculate(distance, 0);
     double angularVelocity =
@@ -108,8 +109,7 @@ public class AlignChassisFromPolar extends Command {
     //   }
     // ChassisSpeeds driverSpeeds =
     //     ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotPose.getRotation());
-    speeds.vxMetersPerSecond =
-        swerve.getDriveSpeeds(-vx, 0.0, 0.0, dampener, targetPose.getRotation()).vxMetersPerSecond;
+    
     swerve.setInputSpeeds(speeds);
   }
 
