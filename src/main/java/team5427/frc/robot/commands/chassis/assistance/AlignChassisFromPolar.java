@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -67,7 +68,9 @@ public class AlignChassisFromPolar extends Command {
   @Override
   public void initialize() {
     distanceController.reset(0);
+    distanceController.setTolerance(0.05);
     angleController.reset(0);
+    angleController.setTolerance(Units.degreesToRadians(3));
     if (DriverStation.isTeleop()) {
       List<Pose2d> actualPoses;
       List<Pose2d> targetPoses = new ArrayList<>();
@@ -96,11 +99,11 @@ public class AlignChassisFromPolar extends Command {
     Logger.recordOutput("Vector Angle", targetAngle);
     double radialVelocity = distanceController.calculate(distance, 0);
     double angularVelocity =
-        angleController.calculate(robotPose.getRotation().getRadians(), targetAngle.getRadians());
+        angleController.calculate(targetAngle.getRadians() - robotPose.getRotation().getRadians(), 0);
     double vx = radialVelocity * targetAngle.getCos();
     double vy = radialVelocity * targetAngle.getSin();
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, angularVelocity, robotPose.getRotation());
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
+    ChassisSpeeds speeds = swerve.getDriveSpeeds(-vx, vy, targetAngle, dampener);
     // if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
     //     speeds.vyMetersPerSecond *= -1;
     //   }
@@ -119,6 +122,7 @@ public class AlignChassisFromPolar extends Command {
   }
 
   @Override
+
   public void end(boolean interrupted) {
     swerve.setInputSpeeds(new ChassisSpeeds(0, 0, 0));
   }
