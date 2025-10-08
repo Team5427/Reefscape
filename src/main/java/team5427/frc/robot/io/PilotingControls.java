@@ -27,12 +27,13 @@ import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
 import team5427.frc.robot.commands.chassis.assistance.AlignChassisFromPolar;
 import team5427.frc.robot.commands.chassis.assistance.AlignChassisToCenter;
+import team5427.frc.robot.commands.chassis.assistance.AlignChassisToSide;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
 
 public class PilotingControls {
 
   private CommandXboxController joy;
-  
+
   public static final Trigger rumble =
       new Trigger(
           () ->
@@ -43,8 +44,8 @@ public class PilotingControls {
                           RobotState.getInstance()
                               .getAdaptivePose()
                               .nearest(
-                                  (DriverStation.getAlliance().isPresent()&&
-                                  DriverStation.getAlliance().get() == Alliance.Red)
+                                  (DriverStation.getAlliance().isPresent()
+                                          && DriverStation.getAlliance().get() == Alliance.Red)
                                       ? List.of(RobotConfigConstants.kAlignPosesRed)
                                       : List.of(RobotConfigConstants.kAlignPosesBlue))
                               .getTranslation())
@@ -155,8 +156,8 @@ public class PilotingControls {
     // joy.rightBumper().whileTrue(new AlignChassisToPoseY(joy));
 
     joy.povDown().whileTrue(new AlignChassisToCenter(joy));
-    joy.leftBumper().whileTrue(new AlignChassisFromPolar(joy, false));
-    joy.rightBumper().whileTrue(new AlignChassisFromPolar(joy, true));
+    joy.leftBumper().whileTrue(new AlignChassisToSide(joy, false));
+    joy.rightBumper().whileTrue(new AlignChassisToSide(joy, true));
 
     // joy.a().onTrue(AutoBuilder.followPath(
     //   new PathPlannerPath(

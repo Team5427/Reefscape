@@ -182,6 +182,13 @@ public class SwerveSubsystem extends SubsystemBase {
     return fieldRelativeSpeeds;
   }
 
+  /**
+   * @param xInput velocity in the x component
+   * @param yInput velocity in the y component
+   * @param omegaInput angular velocity
+   * @param dampenAmount driver dampening
+   * @return Robot-Relative drive speeds only applying dampening
+   */
   public ChassisSpeeds getDriveSpeedsWithoutAdjustment(
       double xInput, double yInput, double omegaInput, double dampenAmount) {
 
@@ -210,10 +217,6 @@ public class SwerveSubsystem extends SubsystemBase {
       double dampenAmount,
       Rotation2d fieldOrientedRotation) {
 
-    // xInput *= (1 - dampenAmount);
-    // yInput *= (1 - dampenAmount);
-    // omegaInput *= (1 - dampenAmount);
-
     ChassisSpeeds rawSpeeds =
         new ChassisSpeeds(
             scaleDriveComponents(xInput, dampenAmount),
@@ -222,9 +225,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, fieldOrientedRotation);
-    // ChassisSpeeds fieldRelativeSpeeds =
-    //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
-    // RobotState.getInstance().getAdaptivePose().getRotation());
 
     return fieldRelativeSpeeds;
   }
@@ -367,7 +367,9 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       Rotation2d newGyroInput = Rotation2d.kZero;
-      if (gyroInputsAutoLogged.connected && gyroIO != null && gyroInputsAutoLogged.odometryYawPositions.length > 0 ) {
+      if (gyroInputsAutoLogged.connected
+          && gyroIO != null
+          && gyroInputsAutoLogged.odometryYawPositions.length > 0) {
 
         newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].plus(Rotation2d.k180deg);
       } else {

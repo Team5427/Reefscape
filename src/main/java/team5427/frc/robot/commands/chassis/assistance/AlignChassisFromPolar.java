@@ -2,8 +2,6 @@ package team5427.frc.robot.commands.chassis.assistance;
 
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -52,7 +50,8 @@ public class AlignChassisFromPolar extends Command {
     if (DriverStation.isTeleop()) {
       List<Pose2d> actualPoses;
       List<Pose2d> targetPoses = new ArrayList<>();
-      if (DriverStation.getAlliance().isPresent()&&DriverStation.getAlliance().get() == Alliance.Blue) {
+      if (DriverStation.getAlliance().isPresent()
+          && DriverStation.getAlliance().get() == Alliance.Blue) {
         actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesBlue));
       } else {
         actualPoses = List.copyOf(List.of(RobotConfigConstants.kAlignPosesRed));
@@ -92,40 +91,37 @@ public class AlignChassisFromPolar extends Command {
     Logger.recordOutput("Target Pose", targetPose);
     Pose2d robotPose = RobotState.getInstance().getAdaptivePose();
     Logger.recordOutput("Relative Target Pose", targetPose.relativeTo(robotPose));
-    Translation2d relativeVector = targetPose.getTranslation().minus(robotPose.getTranslation());
-    double distance = relativeVector.getNorm();
-    Rotation2d buffer = Rotation2d.k180deg;
-    Rotation2d targetAngle = relativeVector.getAngle().plus(Rotation2d.fromRadians(Math.PI));
-    Logger.recordOutput("Vector Angle", targetAngle);
-    double radialVelocity = distanceController.calculate(distance, 0);
-    double angularVelocity =
-        angleController.calculate(targetAngle.getRadians() - robotPose.getRotation().getRadians(), 0);
-    double vx = radialVelocity * targetAngle.getCos();
-    double vy = radialVelocity * targetAngle.getSin();
+    Pose2d robotRelativePose = targetPose.relativeTo(robotPose);
+
+    double omegaRadiansPerSecond =
+        angleController.calculate(robotRelativePose.getRotation().getRadians() + Math.PI, 0);
+    double alignmentSpeed =
+        distanceController.calculate(robotRelativePose.getTranslation().getNorm(), 0);
+
+    double vx = -alignmentSpeed * robotRelativePose.getRotation().getCos();
+    double vy = -alignmentSpeed * robotRelativePose.getRotation().getSin();
+
     double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
-    ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(vx, vy, angularVelocity, robotPose.getRotation());
-    ChassisSpeeds driverSpeeds =
-        swerve.getDriveSpeeds(
-            speeds.vxMetersPerSecond, speeds.vyMetersPerSecond, speeds.omegaRadiansPerSecond, dampener);
-    // if (Math.abs(robotPose.getRotation().getDegrees()) < 90) {
-    //     speeds.vyMetersPerSecond *= -1;
-    //   }
-    //   if (DriverStation.getAlliance().get() == Alliance.Blue) {
-    //     speeds.vyMetersPerSecond *= -1;
-    //   }
-    // ChassisSpeeds driverSpeeds =
-    //     ChassisSpeeds.fromFieldRelativeSpeeds(speeds, robotPose.getRotation());
-    
-    swerve.setInputSpeeds(driverSpeeds);
+    ChassisSpeeds fieldRelativeSpeeds =
+        swerve.getDriveSpeeds(vx, vy, omegaRadiansPerSecond, dampener, robotPose.getRotation().unaryMinus());
+    // fieldRelativeSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(fieldRelativeSpeeds, robotPose.getRotation());
+    if (joy.getLeftTriggerAxis() >= 0.1) {
+      fieldRelativeSpeeds = new ChassisSpeeds(0, 0, 0);
+    }
+    swerve.setInputSpeeds(fieldRelativeSpeeds);
   }
 
   @Override
   public boolean isFinished() {
-    return targetPose.getTranslation().minus(RobotState.getInstance().getAdaptivePose().getTranslation()).getNorm() < 0.02 && angleController.atGoal();
+    return targetPose
+                .getTranslation()
+                .minus(RobotState.getInstance().getAdaptivePose().getTranslation())
+                .getNorm()
+            < 0.02
+        && angleController.atGoal();
   }
 
   @Override
-
   public void end(boolean interrupted) {
     swerve.setInputSpeeds(new ChassisSpeeds(0, 0, 0));
   }
