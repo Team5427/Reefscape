@@ -259,12 +259,11 @@ public class ModuleIOTalon implements ModuleIO {
    */
   @Override
   public void setDriveSpeedSetpoint(LinearVelocity speed) {
-    if(speed.in(MetersPerSecond) == 0.0){
+    if (speed.in(MetersPerSecond) == 0.0) {
       driveMotor.getTalonFX().stopMotor();
-    } else{
-    driveMotor.setSetpoint(speed.in(MetersPerSecond));
+    } else {
+      driveMotor.setSetpoint(speed.in(MetersPerSecond));
     }
-
   }
 
   @Override

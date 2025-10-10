@@ -36,15 +36,17 @@ public class ChassisMovement extends Command {
 
   @Override
   public void initialize() {
-    // swerveSubsystem.setFieldOp(DriverStation.getAlliance().get().equals(Alliance.Red)); 
+    // swerveSubsystem.setFieldOp(DriverStation.getAlliance().get().equals(Alliance.Red));
   }
-// Eric lock in you bum yk what im talking abt
+
+  // Eric lock in you bum yk what im talking abt
   @Override
   public void execute() {
     if (DriverStation.isTeleop()) {
       double vx = -translationJoystick.getRightY();
       double vy = -translationJoystick.getRightX();
-      double omegaRadians = -rotationJoystick.getLeftX() * Math.abs(translationJoystick.getLeftX()) * 0.5;
+      double omegaRadians =
+          -rotationJoystick.getLeftX() * Math.abs(translationJoystick.getLeftX()) * 0.5;
 
       double dampener = (joy.getRightTriggerAxis() * SwerveConstants.kDampenerDampeningAmount);
 

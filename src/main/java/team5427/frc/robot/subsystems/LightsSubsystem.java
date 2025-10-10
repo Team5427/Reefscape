@@ -46,12 +46,12 @@ public class LightsSubsystem extends SubsystemBase {
     //   }
     // }
 
-    if (DriverStation.isDisabled()) {
-      pattern = BlinkinConstants.kLightChaseRed;
-    }
+    // if (DriverStation.isDisabled()) {
+    //   pattern = BlinkinConstants.kLightChaseRed;
+    // }
 
-    blinkin.set(pattern);
-    Logger.recordOutput("Blinkin PWM Input", blinkin.getPwmHandle());
+    // blinkin.set(pattern);
+    // Logger.recordOutput("Blinkin PWM Input", blinkin.getPwmHandle());
   }
 
   public void setPattern(double pattern) {

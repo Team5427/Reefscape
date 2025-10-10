@@ -25,14 +25,10 @@ import team5427.frc.robot.Constants.RobotConfigConstants;
 import team5427.frc.robot.Constants.SwerveConstants;
 import team5427.frc.robot.RobotState;
 import team5427.frc.robot.commands.chassis.ChassisMovement;
-import team5427.frc.robot.commands.chassis.LockedChassisMovement;
+import team5427.frc.robot.commands.chassis.assistance.AlignChassisFromPolar;
 import team5427.frc.robot.commands.chassis.assistance.AlignChassisToCenter;
-import team5427.frc.robot.commands.chassis.assistance.AlignChassisToPoseY;
 import team5427.frc.robot.commands.chassis.assistance.AlignChassisToSide;
-import team5427.frc.robot.commands.chassis.assistance.MoveChassisToPose;
 import team5427.frc.robot.subsystems.Swerve.SwerveSubsystem;
-import team5427.frc.robot.subsystems.Vision.io.Quest.Quest;
-import team5427.frc.robot.subsystems.Vision.io.Quest.QuestCalibration;
 
 public class PilotingControls {
 
@@ -48,7 +44,8 @@ public class PilotingControls {
                           RobotState.getInstance()
                               .getAdaptivePose()
                               .nearest(
-                                  DriverStation.getAlliance().get() == Alliance.Red
+                                  (DriverStation.getAlliance().isPresent()
+                                          && DriverStation.getAlliance().get() == Alliance.Red)
                                       ? List.of(RobotConfigConstants.kAlignPosesRed)
                                       : List.of(RobotConfigConstants.kAlignPosesBlue))
                               .getTranslation())
@@ -157,7 +154,7 @@ public class PilotingControls {
                           SwerveSubsystem.getInstance().getGyroRotation().plus(Rotation2d.k180deg));
                 }));
     // joy.rightBumper().whileTrue(new AlignChassisToPoseY(joy));
-    
+
     joy.povDown().whileTrue(new AlignChassisToCenter(joy));
     joy.leftBumper().whileTrue(new AlignChassisToSide(joy, false));
     joy.rightBumper().whileTrue(new AlignChassisToSide(joy, true));

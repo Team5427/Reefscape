@@ -61,7 +61,7 @@ public class CascadeIOMagicTalon implements CascadeIO {
 
     cascadeMotorMaster.useTorqueCurrentFOC(false);
     cascadeMotorSlave.useTorqueCurrentFOC(false);
-    
+
     cascadeMotorMaster.apply(CascadeConstants.kCascadeDriverConfiguration);
     MotorConfiguration cascadeSlaveConfig =
         new MotorConfiguration(CascadeConstants.kCascadeDriverConfiguration);
@@ -95,8 +95,6 @@ public class CascadeIOMagicTalon implements CascadeIO {
     pivotEncoderConfig.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 0.5;
 
     pivotCANcoder.getConfigurator().apply(pivotEncoderConfig);
-
-    
 
     pivotMotorMaster.useTorqueCurrentFOC(false);
     pivotMotorSlave.useTorqueCurrentFOC(false);

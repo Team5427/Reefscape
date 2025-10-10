@@ -63,11 +63,10 @@ public class ProngIOTalon implements ProngIO {
 
     rollerCurrent = rollerTalon.getTalonFX().getStatorCurrent();
     rollerVoltage = rollerTalon.getTalonFX().getMotorVoltage();
-    
+
     rollerTemperature = rollerTalon.getTalonFX().getDeviceTemp();
 
     BaseStatusSignal.setUpdateFrequencyForAll(10, rollerTemperature);
-
 
     BaseStatusSignal.setUpdateFrequencyForAll(
         50,

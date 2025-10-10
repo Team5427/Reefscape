@@ -24,7 +24,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -180,10 +179,26 @@ public class SwerveSubsystem extends SubsystemBase {
     //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
     // RobotState.getInstance().getAdaptivePose().getRotation());
 
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
+    return fieldRelativeSpeeds;
+  }
 
-    return discretizedSpeeds;
+  /**
+   * @param xInput velocity in the x component
+   * @param yInput velocity in the y component
+   * @param omegaInput angular velocity
+   * @param dampenAmount driver dampening
+   * @return Robot-Relative drive speeds only applying dampening
+   */
+  public ChassisSpeeds getDriveSpeedsWithoutAdjustment(
+      double xInput, double yInput, double omegaInput, double dampenAmount) {
+
+    ChassisSpeeds rawSpeeds =
+        new ChassisSpeeds(
+            scaleDriveComponents(xInput, dampenAmount),
+            scaleDriveComponents(yInput, dampenAmount),
+            scaleDriveComponents(omegaInput, dampenAmount) * Math.PI);
+
+    return rawSpeeds;
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -202,10 +217,6 @@ public class SwerveSubsystem extends SubsystemBase {
       double dampenAmount,
       Rotation2d fieldOrientedRotation) {
 
-    // xInput *= (1 - dampenAmount);
-    // yInput *= (1 - dampenAmount);
-    // omegaInput *= (1 - dampenAmount);
-
     ChassisSpeeds rawSpeeds =
         new ChassisSpeeds(
             scaleDriveComponents(xInput, dampenAmount),
@@ -214,14 +225,8 @@ public class SwerveSubsystem extends SubsystemBase {
 
     ChassisSpeeds fieldRelativeSpeeds =
         ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds, fieldOrientedRotation);
-    // ChassisSpeeds fieldRelativeSpeeds =
-    //     ChassisSpeeds.fromRobotRelativeSpeeds(rawSpeeds,
-    // RobotState.getInstance().getAdaptivePose().getRotation());
 
-    ChassisSpeeds discretizedSpeeds =
-        ChassisSpeeds.discretize(fieldRelativeSpeeds, Constants.kLoopSpeed);
-
-    return discretizedSpeeds;
+    return fieldRelativeSpeeds;
   }
 
   public double scaleDriveComponents(double velocity) {
@@ -233,8 +238,7 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   public ChassisSpeeds getDriveSpeeds(
-      double xInput, double yInput, 
-      Rotation2d targetOmega, double dampenAmount) {
+      double xInput, double yInput, Rotation2d targetOmega, double dampenAmount) {
 
     xInput *= (1 - dampenAmount);
     yInput *= (1 - dampenAmount);
@@ -330,14 +334,14 @@ public class SwerveSubsystem extends SubsystemBase {
     // Create New Target Module States from inputSpeeds
     // targetModuleStates = SwerveConstants.m_kinematics.toSwerveModuleStates(inputSpeeds);
     // setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,Constants.kLoopSpeed);
-    setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds,Constants.kLoopSpeed);
+    setpoint = setpointGenerator.generateSetpoint(setpoint, inputSpeeds, Constants.kLoopSpeed);
     targetModuleStates = setpoint.moduleStates();
 
     for (int i = 0; i < swerveModules.length; i++) {
       if (driveFeedforwards != null) {
         swerveModules[i].setModuleState(
             targetModuleStates[i], driveFeedforwards); // Set new target module state
-            // targetModuleStates[i]); // Set new target module state
+        // targetModuleStates[i]); // Set new target module state
       } else {
         swerveModules[i].setModuleState(targetModuleStates[i]);
       }
@@ -363,8 +367,10 @@ public class SwerveSubsystem extends SubsystemBase {
       }
 
       Rotation2d newGyroInput = Rotation2d.kZero;
-      if (gyroInputsAutoLogged.connected && gyroIO != null) {
-        
+      if (gyroInputsAutoLogged.connected
+          && gyroIO != null
+          && gyroInputsAutoLogged.odometryYawPositions.length > 0) {
+
         newGyroInput = gyroInputsAutoLogged.odometryYawPositions[i].plus(Rotation2d.k180deg);
       } else {
         Twist2d gyroTwist = SwerveConstants.m_kinematics.toTwist2d(moduleDeltas);
