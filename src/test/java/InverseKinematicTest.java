@@ -1,7 +1,6 @@
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import org.junit.jupiter.api.Test;
-import team5427.frc.robot.RobotContainer;
 import team5427.lib.kinematics.inverse.ArmInverseKinematics;
 import team5427.lib.kinematics.inverse.ArmInverseKinematics.VariableLengthArm;
 

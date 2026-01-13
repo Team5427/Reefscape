@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import team5427.frc.robot.commands.AllCommands;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem;
 import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.GamePieceMode;
-import team5427.frc.robot.subsystems.ProngEffector.ProngSubsystem.Level;
 
 public class OperatingControls {
 
@@ -23,14 +22,17 @@ public class OperatingControls {
                 AllCommands.scoreProcessor,
                 () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
     joy.x()
-        .onTrue(new ConditionalCommand(
-            AllCommands.scoreL2, 
-            AllCommands.lowReefAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+        .onTrue(
+            new ConditionalCommand(
+                AllCommands.scoreL2,
+                AllCommands.lowReefAlgaeIntake,
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
     joy.b()
         .onTrue(
             new ConditionalCommand(
-                AllCommands.scoreL3, 
-                AllCommands.highReefAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+                AllCommands.scoreL3,
+                AllCommands.highReefAlgaeIntake,
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
     joy.y()
         .onTrue(
             new ConditionalCommand(
@@ -53,11 +55,14 @@ public class OperatingControls {
     //                 // AllCommands.lowReefAlgaeIntake,
     //                 () -> ProngSubsystem.level == Level.HIGH),
     //             () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
-    
-    joy.leftTrigger().whileTrue(
-        new ConditionalCommand(
-            AllCommands.intakeRSC, AllCommands.floorAlgaeIntake, () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
-        // AllCommands.intake
+
+    joy.leftTrigger()
+        .whileTrue(
+            new ConditionalCommand(
+                AllCommands.intakeRSC,
+                AllCommands.floorAlgaeIntake,
+                () -> ProngSubsystem.getGamePieceMode() == GamePieceMode.CORAL));
+    // AllCommands.intake
 
     joy.rightTrigger()
         .whileTrue(
@@ -134,7 +139,6 @@ public class OperatingControls {
     //             CascadeSubsystem.getInstance(),
     //             LightsSubsystem.getInstance()));
     joy.povUp().onTrue(AllCommands.climbStep);
-
 
     joy.povRight()
         .onTrue(
